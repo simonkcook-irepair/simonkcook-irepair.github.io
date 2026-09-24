@@ -26,9 +26,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#d6e5f7}
  f.addEventListener('load',function(){
    const d=f.contentDocument,w=f.contentWindow;
    if(!d||!w)return;
-   const link=d.createElement('link');
-   link.rel='stylesheet'; link.href='build09.css?v=09';
-   d.head.appendChild(link);
+   ['build09.css?v=09','build10.css?v=10','build11.css?v=11'].forEach(function(href){
+     const link=d.createElement('link');
+     link.rel='stylesheet'; link.href=href;
+     d.head.appendChild(link);
+   });
    const files=['build09-part1.js?v=09','build09-part2.js?v=09','build09-part3.js?v=09','build09-part4.js?v=09','build10.js?v=10','build11.js?v=11'];
    let i=0;
    function next(){
