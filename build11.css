@@ -1,0 +1,31 @@
+
+/* Build 11 · compact progressive iPhone identifier */
+.id11-wrap{margin-top:12px}
+.id11-progress{display:flex;gap:5px;margin:2px 0 14px}
+.id11-progress span{height:4px;flex:1;border-radius:99px;background:#dbe9f7}
+.id11-progress span.on{background:#3f8fe3}
+.id11-q{font-size:20px;line-height:1.2;margin:4px 0 6px;color:#163858}
+.id11-sub{font-size:11px;line-height:1.4;color:#667c92;margin:0 0 12px}
+.id11-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.id11-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.id11-option{min-height:116px;border:1px solid rgba(255,255,255,.95);border-radius:19px;background:rgba(255,255,255,.77);color:#173553;padding:9px 7px 10px;text-align:center;box-shadow:0 4px 14px rgba(45,93,139,.10)}
+.id11-option:active{transform:scale(.985)}
+.id11-option .pic{height:72px;display:flex;align-items:center;justify-content:center;margin:0 auto 5px}
+.id11-option img{display:block;max-width:78px;max-height:72px;width:auto;height:auto;object-fit:contain}
+.id11-option strong{display:block;font-size:12px;line-height:1.2}
+.id11-option small{display:block;font-size:9px;line-height:1.25;color:#6d8196;margin-top:3px}
+.id11-symbol{height:72px;display:flex;align-items:center;justify-content:center;font-size:39px;font-weight:600;color:#3b6f9f}
+.id11-symbol.phone-sm{font-size:34px}.id11-symbol.phone-lg{font-size:48px}
+.id11-note{margin:10px 0 0;padding:9px 10px;border:1px solid #d9eafb;border-radius:14px;background:#f6faff;color:#58718a;font-size:10px;line-height:1.4}
+.id11-actions{display:flex;gap:8px;margin-top:11px}
+.id11-actions .btn{margin:0}
+.id11-a{font-size:22px;text-align:center;text-transform:uppercase;letter-spacing:.05em}
+.id11-result{padding:12px;border-radius:17px;background:linear-gradient(135deg,#edf8ff,#dceeff);border:1px solid #c8e1fb;margin:11px 0}
+.id11-result strong{font-size:16px;color:#125294}
+.id11-source{text-align:center;font-size:8.5px;color:#8092a4;margin-top:8px}
+@media(max-width:390px){
+ .id11-option{min-height:108px;padding:8px 5px}
+ .id11-option .pic,.id11-symbol{height:64px}
+ .id11-option img{max-width:70px;max-height:64px}
+ .id11-option strong{font-size:11px}
+}
