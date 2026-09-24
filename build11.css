@@ -1,31 +1,40 @@
 
-/* Build 11 · compact progressive iPhone identifier */
-.id11-wrap{margin-top:12px}
-.id11-progress{display:flex;gap:5px;margin:2px 0 14px}
-.id11-progress span{height:4px;flex:1;border-radius:99px;background:#dbe9f7}
-.id11-progress span.on{background:#3f8fe3}
-.id11-q{font-size:20px;line-height:1.2;margin:4px 0 6px;color:#163858}
-.id11-sub{font-size:11px;line-height:1.4;color:#667c92;margin:0 0 12px}
-.id11-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+/* Build 11 · compact progressive iPhone identifier — revised */
+.id11-wrap{margin-top:6px}
+.id11-progress{display:flex;gap:5px;margin:3px 0 13px}
+.id11-progress span{height:4px;flex:1;border-radius:99px;background:#dbe8f5}
+.id11-progress span.on{background:#3b8ee7}
+.id11-q{font-size:20px;line-height:1.2;margin:4px 0 5px;color:#163858}
+.id11-sub{font-size:11.5px;line-height:1.4;color:#657b91;margin:0 0 11px}
+.id11-grid{display:grid;gap:9px;margin:8px 0}
+.id11-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .id11-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.id11-option{min-height:116px;border:1px solid rgba(255,255,255,.95);border-radius:19px;background:rgba(255,255,255,.77);color:#173553;padding:9px 7px 10px;text-align:center;box-shadow:0 4px 14px rgba(45,93,139,.10)}
+.id11-option{appearance:none;border:1px solid rgba(255,255,255,.96);border-radius:18px;background:rgba(255,255,255,.80);color:#173553;padding:8px 5px 9px;text-align:center;box-shadow:0 4px 14px rgba(45,93,139,.10);min-height:107px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px}
 .id11-option:active{transform:scale(.985)}
-.id11-option .pic{height:72px;display:flex;align-items:center;justify-content:center;margin:0 auto 5px}
-.id11-option img{display:block;max-width:78px;max-height:72px;width:auto;height:auto;object-fit:contain}
-.id11-option strong{display:block;font-size:12px;line-height:1.2}
-.id11-option small{display:block;font-size:9px;line-height:1.25;color:#6d8196;margin-top:3px}
-.id11-symbol{height:72px;display:flex;align-items:center;justify-content:center;font-size:39px;font-weight:600;color:#3b6f9f}
-.id11-symbol.phone-sm{font-size:34px}.id11-symbol.phone-lg{font-size:48px}
-.id11-note{margin:10px 0 0;padding:9px 10px;border:1px solid #d9eafb;border-radius:14px;background:#f6faff;color:#58718a;font-size:10px;line-height:1.4}
-.id11-actions{display:flex;gap:8px;margin-top:11px}
+.id11-option strong{display:block;font-size:11.5px;line-height:1.2}
+.id11-option small{display:block;font-size:9px;line-height:1.22;color:#6e8195}
+.id11-photo{display:block;width:66px;height:66px;border-radius:14px;background-color:#fff;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px #e3edf6}
+.id11-photo.front{background-size:auto 100%;background-position:right center}
+.id11-photo.rear{background-size:auto 100%;background-position:left center}
+.id11-photo.center{background-size:auto 100%;background-position:center center}
+.id11-photo.wide{background-size:155% auto;background-position:left center}
+.id11-symbol{width:62px;height:62px;border-radius:17px;background:linear-gradient(145deg,#f8fbff,#e2effc);display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:650;color:#3a6f9f;box-shadow:inset 0 0 0 1px #dceaf7}
+.id11-symbol.text{font-size:15px;letter-spacing:-.02em}
+.id11-symbol.phone-sm{font-size:25px;transform:scale(.82)}
+.id11-symbol.phone-lg{font-size:35px}
+.id11-note{margin:10px 0;padding:9px 10px;border:1px solid #d9eafa;border-radius:14px;background:#f6faff;color:#58718a;font-size:10.5px;line-height:1.42}
+.id11-actions{display:flex;gap:8px;margin-top:10px}
 .id11-actions .btn{margin:0}
-.id11-a{font-size:22px;text-align:center;text-transform:uppercase;letter-spacing:.05em}
+.id11-a{font-size:21px!important;text-align:center;text-transform:uppercase;letter-spacing:.05em}
 .id11-result{padding:12px;border-radius:17px;background:linear-gradient(135deg,#edf8ff,#dceeff);border:1px solid #c8e1fb;margin:11px 0}
 .id11-result strong{font-size:16px;color:#125294}
-.id11-source{text-align:center;font-size:8.5px;color:#8092a4;margin-top:8px}
+.id11-source{text-align:center;font-size:8.5px;color:#8192a3;margin-top:8px}
+.id11-brand-only{padding-top:2px}
+.id11-brand-only .phone-type-grid{margin-top:10px}
 @media(max-width:390px){
- .id11-option{min-height:108px;padding:8px 5px}
- .id11-option .pic,.id11-symbol{height:64px}
- .id11-option img{max-width:70px;max-height:64px}
+ .id11-option{min-height:102px;padding:7px 4px}
+ .id11-photo{width:60px;height:60px}
+ .id11-symbol{width:58px;height:58px}
  .id11-option strong{font-size:11px}
+ .id11-option small{font-size:8.7px}
 }
