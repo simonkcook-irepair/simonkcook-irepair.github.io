@@ -1,0 +1,23 @@
+
+/* Build 10 · Progressive Apple iPhone visual identifier */
+.id10-card{display:block;width:100%;border:1px solid rgba(255,255,255,.9);border-radius:22px;background:rgba(255,255,255,.78);padding:12px;margin:10px 0;color:#173553;text-align:left;box-shadow:0 5px 18px rgba(41,93,145,.12)}
+.id10-card[aria-pressed="true"]{border:2px solid #2b84e8;background:#e4f2ff}
+.id10-card img{display:block;width:100%;height:150px;object-fit:contain;background:#fff;border-radius:16px;margin-bottom:9px}
+.id10-card strong{display:block;font-size:15px;line-height:1.25}
+.id10-card small{display:block;font-size:11px;line-height:1.35;color:#61768e;margin-top:4px}
+.id10-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.id10-grid.three{grid-template-columns:1fr}
+.id10-question{font-size:20px;line-height:1.2;margin:6px 0 8px}
+.id10-sub{font-size:12px;color:#60758e;line-height:1.45;margin:0 0 10px}
+.id10-progress{display:flex;gap:5px;margin:4px 0 12px}
+.id10-progress span{height:5px;flex:1;border-radius:99px;background:#d7e7f7}
+.id10-progress span.on{background:#408fe4}
+.id10-back{margin-top:10px}
+.id10-note{background:#f5f9ff;border:1px solid #d8eaff;border-radius:16px;padding:11px 12px;font-size:11px;line-height:1.45;color:#49647e;margin:10px 0}
+.id10-source{font-size:9px;color:#71869b;text-align:center;margin:6px 0 0}
+.id10-final{background:linear-gradient(135deg,#eef8ff,#dceeff);border:1px solid #c9e2fb;border-radius:20px;padding:14px;margin:10px 0}
+.id10-final h3{margin:0 0 5px;font-size:17px;color:#124f90}
+.id10-model-number{font-size:22px;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.id10-inline{display:flex;gap:8px;align-items:center}
+.id10-inline .field{flex:1}
+@media (max-width:380px){.id10-grid{grid-template-columns:1fr}.id10-card img{height:140px}}
