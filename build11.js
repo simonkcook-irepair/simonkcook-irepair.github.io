@@ -23,7 +23,7 @@ const _helpReset11=helpReset;
 helpReset=function(){_helpReset11();id11Reset()};
 
 function id11Img(src,alt){
-  return '<span class="pic"><img src="'+src+'" alt="'+safe(alt)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\\'none\\';this.parentNode.innerHTML=\\'<span class=&quot;id11-symbol&quot;>📱</span>\\'"></span>';
+  return '<span class="pic"><img src="'+src+'" alt="'+safe(alt)+'" loading="lazy" referrerpolicy="no-referrer"></span>';
 }
 function id11Opt(title,sub,img,next,value){
   return '<button type="button" class="id11-option" data-id11-next="'+next+'"'+(value?' data-id11-value="'+value+'"':'')+'>'+id11Img(img,title)+'<strong>'+safe(title)+'</strong>'+(sub?'<small>'+safe(sub)+'</small>':'')+'</button>';
