@@ -1,0 +1,77 @@
+name: iRepair Core API Smoke Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/core-api-smoke.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BASE: https://treasured-delightful-profile--simonkcook.replit.app
+    steps:
+      - name: Health check
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Testing $BASE/api/health"
+          code=$(curl -sS -o /tmp/health.txt -w '%{http_code}' "$BASE/api/health")
+          echo "HTTP $code"
+          cat /tmp/health.txt
+          test "$code" = "200"
+
+      - name: Create synthetic repair job
+        shell: bash
+        run: |
+          set -euo pipefail
+          payload='{"customerName":"GitHub Smoke Test","device":"iPhone 13","repair":"Screen replacement","price":99,"service":"Mobile call-out","postcode":"SA2","status":"booked","partState":"in_stock","paymentState":"unpaid","priority":"normal","source":"smoke-test"}'
+          code=$(curl -sS -o /tmp/create.json -w '%{http_code}' -X POST "$BASE/api/jobs" -H 'Content-Type: application/json' --data "$payload")
+          echo "HTTP $code"
+          cat /tmp/create.json
+          test "$code" = "200" -o "$code" = "201"
+          id=$(jq -r '.id // .job.id // empty' /tmp/create.json)
+          test -n "$id"
+          echo "JOB_ID=$id" >> "$GITHUB_ENV"
+
+      - name: Read job
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/read.json -w '%{http_code}' "$BASE/api/jobs/$JOB_ID")
+          echo "HTTP $code"
+          cat /tmp/read.json
+          test "$code" = "200"
+
+      - name: Update workflow fields
+        shell: bash
+        run: |
+          set -euo pipefail
+          call(){
+            label="$1"; path="$2"; body="$3"
+            echo "--- $label"
+            code=$(curl -sS -o /tmp/step.json -w '%{http_code}' -X POST "$BASE/api/jobs/$JOB_ID/$path" -H 'Content-Type: application/json' --data "$body")
+            echo "HTTP $code"
+            cat /tmp/step.json
+            test "$code" = "200" -o "$code" = "201"
+          }
+          call status status '{"status":"confirmed"}'
+          call part part '{"partState":"in_stock"}'
+          call payment payment '{"paymentState":"paid"}'
+          call priority priority '{"priority":"high"}'
+          call note note '{"text":"Synthetic internal note from GitHub Actions","author":"Smoke Test"}'
+          call customer-update customer-update '{"text":"Synthetic customer-visible update from GitHub Actions"}'
+
+      - name: Final verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/final.json -w '%{http_code}' "$BASE/api/jobs/$JOB_ID")
+          echo "HTTP $code"
+          cat /tmp/final.json
+          test "$code" = "200"
+          jq -e '(.status == "confirmed") and (.paymentState == "paid") and (.priority == "high")' /tmp/final.json >/dev/null || \
+          jq -e '(.job.status == "confirmed") and (.job.paymentState == "paid") and (.job.priority == "high")' /tmp/final.json >/dev/null
+          echo "FULL HANDSHAKE PASSED"
