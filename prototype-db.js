@@ -1,81 +1,34 @@
 /* iRepair Core · shared prototype data adapter
-   Build 18: local-first UI contract + hosted cross-device API synchronisation.
-   Technician view can sync the full prototype queue. Customer view only refreshes
+   Build 19: local-first UI contract + Supabase cross-device API synchronisation.
+   Technician view can sync the full demo queue. Customer view only refreshes
    repair IDs already known to that customer browser until authentication exists. */
 (function(g){
   const KEY='irepair_core_prototype_db_v1';
   const CHANNEL='irepair_core_prototype_sync';
-  const API_BASE='https://treasured-delightful-profile--simonkcook.replit.app/api';
+  const API_BASE='https://psswyljihufyxiieqziu.supabase.co/functions/v1/core-api';
+  const API_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzc3d5bGppaHVmeXhpaWVxeml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0OTc5MTgsImV4cCI6MjEwNjA3MzkxOH0.LdUk-Qf7eielTK8iu0PpbCHNRi9sm6QO7PyPQ7j-zEU';
   const ROLE=(location.pathname||'').toLowerCase().includes('tech.html')?'technician':'customer';
-  const STATUS=[
-    ['booked','Booked'],['confirmed','Confirmed'],['on_my_way','On my way'],['arrived','Arrived'],
-    ['repairing','Repairing'],['waiting_part','Waiting for part'],['completed','Completed'],['cancelled','Cancelled']
-  ];
-  const PART_STATES=[
-    ['not_checked','Not checked'],['in_stock','In stock'],['order_required','Order required'],
-    ['ordered','Ordered'],['received','Received'],['fitted','Fitted']
-  ];
+  const STATUS=[['booked','Booked'],['confirmed','Confirmed'],['on_my_way','On my way'],['arrived','Arrived'],['repairing','Repairing'],['waiting_part','Waiting for part'],['completed','Completed'],['cancelled','Cancelled']];
+  const PART_STATES=[['not_checked','Not checked'],['in_stock','In stock'],['order_required','Order required'],['ordered','Ordered'],['received','Received'],['fitted','Fitted']];
   const PAYMENT_STATES=[['unpaid','Unpaid'],['deposit','Deposit paid'],['paid','Paid']];
   const PRIORITIES=[['normal','Normal'],['high','High']];
   let bc=null,syncTimer=null,syncing=false;
-  const connection={online:false,lastSuccess:null,lastError:null,apiBase:API_BASE,role:ROLE};
+  const connection={online:false,lastSuccess:null,lastError:null,apiBase:API_BASE,role:ROLE,backend:'Supabase'};
   try{bc=('BroadcastChannel' in g)?new BroadcastChannel(CHANNEL):null}catch(e){}
-
   function iso(){return new Date().toISOString()}
-  function blank(){return {version:3,jobs:[],customers:[],updatedAt:iso()}}
+  function blank(){return {version:4,jobs:[],customers:[],updatedAt:iso()}}
   function uid(prefix){return (prefix||'IR')+'-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}
   function event(type,label,actor,visibility){return {id:uid('EV'),type:type||'update',label:String(label||''),actor:actor||'System',visibility:visibility||'customer',at:iso()}}
-  function hydrateJob(j){
-    if(!j)return j;
-    return Object.assign({
-      id:uid('IR'),customerId:uid('CU'),customerName:'Demo customer',phone:'',email:'',device:'Unconfirmed device',variant:'',
-      deviceConfidence:'unconfirmed',repair:'Assessment',price:null,service:'Mobile call-out',address:'',postcode:'',
-      date:'Today',slot:'',status:'booked',compatibility:'unknown',partState:'not_checked',partName:'',supplier:'',
-      paymentState:'unpaid',priority:'normal',technician:'Simon',notes:[],timeline:[],customerMessage:'',
-      source:'customer-app',createdAt:iso(),updatedAt:iso()
-    },j);
-  }
-  function read(){
-    try{
-      const raw=localStorage.getItem(KEY);if(!raw)return blank();
-      const v=JSON.parse(raw);if(!v||!Array.isArray(v.jobs))return blank();
-      v.version=3;v.jobs=v.jobs.map(hydrateJob);if(!Array.isArray(v.customers))v.customers=[];return v;
-    }catch(e){return blank()}
-  }
-  function write(state,source){
-    state.version=3;state.updatedAt=iso();
-    try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
-    try{bc&&bc.postMessage({type:'changed',source:source||'unknown',at:state.updatedAt})}catch(e){}
-    try{g.dispatchEvent(new CustomEvent('irepair-db-change',{detail:{source:source||'unknown'}}))}catch(e){}
-    return state;
-  }
-  function markConnection(ok,err){
-    connection.online=!!ok;
-    if(ok){connection.lastSuccess=iso();connection.lastError=null}else if(err){connection.lastError=String(err&&err.message||err)}
-    try{g.dispatchEvent(new CustomEvent('irepair-api-change',{detail:Object.assign({},connection)}))}catch(e){}
-  }
-  async function api(path,options){
-    const opts=Object.assign({method:'GET',headers:{'Accept':'application/json'}},options||{});
-    opts.headers=Object.assign({'Accept':'application/json'},opts.headers||{});
-    if(opts.body && typeof opts.body!=='string'){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(opts.body)}
-    const res=await fetch(API_BASE+path,opts);const text=await res.text();let data=null;
-    try{data=text?JSON.parse(text):null}catch(e){data={raw:text}}
-    if(!res.ok)throw new Error('API '+res.status+(data&&data.error?' · '+data.error:''));markConnection(true);return data;
-  }
+  function hydrateJob(j){if(!j)return j;return Object.assign({id:uid('IR'),customerId:uid('CU'),customerName:'Demo customer',phone:'',email:'',device:'Unconfirmed device',variant:'',deviceConfidence:'unconfirmed',repair:'Assessment',price:null,service:'Mobile call-out',address:'',postcode:'',date:'Today',slot:'',status:'booked',compatibility:'unknown',partState:'not_checked',partName:'',supplier:'',paymentState:'unpaid',priority:'normal',technician:'Simon',notes:[],timeline:[],customerMessage:'',source:'customer-app',createdAt:iso(),updatedAt:iso()},j)}
+  function read(){try{const raw=localStorage.getItem(KEY);if(!raw)return blank();const v=JSON.parse(raw);if(!v||!Array.isArray(v.jobs))return blank();v.version=4;v.jobs=v.jobs.map(hydrateJob);if(!Array.isArray(v.customers))v.customers=[];return v}catch(e){return blank()}}
+  function write(state,source){state.version=4;state.updatedAt=iso();try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}try{bc&&bc.postMessage({type:'changed',source:source||'unknown',at:state.updatedAt})}catch(e){}try{g.dispatchEvent(new CustomEvent('irepair-db-change',{detail:{source:source||'unknown'}}))}catch(e){}return state}
+  function markConnection(ok,err){connection.online=!!ok;if(ok){connection.lastSuccess=iso();connection.lastError=null}else if(err){connection.lastError=String(err&&err.message||err)}try{g.dispatchEvent(new CustomEvent('irepair-api-change',{detail:Object.assign({},connection)}))}catch(e){}}
+  async function api(path,options){const opts=Object.assign({method:'GET',headers:{}},options||{});opts.headers=Object.assign({'Accept':'application/json','Authorization':'Bearer '+API_KEY,'apikey':API_KEY},opts.headers||{});if(opts.body&&typeof opts.body!=='string'){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(opts.body)}const res=await fetch(API_BASE+path,opts);const text=await res.text();let data=null;try{data=text?JSON.parse(text):null}catch(e){data={raw:text}}if(!res.ok)throw new Error('API '+res.status+(data&&data.error?' · '+data.error:''));markConnection(true);return data}
   function jobsFrom(data){if(Array.isArray(data))return data;if(data&&Array.isArray(data.jobs))return data.jobs;if(data&&Array.isArray(data.data))return data.data;return []}
   function jobFrom(data){if(!data)return null;if(data.job&&typeof data.job==='object')return data.job;if(data.data&&typeof data.data==='object'&&!Array.isArray(data.data))return data.data;return typeof data==='object'&&!Array.isArray(data)?data:null}
   function mergeRemoteJob(remote,localId){const r=hydrateJob(remote);const s=read();let i=s.jobs.findIndex(j=>j.id===r.id);if(i<0&&localId)i=s.jobs.findIndex(j=>j.id===localId);if(i>=0)s.jobs[i]=hydrateJob(Object.assign({},s.jobs[i],r));else s.jobs.unshift(r);write(s,'remote');return r}
-  async function syncTechnician(){
-    const data=await api('/jobs');const remote=jobsFrom(data).map(hydrateJob);const local=read();
-    const pending=local.jobs.filter(j=>j._pendingCreate&&!remote.some(r=>r.id===j.id));
-    write({version:3,jobs:remote.concat(pending),customers:local.customers||[],updatedAt:iso()},'remote-sync');return read();
-  }
-  async function syncCustomer(){
-    const local=read();const known=local.jobs.filter(j=>j&&j.id&&!j._pendingCreate);
-    if(!known.length){await api('/health');return read()}
-    const results=await Promise.all(known.map(j=>api('/jobs/'+encodeURIComponent(j.id)).then(jobFrom).catch(()=>null)));
-    results.filter(Boolean).forEach((r,i)=>mergeRemoteJob(r,known[i]&&known[i].id));return read();
-  }
+  async function syncTechnician(){const data=await api('/jobs');const remote=jobsFrom(data).map(hydrateJob);const local=read();const pending=local.jobs.filter(j=>j._pendingCreate&&!remote.some(r=>r.id===j.id));write({version:4,jobs:remote.concat(pending),customers:local.customers||[],updatedAt:iso()},'remote-sync');return read()}
+  async function syncCustomer(){const local=read();const known=local.jobs.filter(j=>j&&j.id&&!j._pendingCreate);if(!known.length){await api('/health');return read()}const results=await Promise.all(known.map(j=>api('/jobs/'+encodeURIComponent(j.id)).then(jobFrom).catch(()=>null)));results.filter(Boolean).forEach((r,i)=>mergeRemoteJob(r,known[i]&&known[i].id));return read()}
   async function syncRemote(){if(syncing)return read();syncing=true;try{return ROLE==='technician'?await syncTechnician():await syncCustomer()}catch(e){markConnection(false,e);return read()}finally{syncing=false}}
   function queueCreate(job){api('/jobs',{method:'POST',body:job}).then(data=>{const r=jobFrom(data);if(r)mergeRemoteJob(Object.assign({},r,{_pendingCreate:false}),job.id);else updateLocalOnly(job.id,{_pendingCreate:false},'remote-create')}).catch(e=>{markConnection(false,e);updateLocalOnly(job.id,{_pendingCreate:true},'remote-pending')})}
   function queuePatch(id,patch){api('/jobs/'+encodeURIComponent(id),{method:'PATCH',body:patch}).then(data=>{const r=jobFrom(data);if(r)mergeRemoteJob(r,id)}).catch(e=>markConnection(false,e))}
