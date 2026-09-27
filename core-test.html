@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e2238">
+<title>iRepair Core Diagnostics</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eef7ff;background:#07111f}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(155deg,#07111f,#0d2135);padding:calc(18px + env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom))}.wrap{max-width:620px;margin:0 auto}.head{display:flex;gap:10px;align-items:center}.head img{width:42px;height:58px;object-fit:contain}.head h1{font-size:22px;margin:0}.head p{margin:3px 0 0;color:#8cadca;font-size:11px}.card{margin-top:14px;padding:16px;border:1px solid #294b69;border-radius:22px;background:#0d2135e8;box-shadow:0 10px 28px #0004}.card h2{font-size:18px;margin:0 0 6px}.muted{color:#8eafcc;font-size:12px;line-height:1.5}.warning{padding:10px;border-radius:14px;background:#3b2c16;border:1px solid #755a27;color:#ffe4ad;font-size:11px;line-height:1.45;margin-top:10px}.btn{width:100%;border:0;border-radius:16px;min-height:48px;padding:10px 12px;margin-top:12px;background:linear-gradient(135deg,#56adff,#0c70dc);color:white;font-weight:850;font-size:14px}.btn.secondary{background:#142d46;border:1px solid #345675;color:#cde5fb}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.status{display:flex;align-items:center;gap:8px;padding:10px;border-radius:14px;background:#091827;border:1px solid #223f59;margin-top:9px;font-size:11px}.dot{width:9px;height:9px;border-radius:50%;background:#7b8fa1}.dot.ok{background:#45b67c}.dot.bad{background:#d86069}.log{margin-top:10px;max-height:420px;overflow:auto;border-radius:14px;background:#050d16;border:1px solid #1d354c;padding:10px;font:11px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word;color:#bcd6ed}.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.box{padding:10px;border-radius:13px;background:#091827;border:1px solid #223f59}.box strong{display:block;color:#7fa5c7;font-size:9px;margin-bottom:3px}.box span{font-size:12px}.links{display:flex;gap:8px;margin-top:12px}.links a{flex:1;text-align:center;text-decoration:none;color:#bcdcff;background:#102840;border:1px solid #2d506e;border-radius:14px;padding:10px;font-size:11px;font-weight:800}
+</style>
+</head>
+<body><div class="wrap">
+<div class="head"><img src="/apple-touch-icon.png?v=11" alt="iRepair"><div><h1>iRepair Core Diagnostics</h1><p>End-to-end prototype handshake test</p></div></div>
+<section class="card"><h2>Shared backend</h2><p class="muted">This page tests the hosted iRepair Core API from the same GitHub Pages origin used by the customer and technician apps.</p><div class="warning">Prototype diagnostics only. Use synthetic/demo data here — not real customer information — until authentication and access controls are implemented.</div><div id="health" class="status"><i class="dot"></i><span>Not tested yet</span></div><div class="row"><button class="btn" id="run">Run full handshake test</button><button class="btn secondary" id="healthBtn">Health only</button></div><div id="summary" class="summary"></div><div id="log" class="log">Ready.</div><div class="links"><a href="/">Customer app</a><a href="/tech.html">Technician app</a></div></section>
+</div>
+<script>
+(function(){
+const API='https://treasured-delightful-profile--simonkcook.replit.app/api';
+const logEl=document.getElementById('log'),healthEl=document.getElementById('health'),sumEl=document.getElementById('summary');
+function log(msg,obj){const t=new Date().toLocaleTimeString('en-GB');logEl.textContent+='\n['+t+'] '+msg+(obj!==undefined?'\n'+JSON.stringify(obj,null,2):'');logEl.scrollTop=logEl.scrollHeight}
+function setHealth(ok,msg){healthEl.querySelector('.dot').className='dot '+(ok?'ok':'bad');healthEl.querySelector('span').textContent=msg}
+async function req(path,opts){const o=Object.assign({method:'GET',headers:{Accept:'application/json'}},opts||{});if(o.body&&typeof o.body!=='string'){o.headers=Object.assign({},o.headers,{'Content-Type':'application/json'});o.body=JSON.stringify(o.body)}const r=await fetch(API+path,o);const text=await r.text();let data;try{data=text?JSON.parse(text):null}catch(e){data={raw:text}}if(!r.ok)throw new Error(o.method+' '+path+' → '+r.status+' '+JSON.stringify(data));return data}
+function jobFrom(d){return d&&d.job?d.job:(d&&d.data&&!Array.isArray(d.data)?d.data:d)}
+async function health(){try{const h=await req('/health');setHealth(true,'Core API reachable · CORS working');log('GET /api/health ✓',h);return h}catch(e){setHealth(false,'Core API failed: '+e.message);log('HEALTH FAILED',e.message);throw e}}
+async function full(){document.getElementById('run').disabled=true;sumEl.innerHTML='';logEl.textContent='Starting full handshake test…';let id='';try{
+await health();
+try{const spec=await req('/spec');log('GET /api/spec ✓',spec)}catch(e){log('GET /api/spec failed (continuing)',e.message)}
+const token=Date.now().toString(36).toUpperCase();
+const demo={id:'TEST-'+token,customerName:'Core diagnostic demo',phone:'',email:'',device:'iPhone 13 · TEST ONLY',variant:'Prototype',deviceConfidence:'confirmed',repair:'Screen replacement · diagnostic',price:99,service:'Mobile call-out',address:'Swansea · TEST ONLY',postcode:'SA2',date:'Today',slot:'Test',status:'booked',compatibility:'universal',partState:'not_checked',partName:'',supplier:'',paymentState:'unpaid',priority:'normal',technician:'Simon',notes:[],timeline:[],customerMessage:'',source:'customer-app',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+let created=jobFrom(await req('/jobs',{method:'POST',body:demo}));id=(created&&created.id)||demo.id;log('POST /api/jobs ✓',created);
+let read=jobFrom(await req('/jobs/'+encodeURIComponent(id)));log('GET /api/jobs/'+id+' ✓',read);
+log('Status → confirmed ✓',jobFrom(await req('/jobs/'+encodeURIComponent(id)+'/status',{method:'POST',body:{status:'confirmed',actor:'Diagnostics'}})));
+log('Part → in_stock ✓',jobFrom(await req('/jobs/'+encodeURIComponent(id)+'/part-state',{method:'POST',body:{partState:'in_stock',actor:'Diagnostics'}})));
+log('Payment → deposit ✓',jobFrom(await req('/jobs/'+encodeURIComponent(id)+'/payment-state',{method:'POST',body:{paymentState:'deposit',actor:'Diagnostics'}})));
+log('Priority → high ✓',jobFrom(await req('/jobs/'+encodeURIComponent(id)+'/priority',{method:'POST',body:{priority:'high',actor:'Diagnostics'}})));
+log('Internal note ✓',jobFrom(await req('/jobs/'+encodeURIComponent(id)+'/notes',{method:'POST',body:{text:'Synthetic technician diagnostic note',author:'Diagnostics'}})));
+log('Customer update ✓',jobFrom(await req('/jobs/'+encodeURIComponent(id)+'/customer-updates',{method:'POST',body:{text:'Synthetic customer-visible update from diagnostics',author:'Diagnostics'}})));
+const finalJob=jobFrom(await req('/jobs/'+encodeURIComponent(id)));log('Final GET ✓',finalJob);
+sumEl.innerHTML='<div class="box"><strong>TEST JOB</strong><span>'+id+'</span></div><div class="box"><strong>STATUS</strong><span>'+(finalJob.status||'—')+'</span></div><div class="box"><strong>PART</strong><span>'+(finalJob.partState||'—')+'</span></div><div class="box"><strong>PAYMENT</strong><span>'+(finalJob.paymentState||'—')+'</span></div>';
+setHealth(true,'Full handshake passed ✓');log('FULL HANDSHAKE PASSED ✓');
+}catch(e){setHealth(false,'Handshake failed');log('FULL HANDSHAKE FAILED',e.message)}finally{document.getElementById('run').disabled=false}}
+document.getElementById('run').onclick=full;document.getElementById('healthBtn').onclick=()=>health().catch(()=>{});
+})();
+</script></body></html>
