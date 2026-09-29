@@ -1,0 +1,25 @@
+name: iRepair Build 27 Home Smoke Test
+on:
+  push:
+    paths:
+      - 'build27.js'
+      - 'index.html'
+      - '.github/workflows/build27-home-smoke.yml'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Build 27 JavaScript syntax
+        run: node --check build27.js
+      - name: Verify visual-first home
+        run: |
+          grep -q "build27.js?v=27" index.html
+          grep -q "core.html?v=27" index.html
+          grep -q "Get repair prices" build27.js
+          grep -q "Help me identify the problem" build27.js
+          grep -q "Send to a friend" build27.js
+          grep -q "Help with a repair" build27.js
+          grep -q "b27-home" build27.js
+          grep -q "b26-hero" build27.js
+          ! grep -q "<h1>How can I help?</h1>" build27.js
