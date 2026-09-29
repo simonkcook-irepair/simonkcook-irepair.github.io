@@ -1,0 +1,52 @@
+name: iRepair Build 24 Customer Flow Smoke Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'build24.js'
+      - 'index.html'
+      - 'relay.html'
+      - '.github/workflows/build24-ui-smoke.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JavaScript syntax
+        run: node --check build24.js
+
+      - name: Build 24 contains requested booking features
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'data-multi-fault' build24.js
+          grep -q 'SECONDARY REPAIR CONTACT' build24.js
+          grep -q 'Send Repair Relay' build24.js
+          grep -q 'build24.js?v=24' index.html
+
+      - name: Repair Relay is a limited mini app
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'THIS IS NOT THE FULL iREPAIR APP' relay.html
+          grep -q 'LIMITED ACCESS' relay.html
+          grep -q 'You’re following one repair only' relay.html
+          ! grep -q 'bottom-nav' relay.html
+
+      - name: Live Pages exposes Build 24 files
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in {1..12}; do
+            curl -fsS 'https://simonkcook-irepair.github.io/build24.js?v=24' -o /tmp/build24.js && \
+            grep -q 'Customer booking improvements' /tmp/build24.js && \
+            curl -fsS 'https://simonkcook-irepair.github.io/relay.html?v=24' -o /tmp/relay.html && \
+            grep -q 'THIS IS NOT THE FULL iREPAIR APP' /tmp/relay.html && exit 0
+            sleep 5
+          done
+          echo 'Build 24 did not propagate to Pages in time' >&2
+          exit 1
