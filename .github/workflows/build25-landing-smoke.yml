@@ -1,0 +1,22 @@
+name: iRepair Build 25 Landing Smoke Test
+on:
+  push:
+    paths:
+      - 'build25.js'
+      - 'index.html'
+      - '.github/workflows/build25-landing-smoke.yml'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Build 25 JavaScript syntax
+        run: node --check build25.js
+      - name: Verify progressive landing wiring
+        run: |
+          grep -q "build25.js?v=25" index.html
+          grep -q "I know what I need — show me prices" build25.js
+          grep -q "I need help — I’m not sure what I need" build25.js
+          grep -q "Repair price not right for you?" build25.js
+          grep -q "mode!=='book'||stage!==1||!basket||!basket.length" build25.js
+          ! grep -q "Sell your device instead" build25.js
