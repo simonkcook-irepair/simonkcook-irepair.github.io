@@ -12,11 +12,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check Build 25 JavaScript syntax
         run: node --check build25.js
-      - name: Verify progressive landing wiring
+      - name: Verify final progressive customer journey
         run: |
-          grep -q "build25.js?v=25" index.html
+          grep -q "build25.js?v=25r2" index.html
+          grep -q "How can I help?" build25.js
           grep -q "I know what I need — show me prices" build25.js
           grep -q "I need help — I’m not sure what I need" build25.js
-          grep -q "Repair price not right for you?" build25.js
-          grep -q "mode!=='book'||stage!==1||!basket||!basket.length" build25.js
-          ! grep -q "Sell your device instead" build25.js
+          grep -q "Which device needs attention?" build25.js
+          grep -q "Select everything that needs attention" build24.js
+          grep -q "Repair not within your budget?" build25.js
+          grep -q "sellCard=function(){return ''}" build25.js
+          grep -q "build16.js?v=23r2.*build24.js?v=24.*build25.js?v=25r2" index.html
