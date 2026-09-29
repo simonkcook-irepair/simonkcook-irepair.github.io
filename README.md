@@ -1,2 +1,1 @@
-# simonkcook-irepair.github.io
-IRepair core app
+iRepair Core customer and technician prototype.
