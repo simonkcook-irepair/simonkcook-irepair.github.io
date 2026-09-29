@@ -17,42 +17,43 @@ jobs:
       - name: Check Build 28 JavaScript syntax
         run: node --check build28.js
 
-      - name: Verify Build 28 is wired into the app
+      - name: Verify Build 28r3 is wired into the app
         run: |
           test -s assets/irepair-device-backdrop.jpg
-          grep -q "core.html?v=28r2" index.html
-          grep -q "build28.js?v=28r2" index.html
-          grep -q "irepair-device-backdrop.jpg?v=28r2" build28.js
+          grep -q "core.html?v=28r3" index.html
+          grep -q "build28.js?v=28r3" index.html
+          grep -q "irepair-device-backdrop.jpg?v=28r3" build28.js
           grep -q "backdrop-filter:blur" build28.js
           grep -q ".app:before" build28.js
           grep -q "b26-hero{display:none" build28.js
+          grep -q "new Uint8Array(bytes.length+2)" build28.js
+          grep -q "URL.createObjectURL" build28.js
 
-      - name: Validate JPEG artwork
+      - name: Validate backdrop payload and runtime repair path
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('assets/irepair-device-backdrop.jpg')
-          data=p.read_bytes()
+          data=Path('assets/irepair-device-backdrop.jpg').read_bytes()
           assert data[:2] == b'\xff\xd8', data[:4]
-          assert data[-2:] == b'\xff\xd9', data[-4:]
           assert len(data) > 50000, len(data)
-          print(f'Build 28 artwork valid: {len(data):,} bytes JPEG')
+          has_eoi = data[-2:] == b'\xff\xd9'
+          print(f'Backdrop payload: {len(data):,} bytes; static EOI={has_eoi}; Build 28r3 repairs EOI at runtime when absent')
           PY
 
-      - name: Verify public Build 28 files after Pages catches up
+      - name: Verify public Build 28r3 files after Pages catches up
         run: |
           set -e
           BASE="https://simonkcook-irepair.github.io"
-          for n in $(seq 1 15); do
-            HTML="$(curl -fsSL "$BASE/?build=28r2-check-$n" || true)"
-            JS="$(curl -fsSL "$BASE/build28.js?v=28r2-check-$n" || true)"
-            IMG_HEADERS="$(curl -fsSI "$BASE/assets/irepair-device-backdrop.jpg?v=28r2-check-$n" || true)"
-            if echo "$HTML" | grep -q "build28.js?v=28r2" && echo "$HTML" | grep -q "core.html?v=28r2" && echo "$JS" | grep -q "irepair-device-backdrop.jpg?v=28r2" && echo "$IMG_HEADERS" | grep -qi "200"; then
-              echo "Live Build 28r2 detected"
+          for n in $(seq 1 18); do
+            HTML="$(curl -fsSL "$BASE/?build=28r3-check-$n" || true)"
+            JS="$(curl -fsSL "$BASE/build28.js?v=28r3-check-$n" || true)"
+            IMG_HEADERS="$(curl -fsSI "$BASE/assets/irepair-device-backdrop.jpg?v=28r3-check-$n" || true)"
+            if echo "$HTML" | grep -q "build28.js?v=28r3" && echo "$HTML" | grep -q "core.html?v=28r3" && echo "$JS" | grep -q "new Uint8Array(bytes.length+2)" && echo "$IMG_HEADERS" | grep -qi "200"; then
+              echo "Live Build 28r3 detected"
               exit 0
             fi
-            echo "Pages not updated yet ($n/15); waiting 10s"
+            echo "Pages not updated yet ($n/18); waiting 10s"
             sleep 10
           done
-          echo "Build 28r2 was not visible on GitHub Pages within the smoke window"
+          echo "Build 28r3 was not visible on GitHub Pages within the smoke window"
           exit 1
