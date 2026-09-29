@@ -50,7 +50,7 @@
     .app{
       background-image:
         linear-gradient(180deg,rgba(242,250,255,.86),rgba(225,242,255,.91) 34%,rgba(234,247,255,.98) 100%),
-        var(--irepair-bg,url('/assets/irepair-broken-device-hero.jpg?v=26)),
+        var(--irepair-bg,url('/assets/irepair-broken-device-hero.jpg?v=26')),
         linear-gradient(155deg,#f2f9ff,#d7ecff 56%,#eef8ff)!important;
       background-position:center,center -24px,center!important;
       background-size:100% 100%,145vw auto,100% 100%!important;
