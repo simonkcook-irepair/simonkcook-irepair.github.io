@@ -1,137 +1,105 @@
 /* iRepair Core · Build 25
-   Progressive customer journey: one decision at a time.
-   Keeps prototype features out of the landing page and only offers device sale after repair pricing exists. */
+   Progressive customer journey: minimal landing and one decision at a time.
+   Sell-device is only offered after repair pricing is visible. */
 (function(){
   'use strict';
-  if(typeof render!=='function'||typeof homeScreen!=='function') return;
+  if(typeof homeScreen!=='function'||typeof repairSelection!=='function'||typeof basketPanel!=='function') return;
 
-  let addingAnother=false;
+  const build24RepairSelection=repairSelection;
 
   const style=document.createElement('style');
   style.textContent=`
-    .b25-landing{padding:22px 17px 18px;margin-top:6px}
-    .b25-landing h1{margin:5px 0 7px;font-size:31px}
-    .b25-landing .route-choice{margin-top:18px}
-    .b25-landing .route-card{min-height:108px;padding:18px}
-    .b25-landing .route-card strong{font-size:17px;line-height:1.25}
-    .b25-landing .route-card small{font-size:12px;margin-top:7px}
-    .b25-landing-note{text-align:center;color:#617b97;font-size:10px;line-height:1.45;padding:3px 20px 12px}
-    .b25-hidden{display:none!important}
-    .b25-context{padding:12px 14px;margin-bottom:10px}
-    .b25-context strong{font-size:13px}
-    .b25-context .line-meta{margin-top:3px}
-    .b25-budget{padding:14px 15px;margin-top:10px}
-    .b25-budget h3{margin:2px 0 5px;font-size:15px}
-    .b25-budget .btn{margin-top:10px}
+    .b25-home{padding:22px 17px 19px;margin-top:5px}
+    .b25-home h1{margin:5px 0 8px;font-size:31px}
+    .b25-home .route-choice{margin-top:18px}
+    .b25-home .route-card{min-height:92px;padding:17px}
+    .b25-home .route-card strong{font-size:17px;line-height:1.25}
+    .b25-device-only{padding:20px 16px}
+    .b25-device-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;margin-bottom:13px;border-radius:16px;background:#edf7ff;border:1px solid #c5e1f7;color:#2f5d84}
+    .b25-device-summary strong{display:block;color:#153f68;font-size:13px}
+    .b25-device-summary small{display:block;margin-top:2px;font-size:10px;color:#6b88a3}
+    .b25-change{border:1px solid #9acaf5;border-radius:12px;background:#fff;color:#1763ad;padding:7px 10px;font-size:10px;font-weight:800;white-space:nowrap}
+    .b25-sell{margin-top:13px;padding:14px;border-radius:18px;background:#f7fbff;border:1px solid #d0e6f8}
+    .b25-sell h3{margin:0 0 5px;font-size:14px}
+    .b25-sell p{margin:0 0 10px}
   `;
   document.head.appendChild(style);
 
-  /* Landing page: deliberately only the two primary customer routes. */
+  /* Front page: only the two main starting routes. */
   homeScreen=function(){
-    return `<section class="glass panel b25-landing">
-      <div class="eyebrow">iREPAIR</div>
-      <h1>What can I help you with?</h1>
-      <p class="muted">Choose the route that feels easiest. I’ll only show the next information when you need it.</p>
+    return `<section class="glass panel b25-home">
+      <div class="eyebrow">WELCOME TO iREPAIR</div>
+      <h1>How can I help?</h1>
+      <p class="muted">Choose the easiest way to start. I’ll only show the next information when you need it.</p>
       <div class="route-choice">
-        <button class="route-card primary" data-action="route-known">
-          <strong>I know what I need — show me prices</strong>
-          <small>Choose your device, then select one or more repairs.</small>
-        </button>
-        <button class="route-card" data-action="route-help">
-          <strong>I need help — I’m not sure what I need</strong>
-          <small>Answer a few simple questions and iRepair will guide you.</small>
-        </button>
+        <button class="route-card primary" data-build25-route="known"><strong>I know what I need — show me prices</strong><small>Choose your device, then select one or more repairs.</small></button>
+        <button class="route-card" data-build25-route="help"><strong>I need help — I’m not sure what I need</strong><small>Answer a few simple questions and iRepair will guide you.</small></button>
       </div>
-    </section><div class="b25-landing-note">Already have a repair underway? Use <strong>Repairs</strong> in the navigation below.</div>`;
-  };
-
-  /* Sell is an affordability alternative after a repair price exists — never a landing-page route. */
-  sellCard=function(){
-    if(mode!=='book'||stage!==1||!basket||!basket.length) return '';
-    return `<section class="glass b25-budget">
-      <div class="eyebrow">ANOTHER OPTION</div>
-      <h3>Repair price not right for you?</h3>
-      <p class="muted" style="margin:0">If the repair is outside your budget, you can ask iRepair about selling the device instead.</p>
-      <button type="button" class="btn secondary" data-action="sell">Explore selling this device →</button>
     </section>`;
   };
 
-  const previousRender=render;
-  function firstRepairPanel(){return document.querySelector('#main > section.glass.panel')}
-  function insertContext(before,title,text){
-    const s=document.createElement('section');
-    s.className='glass panel b25-context';
-    s.innerHTML=`<strong>${safe(title)}</strong><div class="line-meta">${safe(text)}</div>`;
-    before.parentNode.insertBefore(s,before);
-  }
-  function hideAfter(node){
-    if(!node)return;
-    let n=node;
-    while(n){n.classList.add('b25-hidden');n=n.nextElementSibling}
-  }
-  function focusCurrentDecision(){
-    document.querySelectorAll('.b25-context').forEach(x=>x.remove());
-    if(mode!=='book'||stage!==1) return;
-
-    const detail=document.getElementById('faultDetail');
-    const basketEl=document.getElementById('basket');
-    const selection=detail?detail.previousElementSibling:firstRepairPanel();
-
-    if(detail){
-      if(selection)selection.classList.add('b25-hidden');
-      if(basketEl)basketEl.classList.add('b25-hidden');
-      const label=(typeof FAULTS!=='undefined'&&FAULTS.find(x=>x.id===fault))?.label||'repair';
-      const deviceName=(typeof selected==='function'&&selected().model)?displayModel(selected()):'your device';
-      insertContext(detail,deviceName,`Now choose the options for ${label}. The other selected repairs will follow automatically.`);
-      return;
+  /* Known-repair route: choose the device first. Nothing else appears until that choice is made. */
+  repairSelection=function(){
+    const d=selected();
+    if(!d.model){
+      const options='<option value="">Choose your device</option>'+Object.entries(CATALOGUE).map(([key,v])=>`<option value="${key}">${safe(v.name)}</option>`).join('');
+      return `<section class="glass panel b25-device-only">
+        <div class="eyebrow">STEP 1 · YOUR DEVICE</div>
+        <h2>Which device needs attention?</h2>
+        <p class="muted">Choose the exact model first. Repairs and prices will appear afterwards.</p>
+        <select class="field" id="model">${options}</select>
+        <button type="button" class="btn secondary" style="margin-top:10px" data-build25-unsure>I’m not sure which model I have</button>
+      </section>`;
+    }
+    if(d.model==='otherphone'&&!String(d.custom||'').trim()){
+      return `<section class="glass panel b25-device-only">
+        <div class="eyebrow">STEP 1 · YOUR DEVICE</div>
+        <h2>What phone is it?</h2>
+        <p class="muted">Enter the model if you know it, or use the guided identification route.</p>
+        <input class="field" id="customModel" maxlength="90" placeholder="e.g. Samsung Galaxy S23 Ultra" value="${safe(d.custom||'')}">
+        <button type="button" class="btn secondary" style="margin-top:10px" data-build25-unsure>I’m not sure which model I have</button>
+      </section>`;
     }
 
-    if(!selection)return;
-
-    /* First visit: device first. Fault choices appear after a model is selected. */
-    const hasModel=!!(typeof selected==='function'&&selected().model);
-    if(!hasModel&&(!basket||!basket.length)){
-      hideAfter(selection.querySelector('.divider'));
-      if(basketEl)basketEl.classList.add('b25-hidden');
-      return;
+    /* Build 24 owns multi-repair selection. Replace its large device block with a compact chosen-device summary. */
+    let html=build24RepairSelection();
+    const divider='<div class="divider"></div>';
+    const cut=html.indexOf(divider);
+    if(cut>0){
+      const tail=html.slice(cut+divider.length);
+      const canChange=!basket.some(r=>r.deviceId===active);
+      html=`<section class="glass panel"><div class="b25-device-summary"><span><strong>${safe(displayModel(d))}</strong><small>Device selected · now choose everything that needs attention</small></span>${canChange?'<button type="button" class="b25-change" data-build25-change-device>Change</button>':''}</div>`+tail;
     }
-
-    /* Once repairs have been priced, show the concise basket/price decision by default. */
-    if(basket&&basket.length&&!addingAnother){
-      selection.classList.add('b25-hidden');
-      if(basketEl)insertContext(basketEl,displayModel(selected()),`${basket.filter(r=>r.deviceId===active).length} repair${basket.filter(r=>r.deviceId===active).length===1?'':'s'} added. Review the prices, add another repair, or continue.`);
-      return;
-    }
-
-    /* If the customer explicitly adds another repair/device, focus on the selector and hide the long basket until finished. */
-    if(basket&&basket.length&&addingAnother){
-      if(basketEl)basketEl.classList.add('b25-hidden');
-      insertContext(selection,displayModel(selected()),`${basket.length} repair${basket.length===1?'':'s'} already saved. Select the additional work below.`);
-    }
-  }
-
-  render=function(){
-    previousRender();
-    focusCurrentDecision();
+    return html;
   };
 
-  /* Keep the progressive state aligned with the existing prototype actions. */
-  const previousAddRepair=typeof addRepair==='function'?addRepair:null;
-  if(previousAddRepair){
-    addRepair=function(){
-      const before=basket.length;
-      previousAddRepair();
-      if(basket.length>before) addingAnother=false;
-    };
-  }
+  /* Price/basket stage: selling is only an alternative after the repair decision has a price or quote context. */
+  basketPanel=function(){
+    const s=basketSummary();
+    const items=basket.map(r=>`<div class="line"><div class="flexbetween"><strong>Device ${r.deviceId} · ${safe(r.model)}</strong><span class="line-price">${safe(priceFor(r))}</span></div><div class="line-meta">${safe(r.faultLabel)} · ${safe(r.option)}${r.diagnostic.colour?' · '+safe(r.diagnostic.colour):''}${r.review?' · owner review':''}</div><div class="line-actions"><button type="button" class="btn-small" data-edit="${r.id}">Edit</button><button type="button" class="btn-small" data-remove="${r.id}">Remove</button></div></div>`).join('');
+    const sell=s.count?`<div class="b25-sell"><h3>Repair not within your budget?</h3><p class="muted">If the repair cost no longer makes sense for you, you can ask about selling the device instead.</p><button type="button" class="btn secondary" data-action="sell">Sell this device instead →</button></div>`:'';
+    return `<section class="glass panel" id="basket"><div class="mini-head"><h2>Your repairs</h2><span class="count">${s.count} repair${s.count===1?'':'s'}</span></div>${items||'<p class="muted">Select the repairs above. Prices and options will be added here as you go.</p>'}${s.count?`<div class="subtotal"><span>Priced items subtotal</span><strong>${gbp(s.total)}</strong></div><p class="helper">${s.pending?`${s.pending} item(s) still need a quote, diagnosis or approval. The subtotal excludes them.`:'You can add another repair before continuing.'} Multi-repair discounts require staff confirmation.</p><div class="button-row"><button type="button" class="btn secondary" data-action="another-repair">＋ Add another repair</button><button type="button" class="btn secondary" data-action="add-device">＋ Another device</button></div><button type="button" class="btn" data-action="next-service">Continue →</button>`:''}${sell}</section>`;
+  };
+
+  /* Legacy sell card can no longer leak onto Home or pre-price screens. */
+  sellCard=function(){return ''};
 
   document.addEventListener('click',function(e){
     const b=e.target.closest('button');if(!b)return;
-    if(b.dataset.action==='route-known'&&mode==='home'&&basket.length===0&&devices.length===1&&selected().model==='iphone13'){
-      /* Remove the old prototype default so the real flow starts with a device choice. */
-      selected().model='';selected().custom='';
+    if(b.dataset.build25Route==='known'){
+      e.preventDefault();e.stopPropagation();
+      mode='book';stage=1;fault='';variant='';editId=null;resetDiagnostic();
+      const d=selected();if(d&&!basket.some(r=>r.deviceId===d.id)){d.model='';d.custom=''}
+      render();window.scrollTo({top:0,behavior:'instant'});return;
     }
-    if(b.dataset.action==='another-repair'||b.dataset.action==='add-device') addingAnother=true;
-    if(b.dataset.action==='next-service'||b.dataset.action==='restart'||b.dataset.action==='back-repairs') addingAnother=false;
+    if(b.dataset.build25Route==='help'){
+      e.preventDefault();e.stopPropagation();helpReset();mode='help';render();window.scrollTo({top:0,behavior:'instant'});return;
+    }
+    if(b.hasAttribute('data-build25-unsure')){
+      e.preventDefault();e.stopPropagation();helpReset();mode='help';render();window.scrollTo({top:0,behavior:'instant'});return;
+    }
+    if(b.hasAttribute('data-build25-change-device')){
+      e.preventDefault();e.stopPropagation();const d=selected();if(d){d.model='';d.custom=''}fault='';variant='';render();return;
+    }
   },true);
 })();
