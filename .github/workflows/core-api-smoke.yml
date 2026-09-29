@@ -47,7 +47,7 @@ jobs:
           cat /tmp/read.json
           test "$code" = "200"
 
-      - name: Update workflow fields
+      - name: Complete synthetic workflow
         shell: bash
         run: |
           set -euo pipefail
@@ -59,14 +59,14 @@ jobs:
             cat /tmp/step.json
             test "$code" = "200" -o "$code" = "201"
           }
-          call status status '{"status":"confirmed","actor":"Smoke Test"}'
-          call part part-state '{"partState":"in_stock","actor":"Smoke Test"}'
-          call payment payment-state '{"paymentState":"paid","actor":"Smoke Test"}'
-          call priority priority '{"priority":"high","actor":"Smoke Test"}'
+          call confirmed status '{"status":"confirmed","actor":"Smoke Test"}'
+          call part-in-stock part-state '{"partState":"in_stock","actor":"Smoke Test"}'
           call note notes '{"text":"Synthetic internal note from GitHub Actions","author":"Smoke Test"}'
           call customer-update customer-updates '{"text":"Synthetic customer-visible update from GitHub Actions","author":"Smoke Test"}'
+          call payment-complete payment-state '{"paymentState":"paid","actor":"Smoke Test"}'
+          call repair-complete status '{"status":"completed","actor":"Smoke Test"}'
 
-      - name: Final verification
+      - name: Verify review request automation
         shell: bash
         run: |
           set -euo pipefail
@@ -74,5 +74,7 @@ jobs:
           echo "HTTP $code"
           cat /tmp/final.json
           test "$code" = "200"
-          jq -e '(.job.status == "confirmed") and (.job.partState == "in_stock") and (.job.paymentState == "paid") and (.job.priority == "high")' /tmp/final.json >/dev/null
-          echo "FULL HANDSHAKE PASSED"
+          jq -e '(.job.status == "completed") and (.job.partState == "in_stock") and (.job.paymentState == "paid")' /tmp/final.json >/dev/null
+          jq -e '[.job.timeline[] | select(.type == "review_request")] | length == 1' /tmp/final.json >/dev/null
+          jq -e '.job.customerMessage | contains("https://g.page/r/CRRiPE6ivavxEB0/review")' /tmp/final.json >/dev/null
+          echo "FULL HANDSHAKE + REVIEW AUTOMATION PASSED"
