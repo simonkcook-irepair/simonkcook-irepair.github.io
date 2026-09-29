@@ -1,0 +1,99 @@
+name: iRepair Growth + Repair Relay Smoke Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/growth-smoke.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CORE: https://psswyljihufyxiieqziu.supabase.co/functions/v1/core-api
+      GROWTH: https://psswyljihufyxiieqziu.supabase.co/functions/v1/growth-api
+    steps:
+      - name: Load public prototype API key
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://raw.githubusercontent.com/simonkcook-irepair/simonkcook-irepair.github.io/main/prototype-db.js -o /tmp/db.js
+          key=$(python3 - <<'PY'
+          import re
+          s=open('/tmp/db.js').read()
+          m=re.search(r"const API_KEY='([^']+)'",s)
+          print(m.group(1) if m else '')
+          PY
+          )
+          test -n "$key"
+          echo "ANON=$key" >> "$GITHUB_ENV"
+
+      - name: Health checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          for url in "$CORE/health" "$GROWTH/health"; do
+            code=$(curl -sS -o /tmp/out.json -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$url")
+            cat /tmp/out.json
+            test "$code" = "200"
+          done
+
+      - name: Create synthetic repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          payload='{"customerName":"Growth Smoke TEST ONLY","device":"iPhone 13 TEST ONLY","deviceConfidence":"confirmed","repair":"Screen diagnostic","price":99,"service":"Mobile call-out","address":"Swansea TEST ONLY","postcode":"SA2","status":"booked","compatibility":"universal","partState":"not_checked","paymentState":"unpaid","priority":"normal"}'
+          code=$(curl -sS -o /tmp/job.json -w '%{http_code}' -X POST "$CORE/jobs" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data "$payload")
+          cat /tmp/job.json
+          test "$code" = "201" -o "$code" = "200"
+          id=$(jq -r '.job.id // empty' /tmp/job.json)
+          test -n "$id"
+          echo "JOB_ID=$id" >> "$GITHUB_ENV"
+
+      - name: Create and open referral
+        shell: bash
+        run: |
+          set -euo pipefail
+          payload=$(jq -nc --arg id "$JOB_ID" '{repairId:$id,inviterName:"Smoke Test Customer",channel:"native-share",sourceContext:"github-smoke"}')
+          code=$(curl -sS -o /tmp/ref.json -w '%{http_code}' -X POST "$GROWTH/referrals" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data "$payload")
+          cat /tmp/ref.json
+          test "$code" = "201"
+          ref=$(jq -r '.referralCode // empty' /tmp/ref.json)
+          url=$(jq -r '.shareUrl // empty' /tmp/ref.json)
+          test -n "$ref"
+          test -n "$url"
+          code=$(curl -sS -o /tmp/refopen.json -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$GROWTH/referrals/$ref")
+          cat /tmp/refopen.json
+          test "$code" = "200"
+
+      - name: Create Repair Relay and send message
+        shell: bash
+        run: |
+          set -euo pipefail
+          payload=$(jq -nc --arg id "$JOB_ID" '{repairId:$id,displayName:"Relay Helper TEST ONLY",phone:"07000000001"}')
+          code=$(curl -sS -o /tmp/relay.json -w '%{http_code}' -X POST "$GROWTH/relay" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data "$payload")
+          cat /tmp/relay.json
+          test "$code" = "201"
+          token=$(jq -r '.token // empty' /tmp/relay.json)
+          url=$(jq -r '.relayUrl // empty' /tmp/relay.json)
+          test -n "$token"
+          test -n "$url"
+          echo "RELAY_TOKEN=$token" >> "$GITHUB_ENV"
+          code=$(curl -sS -o /tmp/relayread.json -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$GROWTH/relay/$token")
+          cat /tmp/relayread.json
+          test "$code" = "200"
+          jq -e --arg id "$JOB_ID" '.job.id == $id and .relay.canChat == true' /tmp/relayread.json >/dev/null
+          code=$(curl -sS -o /tmp/relaymsg.json -w '%{http_code}' -X POST "$GROWTH/relay/$token/messages" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data '{"text":"TEST ONLY message from Repair Relay helper"}')
+          cat /tmp/relaymsg.json
+          test "$code" = "201"
+
+      - name: Verify relay message reaches original repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/jobfinal.json -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$CORE/jobs/$JOB_ID")
+          cat /tmp/jobfinal.json
+          test "$code" = "200"
+          jq -e '[.job.messages[] | select(.body == "TEST ONLY message from Repair Relay helper" and .senderRole == "secondary_contact")] | length == 1' /tmp/jobfinal.json >/dev/null
+          echo "BUILD 23 REFERRAL + REPAIR RELAY HANDSHAKE PASSED"
