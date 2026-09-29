@@ -1,13 +1,16 @@
-/* iRepair Core · Build 28r2
-   Persistent high-quality broken-device backdrop + translucent Apple-style glass. */
+/* iRepair Core · Build 28r3
+   Persistent high-quality broken-device backdrop + translucent Apple-style glass.
+   The backdrop is validated and repaired in-browser if GitHub strips the JPEG EOI marker. */
 (function(){
   'use strict';
+
+  const BACKDROP='/assets/irepair-device-backdrop.jpg?v=28r3';
 
   const style=document.createElement('style');
   style.id='irepair-build28-style';
   style.textContent=`
     :root{
-      --irepair-bg:url('/assets/irepair-device-backdrop.jpg?v=28r2');
+      --irepair-bg:url('${BACKDROP}');
       --b28-edge:rgba(255,255,255,.74);
       --b28-shadow:0 15px 38px rgba(38,79,119,.15),inset 0 1px 1px rgba(255,255,255,.84);
       --b28-glass:linear-gradient(145deg,rgba(255,255,255,.48),rgba(226,243,255,.24));
@@ -99,7 +102,7 @@
       -webkit-backdrop-filter:blur(26px) saturate(1.5)!important;
     }
 
-    /* Home: artwork is the hero, not a separate framed thumbnail. */
+    /* Home: the broken device is the hero itself, never a framed thumbnail. */
     .b27-home{
       background:transparent!important;
       border-color:transparent!important;
@@ -141,4 +144,33 @@
     }
   `;
   document.head.appendChild(style);
+
+  /* GitHub accepted the complete JPEG body but altered its final marker on one
+     upload. Validate the bytes once, append JPEG EOI only when missing, and use
+     the corrected in-memory Blob. This preserves the original image quality. */
+  async function hydrateBackdrop(){
+    try{
+      const response=await fetch(BACKDROP,{cache:'force-cache'});
+      if(!response.ok) return;
+      const bytes=new Uint8Array(await response.arrayBuffer());
+      if(bytes.length<4 || bytes[0]!==0xff || bytes[1]!==0xd8) return;
+
+      let imageBytes=bytes;
+      const hasEOI=bytes[bytes.length-2]===0xff && bytes[bytes.length-1]===0xd9;
+      if(!hasEOI){
+        imageBytes=new Uint8Array(bytes.length+2);
+        imageBytes.set(bytes,0);
+        imageBytes[bytes.length]=0xff;
+        imageBytes[bytes.length+1]=0xd9;
+      }
+
+      const objectUrl=URL.createObjectURL(new Blob([imageBytes],{type:'image/jpeg'}));
+      document.documentElement.style.setProperty('--irepair-bg',`url("${objectUrl}")`);
+      window.addEventListener('pagehide',()=>URL.revokeObjectURL(objectUrl),{once:true});
+    }catch(error){
+      console.warn('iRepair backdrop fallback active',error);
+    }
+  }
+
+  hydrateBackdrop();
 })();
