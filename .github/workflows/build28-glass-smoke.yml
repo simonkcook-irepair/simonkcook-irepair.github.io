@@ -4,7 +4,7 @@ on:
     paths:
       - 'build28.js'
       - 'index.html'
-      - 'assets/bg28-*.js'
+      - 'assets/irepair-device-backdrop.jpg'
       - '.github/workflows/build28-glass-smoke.yml'
   workflow_dispatch:
 
@@ -19,51 +19,40 @@ jobs:
 
       - name: Verify Build 28 is wired into the app
         run: |
-          grep -q "core.html?v=28" index.html
-          grep -q "build28.js?v=28" index.html
-          for i in 0 1 2 3 4 5 6; do
-            grep -q "assets/bg28-$i.js?v=28" index.html
-          done
-          grep -q -- "--irepair-bg" build28.js
-          grep -q "URL.createObjectURL" build28.js
+          test -s assets/irepair-device-backdrop.jpg
+          grep -q "core.html?v=28r2" index.html
+          grep -q "build28.js?v=28r2" index.html
+          grep -q "irepair-device-backdrop.jpg?v=28r2" build28.js
           grep -q "backdrop-filter:blur" build28.js
           grep -q ".app:before" build28.js
           grep -q "b26-hero{display:none" build28.js
 
-      - name: Reassemble and validate high-resolution WebP
+      - name: Validate JPEG artwork
         run: |
           python3 - <<'PY'
-          import base64, pathlib, re, struct
-          chunks=[]
-          for i in range(7):
-              text=pathlib.Path(f'assets/bg28-{i}.js').read_text()
-              m=re.search(r"\+'([^']*)';\s*$", text)
-              if not m:
-                  raise SystemExit(f'Could not parse bg28-{i}.js')
-              chunks.append(m.group(1))
-          encoded=''.join(chunks)
-          data=base64.b64decode(encoded, validate=True)
-          assert data[:4] == b'RIFF', data[:12]
-          assert data[8:12] == b'WEBP', data[:12]
-          declared=struct.unpack('<I', data[4:8])[0] + 8
-          assert declared == len(data), (declared, len(data))
-          assert len(data) > 30000, len(data)
-          print(f'Build 28 artwork valid: {len(data):,} bytes, RIFF/WEBP length exact')
+          from pathlib import Path
+          p=Path('assets/irepair-device-backdrop.jpg')
+          data=p.read_bytes()
+          assert data[:2] == b'\xff\xd8', data[:4]
+          assert data[-2:] == b'\xff\xd9', data[-4:]
+          assert len(data) > 50000, len(data)
+          print(f'Build 28 artwork valid: {len(data):,} bytes JPEG')
           PY
 
       - name: Verify public Build 28 files after Pages catches up
         run: |
           set -e
           BASE="https://simonkcook-irepair.github.io"
-          for n in $(seq 1 12); do
-            HTML="$(curl -fsSL "$BASE/?build=28-check-$n" || true)"
-            JS="$(curl -fsSL "$BASE/build28.js?v=28-check-$n" || true)"
-            if echo "$HTML" | grep -q "build28.js?v=28" && echo "$HTML" | grep -q "core.html?v=28" && echo "$JS" | grep -q -- "--irepair-bg"; then
-              echo "Live Build 28 detected"
+          for n in $(seq 1 15); do
+            HTML="$(curl -fsSL "$BASE/?build=28r2-check-$n" || true)"
+            JS="$(curl -fsSL "$BASE/build28.js?v=28r2-check-$n" || true)"
+            IMG_HEADERS="$(curl -fsSI "$BASE/assets/irepair-device-backdrop.jpg?v=28r2-check-$n" || true)"
+            if echo "$HTML" | grep -q "build28.js?v=28r2" && echo "$HTML" | grep -q "core.html?v=28r2" && echo "$JS" | grep -q "irepair-device-backdrop.jpg?v=28r2" && echo "$IMG_HEADERS" | grep -qi "200"; then
+              echo "Live Build 28r2 detected"
               exit 0
             fi
-            echo "Pages not updated yet ($n/12); waiting 10s"
+            echo "Pages not updated yet ($n/15); waiting 10s"
             sleep 10
           done
-          echo "Build 28 was not visible on GitHub Pages within the smoke window"
+          echo "Build 28r2 was not visible on GitHub Pages within the smoke window"
           exit 1
