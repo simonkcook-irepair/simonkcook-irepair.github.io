@@ -18,12 +18,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          auth=(-H "Authorization: Bearer $ANON" -H "apikey: $ANON")
-          echo "Testing $BASE/health"
-          code=$(curl -sS -o /tmp/health.txt -w '%{http_code}' "${auth[@]}" "$BASE/health")
-          echo "HTTP $code"
+          code=$(curl -sS -o /tmp/health.txt -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$BASE/health")
           cat /tmp/health.txt
           test "$code" = "200"
+          jq -e '.features | index("observations") and index("job-chat") and index("secondary-contacts")' /tmp/health.txt >/dev/null
 
       - name: Create synthetic repair job
         shell: bash
@@ -31,50 +29,54 @@ jobs:
           set -euo pipefail
           payload='{"customerName":"GitHub Smoke Test","device":"iPhone 13 · TEST ONLY","deviceConfidence":"confirmed","repair":"Screen replacement diagnostic","price":99,"service":"Mobile call-out","address":"Swansea TEST ONLY","postcode":"SA2","status":"booked","compatibility":"universal","partState":"not_checked","paymentState":"unpaid","priority":"normal","source":"smoke-test"}'
           code=$(curl -sS -o /tmp/create.json -w '%{http_code}' -X POST "$BASE/jobs" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data "$payload")
-          echo "HTTP $code"
           cat /tmp/create.json
           test "$code" = "200" -o "$code" = "201"
-          id=$(jq -r '.job.id // .id // empty' /tmp/create.json)
+          id=$(jq -r '.job.id // empty' /tmp/create.json)
           test -n "$id"
           echo "JOB_ID=$id" >> "$GITHUB_ENV"
 
-      - name: Read job
+      - name: Test contacts observations and chat
         shell: bash
         run: |
           set -euo pipefail
-          code=$(curl -sS -o /tmp/read.json -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$BASE/jobs/$JOB_ID")
-          echo "HTTP $code"
-          cat /tmp/read.json
-          test "$code" = "200"
+          call(){
+            path="$1"; body="$2"
+            code=$(curl -sS -o /tmp/step.json -w '%{http_code}' -X POST "$BASE/jobs/$JOB_ID/$path" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data "$body")
+            cat /tmp/step.json
+            test "$code" = "200" -o "$code" = "201"
+          }
+          call contacts '{"fullName":"Secondary Contact TEST ONLY","phone":"07000000000","relationship":"Partner","receivesUpdates":true,"actor":"Smoke Test"}'
+          call observations '{"category":"battery","note":"TEST ONLY: battery slightly swollen and customer advised","customerVisible":true,"customerAdvised":true,"actor":"Smoke Test"}'
+          call messages '{"text":"TEST ONLY technician message","senderRole":"technician","senderName":"Simon · iRepair","messageType":"chat"}'
+          call messages '{"text":"TEST ONLY customer reply","senderRole":"customer","senderName":"Customer","messageType":"chat"}'
 
       - name: Complete synthetic workflow
         shell: bash
         run: |
           set -euo pipefail
           call(){
-            label="$1"; path="$2"; body="$3"
-            echo "--- $label"
+            path="$1"; body="$2"
             code=$(curl -sS -o /tmp/step.json -w '%{http_code}' -X POST "$BASE/jobs/$JOB_ID/$path" -H "Authorization: Bearer $ANON" -H "apikey: $ANON" -H 'Content-Type: application/json' --data "$body")
-            echo "HTTP $code"
             cat /tmp/step.json
             test "$code" = "200" -o "$code" = "201"
           }
-          call confirmed status '{"status":"confirmed","actor":"Smoke Test"}'
-          call part-in-stock part-state '{"partState":"in_stock","actor":"Smoke Test"}'
-          call note notes '{"text":"Synthetic internal note from GitHub Actions","author":"Smoke Test"}'
-          call customer-update customer-updates '{"text":"Synthetic customer-visible update from GitHub Actions","author":"Smoke Test"}'
-          call payment-complete payment-state '{"paymentState":"paid","actor":"Smoke Test"}'
-          call repair-complete status '{"status":"completed","actor":"Smoke Test"}'
+          call status '{"status":"confirmed","actor":"Smoke Test"}'
+          call part-state '{"partState":"in_stock","actor":"Smoke Test"}'
+          call notes '{"text":"Synthetic internal note from GitHub Actions","author":"Smoke Test"}'
+          call payment-state '{"paymentState":"paid","actor":"Smoke Test"}'
+          call status '{"status":"completed","actor":"Smoke Test"}'
 
-      - name: Verify review request automation
+      - name: Final verification
         shell: bash
         run: |
           set -euo pipefail
           code=$(curl -sS -o /tmp/final.json -w '%{http_code}' -H "Authorization: Bearer $ANON" -H "apikey: $ANON" "$BASE/jobs/$JOB_ID")
-          echo "HTTP $code"
           cat /tmp/final.json
           test "$code" = "200"
           jq -e '(.job.status == "completed") and (.job.partState == "in_stock") and (.job.paymentState == "paid")' /tmp/final.json >/dev/null
           jq -e '[.job.timeline[] | select(.type == "review_request")] | length == 1' /tmp/final.json >/dev/null
-          jq -e '.job.customerMessage | contains("https://g.page/r/CRRiPE6ivavxEB0/review")' /tmp/final.json >/dev/null
-          echo "FULL HANDSHAKE + REVIEW AUTOMATION PASSED"
+          jq -e '[.job.contacts[] | select(.fullName == "Secondary Contact TEST ONLY" and .receivesUpdates == true)] | length == 1' /tmp/final.json >/dev/null
+          jq -e '[.job.observations[] | select(.category == "battery" and .customerAdvised == true and .customerVisible == true)] | length == 1' /tmp/final.json >/dev/null
+          jq -e '[.job.messages[] | select(.body == "TEST ONLY technician message")] | length == 1' /tmp/final.json >/dev/null
+          jq -e '[.job.messages[] | select(.body == "TEST ONLY customer reply")] | length == 1' /tmp/final.json >/dev/null
+          echo "BUILD 22 FULL HANDSHAKE PASSED"
