@@ -1,0 +1,38 @@
+name: iRepair Build 30 Catalogue Integrity
+
+on:
+  push:
+    paths:
+      - 'build30.js'
+      - 'index.html'
+      - '.github/workflows/build30-catalogue-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax
+        run: node --check build30.js
+      - name: Verify model-specific catalogue rules
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const s=fs.readFileSync('build30.js','utf8');
+          const index=fs.readFileSync('index.html','utf8');
+          const must=[
+            "iphone6s:{display:'LCD',rearGlass:false",
+            "iphonexr:{display:'LCD',rearGlass:true,colours:['Black','White','Blue','Yellow','Coral','(PRODUCT)RED']}",
+            "iphone13:{display:'OLED',rearGlass:true",
+            "iphone15pro:{display:'OLED',rearGlass:true,colours:['Black Titanium','White Titanium','Blue Titanium','Natural Titanium']}",
+            "iphone18pro:{display:'OLED',rearGlass:true,colours:['Black','Silver','Glacier','Burgundy']}",
+            "['Apple','Samsung','Google Pixel','Other']",
+            "This model uses an LCD display, so no OLED comparison is shown.",
+            "Unverified placeholder models are not shown."
+          ];
+          for(const x of must){ if(!s.includes(x)) throw new Error('Missing rule: '+x); }
+          if(!index.includes("'build30.js?v=30'")) throw new Error('index does not load Build 30');
+          if(!index.includes('core.html?v=30')) throw new Error('core cache-bust is not Build 30');
+          console.log('Build 30 catalogue integrity checks passed');
+          NODE
