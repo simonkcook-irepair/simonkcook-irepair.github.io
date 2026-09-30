@@ -17,11 +17,11 @@
 <link rel="stylesheet" href="build13.css?v=13">
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#d6e5f7}
-#irepair-app{display:block;width:100%;height:100dvh;border:0;background:#d6e5f7}
+#irepair-app{display:block;visibility:hidden;width:100%;height:100dvh;border:0;background:#d6e5f7}
 </style>
 </head>
 <body>
-<iframe id="irepair-app" src="core.html?v=30" title="iRepair" allow="camera"></iframe>
+<iframe id="irepair-app" src="core.html?v=31" title="iRepair" allow="camera"></iframe>
 <script>
 (function(){
  const f=document.getElementById('irepair-app');
@@ -36,19 +36,24 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#d6e5f7}
    const files=[
      'build09-part1.js?v=09','build09-part2.js?v=09','build09-part3.js?v=09','build09-part4.js?v=09',
      'build10.js?v=10','build11.js?v=11r2','build12.js?v=12','build13.js?v=13','build14.js?v=14','build15.js?v=15',
-     'prototype-db.js?v=22','build16.js?v=23r2','build24.js?v=24','build25.js?v=25r3','build26.js?v=26','build27.js?v=27',
+     'prototype-db.js?v=22','build16.js?v=23r2','build24.js?v=24c31','build25.js?v=25r3','build26.js?v=26','build27.js?v=27',
      'assets/bg28-0.js?v=28r4','assets/bg28-1.js?v=28r4','assets/bg28-2.js?v=28r4','assets/bg28-3.js?v=28r4','assets/bg28-4.js?v=28r4','assets/bg28-5.js?v=28r4','assets/bg28-6.js?v=28r4',
-     'build28.js?v=28r4','build29.js?v=29b','build30.js?v=30'
+     'build28.js?v=28r4','build29.js?v=29b','data/device-catalogue.js?v=31','device-catalogue.js?v=31','build30.js?v=31'
    ];
    let i=0;
+   function unavailable(){
+     d.body.innerHTML='<main class="app"><section class="glass panel"><h2>Device options are unavailable</h2><p>Please reload the app to try again.</p></section></main>';
+     f.style.visibility='visible';
+   }
    function next(){
      if(i>=files.length){
-       try{w.render();}catch(e){console.error(e)}
+       if(!w.IRepairCatalogueReady){unavailable();return;}
+       try{w.render();f.style.visibility='visible';}catch(e){console.error(e);unavailable();}
        return;
      }
      const s=d.createElement('script');
      s.src=files[i++]; s.async=false; s.onload=next;
-     s.onerror=function(){console.error('iRepair module failed:',s.src);next()};
+     s.onerror=function(){console.error('iRepair module failed:',s.src);unavailable()};
      d.body.appendChild(s);
    }
    next();

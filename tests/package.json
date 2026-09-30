@@ -1,0 +1,7 @@
+{
+  "name": "irepair-catalogue-verification",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {"test": "node --test --test-isolation=none *.test.cjs"},
+  "devDependencies": {"jsdom": "26.1.0"}
+}

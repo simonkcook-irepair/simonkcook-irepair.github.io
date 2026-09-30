@@ -39,7 +39,8 @@
     let d=selected(),count=currentDeviceRepairs().length;
     let options='<option value="">Select your device</option>'+Object.entries(CATALOGUE).map(([key,v])=>`<option value="${key}" ${d.model===key?'selected':''}>${safe(v.name)}</option>`).join('');
     let tabs=devices.map(dd=>`<button class="devtab" aria-pressed="${active===dd.id}" type="button" data-device="${dd.id}">Device ${dd.id} · ${safe(displayModel(dd))}</button>`).join('');
-    let faults=FAULTS.map(f=>{
+    const applicableFaults=window.IRepairDeviceRules?FAULTS.filter(f=>IRepairDeviceRules.faultAllowed(d.model,f.id)):FAULTS;
+    let faults=applicableFaults.map(f=>{
       const added=currentDeviceRepairs().some(r=>r.fault===f.id);
       const pending=multiFaults.includes(f.id);
       const activeNow=fault===f.id;
@@ -54,6 +55,7 @@
   };
 
   function openNextQueuedRepair(){
+    if(queueDevice!==active||queueModel!==selected().model){resetSelection();return}
     const next=repairQueue.shift();
     if(!next){
       queueActive=false; multiFaults=[]; fault=''; variant=''; editId=null; resetDiagnostic(); render();
@@ -72,6 +74,10 @@
       setTimeout(openNextQueuedRepair,0);
     }
   };
+
+  let queueDevice=null,queueModel=null;
+  function resetSelection(){multiFaults=[];repairQueue=[];queueActive=false;queueDevice=null;queueModel=null}
+  window.IRepairMultiRepair={reset:resetSelection,pending:()=>multiFaults.slice(),queued:()=>repairQueue.slice()};
 
   function contactSection(){
     return `<div class="b24-contact"><div class="eyebrow">SECONDARY REPAIR CONTACT · OPTIONAL</div><h3>Will somebody else need the repair updates?</h3><p class="muted">Useful when this phone is being handed to iRepair and you won’t be able to receive messages on it. A friend, partner or family member can use their phone as the temporary contact point.</p><label class="inputrow"><input type="checkbox" id="bookingContactEnabled" ${bookingContact.enabled?'checked':''}> Use a secondary contact for this repair</label>${bookingContact.enabled?`<label class="field-label" for="bookingContactName">Their name</label><input class="field" id="bookingContactName" value="${safe(bookingContact.name)}" placeholder="e.g. Partner / family member"><label class="field-label" for="bookingContactPhone">Their mobile number</label><input class="field" id="bookingContactPhone" inputmode="tel" value="${safe(bookingContact.phone)}" placeholder="Mobile number"><label class="field-label" for="bookingContactRelationship">Relationship</label><input class="field" id="bookingContactRelationship" value="${safe(bookingContact.relationship)}" placeholder="Friend, partner, parent…"><label class="field-label" for="bookingContactEmail">Email (optional)</label><input class="field" id="bookingContactEmail" inputmode="email" value="${safe(bookingContact.email)}" placeholder="Email address"><label class="inputrow"><input type="checkbox" id="bookingContactUpdates" ${bookingContact.receivesUpdates?'checked':''}> Send repair updates to this person</label><div class="tip"><strong>Repair Relay:</strong> after the request is created, you can send this person a temporary, cut-down repair link. It only shows this repair’s status and chat — not the full customer app.</div>`:''}<p class="helper">Prototype testing only: please use test contact details until authenticated customer accounts are enabled.</p></div>`;
@@ -100,8 +106,9 @@
       customerName:'Prototype customer',
       phone:'',email:'',
       device:displayModel(getDevice(deviceId)),
+      manufacturer:window.IRepairDeviceRules?.find(getDevice(deviceId).model)?.manufacturer||getDevice(deviceId).brand||null,
       deviceConfidence:getDevice(deviceId).model==='otherphone'?'unconfirmed':'confirmed',
-      repair:items.map(r=>r.faultLabel+' · '+r.option).join(' + '),
+      repair:items.map(r=>r.faultLabel+' · '+r.option+(r.diagnostic.colour?' · '+r.diagnostic.colour:'')+(r.diagnostic.panel?' · '+(window.IRepairDeviceRules?.find(getDevice(deviceId).model)?.originalDisplay.panels.find(p=>p.id===r.diagnostic.panel)?.label||r.diagnostic.panel):'')).join(' + '),
       price:total,
       service:service==='callout'?'Mobile call-out':'Drop-in · Killay',
       address:service==='callout'?place:'Killay',postcode:postcode||'',date:date||'Today',slot:daypart||'',
@@ -111,6 +118,9 @@
 
   function submitBookingToCore(){
     if(!basket.length){toast('Add at least one repair first.');return false}
+    if(window.IRepairDeviceRules){
+      for(const item of basket){const device=getDevice(item.deviceId),error=IRepairDeviceRules.validateRepair(device,item,modelFor(device));if(error){toast(error);return false}}
+    }
     if(bookingContact.enabled&&(!bookingContact.name.trim()||!bookingContact.phone.trim())){toast('Please add the secondary contact name and mobile number.');return false}
     const ids=[...new Set(basket.map(r=>r.deviceId))];
     submittedJobs=ids.map(deviceId=>IRepairDB.createJob(jobInputForDevice(deviceId),'customer-app'));
@@ -166,6 +176,7 @@
     if(b.dataset.multiFault){
       e.preventDefault();e.stopPropagation();
       const id=b.dataset.multiFault;
+      if(window.IRepairDeviceRules&&!IRepairDeviceRules.faultAllowed(selected().model,id)){e.stopImmediatePropagation();toast('This repair needs an exact model check.');return}
       const existing=currentDeviceRepairs().find(r=>r.fault===id);
       if(existing&&!queueActive){editRepair(existing.id);return}
       if(queueActive){toast('Finish the selected repair options first.');return}
@@ -173,9 +184,9 @@
     }
     if(b.dataset.build24==='start-selected'){
       e.preventDefault();e.stopPropagation();
-      repairQueue=multiFaults.filter(id=>!currentDeviceRepairs().some(r=>r.fault===id));
+      repairQueue=multiFaults.filter(id=>!currentDeviceRepairs().some(r=>r.fault===id)&&(!window.IRepairDeviceRules||IRepairDeviceRules.faultAllowed(selected().model,id)));
       if(!repairQueue.length){toast('Choose at least one new repair.');return}
-      queueActive=true;openNextQueuedRepair();return;
+      queueDevice=active;queueModel=selected().model;queueActive=true;openNextQueuedRepair();return;
     }
     if(b.dataset.build24Relay){e.preventDefault();e.stopPropagation();shareRelay(b.dataset.build24Relay,b);return}
   },true);

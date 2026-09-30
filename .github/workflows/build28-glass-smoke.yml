@@ -19,7 +19,7 @@ jobs:
 
       - name: Verify Build 28r4 is wired into the app
         run: |
-          grep -q "core.html?v=28r4" index.html
+          grep -Eq 'core.html\?v=[0-9]+' index.html
           grep -q "build28.js?v=28r4" index.html
           for i in 0 1 2 3 4 5 6; do
             grep -q "assets/bg28-$i.js?v=28r4" index.html
@@ -58,7 +58,7 @@ jobs:
           for n in $(seq 1 18); do
             HTML="$(curl -fsSL "$BASE/?build=28r4-check-$n" || true)"
             JS="$(curl -fsSL "$BASE/build28.js?v=28r4-check-$n" || true)"
-            if echo "$HTML" | grep -q "build28.js?v=28r4" && echo "$HTML" | grep -q "core.html?v=28r4" && echo "$JS" | grep -q -- "--irepair-bg"; then
+            if echo "$HTML" | grep -q "build28.js?v=28r4" && echo "$HTML" | grep -Eq 'core.html\?v=[0-9]+' && echo "$JS" | grep -q -- "--irepair-bg"; then
               echo "Live Build 28r4 detected"
               exit 0
             fi

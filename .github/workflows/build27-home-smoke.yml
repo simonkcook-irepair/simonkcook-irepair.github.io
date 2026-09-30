@@ -15,7 +15,7 @@ jobs:
       - name: Verify Home copy remains in Build 28 chain
         run: |
           grep -q "build27.js?v=27" index.html
-          grep -q "core.html?v=28" index.html
+          grep -Eq 'core.html\?v=[0-9]+' index.html
           grep -q "build28.js?v=28" index.html
           grep -q "Get repair prices" build27.js
           grep -q "Help me identify the problem" build27.js
