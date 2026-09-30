@@ -103,9 +103,28 @@ function id12Candidates(){
 function id12Distinct(a,c){return [...new Set(a.map(k=>String(ID12_MODELS[k][c])).filter(Boolean))]}
 function id12Next(a){for(const c of ID12_PRIORITY)if(id12.answers[c]===undefined&&id12Distinct(a,c).length>1)return c;return null}
 function id12Names(a){return a.map(k=>CATALOGUE[k]?.name||k)}
+// Position diagrams use fixed coordinates: text spacing is collapsed by HTML
+// and cannot reliably distinguish diagonal, vertical and horizontal cameras.
+// Reference: https://support.apple.com/en-gb/108044 and Apple's iPhone 13 launch.
+const ID12_LAYOUT_DIAGRAMS={
+ s:{area:[13,13,62,62,18],lenses:[[35,35]]},
+ sp:{area:[5,17,90,60,15],lenses:[[26,47]]},
+ dh:{area:[5,27,90,45,22],lenses:[[28,49],[72,49]]},
+ ds:{area:[29,5,42,90,21],lenses:[[50,27],[50,73]]},
+ dv:{area:[5,5,90,90,22],lenses:[[29,27],[29,73]]},
+ dd:{area:[5,5,90,90,22],lenses:[[29,29],[71,71]]},
+ dn:{area:[29,5,42,90,21],lenses:[[50,27],[50,73]]},
+ ts:{area:[5,5,90,90,22],lenses:[[29,27],[29,73],[71,50]]},
+ tp:{area:[3,9,94,82,16],lenses:[[25,28],[25,72],[67,50]]}
+};
+function id12LayoutDiagram(v){
+ const d=ID12_LAYOUT_DIAGRAMS[v];if(!d)return '';
+ const [x,y,w,h,r]=d.area;
+ return '<svg class="id12-layout-diagram" viewBox="0 0 100 100" aria-hidden="true" focusable="false" data-camera-layout="'+v+'"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+r+'" fill="rgba(223,237,251,.75)" stroke="rgba(71,116,160,.2)" stroke-width="2"/>'+(d.hinge?'<path d="M50 6V94" stroke="currentColor" stroke-width="2"/>':'')+d.lenses.map(([cx,cy])=>'<circle class="id12-lens" cx="'+cx+'" cy="'+cy+'" r="16" fill="currentColor"/>').join('')+'</svg>';
+}
 function id12Card(c,v){
  const d=ID12_TEXT[c][2][v];if(!d)return '';
- return '<button class="id11-option" data-id12-criterion="'+c+'" data-id12-value="'+safe(v)+'"><span class="id11-symbol '+(d[2].length>3?'text':'')+'" style="white-space:pre-line">'+safe(d[2])+'</span><strong>'+safe(d[0])+'</strong><small>'+safe(d[1])+'</small></button>';
+ return '<button class="id11-option" data-id12-criterion="'+c+'" data-id12-value="'+safe(v)+'"><span class="id11-symbol '+(d[2].length>3?'text':'')+'" style="white-space:pre-line">'+(c==='layout'?(id12LayoutDiagram(v)||safe(d[2])):safe(d[2]))+'</span><strong>'+safe(d[0])+'</strong><small>'+safe(d[1])+'</small></button>';
 }
 function id12Use(k){
  if(!CATALOGUE[k])return;selected().model=k;selected().custom='';helpKnown='yes';helpStep=2;mode='help';render();window.scrollTo({top:0,behavior:'instant'});
@@ -184,3 +203,4 @@ document.addEventListener('input',e=>{if(e.target?.id==='id12A')id12.lookup=e.ta
  const missing=supported.filter(k=>!ID12_MODELS[k]);
  if(missing.length)console.error('Build 12 identifier missing model metadata:',missing);
 })();
+(function(){const style=document.createElement('style');style.textContent='.id11-symbol .id12-layout-diagram{display:block;width:88px;height:88px;flex:none;color:#3d709c}.id11-symbol:has(.id12-layout-diagram){font-size:0;padding:5px;min-width:98px;min-height:98px;box-sizing:border-box}';document.head.appendChild(style)})();
