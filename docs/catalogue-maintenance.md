@@ -2,8 +2,10 @@
 
 The existing customer app is preserved. Build 31 replaces the Build 30 catalogue
 patch; it still uses the Build 24 multi-repair queue, Build 25 progressive flow,
-Build 28r4 artwork and Build 29 glass styling. The technician app, shared data
-adapter, Repair Relay, referrals and Supabase functions are unchanged.
+Build 28r4 artwork and Build 29 glass styling. The shared data adapter, Repair
+Relay, referrals and Supabase functions are unchanged. A pre-existing extra brace
+in the technician page prevented its job view from starting; that syntax error is
+fixed and the existing workflow controls are covered by a read-only Core test.
 
 ## Reviewed data
 

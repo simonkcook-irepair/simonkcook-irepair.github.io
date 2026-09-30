@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogueVersion": "31.2",
+  "catalogueVersion": "31.3",
   "researchedAt": "2026-09-30",
   "manufacturerOrder": [
     "Apple",
@@ -1027,7 +1027,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "specialist-glass-or-housing-assessment",
@@ -1184,7 +1184,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -1337,7 +1337,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "specialist-glass-or-housing-assessment",
@@ -1490,7 +1490,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -1639,7 +1639,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -1789,7 +1789,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -2861,7 +2861,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -2994,7 +2994,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3125,7 +3125,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3269,7 +3269,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3409,7 +3409,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3550,7 +3550,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3686,7 +3686,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3819,7 +3819,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -3953,7 +3953,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -4086,7 +4086,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -4225,7 +4225,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -4354,7 +4354,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -4503,7 +4503,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -4630,7 +4630,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -4763,7 +4763,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "specialist-glass-or-housing-assessment",
@@ -4898,7 +4898,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -5050,7 +5050,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "specialist-glass-or-housing-assessment"
@@ -5181,7 +5181,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -5337,7 +5337,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -5491,7 +5491,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "specialist-glass-or-housing-assessment",
@@ -5644,7 +5644,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -5791,7 +5791,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel"
@@ -5915,7 +5915,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -6065,7 +6065,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -6214,7 +6214,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -6363,7 +6363,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -6512,7 +6512,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel"
@@ -6630,7 +6630,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel"
@@ -6754,7 +6754,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -6902,7 +6902,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": true,
         "method": "removable-back-panel",
@@ -7050,7 +7050,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
@@ -7199,7 +7199,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown"
@@ -7322,7 +7322,7 @@
       ],
       "colourCoverage": "complete-in-cited-market",
       "rear": {
-        "material": "glass / Ceramic Shield",
+        "material": "glass",
         "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown"

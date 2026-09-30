@@ -50,6 +50,13 @@ test('XR and Pro finishes remain exact rather than a generic shared palette',()=
   assert.equal(rules.find('iphone15pro').officialColours.includes('Red'),false);
 });
 
+test('rear materials do not inherit a front-display coating name',()=>{
+  assert.equal(rules.find('iphone6s').rear.material,'aluminium');
+  for(const id of ['iphone8','iphonexr','iphone11','iphone12','iphone15pro']){
+    assert.equal(rules.find(id).rear.material,'glass',id);
+  }
+});
+
 test('an originally OLED model only offers separately evidenced sold parts and retained amounts',()=>{
   const options=rules.screenOptions('iphone13',prices.iphone13);
   assert.deepEqual(options.map(o=>o.technology),['LCD','OLED']);
