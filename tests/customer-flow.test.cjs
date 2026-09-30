@@ -59,7 +59,7 @@ test('Book navigation and restart never silently select the default iPhone',()=>
 });
 
 test('a failed module load replaces the customer controls instead of exposing generic options',()=>{
-  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').replace('src="core.html?v=31"','src="about:blank"');
+  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').replace(/src="core\.html\?v=[^"]+"/,'src="about:blank"');
   const dom=new JSDOM(html,{
     url:'https://simonkcook-irepair.github.io/',runScripts:'dangerously',virtualConsole:new VirtualConsole()
   });

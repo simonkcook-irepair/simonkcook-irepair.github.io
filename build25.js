@@ -148,6 +148,14 @@
   sellCard=function(){return ''};
 
   document.addEventListener('click',function(e){
+    const homeLink=e.target.closest('[data-brand-home]');
+    if(homeLink){
+      if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+      e.preventDefault();e.stopPropagation();
+      utilityView='';
+      if(typeof scan13Reset==='function')scan13Reset();
+      mode='home';render();window.scrollTo({top:0,behavior:'instant'});return;
+    }
     const b=e.target.closest('button');if(!b)return;
     if(b.hasAttribute('data-build25-share')){e.preventDefault();e.stopPropagation();shareIRepair25();return}
     if(b.hasAttribute('data-build25-relay')){e.preventDefault();e.stopPropagation();utilityView='relay';render();window.scrollTo({top:0,behavior:'instant'});return}
