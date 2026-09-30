@@ -30,7 +30,7 @@ jobs:
           node --check build30.js
           node --check device-catalogue.js
           node scripts/build-catalogue.cjs
-          git diff --exit-code -- data/device-catalogue.js
+          git diff --exit-code -- data/device-catalogue.js docs/catalogue-research.md
       - name: Install pinned test dependencies
         run: npm ci --prefix tests --no-audit --no-fund
       - name: Verify catalogue and full existing customer module chain

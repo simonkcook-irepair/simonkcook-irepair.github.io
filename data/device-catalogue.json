@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogueVersion": "31.1",
+  "catalogueVersion": "31.2",
   "researchedAt": "2026-09-30",
   "manufacturerOrder": [
     "Apple",
@@ -963,6 +963,12 @@
       "accessedAt": "2026-09-30",
       "publisher": "Samsung",
       "sha256": "fccaeb19bc3bce848cd7e2d4ff7c329990c5737fe24e5ba94500120c675743e9"
+    },
+    "ifixit-s21-rear": {
+      "url": "https://www.ifixit.com/Guide/Samsung+Galaxy+S21+Back+Cover+Replacement/148649",
+      "title": "Samsung Galaxy S21 back cover replacement; direct repair guide verifies plastic rear",
+      "publisher": "iFixit",
+      "accessedAt": "2026-09-30"
     }
   },
   "models": [
@@ -12280,10 +12286,10 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
-        "separatelyRepairable": null,
-        "method": "unknown",
+        "material": "plastic",
+        "hasGlass": false,
+        "separatelyRepairable": true,
+        "method": "rear-cover-assessment",
         "sold": false
       },
       "repairs": {
@@ -12327,7 +12333,7 @@
           "samsung-s21"
         ],
         "rearMaterial": [
-          "samsung-s21"
+          "ifixit-s21-rear"
         ],
         "battery": [
           "samsung-s21"
@@ -12337,12 +12343,13 @@
         ],
         "camera": [
           "samsung-s21"
+        ],
+        "repairMethod": [
+          "ifixit-s21-rear"
         ]
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
-        "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
         "charging.connector",
@@ -12627,8 +12634,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -12680,9 +12687,7 @@
           "samsung-s22-bora"
         ],
         "rearMaterial": [
-          "samsung-s22",
-          "samsung-s22-exclusive",
-          "samsung-s22-bora"
+          "samsung-s22"
         ],
         "battery": [
           "samsung-s22",
@@ -12702,7 +12707,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
@@ -12756,8 +12760,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -12806,8 +12810,7 @@
           "samsung-s22-exclusive"
         ],
         "rearMaterial": [
-          "samsung-s22",
-          "samsung-s22-exclusive"
+          "samsung-s22"
         ],
         "battery": [
           "samsung-s22",
@@ -12824,7 +12827,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
@@ -12877,8 +12879,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -12927,8 +12929,7 @@
           "samsung-s22-exclusive"
         ],
         "rearMaterial": [
-          "samsung-s22ultra",
-          "samsung-s22-exclusive"
+          "samsung-s22"
         ],
         "battery": [
           "samsung-s22ultra",
@@ -12945,7 +12946,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
@@ -13602,8 +13602,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -13652,8 +13652,7 @@
           "samsung-s24-exclusive"
         ],
         "rearMaterial": [
-          "samsung-s24",
-          "samsung-s24-exclusive"
+          "samsung-s24"
         ],
         "battery": [
           "samsung-s24",
@@ -13670,7 +13669,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
@@ -13723,8 +13721,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -13773,8 +13771,7 @@
           "samsung-s25-exclusive"
         ],
         "rearMaterial": [
-          "samsung-s25",
-          "samsung-s25-exclusive"
+          "samsung-s25"
         ],
         "battery": [
           "samsung-s25",
@@ -13791,7 +13788,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
@@ -13844,8 +13840,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -13894,8 +13890,7 @@
           "samsung-s25-exclusive"
         ],
         "rearMaterial": [
-          "samsung-s25",
-          "samsung-s25-exclusive"
+          "samsung-s25"
         ],
         "battery": [
           "samsung-s25",
@@ -13912,7 +13907,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",
@@ -14424,8 +14418,8 @@
       ],
       "colourCoverage": "verified-listed-finishes; regional and later editions may need confirmation",
       "rear": {
-        "material": null,
-        "hasGlass": null,
+        "material": "glass",
+        "hasGlass": true,
         "separatelyRepairable": null,
         "method": "unknown",
         "sold": false
@@ -14474,8 +14468,7 @@
           "samsung-s23fe-all"
         ],
         "rearMaterial": [
-          "samsung-s23fe",
-          "samsung-s23fe-all"
+          "samsung-s23fe"
         ],
         "battery": [
           "samsung-s23fe",
@@ -14492,7 +14485,6 @@
       },
       "unknowns": [
         "identifiers",
-        "rear.material",
         "rear.separatelyRepairable",
         "sold-screen-parts",
         "battery.replacementVerified",

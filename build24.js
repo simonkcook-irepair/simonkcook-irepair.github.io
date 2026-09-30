@@ -45,7 +45,8 @@
       const pending=multiFaults.includes(f.id);
       const activeNow=fault===f.id;
       const cls=added?' b24-added':(pending||activeNow?' b24-selected':'');
-      return `<button type="button" class="fault${cls}" data-multi-fault="${f.id}" aria-pressed="${added||pending||activeNow}"><span class="emoji">${f.icon}</span><span>${safe(f.label)}</span>${added||pending||activeNow?'<span class="check">✓</span>':''}</button>`;
+      const label=window.IRepairDeviceRules?IRepairDeviceRules.faultLabel(d.model,f.id,f.label):f.label;
+      return `<button type="button" class="fault${cls}" data-multi-fault="${f.id}" aria-pressed="${added||pending||activeNow}"><span class="emoji">${f.icon}</span><span>${safe(label)}</span>${added||pending||activeNow?'<span class="check">✓</span>':''}</button>`;
     }).join('');
     const pending=selectedFaultCount();
     const selectorNote=queueActive
@@ -69,7 +70,14 @@
 
   addRepair=function(){
     const before=basket.length;
+    const requestedFault=fault,requestedDevice=active;
+    const beforeRow=basket.find(r=>r.deviceId===requestedDevice&&r.fault===requestedFault);
     originalAddRepair();
+    const row=basket.find(r=>r.deviceId===requestedDevice&&r.fault===requestedFault);
+    if(row&&row!==beforeRow&&window.IRepairDeviceRules){
+      row.faultLabel=IRepairDeviceRules.faultLabel(getDevice(requestedDevice).model,requestedFault,row.faultLabel);
+      render();
+    }
     if(queueActive&&basket.length>before){
       setTimeout(openNextQueuedRepair,0);
     }

@@ -119,7 +119,7 @@
     const single=options.length===1;
     if(single) variant=options[0][0];
     const optionContent=o=>'<div class="option-top"><span>'+safe(o[0])+'</span><span class="option-price">'+gbp(o[1])+'</span></div><p>'+safe(o[2])+'</p>';
-    return '<section id="faultDetail" class="glass panel"><div class="mini-head"><div><div class="eyebrow">REPAIR DETAILS</div><h2>'+(editId?'Edit':'Add')+' · '+safe(f.label)+'</h2></div><span class="count">Device '+active+'</span></div>'+diagnosticFields()+
+    return '<section id="faultDetail" class="glass panel"><div class="mini-head"><div><div class="eyebrow">REPAIR DETAILS</div><h2>'+(editId?'Edit':'Add')+' · '+safe(rules.faultLabel(selected().model,fault,f.label))+'</h2></div><span class="count">Device '+active+'</span></div>'+diagnosticFields()+
       (single?'<div class="option b31-single">'+optionContent(options[0])+'</div>':'<label class="field-label">Choose your repair option</label>'+options.map(o=>
         '<button class="option" type="button" data-option="'+safe(o[0])+'" aria-pressed="'+(variant===o[0])+'">'+optionContent(o)+'</button>'
       ).join(''))+
@@ -161,8 +161,11 @@
       '<button class="btn ghost help-back" data-action="help-home">← Back</button></section>';
   };
   helpIssueScreen=function(){
-    return beforeHelpIssue().replace(/<button\b[^>]*data-help-issue="([^"]+)"[\s\S]*?<\/button>/g,(html,id)=>
-      rules.faultAllowed(selected().model,id)?html:'');
+    const source=rules.find(selected().model)?.rear.hasGlass===true?beforeHelpIssue()
+      :beforeHelpIssue().replace(/(?:Back|Rear) glass \/ cosmetic/g,'Rear / cosmetic damage');
+    return source.replace(/<button\b[^>]*data-help-issue="([^"]+)"[\s\S]*?<\/button>/g,(html,id)=>
+      !rules.faultAllowed(selected().model,id)?'':id==='rear'&&rules.find(selected().model)?.rear.hasGlass!==true
+        ?html.replace(/<strong>[\s\S]*?<\/strong>/,'<strong>Rear / cosmetic damage</strong>'):html);
   };
 
   // Window capture runs before existing document capture handlers render a route.

@@ -145,6 +145,24 @@ test('unlisted models can request assessment without generic parts or colours',(
   }finally{app.close()}
 });
 
+test('unknown rear materials stay assessment-only and verified plastic backs never offer glass',async()=>{
+  const app=loadApp();
+  try{
+    start(app,'Samsung','samsungs21');
+    assert.equal(app.document.querySelector('[data-multi-fault="rear"]'),null);
+    app.click('[data-build25-change-device]');app.click('[data-catalogue-brand="Samsung"]');app.change('#model','samsunga13lte');
+    const button=app.document.querySelector('[data-multi-fault="rear"]');
+    assert.ok(button);
+    assert.equal(button.textContent.includes('glass'),false);
+    selectRepairs(app,['rear']);
+    assert.equal(app.document.querySelector('#faultDetail').textContent.includes('glass'),false);
+    assert.equal(app.state().variant,'Rear panel assessment');
+    app.change('#glassColour','Orange');app.click('[data-action="save-repair"]');await app.flush();
+    assert.equal(app.state().basket[0].faultLabel,'Rear / cosmetic damage');
+    assert.equal(app.state().basket[0].price,null);
+  }finally{app.close()}
+});
+
 test('guided diagnosis and sourced Apple A-number identification remain available',()=>{
   const app=loadApp();
   try{

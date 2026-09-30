@@ -9,6 +9,7 @@
   const find = id => models.get(id) || null;
   const confirmed = id => find(id)?.identityStatus === 'verified';
   const brandModels = manufacturer => [...models.values()].filter(model => model.manufacturer === manufacturer && confirmed(model.id));
+  const faultLabel = (id, fault, fallback) => fault === 'rear' && find(id)?.rear.hasGlass !== true ? 'Rear / cosmetic damage' : fallback;
   const assessment = (id, label, note) => ({id, label, note, price: null, partType: null, technology: null, assessment: true});
   const finitePrice = value => Number.isFinite(value) && value >= 0 ? value : null;
 
@@ -94,5 +95,5 @@
     return repairOptions(id, fault).some(option => !option.assessment);
   }
 
-  return Object.freeze({data, find, confirmed, brandModels, screenOptions, repairOptions, faultAllowed, validateRepair, canCallOut});
+  return Object.freeze({data, find, confirmed, brandModels, faultLabel, screenOptions, repairOptions, faultAllowed, validateRepair, canCallOut});
 });

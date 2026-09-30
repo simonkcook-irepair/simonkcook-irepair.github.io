@@ -14,6 +14,8 @@ Research was performed on 30 September 2026. Each important attribute points to
 source IDs; the source registry records URLs, publishers, access dates and content
 hashes where downloaded. The separate research register lists every model.
 
+Verified plastic rears (including Galaxy S21) do not show a glass repair. Unknown rear materials are labelled as rear / cosmetic assessment, including the guided route and technician repair description.
+
 Original display specifications, manufacturer finishes and repair parts sold by
 iRepair are different facts. An original OLED display does not automatically
 create an OLED replacement offer. Sold screen options require an exact-model
