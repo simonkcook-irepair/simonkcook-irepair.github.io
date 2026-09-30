@@ -38,7 +38,7 @@ function bind(){
  document.querySelectorAll('[data-sendchat]').forEach(b=>b.onclick=()=>{const t=$('#chatText');if(t&&t.value.trim()){IRepairDB.sendMessage(b.dataset.sendchat,t.value,'technician','Simon · iRepair','chat','technician');render()}});
  document.querySelectorAll('[data-template]').forEach(b=>b.onclick=()=>{const t=$('#chatText');if(!t)return;const q={issue:'I have noticed something while working on your device that I would like to make you aware of.',battery:'It appears that your device would benefit from a new battery. Are you happy for me to proceed?',unlock:'I need to unlock the device to complete testing. Please contact me so we can arrange secure access without putting your passcode in chat.'};t.value=q[b.dataset.template]||'';t.focus()});
  document.querySelectorAll('[data-contact]').forEach(b=>b.onclick=()=>{const n=$('#contactName');if(n&&n.value.trim()){IRepairDB.addSecondaryContact(b.dataset.contact,{fullName:n.value,relationship:$('#contactRelationship').value,phone:$('#contactPhone').value,email:$('#contactEmail').value,receivesUpdates:$('#contactUpdates').checked,isPrimaryHandoverContact:$('#contactHandover').checked},'technician');render()}});
- const sy=$('#syncNow');if(sy)sy.onclick=()=>IRepairDB.syncRemote().then(render);const nd=$('#newDemo');if(nd)nd.onclick=()=>{const j=IRepairDB.createDemoBooking();selected=j.id;render()}}
+ const sy=$('#syncNow');if(sy)sy.onclick=()=>IRepairDB.syncRemote().then(render);const nd=$('#newDemo');if(nd)nd.onclick=()=>{const j=IRepairDB.createDemoBooking();selected=j.id;render()};
  document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{view=b.dataset.nav;selected=null;render()})
 }
 IRepairDB.subscribe(render);IRepairDB.subscribeConnection(render);render();
