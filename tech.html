@@ -4,10 +4,16 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0e2238"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="iRepair Tech">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=11"><title>iRepair Technician</title>
-<link rel="stylesheet" href="/tech-core.css?v=24"><link rel="stylesheet" href="/quick-replies.css?v=1">
+<link rel="stylesheet" href="/tech-core.css?v=25"><link rel="stylesheet" href="/quick-replies.css?v=1">
+<style>
+/* Critical technician navigation kept inline so iOS/PWA cache cannot fall back to the old bottom-nav layout. */
+.topnav{position:sticky!important;z-index:100!important;top:calc(6px + env(safe-area-inset-top))!important;width:100%!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;align-items:stretch!important;gap:7px!important;margin:0 0 14px!important;padding:7px!important;border:1px solid #29445c!important;border-radius:17px!important;background:#081522e8!important;box-shadow:0 8px 24px #0005!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+.topnav button,.topnav a{box-sizing:border-box!important;width:100%!important;min-width:0!important;min-height:44px!important;margin:0!important;padding:7px 2px!important;border:0!important;border-radius:11px!important;background:#10273c!important;color:#9dbfdd!important;text-decoration:none!important;text-align:center!important;font-size:9px!important;font-weight:850!important;line-height:1.1!important;display:flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;overflow:hidden!important;-webkit-tap-highlight-color:transparent}
+.topnav .active{background:#176ab6!important;color:#fff!important;box-shadow:0 4px 12px #0b4f8d66!important}
+</style>
 </head>
 <body>
-<div class="app"><header><div class="brand"><img src="/apple-touch-icon.png?v=11" alt="iRepair"><div><h1>iRepair Technician</h1><small>Operations prototype · Build 24</small></div></div><span id="coreChip" class="core">CORE SYNC</span></header><nav class="topnav"><button class="active" data-nav="jobs">Jobs</button><button data-nav="route">Route</button><button data-nav="replies">⚡ Replies</button><button data-nav="customers">Customers</button><a href="/">Customer</a></nav><main id="main"></main></div>
+<div class="app"><header><div class="brand"><img src="/apple-touch-icon.png?v=11" alt="iRepair"><div><h1>iRepair Technician</h1><small>Operations prototype · Build 25</small></div></div><span id="coreChip" class="core">CORE SYNC</span></header><nav class="topnav"><button class="active" data-nav="jobs">Jobs</button><button data-nav="route">Route</button><button data-nav="replies">⚡ Replies</button><button data-nav="customers">Customers</button><a href="/">Customer</a></nav><main id="main"></main></div>
 <script src="/prototype-db.js?v=22"></script>
 <script src="/quick-replies.js?v=1"></script>
 <script src="/tech-core.js?v=23"></script>
