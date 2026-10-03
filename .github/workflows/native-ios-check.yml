@@ -6,6 +6,8 @@ on:
     paths:
       - 'native/**'
       - 'native-notifications48.js'
+      - 'customer-account49.js'
+      - 'index.html'
       - '.github/workflows/native-ios-check.yml'
   workflow_dispatch:
 
