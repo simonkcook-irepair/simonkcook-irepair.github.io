@@ -1,0 +1,8 @@
+node_modules/
+customer/www/
+technician/www/
+customer/ios/App/App/public/
+technician/ios/App/App/public/
+**/DerivedData/
+**/xcuserdata/
+.DS_Store
