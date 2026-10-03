@@ -7,7 +7,7 @@
   const API='https://psswyljihufyxiieqziu.supabase.co/functions/v1/satellite-api';
   const API_KEY='sb_publishable_oRtVKV3yejg4521iPjNeDg_YWxa088L';
   const CTX_KEY='irepair_satellite_context_v1';
-  let satellite=null,match=null,loading=false,error='';
+  let satellite=null,match=null,officeClaimToken='',loading=false,error='';
 
   const previousHome=homeScreen;
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -21,17 +21,29 @@
     if(!r.ok)throw new Error(data.error||('HTTP '+r.status));return data;
   }
   function rerenderHome(){try{if(typeof mode!=='undefined'&&mode==='home')render()}catch(e){}}
-  async function loadStatus(){
-    try{const data=await api('/status');satellite=data.satellite||null;error='';rerenderHome()}
-    catch(e){satellite=null;error='';}
+  function readContext(){
+    try{
+      const raw=sessionStorage.getItem(CTX_KEY);if(!raw)return null;
+      const ctx=JSON.parse(raw),exp=new Date(ctx.expiresAt||0).getTime();
+      if(!ctx||!ctx.claimToken||!Number.isFinite(exp)||exp<=Date.now()){sessionStorage.removeItem(CTX_KEY);return null}
+      return ctx;
+    }catch(e){return null}
   }
-  function saveContext(type){
-    const ctx={type:type||'satellite',mode:satellite&&satellite.mode||'',matchedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+90*60*1000).toISOString()};
+  async function loadStatus(){
+    try{const data=await api('/status');satellite=data.satellite||null;officeClaimToken=String(data.claimToken||'');error='';rerenderHome()}
+    catch(e){satellite=null;officeClaimToken='';error='';}
+  }
+  function saveContext(type,claimToken){
+    if(!claimToken)return null;
+    const ctx={type:type||'satellite',mode:satellite&&satellite.mode||'',claimToken:String(claimToken),matchedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+90*60*1000).toISOString()};
     try{sessionStorage.setItem(CTX_KEY,JSON.stringify(ctx))}catch(e){}
     window.IRepairSatelliteContext=ctx;return ctx;
   }
+  function clearContext(){try{sessionStorage.removeItem(CTX_KEY)}catch(e){}window.IRepairSatelliteContext=null}
   function startRepair(type){
-    saveContext(type);
+    if(type==='office')saveContext('office',officeClaimToken);
+    else if(type==='mobile'&&match&&match.claimToken)saveContext('mobile',match.claimToken);
+    else clearContext();
     try{
       mode='book';stage=1;fault='';variant='';editId=null;
       if(typeof resetDiagnostic==='function')resetDiagnostic();
@@ -75,11 +87,27 @@
     },()=>{loading=false;error='Location was not shared. You can still use normal booking.';rerenderHome()},{enableHighAccuracy:false,timeout:9000,maximumAge:120000});
   }
 
+  async function claimJob(jobRef,ctx,attempt){
+    if(!ctx||!ctx.claimToken||!jobRef)return;
+    try{await api('/claim',{method:'POST',body:{jobRef,claimToken:ctx.claimToken}});}
+    catch(e){if((attempt||0)<3)setTimeout(()=>claimJob(jobRef,ctx,(attempt||0)+1),[800,1600,3000,5000][attempt||0]);}
+  }
+  function hookBookingSource(){
+    const db=window.IRepairDB;if(!db||typeof db.createJob!=='function'||db.createJob.__satellite35)return;
+    const original=db.createJob;
+    const wrapped=function(input,source){
+      const job=original.call(db,input,source),ctx=readContext();
+      if(job&&ctx&&['office','mobile'].includes(ctx.type))setTimeout(()=>claimJob(job.id,ctx,0),350);
+      return job;
+    };
+    wrapped.__satellite35=true;db.createJob=wrapped;
+  }
+
   window.addEventListener('click',function(e){
     const b=e.target.closest('button');if(!b)return;
     if(b.hasAttribute('data-sat-check')){e.preventDefault();e.stopImmediatePropagation();checkNearby();return}
     if(b.hasAttribute('data-sat-start')){e.preventDefault();e.stopImmediatePropagation();startRepair(b.dataset.satStart||'satellite');return}
-    if(b.hasAttribute('data-sat-normal')){e.preventDefault();e.stopImmediatePropagation();startRepair('normal_after_satellite_check');return}
+    if(b.hasAttribute('data-sat-normal')){e.preventDefault();e.stopImmediatePropagation();startRepair('normal');return}
   },true);
 
   const style=document.createElement('style');style.id='irepair-build35-style';
@@ -96,6 +124,6 @@
   `;
   document.head.appendChild(style);
 
-  try{const raw=sessionStorage.getItem(CTX_KEY);if(raw)window.IRepairSatelliteContext=JSON.parse(raw)}catch(e){}
-  loadStatus();
+  const existing=readContext();if(existing)window.IRepairSatelliteContext=existing;
+  hookBookingSource();loadStatus();
 })();
