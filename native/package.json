@@ -9,6 +9,8 @@
   "scripts": {
     "stage:customer": "node ./scripts/stage-web.mjs customer",
     "stage:technician": "node ./scripts/stage-web.mjs technician",
+    "generate:customer": "npm run stage:customer && npm --workspace customer run cap:add:ios && node ./scripts/patch-ios.mjs customer",
+    "generate:technician": "npm run stage:technician && npm --workspace technician run cap:add:ios && node ./scripts/patch-ios.mjs technician",
     "sync:customer": "npm run stage:customer && npm --workspace customer run cap:sync",
     "sync:technician": "npm run stage:technician && npm --workspace technician run cap:sync"
   },
