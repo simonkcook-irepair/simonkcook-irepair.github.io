@@ -30,5 +30,5 @@ window.addEventListener('irepair-api-change',schedule);schedule();
 (function(){
  if(!document.querySelector('script[data-irepair-tech36]')){const s=document.createElement('script');s.src='/tech-build36.js?v=36';s.dataset.irepairTech36='1';document.head.appendChild(s)}
  if(!document.querySelector('script[data-irepair-trip36]')){const s=document.createElement('script');s.src='/tech-trip36.js?v=38r3';s.dataset.irepairTrip36='1';document.head.appendChild(s)}
- if(!document.querySelector('script[data-irepair-trip38]')){const s=document.createElement('script');s.src='/tech-trip37-control.js?v=39';s.dataset.irepairTrip38='1';document.head.appendChild(s)}
+ if(!document.querySelector('script[data-irepair-trip38]')){const s=document.createElement('script');s.src='/tech-trip37-control.js?v=40';s.dataset.irepairTrip38='1';document.head.appendChild(s)}
 })();
