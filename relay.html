@@ -26,4 +26,4 @@ async function load(){if(!token){current=null;render();return}try{current=await 
 async function send(){const box=document.getElementById('reply'),text=(box&&box.value||'').trim();if(!text)return;const b=document.getElementById('send');b.disabled=true;b.textContent='Sending…';try{current=await api('/relay/'+encodeURIComponent(token)+'/messages',{method:'POST',body:{text}});box.value='';render()}catch(e){b.disabled=false;b.textContent='Send repair message'}}
 load();timer=setInterval(()=>{if(document.visibilityState!=='hidden')load()},5000);
 })();
-</script></body></html>
+</script><script src="/relay-trip36.js?v=36"></script></body></html>
