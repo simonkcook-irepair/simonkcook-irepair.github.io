@@ -15,7 +15,8 @@ function enhance(){
     const office=/office/i.test(String(ev.label||''));
     if(!badge){badge=document.createElement('div');badge.className='satellite35-source';const head=card.querySelector('.jobhead');if(head)head.insertAdjacentElement('afterend',badge);else card.prepend(badge)}
     badge.classList.toggle('office',office);
-    badge.innerHTML='<span class="satellite35-pulse"></span><b>'+(office?'🏠 OFFICE SATELLITE':'📡 NEARBY SATELLITE')+'</b><small>'+(office?'Booked from live Killay office availability':'Booked from live nearby technician availability')+'</small>';
+    const html='<span class="satellite35-pulse"></span><b>'+(office?'🏠 OFFICE SATELLITE':'📡 NEARBY SATELLITE')+'</b><small>'+(office?'Booked from live Killay office availability':'Booked from live nearby technician availability')+'</small>';
+    if(badge.innerHTML!==html)badge.innerHTML=html;
   });
 }
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(enhance)}
