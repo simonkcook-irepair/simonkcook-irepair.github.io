@@ -1,0 +1,18 @@
+{
+  "name": "irepair-native",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "customer",
+    "technician"
+  ],
+  "scripts": {
+    "stage:customer": "node ./scripts/stage-web.mjs customer",
+    "stage:technician": "node ./scripts/stage-web.mjs technician",
+    "sync:customer": "npm run stage:customer && npm --workspace customer run cap:sync",
+    "sync:technician": "npm run stage:technician && npm --workspace technician run cap:sync"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
