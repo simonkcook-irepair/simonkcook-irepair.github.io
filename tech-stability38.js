@@ -54,12 +54,10 @@ function updateCoreChip(detail){
   chip.classList.toggle('online',online);
 }
 
-/* tech-core.js is the first data subscriber loaded after this file. Wrap that one only. */
+/* Wrap only tech-core.js's coreUpdate callback; enhancement-module subscribers remain untouched. */
 const originalSubscribe=DB.subscribe.bind(DB);
-let wrappedCoreSubscriber=false;
 DB.subscribe=function(fn){
-  if(wrappedCoreSubscriber)return originalSubscribe(fn);
-  wrappedCoreSubscriber=true;
+  if(!fn||fn.name!=='coreUpdate')return originalSubscribe(fn);
   let last=jobsFingerprint(DB.read());
   return originalSubscribe(function(state){
     const next=jobsFingerprint(state);
@@ -70,12 +68,10 @@ DB.subscribe=function(fn){
   });
 };
 
-/* A connection heartbeat must never redraw the whole page. */
+/* Connection heartbeats should update only the chip, never rebuild the job list. */
 const originalConnectionSubscribe=DB.subscribeConnection.bind(DB);
-let wrappedCoreConnection=false;
 DB.subscribeConnection=function(fn){
-  if(wrappedCoreConnection)return originalConnectionSubscribe(fn);
-  wrappedCoreConnection=true;
+  if(!fn||fn.name!=='coreUpdate')return originalConnectionSubscribe(fn);
   return originalConnectionSubscribe(function(detail){updateCoreChip(detail)});
 };
 
