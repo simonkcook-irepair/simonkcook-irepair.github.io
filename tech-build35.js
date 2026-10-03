@@ -26,3 +26,7 @@ DB.subscribe(schedule);DB.subscribeConnection(schedule);
 const obs=new MutationObserver(schedule);obs.observe(document.body,{childList:true,subtree:true});
 window.addEventListener('irepair-api-change',schedule);schedule();
 })();
+(function(){
+ if(document.querySelector('script[data-irepair-tech36]'))return;
+ const s=document.createElement('script');s.src='/tech-build36.js?v=36';s.dataset.irepairTech36='1';document.head.appendChild(s);
+})();
