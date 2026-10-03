@@ -7,7 +7,7 @@ This directory contains the native shells for iRepair Core.
 - `customer/` — public iRepair customer app for the Apple App Store.
 - `technician/` — private/internal iRepair Technician app. This is not intended for public App Store discovery.
 
-Both targets use the same iRepair Core/Supabase backend and the shared notification bridge already present in the web application.
+Both targets use the same iRepair Core/Supabase backend and the shared native notification bridge.
 
 ## Proposed bundle identifiers
 
@@ -19,39 +19,45 @@ These are source-code defaults only. Confirm availability in Apple Developer bef
 ## Toolchain
 
 - Node.js 22+
-- Capacitor 8
+- Capacitor 8 stable
 - Xcode 26+
 - Swift Package Manager
 - Apple Developer Program membership
 
-## First local generation
+## Generate the native iOS projects
 
 From `native/`:
 
 ```bash
 npm install
-npm run stage:customer
-npm --workspace customer run cap:add:ios
-npm run stage:technician
-npm --workspace technician run cap:add:ios
+npm run generate:customer
+npm run generate:technician
 ```
 
-Then use:
+Each generation command stages the current iRepair web assets, creates the Capacitor iOS project with Swift Package Manager, patches the required APNs callbacks into `AppDelegate.swift`, and adds the current iOS camera/location permission descriptions.
+
+Then open either target:
 
 ```bash
-npm run sync:customer
-npm run sync:technician
 npm --workspace customer run cap:open
 npm --workspace technician run cap:open
 ```
 
+After web changes, use:
+
+```bash
+npm run sync:customer
+npm run sync:technician
+```
+
 ## Required Xcode capabilities
 
-For both targets:
+Both targets:
 - Push Notifications
 
 Customer:
 - Location When In Use
+- Camera
 
 Technician:
 - Location When In Use
@@ -59,6 +65,12 @@ Technician:
 
 ## APNs
 
-Each installed app receives its own APNs device token. The existing iRepair Notification Hub stores the token against the correct app variant and sends pushes using the target bundle ID.
+Each app instance receives its own APNs device token. The iRepair Notification Hub stores the token against the correct app variant and sends pushes using the matching bundle ID.
+
+The provider retries the alternate APNs environment once when Apple returns `BadDeviceToken`, allowing development/TestFlight environment mismatches to self-correct safely.
 
 The APNs provider credentials must remain server-side in Supabase secrets. Never commit a .p8 key or service-role credential to this repository.
+
+## Continuous verification
+
+`.github/workflows/native-ios-check.yml` generates both native projects on a macOS GitHub runner and performs unsigned iOS Simulator builds. This verifies the native shell without requiring Apple signing credentials.
