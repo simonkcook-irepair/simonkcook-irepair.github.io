@@ -1,0 +1,62 @@
+name: Native iOS Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/**'
+      - 'native-notifications48.js'
+      - '.github/workflows/native-ios-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  customer:
+    name: Customer iOS simulator build
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: native/package.json
+      - name: Install dependencies
+        run: npm install
+      - name: Stage customer web app
+        run: npm run stage:customer
+      - name: Generate iOS project
+        working-directory: native/customer
+        run: npx cap add ios --packagemanager SPM
+      - name: Build unsigned simulator target
+        working-directory: native/customer
+        run: xcodebuild -project ios/App/App.xcodeproj -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
+
+  technician:
+    name: Technician iOS simulator build
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: native/package.json
+      - name: Install dependencies
+        run: npm install
+      - name: Stage technician web app
+        run: npm run stage:technician
+      - name: Generate iOS project
+        working-directory: native/technician
+        run: npx cap add ios --packagemanager SPM
+      - name: Build unsigned simulator target
+        working-directory: native/technician
+        run: xcodebuild -project ios/App/App.xcodeproj -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
