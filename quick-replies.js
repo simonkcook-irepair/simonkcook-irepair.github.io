@@ -52,3 +52,11 @@ async function refreshPrices(){if(loading)return;loading=true;notice='';emit();t
 function setQuery(value){query=String(value||'');emit()}
 g.IRepairQuickReplies={view,bind,load,refreshPrices,setQuery,templates,screenMessage,copyText};load();
 })(window);
+
+(function(){
+  if(document.querySelector('script[data-irepair-build34]'))return;
+  const s=document.createElement('script');
+  s.src='/tech-build34.js?v=34';
+  s.dataset.irepairBuild34='1';
+  document.head.appendChild(s);
+})();
