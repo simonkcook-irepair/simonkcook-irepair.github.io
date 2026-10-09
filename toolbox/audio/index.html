@@ -77,12 +77,12 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </head>
 <body>
 <main>
-<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.4</span></header>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.5</span></header>
 
 <section id="start" class="view active" aria-label="Start">
  <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
  <div class="stage"><svg id="start-device" class="device" viewBox="0 0 280 470" aria-label="iPhone illustration"></svg><span class="component-label">iPhone · guided diagnostics</span></div>
- <div class="start-bottom"><button id="start-btn" class="btn main">Start audio diagnostics →</button><p class="footnote">The native iOS app will identify your exact model automatically. Safari cannot determine it reliably.</p></div>
+ <div class="start-bottom"><button id="start-btn" class="btn main">Start audio diagnostics →</button><p class="footnote">Model identification and component routing will be automatic in the native iPhone app.</p></div>
 </section>
 
 <section id="test" class="view" aria-label="Guided test">
@@ -119,10 +119,8 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 'use strict';
 const $=id=>document.getElementById(id);
 const steps=[
- {id:'receiver',part:'Upper receiver',question:'Can you hear this?',instruction:'Listen at the top of your iPhone.',side:'front',focus:'top',type:'receiver'},
- {id:'lower',part:'Lower loudspeaker',question:'Can you hear this clearly?',instruction:'Listen for crackling or distortion.',side:'front',focus:'bottom',type:'tone'},
- {id:'left',part:'Stereo · left channel',question:'Can you hear the left channel?',instruction:'Listen to the left audio channel.',side:'front',focus:'both',type:'left'},
- {id:'right',part:'Stereo · right channel',question:'Can you hear the right channel?',instruction:'Listen to the right audio channel.',side:'front',focus:'both',type:'right'},
+ {id:'receiver',part:'Upper speaker / receiver',question:'Can you hear this?',instruction:'Listen near the upper speaker.',side:'front',focus:'top',type:'left'},
+ {id:'lower',part:'Lower loudspeaker',question:'Can you hear this clearly?',instruction:'Listen for crackling or distortion.',side:'front',focus:'bottom',type:'right'},
  {id:'bottomMic',part:'Lower microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'front',focus:'bottomMic',type:'mic'},
  {id:'frontMic',part:'Front microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'front',focus:'topMic',type:'mic'},
  {id:'rearMic',part:'Rear microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'rear',focus:'rearMic',type:'mic'}
@@ -225,10 +223,9 @@ function renderTest(){
  stagePhone($('test-device'),t.side,t.focus);
  const mic=t.type==='mic';
  $('meter-wrap').classList.toggle('hide',!mic);
- $('replay').classList.toggle('hide',mic||t.type==='receiver');
- if(t.type==='receiver'){$('test-note').textContent='Receiver-only audio requires the native iOS app.';}
- else if(mic){micStart();}
- else { $('test-note').textContent=t.type==='tone'?'Browser playback uses the active sound output.':'Left/right track tests stereo output, not an individual speaker.';playTone(t.type);}
+ $('replay').classList.toggle('hide',mic);
+ if(mic){micStart();}
+ else { $('test-note').textContent='Stereo-channel preview · Safari cannot isolate a physical speaker.';playTone(t.type);}
 }
 function reportValue(t){return answers[t.id]||'CANNOT TEST';}
 function renderReport(){
@@ -244,7 +241,7 @@ function renderReport(){
 }
 function answer(value){answers[steps[index].id]=value;index++;if(index===steps.length)renderReport();else renderTest();}
 function reportText(){
- return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: iPhone (exact model unavailable in browser)','Assessment: user-observed browser preview','',...steps.map(t=>t.part+': '+reportValue(t)),'','Note: Safari cannot select individual built-in microphone sources or force receiver routing. Left and right audio channels are not equivalent to independently selected physical speakers. Native iOS testing is required.'].join('\n');
+ return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: iPhone (exact model unavailable in browser)','Assessment: user-observed browser preview','',...steps.map(t=>t.part+': '+reportValue(t)),'','Note: Safari cannot select individual built-in microphone sources or isolate the receiver. Left and right tracks are used for preview only; they do not confirm which physical speaker played. Native iOS testing is required.'].join('\n');
 }
 async function copyReport(){
  const value=reportText();
