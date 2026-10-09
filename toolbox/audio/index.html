@@ -3,259 +3,290 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071527">
-<meta name="description" content="iRepair Toolbox Audio Diagnostics - guided speaker and microphone testing browser preview.">
-<title>iRepair Toolbox — Audio Diagnostics</title>
+<meta name="theme-color" content="#061321">
+<meta name="description" content="iRepair Toolbox — guided iPhone audio diagnostics preview">
+<title>iRepair Toolbox | Audio Check</title>
 <style>
-:root{color-scheme:dark;--bg:#071527;--panel:#10233b;--panel2:#142b47;--stroke:#294661;--text:#f3f8ff;--muted:#a4b8d0;--blue:#59bdfc;--mint:#49d8b4;--red:#fd7e89}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 6%,#1d4566 0%,transparent 39%),linear-gradient(145deg,#071527,#0b1b30 58%,#061321);color:var(--text);font:15px/1.48 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-button,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}a{color:var(--blue)}.shell{max-width:1060px;margin:auto;padding:20px 18px 85px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 24px}.brand{display:flex;align-items:center;gap:11px}.logo{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#2695e2,#33d0ba);box-shadow:0 12px 35px #0ba6c82b;font-size:22px}.brand strong{font-size:16px;letter-spacing:.1px}.brand span{display:block;color:var(--muted);font-size:11px;letter-spacing:1.35px}.version{font-size:11px;color:var(--mint);border:1px solid #29685f;background:#11382f;border-radius:30px;padding:6px 10px}.eyebrow{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.intro{padding:12px 0 20px}.intro h1{font-size:clamp(30px,6vw,50px);line-height:1.08;letter-spacing:-1.35px;margin:10px 0 12px;max-width:750px}.intro p{margin:0;color:var(--muted);max-width:750px}.notice{margin:18px 0 21px;border:1px solid #365a6f;background:#123047;padding:12px 14px;border-radius:15px;display:flex;gap:11px;align-items:flex-start;color:#c5def2;font-size:13px}.notice strong{color:white}.nav{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin-bottom:15px;scrollbar-width:none}.nav button{flex:1;min-width:max-content;border:1px solid var(--stroke);color:var(--muted);background:#10243a;border-radius:12px;padding:11px 16px;font-size:13px;font-weight:700}.nav button.active{background:#206499;border-color:#56b3f1;color:white}.page{display:none}.page.active{display:block}.layout{display:grid;grid-template-columns:minmax(270px,.92fr) minmax(0,1.08fr);gap:15px;align-items:stretch}.card{background:linear-gradient(145deg,#122941dd,#0e2037f5);border:1px solid var(--stroke);box-shadow:0 16px 42px #00000018;border-radius:22px;padding:21px}.card h2{font-size:23px;letter-spacing:-.5px;margin:4px 0 10px}.card p{color:var(--muted);margin:4px 0 17px}.fieldlabel{display:block;margin:12px 0 7px;color:#c9d9e8;font-size:13px;font-weight:700}select{width:100%;color:white;background:#19334e;border:1px solid #3a5b75;border-radius:12px;padding:14px;min-height:50px;outline:none}.small{font-size:12px;color:var(--muted);line-height:1.55}.actions{display:grid;gap:9px;margin-top:20px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 15px;border-radius:13px;border:1px solid #466179;background:#1a3651;color:white;font-weight:750;text-align:center;text-decoration:none}.btn.primary{color:#04243a;background:linear-gradient(115deg,#66c9ff,#43d5b7);border:0}.btn.ghost{background:transparent;border:1px solid #38546e}.btn.danger{background:#4c2535;border-color:#ac586b}.btn.pass{background:#143e37;border-color:#2d987f}.btn.fail{background:#4c2838;border-color:#ae5a6e}.btn.smallbtn{min-height:40px;font-size:13px;padding:9px 12px}.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.phonebox{position:relative;background:radial-gradient(ellipse at 50% 45%,#294a64aa,#102139 58%,#0b1d33);border:1px solid #315069;border-radius:24px;min-height:386px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px}.phone-stage{width:230px;height:325px;display:flex;justify-content:center;align-items:center;transition:transform .55s ease;transform-origin:50% 45%}.phone-stage.zoom-top{transform:scale(1.18) translateY(26px)}.phone-stage.zoom-bottom{transform:scale(1.18) translateY(-23px)}.phone-stage svg{width:185px;height:340px;filter:drop-shadow(0 15px 26px #0008)}.focus-ring{animation:pulse 2s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes pulse{0%{opacity:1;transform:scale(.8)}65%{opacity:.3;transform:scale(1.45)}100%{opacity:0;transform:scale(1.65)}}.phone-label{position:absolute;bottom:13px;font-size:12px;color:#c8def3;background:#0a1f31e8;border:1px solid #34536a;border-radius:100px;padding:5px 12px}.progress{display:flex;gap:5px;margin:4px 0 15px}.progress i{height:5px;background:#2c4b62;flex:1;border-radius:5px}.progress i.done{background:var(--mint)}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.stepcount{color:var(--mint);font-size:12px;font-weight:750}.tag{display:inline-block;font-size:11px;font-weight:700;border:1px solid #3b6c79;border-radius:30px;padding:5px 9px;color:#a6e9f1;background:#113d4b}.test-description{min-height:48px}.subpanel{background:#0b1c30;border:1px solid #26465f;border-radius:14px;padding:14px;margin:13px 0}.subpanel p{margin:5px 0;font-size:13px}.meter{display:flex;align-items:end;justify-content:space-between;height:56px;gap:4px;margin:12px 0}.meter i{flex:1;min-width:3px;background:linear-gradient(0deg,#2884bc,#4ed7b8);border-radius:4px 4px 1px 1px;height:5%;transition:height .09s linear}.meterline{display:flex;align-items:center;justify-content:space-between;gap:6px;color:var(--muted);font-size:12px}.metric{color:white;font-variant-numeric:tabular-nums;font-weight:800;font-size:16px}.audio-play{width:100%;margin-top:10px}.tool-list{display:grid;gap:11px}.tool-item{display:flex;gap:11px;align-items:flex-start;padding:13px;border:1px solid #294763;border-radius:13px;background:#10243b}.num{width:29px;height:29px;flex:0 0 29px;display:grid;place-items:center;border-radius:9px;background:#1c597a;color:#9ce3ff;font-weight:800}.tool-item strong{display:block}.tool-item span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.results-list{display:grid;gap:8px;margin:15px 0}.result-line{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#10283e;border:1px solid #294761;padding:13px;border-radius:12px}.result-line strong{font-size:13px}.result-line span{font-size:11px;font-weight:800;letter-spacing:.3px;white-space:nowrap}.status-pass{color:var(--mint)}.status-fail{color:var(--red)}.status-unable{color:#ffd185}.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#0e2538;border:1px solid #28455c;border-radius:14px;padding:15px;text-align:center}.stat b{font-size:28px;display:block;line-height:1.1}.stat span{color:var(--muted);font-size:11px}.freq{font-size:44px;font-weight:850;letter-spacing:-1px;color:#77d8ee}.footer{padding:28px 5px;text-align:center;color:#829aaf;font-size:12px}.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;padding:12px 18px;border-radius:12px;background:#d7fff3;color:#07413b;box-shadow:0 10px 36px #0007;font-weight:750;opacity:0;pointer-events:none;transition:opacity .25s}.toast.visible{opacity:1}
-@media(max-width:700px){.shell{padding:13px 13px 70px}.topbar{padding-bottom:14px}.intro{padding:6px 1px 12px}.intro h1{font-size:34px}.card{padding:17px;border-radius:18px}.layout{grid-template-columns:1fr}.phonebox{min-height:280px}.phone-stage{height:262px}.phone-stage svg{height:282px;width:155px}.nav button{padding:10px 11px;font-size:12px}.phone-stage.zoom-top{transform:scale(1.09) translateY(17px)}.phone-stage.zoom-bottom{transform:scale(1.09) translateY(-12px)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+:root{color-scheme:dark;--bg:#071422;--panel:#10243a;--stroke:#27445d;--text:#f4f8ff;--soft:#b4c6d8;--mint:#45e0c1;--sky:#6fc8ff;--red:#ff879c;--gold:#ffd38c}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg)}
+body{margin:0;min-height:100svh;background:radial-gradient(circle at 48% 23%,#234d6677,transparent 42%),linear-gradient(164deg,#0a2337 0%,#071625 65%,#050f1d);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}button:disabled{opacity:.48;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+button:active:not(:disabled){transform:scale(.985)}
+main{max-width:475px;min-height:100svh;margin:auto;padding:calc(15px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#6ccaff,#36dcb9);color:#052238;font-size:23px;font-weight:900;box-shadow:0 9px 25px #1ecfac37}
+.brand strong{display:block;letter-spacing:.1px;font-size:14px}.brand span{display:block;letter-spacing:1.5px;font-size:9px;color:var(--soft);font-weight:750}
+.pill{font-size:10px;font-weight:800;color:#a9e8e9;border:1px solid #2f7180;background:#0d3541;border-radius:30px;padding:7px 10px;white-space:nowrap}
+.view{display:none;flex-direction:column;flex:1}.view.active{display:flex}
+.start-copy{margin:55px 4px 12px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--mint);text-transform:uppercase}
+h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:10px 0 12px}
+.lead{color:var(--soft);font-size:15px;line-height:1.5;max-width:360px;margin:0}
+.stage{position:relative;display:grid;place-items:center;flex:1;min-height:290px;margin:8px -3px 12px;isolation:isolate}
+.stage:before{content:"";position:absolute;width:min(83%,330px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#276d83a3,transparent 69%);filter:blur(19px);z-index:-1}
+.device{height:min(44svh,370px);min-height:265px;max-width:100%;filter:drop-shadow(0 20px 40px #0009);transition:transform .4s ease}
+.device.rear{transform:rotate(-3deg)}
+.component-label{position:absolute;bottom:0;left:50%;transform:translateX(-50%);padding:8px 13px;border:1px solid #345a6c;border-radius:40px;background:#0b2336e9;color:#cbebf4;font-size:12px;font-weight:750;white-space:nowrap}
+.flash{animation:halo 1.55s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes halo{0%,100%{opacity:.55;transform:scale(.8)}50%{opacity:1;transform:scale(1.26)}}
+.btn{min-height:58px;width:100%;border-radius:17px;border:1px solid #365873;background:#18354e;color:#f2f9ff;font-weight:800;letter-spacing:.1px;padding:13px 15px;transition:transform .14s ease}
+.btn.main{background:linear-gradient(115deg,#82d7ff,#51e6c6);border:0;color:#052b37;box-shadow:0 14px 29px #38cdae25}
+.btn.subtle{background:#0f273c;border:1px solid #335a70;color:#c2eaff;min-height:44px;font-size:13px}
+.btn.pass{background:#144d43;border-color:#43ad94;color:#d0fff3}
+.btn.fail{background:#4b2a3b;border-color:#bd7086;color:#ffe4e9}
+.btn.unable{background:#142b41;border-color:#36516b;color:#d5e2ef}
+.btn.back{width:39px;min-height:39px;border-radius:12px;padding:0;font-size:19px;background:#122b40}
+.actions{display:grid;gap:9px;margin:12px 0 0}
+.three{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.three .btn{min-height:56px}
+.footnote{margin:14px 4px 0;font-size:11px;color:#8fa9bf;line-height:1.5;text-align:center}
+.start-bottom{margin-top:auto}
+.test-head{display:flex;align-items:center;justify-content:space-between;margin-top:26px}
+.step-caption{font-size:11px;letter-spacing:1.6px;color:#91b6cb;text-transform:uppercase;font-weight:800}
+.track{display:flex;gap:5px;margin-top:12px}
+.track i{height:4px;flex:1;background:#27465b;border-radius:9px}
+.track i.on{background:var(--mint)}
+.prompt{margin:21px 2px 0}
+.prompt h1{font-size:34px;margin:6px 0 5px}
+.prompt .lead{font-size:13px;min-height:22px}
+.action-zone{margin-top:auto}
+.meter-wrap{margin:8px 0 8px;border:1px solid #28516a;background:#0d273d;border-radius:15px;padding:12px 14px}
+.meter-caption{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:#a7c7db;font-weight:750}
+.meter-caption b{font-size:15px;color:#e7ffff;font-variant-numeric:tabular-nums}
+.meter{height:49px;display:flex;align-items:end;gap:3px;margin-top:11px}
+.meter span{flex:1;height:5%;border-radius:4px 4px 1px 1px;background:linear-gradient(0deg,#3ba6ff,#64ead3);opacity:.23;transition:height .07s linear}
+.status-note{font-size:11px;color:#a6bdce;text-align:center;line-height:1.45;min-height:30px;margin:10px 3px 4px}
+.results-head{margin-top:44px}.results-head h1{font-size:33px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.stat{background:#132d41;border:1px solid #2d5064;padding:14px;border-radius:17px;text-align:center}
+.stat b{display:block;font-size:29px}.stat span{color:#a8c3d2;font-size:11px}
+.report-list{display:grid;gap:6px}
+.report-line{display:flex;justify-content:space-between;gap:11px;align-items:center;padding:12px 13px;border-radius:13px;background:#10283c;border:1px solid #294a60}
+.report-line strong{font-size:13px}.report-line small{font-size:11px;font-weight:800;white-space:nowrap}
+.good{color:var(--mint)}.bad{color:var(--red)}.neutral{color:var(--gold)}
+.results-bottom{margin-top:auto}
+.recovery-note{font-size:12px;color:#cfdfed;line-height:1.5;background:#102a40;border:1px solid #3c586d;border-radius:14px;padding:12px;margin:14px 0}
+.toast{position:fixed;bottom:calc(15px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#d3ffee;color:#064639;padding:11px 16px;border-radius:14px;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap;z-index:9}.toast.show{opacity:1}
+.hide{display:none!important}
+@media (min-height:810px){.start-copy{margin-top:75px}.stage{min-height:320px}.device{height:min(44svh,405px)}}
+@media (max-height:710px){.start-copy{margin-top:19px}.stage{min-height:215px;margin:4px -3px}.device{min-height:210px;height:34svh}.prompt{margin-top:11px}.test-head{margin-top:15px}h1{font-size:30px}.prompt h1{font-size:29px}.footnote{margin-top:8px}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header class="topbar"><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="version">WEB PREVIEW · v0.3</span></header>
-<section class="intro"><div class="eyebrow">Guided iPhone diagnostics</div><h1>Hear the difference.<br>Find the problem.</h1><p>Test your iPhone's audio, review its hardware layout and explore speaker recovery with a guided workflow.</p></section>
-<div class="notice" role="note"><span aria-hidden="true">ⓘ</span><div><strong>Browser preview, not an iOS hardware diagnostic.</strong> Safari can play a test tone and capture its available microphone input with your permission. It cannot guarantee receiver routing, isolate every physical microphone or identify the exact iPhone model. All results are labelled accordingly.</div></div>
-<nav class="nav" aria-label="App sections">
-<button type="button" class="active" data-page="overview">Overview</button>
-<button type="button" data-page="tests">Guided tests</button>
-<button type="button" data-page="hardware">Hardware map</button>
-<button type="button" data-page="recovery">Speaker recovery</button>
-</nav>
 <main>
-<section id="overview" class="page active">
-<div class="layout">
-<div class="card">
-<div class="eyebrow">Step 01 / Device</div><h2>Let's identify your iPhone</h2><p>Native iOS will identify supported hardware automatically. In Safari, select your model manually for an accurate preview label.</p>
-<label class="fieldlabel" for="model">iPhone model</label>
-<select id="model"><option value="Unidentified iPhone">Choose your model</option><option>iPhone 16 Pro</option><option>iPhone 16 Pro Max</option><option>iPhone 17 Pro Max</option><option>iPhone 15 Pro</option><option>iPhone 15 Pro Max</option><option>iPhone 14 Pro</option><option>iPhone 14 Pro Max</option><option value="Other iPhone (unverified map)">Other iPhone</option></select>
-<p id="model-note" class="small" style="margin-top:11px">Exact model identification is unavailable to ordinary browser pages.</p>
-<div class="actions"><button id="begin" class="btn primary" type="button">Begin audio diagnostics →</button><button id="overview-map" class="btn ghost" type="button">View hardware map</button></div>
-</div>
-<div class="phonebox"><div class="phone-stage" id="overview-device"></div><div class="phone-label">Animated component location preview</div></div>
-</div>
-<div class="tool-list" style="margin-top:15px">
-<div class="tool-item"><span class="num">01</span><div><strong>Speaker playback</strong><span>Check clarity and distortion with a generated audio tone.</span></div></div>
-<div class="tool-item"><span class="num">02</span><div><strong>Microphone recording</strong><span>See a live dBFS meter and play back a short recording.</span></div></div>
-<div class="tool-item"><span class="num">03</span><div><strong>Clear results</strong><span>Pass, Fail or Unable to Test, with one-tap report copying.</span></div></div>
-</div>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.4</span></header>
+
+<section id="start" class="view active" aria-label="Start">
+ <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
+ <div class="stage"><svg id="start-device" class="device" viewBox="0 0 280 470" aria-label="iPhone illustration"></svg><span class="component-label">iPhone · guided diagnostics</span></div>
+ <div class="start-bottom"><button id="start-btn" class="btn main">Start audio diagnostics →</button><p class="footnote">The native iOS app will identify your exact model automatically. Safari cannot determine it reliably.</p></div>
 </section>
-<section id="tests" class="page">
-<div id="test-live" class="layout">
-<div class="phonebox"><div class="phone-stage" id="test-device"></div><div class="phone-label" id="test-phone-label">Audio component</div></div>
-<div class="card"><div class="panel-heading"><span class="eyebrow">Guided audio test</span><span class="stepcount" id="step-count"></span></div><div class="progress" id="progress"></div><div id="test-area"></div></div>
-</div>
-<div id="report-panel" class="card hidden">
-<div class="eyebrow">Completed / Browser assessment</div><h2>Your audio report</h2><p id="report-model"></p><div class="statgrid" id="stats"></div><div class="results-list" id="result-list"></div><div class="notice"><span>ⓘ</span><span>These are user-reported observations from a browser preview, not independently confirmed physical component diagnoses. The final iOS app will identify supported routes and report native measurements.</span></div>
-<div class="actions"><button id="copy-report" class="btn primary" type="button">▣ Copy complete report</button><button id="restart" class="btn ghost" type="button">↻ Start a new test</button></div>
-</div>
+
+<section id="test" class="view" aria-label="Guided test">
+ <div class="test-head"><button class="btn back" id="back" type="button" aria-label="Previous screen">←</button><span class="step-caption" id="step-label"></span></div>
+ <div class="track" id="track" aria-hidden="true"></div>
+ <div class="prompt"><span id="component" class="eyebrow"></span><h1 id="question"></h1><p id="instruction" class="lead"></p></div>
+ <div class="stage" id="test-stage"><svg id="test-device" class="device" viewBox="0 0 280 470" aria-label="iPhone hardware illustration"></svg><span class="component-label" id="highlight-label"></span></div>
+ <div class="action-zone">
+  <div id="meter-wrap" class="meter-wrap hide"><div class="meter-caption"><span>LIVE MICROPHONE INPUT</span><b id="db">— dBFS</b></div><div id="meter" class="meter" aria-label="Microphone input level"></div></div>
+  <button id="replay" class="btn subtle hide" type="button">▶ Play again</button>
+  <p class="status-note" id="test-note" role="status"></p>
+  <div class="actions"><div class="three"><button class="btn pass" data-answer="PASS">✓ Pass</button><button class="btn fail" data-answer="FAIL">✕ Fail</button></div><button class="btn unable" data-answer="CANNOT TEST">Cannot test</button></div>
+ </div>
 </section>
-<section id="hardware" class="page">
-<div class="layout">
-<div class="phonebox"><div class="phone-stage" id="map-device"></div><div class="phone-label" id="map-label">Front hardware illustration</div></div>
-<div class="card"><div class="eyebrow">Device hardware reference</div><h2 id="map-title">iPhone hardware map</h2><p id="map-desc">Select a model to explore component positions.</p><div id="map-list" class="tool-list"></div><div class="notice"><span>ⓘ</span><div>Physical openings and selectable iOS microphone data sources are different concepts. This reference does not imply all capsules can be isolated by an App Store app.</div></div>
-<button id="toggle-side" type="button" class="btn ghost" style="width:100%">Switch front / rear view</button></div>
-</div>
+
+<section id="results" class="view" aria-label="Results">
+ <div class="results-head"><span class="eyebrow">Check completed</span><h1>Audio results.</h1><p class="lead">Your observations, ready to copy or share.</p></div>
+ <div id="stats" class="stats"></div>
+ <div id="report" class="report-list"></div>
+ <div class="results-bottom"><div class="actions"><button id="copy" class="btn main">▣ Copy report</button><button id="again" class="btn subtle">↻ Run tests again</button><button id="recovery-open" class="btn subtle">Speaker recovery →</button></div><p class="footnote">Browser observations are not certified hardware diagnoses. The native app can request supported physical microphone sources and receiver routing.</p></div>
 </section>
-<section id="recovery" class="page">
-<div class="layout">
-<div class="phonebox"><div class="phone-stage" id="recovery-device"></div><div class="phone-label">Lower speaker area · illustration</div></div>
-<div class="card"><div class="eyebrow">Optional sound utility</div><h2>Speaker recovery</h2><p>Play a short, controlled low-frequency tone that may help move droplets near a speaker opening. It cannot repair damaged hardware or reliably remove compacted dirt.</p><div class="subpanel"><div class="small">Recovery tone</div><div class="freq">165 <span style="font-size:18px">Hz</span></div><div class="small">8-second capped cycle · conservative output level</div></div>
-<div class="notice"><span>!</span><div>Turn down the volume first. Don't use with headphones, at an uncomfortable level, or while charging a wet phone. Stop if the sound is uncomfortable or distorted. Drying and professional inspection may still be necessary.</div></div>
-<div class="actions"><button id="recovery-start" type="button" class="btn primary">▶ Run 8-second cycle</button><button id="recovery-stop" type="button" class="btn danger" disabled>■ Stop immediately</button><button id="recovery-test" type="button" class="btn ghost">Repeat guided tests</button></div><p id="recovery-status" class="small" role="status">Ready when you are.</p>
-</div>
-</div>
+
+<section id="recovery" class="view" aria-label="Speaker recovery">
+ <div class="test-head"><button id="recovery-back" class="btn back" type="button" aria-label="Back to results">←</button><span class="step-caption">Optional utility</span></div>
+ <div class="prompt"><span class="eyebrow">Speaker recovery</span><h1>Water-eject tone.</h1><p class="lead">A short 165 Hz tone may help shift droplets near the lower speaker grille.</p></div>
+ <div class="stage"><svg id="recovery-device" class="device" viewBox="0 0 280 470"></svg><span class="component-label">Lower loudspeaker</span></div>
+ <div class="action-zone"><p class="recovery-note">Lower the volume first. Do not use headphones or charge a wet phone. Stop if the sound becomes uncomfortable. This cannot repair hardware or guarantee water removal.</p><button id="recovery-go" class="btn main">▶ Run 8-second cycle</button><button id="recovery-stop" class="btn unable" disabled style="margin-top:9px">■ Stop</button><p id="recovery-note" class="status-note">Ready</p></div>
 </section>
+<p class="footnote">iRepair &amp; Rescue Ltd · Browser demonstration · Audio remains on device</p>
 </main>
-<footer class="footer">iRepair &amp; Rescue Ltd · Prototype v0.3 · No recordings or results are uploaded · Native iOS validation required</footer>
-</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (function(){
 'use strict';
-const testDefs=[
-{id:'receiver',title:'Receiver / earpiece',kind:'native',side:'front',focus:'top',instruction:'The receiver is the upper call speaker. Safari cannot force a private earpiece-only playback route. You can review this step, but it is not an independent browser test.',tech:'Native-only route verification'},
-{id:'speaker',title:'Speaker playback',kind:'speaker',side:'front',focus:'bottom',instruction:'Play a short test tone and listen for clarity, rattling or distortion. Safari uses the currently selected audio output (which could be headphones).',tech:'Audible browser output — not isolated stereo drivers'},
-{id:'microphone',title:'Available microphone input',kind:'mic',side:'front',focus:'bottom',instruction:'Allow microphone access, speak normally and watch the level. Record a short sample to hear it back. Safari cannot guarantee which physical capsule is used.',tech:'Live available-input dBFS meter'},
-{id:'front',title:'Front microphone source',kind:'native',side:'front',focus:'top',instruction:'The native iOS app will request a front-facing source where supported. Safari cannot reliably select and verify this physical location.',tech:'Native microphone-source validation required'},
-{id:'rear',title:'Rear microphone source',kind:'native',side:'back',focus:'top',instruction:'The native iOS app will request an available rear-oriented source where supported. Safari cannot independently confirm a rear capsule.',tech:'Native microphone-source validation required'}
-];
-const state={page:'overview',model:'Unidentified iPhone',side:'front',step:0,results:{},stream:null,analyser:null,ctx:null,anim:null,recorder:null,recorded:[],recordUrl:null,toneCtx:null,toneOsc:null,toneTimer:null,toastTimer:null};
 const $=id=>document.getElementById(id);
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function notice(msg){let e=$('toast');e.textContent=msg;e.classList.add('visible');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>e.classList.remove('visible'),2700);}
-function isVerified(){return state.model==='iPhone 16 Pro'||state.model==='iPhone 16 Pro Max';}
-function phoneSvg(side,focus){
-const highlight=(cx,cy)=>'<circle class="focus-ring" cx="'+cx+'" cy="'+cy+'" r="22" fill="none" stroke="#55e4ca" stroke-width="3"/><circle cx="'+cx+'" cy="'+cy+'" r="8" fill="#59c9fe" fill-opacity=".4" stroke="#70e9da" stroke-width="2"/>';
-let shell='<rect x="45" y="3" width="140" height="300" rx="28" fill="#99adbc"/><rect x="48" y="6" width="134" height="294" rx="25" fill="'+(side==='front'?'#0a1830':'#62788f')+'"/>';
-let inside='';
-if(side==='front'){
-inside='<rect x="54" y="13" width="122" height="279" rx="21" fill="#122b4d"/><path d="M66 241 C95 177 150 186 171 71" stroke="#2585a5" stroke-width="2" opacity=".45" fill="none"/><path d="M65 124 C118 157 107 221 166 256" stroke="#38a6af" stroke-width="2" opacity=".45" fill="none"/><rect x="92" y="15" width="47" height="13" rx="7" fill="#060d16"/><circle cx="128" cy="21" r="2" fill="#546d88"/><rect x="94" y="294" width="43" height="4" rx="2" fill="#53687e"/>';
-for(let i=0;i<4;i++){inside+='<circle cx="'+(57+i*5)+'" cy="296" r="1.4" fill="#a1bdd0"/><circle cx="'+(158+i*5)+'" cy="296" r="1.4" fill="#a1bdd0"/>';}
-inside+= highlight(focus==='top'?116:focus==='bottom'?161:116,focus==='top'?21:296);
-}else{
-inside='<rect x="55" y="14" width="75" height="79" rx="20" fill="#354f69" stroke="#b9cad3" stroke-width="2"/>';
-[[78,34],[108,58],[78,78]].forEach(p=>{inside+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="16" fill="#0c1626" stroke="#adc6d9" stroke-width="3"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="7" fill="#275077"/>';});
-inside+='<circle cx="111" cy="29" r="3" fill="#091526"/>'+highlight(110,30)+'<circle cx="115" cy="169" r="21" stroke="#aec7d7" stroke-opacity=".35" fill="none"/>';
+const steps=[
+ {id:'receiver',part:'Upper receiver',question:'Can you hear this?',instruction:'Listen at the top of your iPhone.',side:'front',focus:'top',type:'receiver'},
+ {id:'lower',part:'Lower loudspeaker',question:'Can you hear this clearly?',instruction:'Listen for crackling or distortion.',side:'front',focus:'bottom',type:'tone'},
+ {id:'left',part:'Stereo · left channel',question:'Can you hear the left channel?',instruction:'Listen to the left audio channel.',side:'front',focus:'both',type:'left'},
+ {id:'right',part:'Stereo · right channel',question:'Can you hear the right channel?',instruction:'Listen to the right audio channel.',side:'front',focus:'both',type:'right'},
+ {id:'bottomMic',part:'Lower microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'front',focus:'bottomMic',type:'mic'},
+ {id:'frontMic',part:'Front microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'front',focus:'topMic',type:'mic'},
+ {id:'rearMic',part:'Rear microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'rear',focus:'rearMic',type:'mic'}
+];
+let index=0,answers={},ctx=null,toneNodes=[],toneStopHandle=null,micStream=null,analyser=null,micCtx=null,raf=null,recoveryOsc=null,recoveryCtx=null,recoveryTimer=null;
+let currentView='start';
+let toastTimer=null;
+function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
+function stagePhone(el,side,focus){
+ const circles=(x,y)=>{
+  return '<circle cx="'+x+'" cy="'+y+'" r="27" fill="#42eac6" fill-opacity=".1" stroke="#52ebd1" stroke-opacity=".7" stroke-width="2.8" class="flash"/><circle cx="'+x+'" cy="'+y+'" r="10" fill="#5fe9d0" fill-opacity=".28" stroke="#73f4d9" stroke-width="2"/>';
+ };
+ let s='<defs><linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d0e0e8"/><stop offset=".48" stop-color="#5b7a90"/><stop offset="1" stop-color="#d6e0e8"/></linearGradient><linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#163d60"/><stop offset=".58" stop-color="#0c1e37"/><stop offset="1" stop-color="#073a4d"/></linearGradient></defs>';
+ s+='<rect x="46" y="11" width="188" height="441" rx="37" fill="url(#rim)"/><rect x="50" y="15" width="180" height="433" rx="34" fill="'+(side==='front'?'#020d1d':'#6e889d')+'"/>';
+ s+='<rect x="42" y="101" width="4" height="39" rx="2" fill="#b7cfd9"/><rect x="42" y="153" width="4" height="59" rx="2" fill="#b7cfd9"/><rect x="234" y="130" width="4" height="66" rx="2" fill="#b7cfd9"/>';
+ if(side==='front'){
+  s+='<rect x="55" y="20" width="170" height="423" rx="31" fill="url(#screen)"/><circle cx="187" cy="318" r="104" fill="none" stroke="#277fa5" stroke-opacity=".36" stroke-width="2"/><circle cx="73" cy="126" r="96" fill="none" stroke="#38d0c8" stroke-opacity=".18" stroke-width="2"/>';
+  s+='<rect x="116" y="28" width="49" height="16" rx="8" fill="#03101d"/><circle cx="154" cy="36" r="2.6" fill="#376280"/><rect x="113" y="434" width="55" height="4" rx="2" fill="#ced8e6" opacity=".5"/>';
+  s+='<rect x="112" y="5" width="57" height="3" rx="1.5" fill="#98b9c9"/><rect x="121" y="451" width="39" height="4" rx="2" fill="#889eab"/>';
+  for(let n=0;n<5;n++){s+='<circle cx="'+(73+n*6)+'" cy="451" r="1.7" fill="#aac2cf"/><circle cx="'+(187+n*6)+'" cy="451" r="1.7" fill="#aac2cf"/>';}
+  if(focus==='top'||focus==='both')s+=circles(141,36);
+  if(focus==='topMic')s+=circles(159,36);
+  if(focus==='bottom'||focus==='both')s+=circles(202,450);
+  if(focus==='bottomMic')s+=circles(85,450);
+ } else {
+  s+='<rect x="57" y="22" width="166" height="415" rx="30" fill="#54728a"/><rect x="60" y="25" width="96" height="117" rx="23" fill="#344b64" stroke="#a8bdcb" stroke-width="3"/>';
+  [[86,53],[130,92],[86,116]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="23" fill="#0c1b2f" stroke="#8eaebe" stroke-width="4"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="11" fill="#1a4665"/>';});
+  s+='<circle cx="132" cy="48" r="4" fill="#061826"/><circle cx="141" cy="259" r="29" fill="none" stroke="#bbd5e2" opacity=".17"/>';
+  if(focus==='rearMic')s+=circles(132,48);
+ }
+ el.innerHTML=s;
+ el.classList.toggle('rear',side==='rear');
+ el.setAttribute('aria-label',side==='rear'?'Rear iPhone microphone area':'Front iPhone audio component illustration');
 }
-return '<svg viewBox="0 0 230 310" role="img" aria-label="Illustrative '+side+' of iPhone with highlighted audio component">'+shell+inside+'</svg>';
+function view(name){
+ currentView=name;document.querySelectorAll('.view').forEach(e=>e.classList.toggle('active',e.id===name));
 }
-function drawPhones(){
-$('overview-device').innerHTML=phoneSvg('front','top');
-$('map-device').innerHTML=phoneSvg(state.side,state.side==='back'?'top':'top');
-$('recovery-device').innerHTML=phoneSvg('front','bottom');
+function stopTone(){
+ if(toneStopHandle)clearTimeout(toneStopHandle);toneStopHandle=null;
+ toneNodes.forEach(n=>{try{n.stop();}catch(e){}});toneNodes=[];
 }
-function go(page){
-cleanupMic();
-state.page=page;
-document.querySelectorAll('.page').forEach(n=>n.classList.toggle('active',n.id===page));
-document.querySelectorAll('.nav button').forEach(n=>n.classList.toggle('active',n.dataset.page===page));
-if(page==='hardware')renderMap();
-if(page==='tests')renderTests();
-window.scrollTo({top:0,behavior:'smooth'});
+async function ensureAudio(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)throw Error('Audio unavailable');ctx=new A();}if(ctx.state==='suspended')await ctx.resume();return ctx;}
+async function playTone(channel){
+ stopTone();
+ try{
+  const c=await ensureAudio(),now=c.currentTime;
+  const osc=c.createOscillator(),gain=c.createGain();
+  osc.type='sine';osc.frequency.setValueAtTime(630,now);osc.frequency.setValueAtTime(835,now+.35);osc.frequency.setValueAtTime(550,now+.75);
+  gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.09,now+.07);gain.gain.setValueAtTime(.09,now+1.05);gain.gain.linearRampToValueAtTime(0,now+1.35);
+  osc.connect(gain);
+  if(channel==='left'||channel==='right'){
+   const merger=c.createChannelMerger(2);
+   gain.connect(merger,0,channel==='left'?0:1);merger.connect(c.destination);
+  } else {gain.connect(c.destination);}
+  toneNodes=[osc];osc.start();osc.stop(now+1.4);
+  toneStopHandle=setTimeout(()=>{toneNodes=[];toneStopHandle=null;},1480);
+ }catch(e){toast('Audio could not start');$('test-note').textContent='Tap Play again to retry.';}
 }
-function modelChanged(){
-state.model=$('model').value;
-$('model-note').textContent=isVerified()?'Apple hardware documentation identifies front, rear and two bottom microphone openings on this model.':'This model’s exact physical microphone positions have not been independently verified in the preview catalogue.';
-drawPhones();if(state.page==='hardware')renderMap();
+function clearMic(){
+ if(raf)cancelAnimationFrame(raf);raf=null;analyser=null;
+ if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}
+ if(micCtx){micCtx.close().catch(()=>{});micCtx=null;}
 }
-function renderMap(){
-$('map-title').textContent=state.model;
-$('map-desc').textContent=isVerified()?'Verified four-microphone physical layout. This does not mean four independent selectable iOS inputs.':'Detailed physical component placements are pending model-specific verification. Generic illustration shown.';
-$('map-label').textContent=state.side==='front'?'Front / lower audio areas':'Rear camera microphone area';
-$('map-device').innerHTML=phoneSvg(state.side,'top');
-let list=isVerified()?[
-['Front microphone opening','Near the upper display / receiver assembly'],
-['Rear microphone opening','Adjacent to rear camera system'],
-['Bottom microphone 1','Lower edge of device'],
-['Bottom microphone 2','Lower edge of device']
-]:[['Upper audio region','Exact model mapping pending verification'],['Lower audio region','Exact component mapping pending verification'],['Rear camera audio region','Exact microphone count and position not assumed']];
-$('map-list').innerHTML=list.map((x,i)=>'<div class="tool-item"><span class="num">'+String(i+1).padStart(2,'0')+'</span><div><strong>'+escapeHtml(x[0])+'</strong><span>'+escapeHtml(x[1])+'</span></div></div>').join('');
+async function micStart(){
+ clearMic();$('db').textContent='— dBFS';
+ const id=steps[index].id;
+ $('test-note').textContent='Allow microphone access to see the live level.';
+ try{
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw Error('Mic access is not available');
+  const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  if(currentView!=='test'||steps[index].id!==id){stream.getTracks().forEach(t=>t.stop());return;}
+  micStream=stream;const A=window.AudioContext||window.webkitAudioContext;micCtx=new A();
+  await micCtx.resume();
+  const input=micCtx.createMediaStreamSource(stream);
+  analyser=micCtx.createAnalyser();analyser.fftSize=2048;input.connect(analyser);
+  const buf=new Float32Array(analyser.fftSize),bars=Array.from($('meter').children);
+  $('test-note').textContent='Safari uses its available microphone; native iOS can select this source.';
+  function frame(){
+   if(!analyser||currentView!=='test'||steps[index].id!==id)return;
+   analyser.getFloatTimeDomainData(buf);
+   let sum=0;for(let i=0;i<buf.length;i++)sum+=buf[i]*buf[i];
+   const rms=Math.sqrt(sum/buf.length);
+   const db=rms?Math.max(-90,20*Math.log10(rms)):-90;
+   $('db').textContent=db.toFixed(1)+' dBFS';
+   const amp=Math.max(0,Math.min(1,(db+75)/65));
+   bars.forEach((b,i)=>{const wave=Math.max(0,1-Math.abs(i-(bars.length-1)/2)/(bars.length/2));b.style.height=Math.max(5,Math.round(amp*100*(.5+.5*wave)))+'%';b.style.opacity=i/(bars.length-1)<amp+.10?'1':'.22';});
+   raf=requestAnimationFrame(frame);
+  }frame();
+ }catch(e){$('test-note').textContent='Microphone unavailable. Choose Cannot test or change Safari permission.';}
 }
-function renderTests(){
-if(state.step>=testDefs.length){renderReport();return;}
-$('report-panel').classList.add('hidden');$('test-live').classList.remove('hidden');
-const t=testDefs[state.step];
-$('step-count').textContent='Test '+(state.step+1)+' / '+testDefs.length;
-$('progress').innerHTML=testDefs.map((_,i)=>'<i class="'+(i<=state.step?'done':'')+'"></i>').join('');
-$('test-device').className='phone-stage zoom-'+t.focus;
-$('test-device').innerHTML=phoneSvg(t.side,t.focus);
-$('test-phone-label').textContent=t.side==='back'?'Rear camera audio area':t.focus==='top'?'Upper receiver / mic area':'Lower audio component area';
-let inner='<h2>'+escapeHtml(t.title)+'</h2><p class="test-description">'+escapeHtml(t.instruction)+'</p><span class="tag">'+escapeHtml(t.tech)+'</span>';
-if(t.kind==='speaker')inner+='<div class="subpanel"><button type="button" class="btn primary" id="play-test" style="width:100%">▶ Play short test tone</button><p>The selected browser audio output will play this sound. Start with a comfortable volume.</p></div>';
-if(t.kind==='native')inner+='<div class="subpanel"><strong>Not independently accessible in Safari</strong><p>For now this is a guided workflow demonstration. Choose Pass or Fail only as your own subjective observation, or select Unable to Test.</p></div>';
-if(t.kind==='mic')inner+='<div class="subpanel"><div class="meterline"><strong>Microphone input level</strong><span class="metric" id="dbfs">— dBFS</span></div><div class="meter" id="meter">'+Array.from({length:21},()=>'<i></i>').join('')+'</div><p class="small">Digital full scale (dBFS); not a calibrated sound-pressure meter.</p><button id="mic-start" type="button" class="btn primary smallbtn" style="width:100%">Allow microphone and start meter</button><button id="mic-record" type="button" class="btn ghost smallbtn hidden" style="width:100%;margin-top:8px">● Record short sample</button><audio id="mic-playback" class="audio-play hidden" controls></audio><p id="mic-info" role="status" class="small">Microphone data stays on this device and is not uploaded.</p></div>';
-inner+='<p class="fieldlabel">Your assessment</p><div class="btnrow"><button class="btn pass" type="button" data-result="PASS">✓ Pass</button><button class="btn fail" type="button" data-result="FAIL">✕ Fail</button></div><button class="btn ghost" type="button" data-result="UNABLE TO TEST" style="margin-top:9px;width:100%">Unable to test</button>';
-if(state.step>0)inner+='<button class="btn ghost smallbtn" id="previous" type="button" style="width:100%;margin-top:9px">← Previous test</button>';
-$('test-area').innerHTML=inner;
-document.querySelectorAll('[data-result]').forEach(b=>b.addEventListener('click',()=>mark(b.dataset.result)));
-if($('previous'))$('previous').addEventListener('click',()=>{cleanupMic();state.step--;renderTests();});
-if($('play-test'))$('play-test').addEventListener('click',playTestTone);
-if($('mic-start'))$('mic-start').addEventListener('click',startMic);
-if($('mic-record'))$('mic-record').addEventListener('click',toggleRecord);
+function renderTest(){
+ clearMic();stopTone();
+ const t=steps[index];view('test');
+ $('step-label').textContent='TEST '+(index+1)+' OF '+steps.length;
+ $('track').innerHTML=steps.map((_,i)=>'<i class="'+(i<=index?'on':'')+'"></i>').join('');
+ $('component').textContent=t.part;
+ $('question').textContent=t.question;
+ $('instruction').textContent=t.instruction;
+ $('highlight-label').textContent=t.part;
+ stagePhone($('test-device'),t.side,t.focus);
+ const mic=t.type==='mic';
+ $('meter-wrap').classList.toggle('hide',!mic);
+ $('replay').classList.toggle('hide',mic||t.type==='receiver');
+ if(t.type==='receiver'){$('test-note').textContent='Receiver-only audio requires the native iOS app.';}
+ else if(mic){micStart();}
+ else { $('test-note').textContent=t.type==='tone'?'Browser playback uses the active sound output.':'Left/right track tests stereo output, not an individual speaker.';playTone(t.type);}
 }
-function mark(value){let t=testDefs[state.step];state.results[t.id]={value:value,method:t.kind==='native'?'User judgement, not browser-verified':t.kind==='mic'?'User judgement based on available browser mic':'User judgement based on default browser audio route'};cleanupMic();state.step++;renderTests();}
-function audioClass(){return window.AudioContext||window.webkitAudioContext;}
-async function playTestTone(){
-try{let A=audioClass();if(!A)throw Error('Web Audio unavailable');let c=new A();await c.resume();let o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(680,c.currentTime);o.frequency.setValueAtTime(920,c.currentTime+.32);o.frequency.setValueAtTime(560,c.currentTime+.68);g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.10,c.currentTime+.06);g.gain.setValueAtTime(.10,c.currentTime+1.1);g.gain.linearRampToValueAtTime(0,c.currentTime+1.35);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+1.4);o.onended=()=>c.close();notice('Tone played through the browser audio output');}catch(e){notice('Audio could not start: '+e.message);}
-}
-async function startMic(){
-try{
-if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw Error('Mic permissions are unsupported here');
-const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
-if(state.page!=='tests'||testDefs[state.step].id!=='microphone'){stream.getTracks().forEach(x=>x.stop());return;}
-state.stream=stream;let A=audioClass();state.ctx=new A();await state.ctx.resume();
-let source=state.ctx.createMediaStreamSource(stream);state.analyser=state.ctx.createAnalyser();state.analyser.fftSize=2048;source.connect(state.analyser);$('mic-start').textContent='Microphone connected ✓';$('mic-start').disabled=true;
-if(window.MediaRecorder)$('mic-record').classList.remove('hidden');else $('mic-info').textContent='Recording unsupported in this browser; live input meter available.';
-const buf=new Float32Array(state.analyser.fftSize);
-function frame(){
-if(!state.analyser||state.page!=='tests')return;
-state.analyser.getFloatTimeDomainData(buf);let sum=0;for(let i=0;i<buf.length;i++)sum+=buf[i]*buf[i];
-let rms=Math.sqrt(sum/buf.length),db=rms>0?Math.max(-90,20*Math.log10(rms)):-90;let frac=Math.max(.02,(db+75)/75);
-if($('dbfs'))$('dbfs').textContent=db.toFixed(1)+' dBFS';
-if($('meter'))Array.from($('meter').children).forEach((bar,i)=>{let x=(i+1)/21;bar.style.height=(Math.max(5,Math.min(100,Math.round((frac*100)-(Math.abs(x-.45)*21)+(Math.sin(i*1.7+performance.now()/125)*8)))))+'%';bar.style.opacity=x<frac+.17?'1':'.22';});
-state.anim=requestAnimationFrame(frame);
-}
-frame();$('mic-info').textContent='Live browser microphone. Physical input capsule is not independently identified.';
-}catch(e){$('mic-info').textContent='Microphone unavailable: '+e.message;notice('Unable to access microphone');}
-}
-function toggleRecord(){
-const button=$('mic-record');
-if(!button||!state.stream)return;
-if(state.recorder&&state.recorder.state==='recording'){state.recorder.stop();button.textContent='● Record another sample';return;}
-try{
-state.recorded=[];state.recorder=new MediaRecorder(state.stream);
-state.recorder.ondataavailable=e=>{if(e.data.size>0)state.recorded.push(e.data);};
-state.recorder.onstop=()=>{
-if(!state.recorded.length||!$('mic-playback'))return;
-if(state.recordUrl)URL.revokeObjectURL(state.recordUrl);
-state.recordUrl=URL.createObjectURL(new Blob(state.recorded,{type:state.recorder.mimeType||'audio/mp4'}));
-$('mic-playback').src=state.recordUrl;$('mic-playback').classList.remove('hidden');
-$('mic-info').textContent='Play back your sample. The recording stays in your browser.';
-};
-state.recorder.start();button.textContent='■ Stop recording';$('mic-info').textContent='Recording… tap Stop to listen back.';
-}catch(e){$('mic-info').textContent='Recording unavailable: '+e.message;}
-}
-function cleanupMic(){
-if(state.anim)cancelAnimationFrame(state.anim);state.anim=null;
-if(state.recorder&&state.recorder.state==='recording')try{state.recorder.stop();}catch(e){}
-state.recorder=null;if(state.stream)state.stream.getTracks().forEach(t=>t.stop());state.stream=null;
-if(state.ctx)state.ctx.close().catch(()=>{});state.ctx=null;state.analyser=null;
-if(state.recordUrl)URL.revokeObjectURL(state.recordUrl);state.recordUrl=null;
-}
+function reportValue(t){return answers[t.id]||'CANNOT TEST';}
 function renderReport(){
-$('test-live').classList.add('hidden');$('report-panel').classList.remove('hidden');
-$('report-model').textContent=state.model+' · Browser preview / user-assessed results';
-let p=0,f=0,u=0;
-$('result-list').innerHTML=testDefs.map(t=>{
-let r=state.results[t.id]||{value:'UNABLE TO TEST',method:'Not completed'};
-if(r.value==='PASS')p++;else if(r.value==='FAIL')f++;else u++;
-let cls=r.value==='PASS'?'status-pass':r.value==='FAIL'?'status-fail':'status-unable';
-return '<div class="result-line"><strong>'+escapeHtml(t.title)+'</strong><span class="'+cls+'">'+escapeHtml(r.value)+'</span></div>';
-}).join('');
-$('stats').innerHTML=[['Passed',p],['Failed',f],['Untested',u]].map(z=>'<div class="stat"><b>'+z[1]+'</b><span>'+z[0]+'</span></div>').join('');
+ clearMic();stopTone();view('results');
+ let pass=0,fail=0,unable=0;
+ const labels={'PASS':'Pass','FAIL':'Fail','CANNOT TEST':'Cannot test'};
+ $('report').innerHTML=steps.map(t=>{
+  let value=reportValue(t);if(value==='PASS')pass++;else if(value==='FAIL')fail++;else unable++;
+  let klass=value==='PASS'?'good':value==='FAIL'?'bad':'neutral';
+  return '<div class="report-line"><strong>'+t.part+'</strong><small class="'+klass+'">'+labels[value]+'</small></div>';
+ }).join('');
+ $('stats').innerHTML=[['Passed',pass],['Failed',fail],['Untested',unable]].map(t=>'<div class="stat"><b>'+t[1]+'</b><span>'+t[0]+'</span></div>').join('');
 }
+function answer(value){answers[steps[index].id]=value;index++;if(index===steps.length)renderReport();else renderTest();}
 function reportText(){
-let lines=['iREPAIR AUDIO DIAGNOSTICS','BROWSER PREVIEW · USER-ASSESSED ONLY','Device: '+state.model,'Date: '+new Date().toLocaleString('en-GB'),'',...testDefs.map((t,i)=>{let r=state.results[t.id]||{value:'UNABLE TO TEST',method:'Not completed'};return String(i+1)+'. '+t.title+': '+r.value+' ('+r.method+')';}),'','IMPORTANT: Browser output cannot isolate receiver, individual physical microphones or stereo speaker drivers. Results are not certified hardware diagnoses.'];
-return lines.join('\n');
+ return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: iPhone (exact model unavailable in browser)','Assessment: user-observed browser preview','',...steps.map(t=>t.part+': '+reportValue(t)),'','Note: Safari cannot select individual built-in microphone sources or force receiver routing. Left and right audio channels are not equivalent to independently selected physical speakers. Native iOS testing is required.'].join('\n');
 }
 async function copyReport(){
-let value=reportText();try{await navigator.clipboard.writeText(value);notice('Report copied to clipboard');}catch(e){
-let a=document.createElement('textarea');a.value=value;document.body.appendChild(a);a.select();
-try{document.execCommand('copy');notice('Report copied');}catch(err){notice('Clipboard unavailable: select and copy manually');}
-a.remove();
-}}
+ const value=reportText();
+ try{await navigator.clipboard.writeText(value);toast('Report copied');}catch(e){
+  const box=document.createElement('textarea');box.value=value;document.body.appendChild(box);box.select();
+  if(document.execCommand('copy'))toast('Report copied');else toast('Clipboard unavailable');box.remove();
+ }
+}
 function stopRecovery(){
-if(state.toneTimer)clearTimeout(state.toneTimer);state.toneTimer=null;
-if(state.toneOsc){try{state.toneOsc.stop();}catch(e){}state.toneOsc=null;}
-if(state.toneCtx){state.toneCtx.close().catch(()=>{});state.toneCtx=null;}
-$('recovery-start').disabled=false;$('recovery-stop').disabled=true;
-$('recovery-status').textContent='Cycle stopped. You can re-test the speaker or run another short cycle.';
+ if(recoveryTimer)clearTimeout(recoveryTimer);recoveryTimer=null;
+ if(recoveryOsc){try{recoveryOsc.stop();}catch(e){}recoveryOsc=null;}
+ if(recoveryCtx){recoveryCtx.close().catch(()=>{});recoveryCtx=null;}
+ $('recovery-go').disabled=false;$('recovery-stop').disabled=true;
+ $('recovery-note').textContent='Stopped. You can run the sound check again.';
 }
-async function startRecovery(){
-if(state.toneCtx)return;
-try{
-let A=audioClass();if(!A)throw Error('Audio is unavailable');let c=new A();state.toneCtx=c;await c.resume();
-let oscillator=c.createOscillator(),gain=c.createGain();
-oscillator.type='sine';oscillator.frequency.value=165;gain.gain.setValueAtTime(0,c.currentTime);gain.gain.linearRampToValueAtTime(.08,c.currentTime+.25);gain.gain.setValueAtTime(.08,c.currentTime+7.5);gain.gain.linearRampToValueAtTime(0,c.currentTime+8);
-oscillator.connect(gain);gain.connect(c.destination);oscillator.start();oscillator.stop(c.currentTime+8.03);state.toneOsc=oscillator;
-$('recovery-start').disabled=true;$('recovery-stop').disabled=false;$('recovery-status').textContent='8-second tone running. Stop if uncomfortable.';
-state.toneTimer=setTimeout(()=>{stopRecovery();$('recovery-status').textContent='Cycle complete. Re-test audio to compare.';},8250);
-}catch(e){stopRecovery();notice('Recovery tone unavailable: '+e.message);}
+async function runRecovery(){
+ if(recoveryCtx)return;
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)throw Error('Audio unavailable');
+  recoveryCtx=new A();await recoveryCtx.resume();
+  const c=recoveryCtx,osc=c.createOscillator(),gain=c.createGain(),now=c.currentTime;
+  osc.type='sine';osc.frequency.value=165;
+  gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.08,now+.25);gain.gain.setValueAtTime(.08,now+7.5);gain.gain.linearRampToValueAtTime(0,now+8);
+  osc.connect(gain);gain.connect(c.destination);osc.start();osc.stop(now+8.03);recoveryOsc=osc;
+  $('recovery-go').disabled=true;$('recovery-stop').disabled=false;
+  $('recovery-note').textContent='8-second cycle playing';
+  recoveryTimer=setTimeout(()=>{stopRecovery();$('recovery-note').textContent='Complete. Re-test the loudspeaker to compare.';},8150);
+ }catch(e){stopRecovery();toast('Tone could not start');}
 }
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
-$('model').addEventListener('change',modelChanged);$('begin').addEventListener('click',()=>{state.step=0;state.results={};go('tests');});
-$('overview-map').addEventListener('click',()=>go('hardware'));
-$('toggle-side').addEventListener('click',()=>{state.side=state.side==='front'?'back':'front';renderMap();});
-$('copy-report').addEventListener('click',copyReport);
-$('restart').addEventListener('click',()=>{state.step=0;state.results={};go('tests');});
-$('recovery-start').addEventListener('click',startRecovery);$('recovery-stop').addEventListener('click',stopRecovery);
-$('recovery-test').addEventListener('click',()=>{stopRecovery();state.step=0;state.results={};go('tests');});
-window.addEventListener('pagehide',()=>{cleanupMic();if(state.toneCtx)stopRecovery();});
-drawPhones();renderMap();renderTests();
+$('start-btn').addEventListener('click',()=>{index=0;answers={};renderTest();});
+$('back').addEventListener('click',()=>{if(index){index--;renderTest();}else{clearMic();stopTone();view('start');}});
+$('replay').addEventListener('click',()=>playTone(steps[index].type));
+document.querySelectorAll('[data-answer]').forEach(e=>e.addEventListener('click',()=>answer(e.dataset.answer)));
+$('copy').addEventListener('click',copyReport);
+$('again').addEventListener('click',()=>{index=0;answers={};renderTest();});
+$('recovery-open').addEventListener('click',()=>{stagePhone($('recovery-device'),'front','bottom');view('recovery');});
+$('recovery-back').addEventListener('click',()=>{stopRecovery();view('results');});
+$('recovery-go').addEventListener('click',runRecovery);
+$('recovery-stop').addEventListener('click',stopRecovery);
+window.addEventListener('pagehide',()=>{clearMic();stopTone();stopRecovery();if(ctx)ctx.close().catch(()=>{});});
+$('meter').innerHTML=Array.from({length:25},()=>'<span></span>').join('');
+stagePhone($('start-device'),'front','both');
 })();
 </script>
 </body>
