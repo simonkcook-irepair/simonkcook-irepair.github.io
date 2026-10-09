@@ -88,7 +88,7 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </head>
 <body>
 <main>
-<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v1.6</span></header>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v1.7</span></header>
 
 <section id="start" class="view active" aria-label="Start">
  <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
@@ -275,9 +275,16 @@ function clearMic(){
  if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}
  if(micCtx){micCtx.close().catch(()=>{});micCtx=null;}
 }
+const micEvidence={};
+function micEvidenceText(id){
+ const e=micEvidence[id];if(!e)return 'Not measured';
+ if(e.error)return 'Capture unavailable: '+e.error;
+ return (e.strong>=5?'SIGNAL DETECTED':e.samples<8?'INSUFFICIENT DATA':'NO CLEAR SIGNAL DETECTED')+'; peak '+e.peak.toFixed(1)+' dBFS; mean '+(e.samples?e.sum/e.samples:-90).toFixed(1)+' dBFS; '+e.samples+' measurement frames';
+}
 async function micStart(){
  clearMic();$('db').textContent='— dBFS';
  const id=steps[index].id;
+ const evidence={samples:0,sum:0,peak:-90,strong:0,error:null};micEvidence[id]=evidence;
  $('test-note').textContent='Allow microphone access to see the live level.';
  try{
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw Error('Mic access is not available');
@@ -295,12 +302,13 @@ async function micStart(){
    let sum=0;for(let i=0;i<buf.length;i++)sum+=buf[i]*buf[i];
    const rms=Math.sqrt(sum/buf.length);
    const db=rms?Math.max(-90,20*Math.log10(rms)):-90;
+   evidence.samples++;evidence.sum+=db;evidence.peak=Math.max(evidence.peak,db);if(db>-48)evidence.strong++;
    $('db').textContent=db.toFixed(1)+' dBFS';
    const amp=Math.max(0,Math.min(1,(db+75)/65));
    bars.forEach((b,i)=>{const wave=Math.max(0,1-Math.abs(i-(bars.length-1)/2)/(bars.length/2));b.style.height=Math.max(5,Math.round(amp*100*(.5+.5*wave)))+'%';b.style.opacity=i/(bars.length-1)<amp+.10?'1':'.22';});
    raf=requestAnimationFrame(frame);
   }frame();
- }catch(e){$('test-note').textContent='Microphone unavailable. Choose Cannot test or change Safari permission.';}
+ }catch(e){evidence.error=e&&e.name?e.name:'Input unavailable';$('test-note').textContent='Microphone unavailable. Choose Cannot test or change Safari permission.';}
 }
 function renderTest(){
  clearMic();stopTone();
@@ -329,13 +337,13 @@ function renderReport(){
  $('report').innerHTML=steps.map(t=>{
   let value=reportValue(t);if(value==='PASS')pass++;else if(value==='FAIL')fail++;else unable++;
   let klass=value==='PASS'?'good':value==='FAIL'?'bad':'neutral';
-  return '<div class="report-line"><strong>'+t.part+'</strong><small class="'+klass+'">'+labels[value]+'</small></div>';
+  return '<div class="report-line"><strong>'+t.part+(t.type==='mic'?'<span style="display:block;font-size:10px;font-weight:500;margin-top:5px;line-height:1.4;color:#52718c">'+micEvidenceText(t.id)+'</span>':'')+'</strong><small class="'+klass+'">'+labels[value]+'</small></div>';
  }).join('');
  $('stats').innerHTML=[['Passed',pass],['Failed',fail],['Untested',unable]].map(t=>'<div class="stat"><b>'+t[1]+'</b><span>'+t[0]+'</span></div>').join('');
 }
 function answer(value){answers[steps[index].id]=value;index++;if(index===steps.length)renderReport();else renderTest();}
 function reportText(){
- return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: '+(selectedModel?selectedModel.name:'Unidentified iPhone'),'Assessment: user-observed browser preview','',...steps.map(t=>t.part+': '+reportValue(t)),'','Note: iPhone model was selected by the customer, not automatically detected. Model-matched drawings show approximate audio areas. Safari cannot select individual physical microphone sources or isolate receiver output. Stereo tracks do not confirm independent physical speaker operation. Native iOS testing is required.'].join('\n');
+ return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: '+(selectedModel?selectedModel.name:'Unidentified iPhone'),'Assessment: user-observed browser preview with automatically measured microphone input','',...steps.map(t=>t.part+': '+reportValue(t)+(t.type==='mic'?' | Browser input: '+micEvidenceText(t.id):'')),'','Note: iPhone model was selected by the customer, not automatically detected. Model-matched drawings show approximate audio areas. Microphone steps may sample the same browser-selected input; these are not independent physical microphone measurements. Safari cannot select individual physical microphone sources or isolate receiver output. Stereo tracks do not confirm independent physical speaker operation. Native iOS testing is required.'].join('\n');
 }
 async function copyReport(){
  const value=reportText();
@@ -394,14 +402,14 @@ async function runRecovery(){
   recoveryTimer=setTimeout(()=>{if(version!==cleanVersion)return;stopRecovery();$('recovery-note').textContent='Cycle complete. Re-test the speaker to compare.';},8120);
  }catch(e){stopRecovery();toast('Sound cycle could not start');}
 }
-$('start-btn').addEventListener('click',()=>{if(!selectedModel)return;index=0;answers={};renderTest();});
+$('start-btn').addEventListener('click',()=>{if(!selectedModel)return;index=0;answers={};Object.keys(micEvidence).forEach(k=>delete micEvidence[k]);renderTest();});
 $('change-model').addEventListener('click',()=>{clearMic();stopTone();view('start');showDevice();});
 $('quick-clear').addEventListener('click',()=>{stopTone();displayRecovery();view('recovery');});
 $('back').addEventListener('click',()=>{if(index){index--;renderTest();}else{clearMic();stopTone();view('start');}});
 $('replay').addEventListener('click',()=>{if(toneNodes.length)stopTone();else playTone(steps[index].type);});
 document.querySelectorAll('[data-answer]').forEach(e=>e.addEventListener('click',()=>answer(e.dataset.answer)));
 $('copy').addEventListener('click',copyReport);
-$('again').addEventListener('click',()=>{index=0;answers={};renderTest();});
+$('again').addEventListener('click',()=>{index=0;answers={};Object.keys(micEvidence).forEach(k=>delete micEvidence[k]);renderTest();});
 $('recovery-open').addEventListener('click',()=>{displayRecovery();view('recovery');});
 document.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',()=>{stopRecovery();cleanTarget=b.dataset.target;if(cleanTarget==='upper'&&cleanMode==='water')cleanMode='sweep';displayRecovery();}));
 document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.mode==='water'&&cleanTarget==='upper')cleanTarget='lower';stopRecovery();cleanMode=b.dataset.mode;displayRecovery();}));
