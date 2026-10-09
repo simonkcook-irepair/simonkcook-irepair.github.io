@@ -88,7 +88,7 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </head>
 <body>
 <main>
-<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v1.3</span></header>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v1.4</span></header>
 
 <section id="start" class="view active" aria-label="Start">
  <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
@@ -152,7 +152,7 @@ let index=0,answers={},ctx=null,toneNodes=[],toneStopHandle=null,micStream=null,
 let toneVersion=0,cleanTarget='lower',cleanMode='sweep',cleanVersion=0;
 let currentView='start';
 let soundStyle=0;
-const soundNames=['Future Pulse','Future Pulse · Lift','Sonic Motion','Sonic Motion · Flow','Digital Atmosphere','Digital Atmosphere · Drive'];
+const soundNames=['Neon Groove','Liquid Bass','Orbit Rhythm','Future Funk','Deep Space','Studio Beat'];
 let toastTimer=null;
 function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
 function stagePhone(el,side,focus){
@@ -220,50 +220,55 @@ async function playTone(channel){
   if(toneVersion!==run||currentView!=='test'||steps[index].id!==activeId)return;
   const rate=c.sampleRate,duration=4,length=Math.round(rate*duration),buffer=c.createBuffer(2,length,rate);
   const left=buffer.getChannelData(0),right=buffer.getChannelData(1);
-  const tau=2*Math.PI,style=soundStyle;
-  const smooth=(x,a,b)=>{const q=Math.max(0,Math.min(1,(x-a)/(b-a)));return q*q*(3-2*q);};
-  const note=(t,start,freq,decay,weight)=>{
-   const age=t-start;if(age<0||age>decay)return 0;
-   const env=smooth(age,0,.022)*(1-smooth(age,decay*.62,decay));
-   return weight*env*(Math.sin(tau*freq*age)+.14*Math.sin(tau*freq*2*age));
+  const TAU=2*Math.PI,style=soundStyle;
+  const bpm=[112,104,122,118,94,126][style],beat=60/bpm,bar=beat*4;
+  const soft=(v,a,b)=>{const x=Math.max(0,Math.min(1,(v-a)/(b-a)));return x*x*(3-2*x)};
+  const tones=[[130.81,155.56,196,233.08],[110,130.81,164.81,196],[146.83,174.61,220,261.63],[130.81,164.81,196,261.63],[98,116.54,146.83,174.61],[123.47,146.83,185,220]][style];
+  const note=(t,st,f,len,amp,bright)=>{
+   const x=t-st;if(x<0||x>len)return 0;
+   const e=soft(x,0,.012)*(1-soft(x,len*.48,len));
+   return amp*e*(Math.sin(TAU*f*x)+bright*.22*Math.sin(TAU*f*2*x)+bright*.07*Math.sin(TAU*f*3*x));
   };
-  const softBeat=(t,start,weight)=>{
-   const age=t-start;if(age<0||age>.30)return 0;
-   const env=Math.exp(-age*17)*smooth(age,0,.009);
-   const phase=tau*(95*age+70*(1-Math.exp(-age*21))/21);
-   return Math.sin(phase)*env*weight;
+  const kick=(t,st,amp)=>{
+   const x=t-st;if(x<0||x>.31)return 0;
+   return amp*Math.sin(TAU*(55*x+95*(1-Math.exp(-24*x))/24))*Math.exp(-x*17)*soft(x,0,.005);
+  };
+  const hat=(t,st,amp,seed)=>{
+   const x=t-st;if(x<0||x>.095)return 0;
+   const n=Math.sin((t+seed)*12721.34)*Math.sin((t+seed)*16413.11);
+   return amp*n*Math.exp(-x*49)*soft(x,0,.003);
+  };
+  const chord=(t,st,root,len,amp)=>{
+   const x=t-st;if(x<0||x>len)return 0;
+   const e=soft(x,0,.09)*(1-soft(x,len*.7,len));
+   return amp*e*(Math.sin(TAU*root*x)+.46*Math.sin(TAU*root*1.2599*x)+.32*Math.sin(TAU*root*1.4983*x));
   };
   for(let i=0;i<length;i++){
-   const t=i/rate,fade=smooth(t,0,.055)*(1-smooth(t,duration-.13,duration));
-   const pulse=(.5+.5*Math.sin(tau*.5*t));
+   const t=i/rate,fade=soft(t,0,.045)*(1-soft(t,duration-.11,duration));
    let wave=0;
-   if(style===0||style===1){
-    const faster=style===1,spacing=faster?.5:1;
-    for(let k=0;k<duration/spacing;k++){
-     const st=k*spacing;
-     wave+=softBeat(t,st,faster?.19:.23);
-     wave+=note(t,st+.13,style===1?392:329.63,.40,.095);
-     wave+=note(t,st+.29,style===1?587.33:493.88,.32,.055);
+   for(let k=0;k<Math.ceil(duration/beat)+1;k++){
+    const st=k*beat;
+    if(style!==4||k%2===0)wave+=kick(t,st,style===1?.19:.15);
+    if(style===0||style===2||style===3||style===5){
+     wave+=hat(t,st+beat*.5,.033,k);
+     if(style===3||style===5)wave+=hat(t,st+beat*.75,.021,k+9);
     }
-    wave+=.018*Math.sin(tau*164.81*t)*(.3+.7*pulse);
-   }else if(style===2||style===3){
-    const fast=style===3;
-    const sweep=fast?(.7+.3*Math.sin(tau*.33*t)):(.6+.4*Math.sin(tau*.25*t));
-    const freq=fast?420+240*sweep:330+170*sweep;
-    const phase=tau*((fast?420:330)*t+(fast?240:170)*(.6*t-(fast?.3:.4)*Math.sin(tau*(fast?.33:.25)*t)/(tau*(fast?.33:.25))));
-    wave=.10*Math.sin(phase)+.035*Math.sin(phase*1.005)+.020*Math.sin(tau*freq*.5*t);
-    wave*=.55+.45*Math.sin(Math.PI*t/duration)**2;
-    if(fast){for(let k=0;k<8;k++)wave+=note(t,k*.5+.05,261.63*Math.pow(2,(k%4)*2/12),.28,.045);}
-   }else{
-    const drive=style===5;
-    const pad=(Math.sin(tau*220*t)+.36*Math.sin(tau*330*t)+.22*Math.sin(tau*440*t))*(.025+.022*pulse);
-    wave+=pad;
-    const notes=drive?[261.63,329.63,392,523.25,392,329.63,293.66,392]:[261.63,329.63,392,329.63];
-    const step=drive?.5:1;
-    for(let k=0;k<notes.length;k++)wave+=note(t,k*step,notes[k],drive?.40:.72,drive?.10:.095);
-    if(drive){for(let k=0;k<8;k++)wave+=softBeat(t,k*.5,.13);}
+    if(style===1||style===4)wave+=hat(t,st+beat*.5,.014,k);
    }
-   const sample=Math.tanh(wave*1.4)*fade*.7;
+   const step=beat*(style===4?2:1);
+   for(let k=0;k<Math.ceil(duration/step)+1;k++){
+    const st=k*step;
+    const f=tones[[0,2,1,3,2,1,3,0][k%8]];
+    wave+=note(t,st+beat*.06,f,Math.min(step*.76,.65),style===4?.09:.13,style===3?.7:.28);
+    if(style===0||style===2||style===3||style===5)
+     wave+=note(t,st+beat*.43,f*2,.19,.035,.35);
+   }
+   if(style===1||style===4||style===5){
+    for(let k=0;k<Math.ceil(duration/bar)+1;k++)
+     wave+=chord(t,k*bar,tones[k%4]*2,bar*.9,style===4?.052:.034);
+   }
+   if(style===2||style===4)wave+=.018*Math.sin(TAU*220*t)*(.5+.5*Math.sin(TAU*.23*t));
+   const sample=Math.tanh(wave*1.5)*fade*.78;
    if(channel==='left')left[i]=sample;
    else if(channel==='right')right[i]=sample;
    else{left[i]=sample;right[i]=sample;}
