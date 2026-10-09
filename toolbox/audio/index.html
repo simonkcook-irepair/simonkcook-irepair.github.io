@@ -88,7 +88,7 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </head>
 <body>
 <main>
-<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v1.2</span></header>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v1.3</span></header>
 
 <section id="start" class="view active" aria-label="Start">
  <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
@@ -152,7 +152,7 @@ let index=0,answers={},ctx=null,toneNodes=[],toneStopHandle=null,micStream=null,
 let toneVersion=0,cleanTarget='lower',cleanMode='sweep',cleanVersion=0;
 let currentView='start';
 let soundStyle=0;
-const soundNames=['Crystal Chime','Soft Marimba','Glass Bells','Warm Piano','Digital Pulse','Gentle Sweep'];
+const soundNames=['Future Pulse','Future Pulse · Lift','Sonic Motion','Sonic Motion · Flow','Digital Atmosphere','Digital Atmosphere · Drive'];
 let toastTimer=null;
 function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
 function stagePhone(el,side,focus){
@@ -218,23 +218,55 @@ async function playTone(channel){
  try{
   const c=await ensureAudio();
   if(toneVersion!==run||currentView!=='test'||steps[index].id!==activeId)return;
-  const rate=c.sampleRate,duration=2.4,length=Math.round(rate*duration),buffer=c.createBuffer(2,length,rate);
+  const rate=c.sampleRate,duration=4,length=Math.round(rate*duration),buffer=c.createBuffer(2,length,rate);
   const left=buffer.getChannelData(0),right=buffer.getChannelData(1);
-  const notes=[523.25,659.25,783.99,659.25],noteDuration=.6;
+  const tau=2*Math.PI,style=soundStyle;
+  const smooth=(x,a,b)=>{const q=Math.max(0,Math.min(1,(x-a)/(b-a)));return q*q*(3-2*q);};
+  const note=(t,start,freq,decay,weight)=>{
+   const age=t-start;if(age<0||age>decay)return 0;
+   const env=smooth(age,0,.022)*(1-smooth(age,decay*.62,decay));
+   return weight*env*(Math.sin(tau*freq*age)+.14*Math.sin(tau*freq*2*age));
+  };
+  const softBeat=(t,start,weight)=>{
+   const age=t-start;if(age<0||age>.30)return 0;
+   const env=Math.exp(-age*17)*smooth(age,0,.009);
+   const phase=tau*(95*age+70*(1-Math.exp(-age*21))/21);
+   return Math.sin(phase)*env*weight;
+  };
   for(let i=0;i<length;i++){
-   const t=i/rate,idx=Math.min(3,Math.floor(t/noteDuration)),local=t-idx*noteDuration;
-   const base=notes[idx],phase=2*Math.PI*base*t;
-   const attack=Math.min(1,local/.014);
-   const release=Math.min(1,(noteDuration-local)/.08);
-   let wave=0,env=0;
-   if(soundStyle===0){env=attack*Math.exp(-local*3.2)*release;wave=Math.sin(phase)+.22*Math.sin(phase*2)+.10*Math.sin(phase*3);}
-   if(soundStyle===1){env=attack*Math.exp(-local*5)*release;wave=Math.sin(phase)+.32*Math.sin(phase*3)+.15*Math.sin(phase*5);}
-   if(soundStyle===2){env=attack*Math.exp(-local*2.3)*release;wave=Math.sin(phase)+.32*Math.sin(phase*2.01)+.17*Math.sin(phase*3.98);}
-   if(soundStyle===3){env=attack*Math.exp(-local*3.4)*release;wave=Math.sin(phase)+.18*Math.sin(phase*2)+.06*Math.sin(phase*3);}
-   if(soundStyle===4){const gate=local<.33?Math.min(1,local/.02,(.33-local)/.05):0;env=Math.max(0,gate);wave=.82*Math.sin(phase)+.18*Math.sin(phase*2);}
-   if(soundStyle===5){const freq=370+530*(.5-.5*Math.cos(2*Math.PI*t/duration));env=Math.min(1,t/.08,(duration-t)/.12);wave=Math.sin(2*Math.PI*(370*t+530*(t/2-duration*Math.sin(2*Math.PI*t/duration)/(4*Math.PI)))) ;}
-   const sample=Math.max(-.18,Math.min(.18,wave*env*.09));
-   if(channel==='left')left[i]=sample;else if(channel==='right')right[i]=sample;else{left[i]=sample;right[i]=sample;}
+   const t=i/rate,fade=smooth(t,0,.055)*(1-smooth(t,duration-.13,duration));
+   const pulse=(.5+.5*Math.sin(tau*.5*t));
+   let wave=0;
+   if(style===0||style===1){
+    const faster=style===1,spacing=faster?.5:1;
+    for(let k=0;k<duration/spacing;k++){
+     const st=k*spacing;
+     wave+=softBeat(t,st,faster?.19:.23);
+     wave+=note(t,st+.13,style===1?392:329.63,.40,.095);
+     wave+=note(t,st+.29,style===1?587.33:493.88,.32,.055);
+    }
+    wave+=.018*Math.sin(tau*164.81*t)*(.3+.7*pulse);
+   }else if(style===2||style===3){
+    const fast=style===3;
+    const sweep=fast?(.7+.3*Math.sin(tau*.33*t)):(.6+.4*Math.sin(tau*.25*t));
+    const freq=fast?420+240*sweep:330+170*sweep;
+    const phase=tau*((fast?420:330)*t+(fast?240:170)*(.6*t-(fast?.3:.4)*Math.sin(tau*(fast?.33:.25)*t)/(tau*(fast?.33:.25))));
+    wave=.10*Math.sin(phase)+.035*Math.sin(phase*1.005)+.020*Math.sin(tau*freq*.5*t);
+    wave*=.55+.45*Math.sin(Math.PI*t/duration)**2;
+    if(fast){for(let k=0;k<8;k++)wave+=note(t,k*.5+.05,261.63*Math.pow(2,(k%4)*2/12),.28,.045);}
+   }else{
+    const drive=style===5;
+    const pad=(Math.sin(tau*220*t)+.36*Math.sin(tau*330*t)+.22*Math.sin(tau*440*t))*(.025+.022*pulse);
+    wave+=pad;
+    const notes=drive?[261.63,329.63,392,523.25,392,329.63,293.66,392]:[261.63,329.63,392,329.63];
+    const step=drive?.5:1;
+    for(let k=0;k<notes.length;k++)wave+=note(t,k*step,notes[k],drive?.40:.72,drive?.10:.095);
+    if(drive){for(let k=0;k<8;k++)wave+=softBeat(t,k*.5,.13);}
+   }
+   const sample=Math.tanh(wave*1.4)*fade*.7;
+   if(channel==='left')left[i]=sample;
+   else if(channel==='right')right[i]=sample;
+   else{left[i]=sample;right[i]=sample;}
   }
   const source=c.createBufferSource();source.buffer=buffer;source.loop=true;source.connect(c.destination);toneNodes=[source];source.start();
   $('replay').textContent='■ Pause sound';
@@ -299,7 +331,7 @@ function renderTest(){
  $('sound-chooser').classList.toggle('hide',mic);
  if(!mic)renderSoundChooser();
  if(mic){micStart();}
- else { $('test-note').textContent='Sound repeats until you select a result. Stereo tracks do not guarantee isolated physical speakers.';playTone(t.type);}
+ else { $('test-note').textContent='Choose a sound above. It loops until you select a result. Browser audio cannot isolate a physical speaker.';playTone(t.type);}
 }
 function reportValue(t){return answers[t.id]||'CANNOT TEST';}
 function renderReport(){
