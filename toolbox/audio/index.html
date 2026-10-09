@@ -38,6 +38,8 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 .btn.fail{background:#4b2a3b;border-color:#bd7086;color:#ffe4e9}
 .btn.unable{background:#142b41;border-color:#36516b;color:#d5e2ef}
 .btn.back{width:39px;min-height:39px;border-radius:12px;padding:0;font-size:19px;background:#122b40}
+.btn.selected[aria-pressed="true"]{background:#155873;border-color:#75d8ed;color:#fff;box-shadow:inset 0 0 0 1px #68d9ee54}
+#clean-target .btn,#clean-mode .btn{font-size:12px;line-height:1.25;min-height:48px}
 .actions{display:grid;gap:9px;margin:12px 0 0}
 .three{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .three .btn{min-height:56px}
@@ -77,12 +79,12 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </head>
 <body>
 <main>
-<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.5</span></header>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.6</span></header>
 
 <section id="start" class="view active" aria-label="Start">
  <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
  <div class="stage"><svg id="start-device" class="device" viewBox="0 0 280 470" aria-label="iPhone illustration"></svg><span class="component-label">iPhone · guided diagnostics</span></div>
- <div class="start-bottom"><button id="start-btn" class="btn main">Start audio diagnostics →</button><p class="footnote">Model identification and component routing will be automatic in the native iPhone app.</p></div>
+ <div class="start-bottom"><button id="start-btn" class="btn main">Start audio diagnostics →</button><button id="quick-clear" class="btn subtle" style="margin-top:10px">✦ Speaker clearing</button><p class="footnote">Model identification and component routing will be automatic in the native iPhone app.</p></div>
 </section>
 
 <section id="test" class="view" aria-label="Guided test">
@@ -92,7 +94,7 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
  <div class="stage" id="test-stage"><svg id="test-device" class="device" viewBox="0 0 280 470" aria-label="iPhone hardware illustration"></svg><span class="component-label" id="highlight-label"></span></div>
  <div class="action-zone">
   <div id="meter-wrap" class="meter-wrap hide"><div class="meter-caption"><span>LIVE MICROPHONE INPUT</span><b id="db">— dBFS</b></div><div id="meter" class="meter" aria-label="Microphone input level"></div></div>
-  <button id="replay" class="btn subtle hide" type="button">▶ Play again</button>
+  <button id="replay" class="btn subtle hide" type="button">■ Pause sound</button>
   <p class="status-note" id="test-note" role="status"></p>
   <div class="actions"><div class="three"><button class="btn pass" data-answer="PASS">✓ Pass</button><button class="btn fail" data-answer="FAIL">✕ Fail</button></div><button class="btn unable" data-answer="CANNOT TEST">Cannot test</button></div>
  </div>
@@ -107,9 +109,16 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 
 <section id="recovery" class="view" aria-label="Speaker recovery">
  <div class="test-head"><button id="recovery-back" class="btn back" type="button" aria-label="Back to results">←</button><span class="step-caption">Optional utility</span></div>
- <div class="prompt"><span class="eyebrow">Speaker recovery</span><h1>Water-eject tone.</h1><p class="lead">A short 165 Hz tone may help shift droplets near the lower speaker grille.</p></div>
- <div class="stage"><svg id="recovery-device" class="device" viewBox="0 0 280 470"></svg><span class="component-label">Lower loudspeaker</span></div>
- <div class="action-zone"><p class="recovery-note">Lower the volume first. Do not use headphones or charge a wet phone. Stop if the sound becomes uncomfortable. This cannot repair hardware or guarantee water removal.</p><button id="recovery-go" class="btn main">▶ Run 8-second cycle</button><button id="recovery-stop" class="btn unable" disabled style="margin-top:9px">■ Stop</button><p id="recovery-note" class="status-note">Ready</p></div>
+ <div class="prompt"><span class="eyebrow">Optional sound utility</span><h1>Speaker clearing.</h1><p class="lead">Choose a speaker area and a short sound cycle.</p></div>
+ <div class="stage"><svg id="recovery-device" class="device" viewBox="0 0 280 470"></svg><span class="component-label" id="recovery-label">Lower loudspeaker</span></div>
+ <div class="action-zone">
+ <p class="step-caption" style="margin:0 0 7px">Speaker area</p>
+ <div class="three" id="clean-target"><button class="btn subtle selected" type="button" data-target="upper" aria-pressed="false">Upper earpiece</button><button class="btn subtle selected" type="button" data-target="lower" aria-pressed="true">Lower speaker</button></div>
+ <p class="step-caption" style="margin:13px 0 7px">Sound cycle</p>
+ <div class="three" id="clean-mode"><button class="btn subtle selected" type="button" data-mode="sweep" aria-pressed="true">High-frequency sweep</button><button class="btn subtle" type="button" data-mode="water" aria-pressed="false">Water eject · 165 Hz</button></div>
+ <p id="clean-routing" class="status-note">Safari cannot isolate an individual physical speaker.</p>
+ <p class="recovery-note">Start at low volume; do not use headphones or charge a wet phone. Stop if uncomfortable. Sound cannot reliably remove dirt, repair damage or guarantee water removal.</p>
+ <button id="recovery-go" class="btn main">▶ Run 8-second cycle</button><button id="recovery-stop" class="btn unable" disabled style="margin-top:9px">■ Stop</button><p id="recovery-note" class="status-note">Ready</p></div>
 </section>
 <p class="footnote">iRepair &amp; Rescue Ltd · Browser demonstration · Audio remains on device</p>
 </main>
@@ -126,6 +135,7 @@ const steps=[
  {id:'rearMic',part:'Rear microphone',question:'Speak now.',instruction:'Watch the live sound meter respond.',side:'rear',focus:'rearMic',type:'mic'}
 ];
 let index=0,answers={},ctx=null,toneNodes=[],toneStopHandle=null,micStream=null,analyser=null,micCtx=null,raf=null,recoveryOsc=null,recoveryCtx=null,recoveryTimer=null;
+let toneVersion=0,cleanTarget='lower',cleanMode='sweep',cleanVersion=0;
 let currentView='start';
 let toastTimer=null;
 function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
@@ -159,25 +169,38 @@ function view(name){
  currentView=name;document.querySelectorAll('.view').forEach(e=>e.classList.toggle('active',e.id===name));
 }
 function stopTone(){
+ toneVersion++;
  if(toneStopHandle)clearTimeout(toneStopHandle);toneStopHandle=null;
  toneNodes.forEach(n=>{try{n.stop();}catch(e){}});toneNodes=[];
+ const b=$('replay');if(b)b.textContent='▶ Resume sound';
 }
-async function ensureAudio(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)throw Error('Audio unavailable');ctx=new A();}if(ctx.state==='suspended')await ctx.resume();return ctx;}
+async function ensureAudio(){
+ if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)throw Error('Audio unavailable');ctx=new A();}
+ if(ctx.state==='suspended')await ctx.resume();
+ return ctx;
+}
 async function playTone(channel){
  stopTone();
+ const run=toneVersion,activeId=steps[index].id;
  try{
-  const c=await ensureAudio(),now=c.currentTime;
-  const osc=c.createOscillator(),gain=c.createGain();
-  osc.type='sine';osc.frequency.setValueAtTime(630,now);osc.frequency.setValueAtTime(835,now+.35);osc.frequency.setValueAtTime(550,now+.75);
-  gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.09,now+.07);gain.gain.setValueAtTime(.09,now+1.05);gain.gain.linearRampToValueAtTime(0,now+1.35);
-  osc.connect(gain);
-  if(channel==='left'||channel==='right'){
-   const merger=c.createChannelMerger(2);
-   gain.connect(merger,0,channel==='left'?0:1);merger.connect(c.destination);
-  } else {gain.connect(c.destination);}
-  toneNodes=[osc];osc.start();osc.stop(now+1.4);
-  toneStopHandle=setTimeout(()=>{toneNodes=[];toneStopHandle=null;},1480);
- }catch(e){toast('Audio could not start');$('test-note').textContent='Tap Play again to retry.';}
+  const c=await ensureAudio();
+  if(toneVersion!==run||currentView!=='test'||steps[index].id!==activeId)return;
+  const rate=c.sampleRate,duration=1.8,length=Math.round(rate*duration),buffer=c.createBuffer(2,length,rate);
+  const left=buffer.getChannelData(0),right=buffer.getChannelData(1);
+  const sections=[630,835,550];
+  // Brief note bursts, looping seamlessly until the technician chooses a result.
+  for(let i=0;i<length;i++){
+   const t=i/rate,cycle=t%0.6,idx=Math.min(2,Math.floor(t/0.6));
+   const active=cycle<0.46;
+   const envelope=active?Math.min(1,cycle/.035,(.46-cycle)/.045):0;
+   const wave=Math.sin(2*Math.PI*sections[idx]*t)*Math.max(0,envelope)*.085;
+   if(channel==='left')left[i]=wave;
+   else if(channel==='right')right[i]=wave;
+   else {left[i]=wave;right[i]=wave;}
+  }
+  const source=c.createBufferSource();source.buffer=buffer;source.loop=true;source.connect(c.destination);toneNodes=[source];source.start();
+  $('replay').textContent='■ Pause sound';
+ }catch(e){toast('Audio could not start');$('test-note').textContent='Tap Resume sound to try again.';}
 }
 function clearMic(){
  if(raf)cancelAnimationFrame(raf);raf=null;analyser=null;
@@ -225,7 +248,7 @@ function renderTest(){
  $('meter-wrap').classList.toggle('hide',!mic);
  $('replay').classList.toggle('hide',mic);
  if(mic){micStart();}
- else { $('test-note').textContent='Stereo-channel preview · Safari cannot isolate a physical speaker.';playTone(t.type);}
+ else { $('test-note').textContent='Sound repeats until you select a result. Stereo tracks do not guarantee isolated physical speakers.';playTone(t.type);}
 }
 function reportValue(t){return answers[t.id]||'CANNOT TEST';}
 function renderReport(){
@@ -250,34 +273,66 @@ async function copyReport(){
   if(document.execCommand('copy'))toast('Report copied');else toast('Clipboard unavailable');box.remove();
  }
 }
+function displayRecovery(){
+ stagePhone($('recovery-device'),'front',cleanTarget==='upper'?'top':'bottom');
+ $('recovery-label').textContent=cleanTarget==='upper'?'Upper earpiece area':'Lower loudspeaker area';
+ document.querySelectorAll('[data-target]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.target===cleanTarget)));
+ document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===cleanMode)));
+ $('clean-routing').textContent='Safari plays through its current output; highlighting does not isolate this speaker.';
+ $('recovery-go').textContent=cleanMode==='sweep'?'▶ Run high-frequency sweep':'▶ Run water-eject cycle';
+}
 function stopRecovery(){
+ cleanVersion++;
  if(recoveryTimer)clearTimeout(recoveryTimer);recoveryTimer=null;
  if(recoveryOsc){try{recoveryOsc.stop();}catch(e){}recoveryOsc=null;}
  if(recoveryCtx){recoveryCtx.close().catch(()=>{});recoveryCtx=null;}
  $('recovery-go').disabled=false;$('recovery-stop').disabled=true;
- $('recovery-note').textContent='Stopped. You can run the sound check again.';
+ $('recovery-note').textContent='Stopped. Ready for another cycle.';
 }
 async function runRecovery(){
  if(recoveryCtx)return;
+ const version=++cleanVersion;
  try{
   const A=window.AudioContext||window.webkitAudioContext;if(!A)throw Error('Audio unavailable');
-  recoveryCtx=new A();await recoveryCtx.resume();
-  const c=recoveryCtx,osc=c.createOscillator(),gain=c.createGain(),now=c.currentTime;
-  osc.type='sine';osc.frequency.value=165;
-  gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.08,now+.25);gain.gain.setValueAtTime(.08,now+7.5);gain.gain.linearRampToValueAtTime(0,now+8);
-  osc.connect(gain);gain.connect(c.destination);osc.start();osc.stop(now+8.03);recoveryOsc=osc;
+  const c=new A();recoveryCtx=c;await c.resume();
+  if(version!==cleanVersion||currentView!=='recovery'){await c.close();return;}
+  const osc=c.createOscillator(),gain=c.createGain(),now=c.currentTime;
+  osc.type='sine';
+  // A controlled, audible frequency sweep: high-frequency sound is NOT physical dirt removal.
+  // Water-eject mode remains a short low-frequency oscillation.
+  if(cleanMode==='sweep'){
+   for(let n=0;n<8;n++){
+    const at=now+n;
+    osc.frequency.setValueAtTime(950,at);
+    osc.frequency.exponentialRampToValueAtTime(2350,at+.9);
+    gain.gain.setValueAtTime(0,at);
+    gain.gain.linearRampToValueAtTime(.035,at+.14);
+    gain.gain.setValueAtTime(.035,at+.80);
+    gain.gain.linearRampToValueAtTime(0,at+.97);
+   }
+  }else{
+   osc.frequency.setValueAtTime(165,now);
+   gain.gain.setValueAtTime(0,now);
+   gain.gain.linearRampToValueAtTime(.075,now+.25);
+   gain.gain.setValueAtTime(.075,now+7.5);
+   gain.gain.linearRampToValueAtTime(0,now+8);
+  }
+  osc.connect(gain);gain.connect(c.destination);osc.start(now);osc.stop(now+8.02);recoveryOsc=osc;
   $('recovery-go').disabled=true;$('recovery-stop').disabled=false;
   $('recovery-note').textContent='8-second cycle playing';
-  recoveryTimer=setTimeout(()=>{stopRecovery();$('recovery-note').textContent='Complete. Re-test the loudspeaker to compare.';},8150);
- }catch(e){stopRecovery();toast('Tone could not start');}
+  recoveryTimer=setTimeout(()=>{if(version!==cleanVersion)return;stopRecovery();$('recovery-note').textContent='Cycle complete. Re-test the speaker to compare.';},8120);
+ }catch(e){stopRecovery();toast('Sound cycle could not start');}
 }
 $('start-btn').addEventListener('click',()=>{index=0;answers={};renderTest();});
+$('quick-clear').addEventListener('click',()=>{stopTone();displayRecovery();view('recovery');});
 $('back').addEventListener('click',()=>{if(index){index--;renderTest();}else{clearMic();stopTone();view('start');}});
-$('replay').addEventListener('click',()=>playTone(steps[index].type));
+$('replay').addEventListener('click',()=>{if(toneNodes.length)stopTone();else playTone(steps[index].type);});
 document.querySelectorAll('[data-answer]').forEach(e=>e.addEventListener('click',()=>answer(e.dataset.answer)));
 $('copy').addEventListener('click',copyReport);
 $('again').addEventListener('click',()=>{index=0;answers={};renderTest();});
-$('recovery-open').addEventListener('click',()=>{stagePhone($('recovery-device'),'front','bottom');view('recovery');});
+$('recovery-open').addEventListener('click',()=>{displayRecovery();view('recovery');});
+document.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',()=>{stopRecovery();cleanTarget=b.dataset.target;if(cleanTarget==='upper'&&cleanMode==='water')cleanMode='sweep';displayRecovery();}));
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.mode==='water'&&cleanTarget==='upper')cleanTarget='lower';stopRecovery();cleanMode=b.dataset.mode;displayRecovery();}));
 $('recovery-back').addEventListener('click',()=>{stopRecovery();view('results');});
 $('recovery-go').addEventListener('click',runRecovery);
 $('recovery-stop').addEventListener('click',stopRecovery);
