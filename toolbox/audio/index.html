@@ -23,6 +23,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .view{display:none;flex-direction:column;flex:1}.view.active{display:flex}
 .start-copy{margin:55px 4px 12px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--mint);text-transform:uppercase}
 h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:10px 0 12px}
+.device-picker{margin:13px 4px 5px;display:flex;flex-direction:column;gap:8px}.device-picker label{color:#c1d9e8;font-size:12px;font-weight:800;letter-spacing:.3px}.device-picker select{width:100%;min-height:50px;color:#eef8ff;background:#15334a;border:1px solid #457086;border-radius:13px;font:inherit;font-size:14px;font-weight:700;padding:12px 13px}.device-picker select:focus-visible{outline:3px solid #79d9ff;outline-offset:2px}.device-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}.model-caption{font-size:11px;color:#91b1c6;line-height:1.4}.mini-link{border:0;background:transparent;color:#8cd8f1;text-decoration:underline;text-underline-offset:3px;font:inherit;font-size:12px;font-weight:700;min-height:35px;padding:4px 6px}.mini-link:disabled{opacity:.45;text-decoration:none}.device-tag{font-size:11px;color:#a0d6e9;font-weight:750;text-align:center;padding:2px 0}
 .lead{color:var(--soft);font-size:15px;line-height:1.5;max-width:360px;margin:0}
 .stage{position:relative;display:grid;place-items:center;flex:1;min-height:290px;margin:8px -3px 12px;isolation:isolate}
 .stage:before{content:"";position:absolute;width:min(83%,330px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#276d83a3,transparent 69%);filter:blur(19px);z-index:-1}
@@ -79,16 +80,18 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </head>
 <body>
 <main>
-<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.6</span></header>
+<header><div class="brand"><div class="logo" aria-hidden="true">◉</div><div><strong>iRepair Toolbox</strong><span>AUDIO DIAGNOSTICS</span></div></div><span class="pill">WEB PREVIEW · v0.7</span></header>
 
 <section id="start" class="view active" aria-label="Start">
  <div class="start-copy"><span class="eyebrow">iPhone audio check</span><h1>Sound check.<br>Made simple.</h1><p class="lead">One component at a time. Listen, speak, tap your result.</p></div>
- <div class="stage"><svg id="start-device" class="device" viewBox="0 0 280 470" aria-label="iPhone illustration"></svg><span class="component-label">iPhone · guided diagnostics</span></div>
- <div class="start-bottom"><button id="start-btn" class="btn main">Start audio diagnostics →</button><button id="quick-clear" class="btn subtle" style="margin-top:10px">✦ Speaker clearing</button><p class="footnote">Model identification and component routing will be automatic in the native iPhone app.</p></div>
+ <div class="device-picker"><label for="phone-model">Your iPhone</label><select id="phone-model" aria-label="Choose your iPhone model"><option value="">Choose your iPhone model…</option></select><div class="device-actions"><span class="model-caption" id="model-caption">Select a model to see your handset.</span><button class="mini-link" id="model-share" disabled type="button">Copy model link</button></div></div>
+ <div class="stage"><svg id="start-device" class="device" viewBox="0 0 280 470" aria-label="iPhone illustration"></svg><span class="component-label" id="start-component-label">Choose your iPhone</span></div>
+ <button class="mini-link" id="flip-preview" type="button">View rear of handset ↻</button>
+ <div class="start-bottom"><button id="start-btn" class="btn main" disabled>Start audio diagnostics →</button><button id="quick-clear" class="btn subtle" style="margin-top:10px" disabled>✦ Speaker clearing</button><p class="footnote">Safari cannot identify the exact iPhone model. The native iOS app will identify supported models automatically.</p></div>
 </section>
 
 <section id="test" class="view" aria-label="Guided test">
- <div class="test-head"><button class="btn back" id="back" type="button" aria-label="Previous screen">←</button><span class="step-caption" id="step-label"></span></div>
+ <div class="test-head"><button class="btn back" id="back" type="button" aria-label="Previous screen">←</button><span class="step-caption" id="step-label"></span><button class="mini-link" id="change-model" type="button">Change model</button></div>
  <div class="track" id="track" aria-hidden="true"></div>
  <div class="prompt"><span id="component" class="eyebrow"></span><h1 id="question"></h1><p id="instruction" class="lead"></p></div>
  <div class="stage" id="test-stage"><svg id="test-device" class="device" viewBox="0 0 280 470" aria-label="iPhone hardware illustration"></svg><span class="component-label" id="highlight-label"></span></div>
@@ -101,7 +104,7 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
 </section>
 
 <section id="results" class="view" aria-label="Results">
- <div class="results-head"><span class="eyebrow">Check completed</span><h1>Audio results.</h1><p class="lead">Your observations, ready to copy or share.</p></div>
+ <div class="results-head"><span class="eyebrow">Check completed</span><h1>Audio results.</h1><p class="lead" id="report-device">Your observations, ready to copy or share.</p></div>
  <div id="stats" class="stats"></div>
  <div id="report" class="report-list"></div>
  <div class="results-bottom"><div class="actions"><button id="copy" class="btn main">▣ Copy report</button><button id="again" class="btn subtle">↻ Run tests again</button><button id="recovery-open" class="btn subtle">Speaker recovery →</button></div><p class="footnote">Browser observations are not certified hardware diagnoses. The native app can request supported physical microphone sources and receiver routing.</p></div>
@@ -120,13 +123,16 @@ h1{font-size:clamp(31px,9vw,44px);letter-spacing:-1.4px;line-height:1.1;margin:1
  <p class="recovery-note">Start at low volume; do not use headphones or charge a wet phone. Stop if uncomfortable. Sound cannot reliably remove dirt, repair damage or guarantee water removal.</p>
  <button id="recovery-go" class="btn main">▶ Run 8-second cycle</button><button id="recovery-stop" class="btn unable" disabled style="margin-top:9px">■ Stop</button><p id="recovery-note" class="status-note">Ready</p></div>
 </section>
-<p class="footnote">iRepair &amp; Rescue Ltd · Browser demonstration · Audio remains on device</p>
+<p class="footnote">iRepair &amp; Rescue Ltd · Model-matched illustrations · Audio stays on device</p>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="./models.js"></script>
 <script>
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
+const catalogue=window.IRepairDeviceCatalogue;
+let selectedModel=null,previewSide='front';
 const steps=[
  {id:'receiver',part:'Upper speaker / receiver',question:'Can you hear this?',instruction:'Listen near the upper speaker.',side:'front',focus:'top',type:'left'},
  {id:'lower',part:'Lower loudspeaker',question:'Can you hear this clearly?',instruction:'Listen for crackling or distortion.',side:'front',focus:'bottom',type:'right'},
@@ -140,30 +146,47 @@ let currentView='start';
 let toastTimer=null;
 function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
 function stagePhone(el,side,focus){
- const circles=(x,y)=>{
-  return '<circle cx="'+x+'" cy="'+y+'" r="27" fill="#42eac6" fill-opacity=".1" stroke="#52ebd1" stroke-opacity=".7" stroke-width="2.8" class="flash"/><circle cx="'+x+'" cy="'+y+'" r="10" fill="#5fe9d0" fill-opacity=".28" stroke="#73f4d9" stroke-width="2"/>';
- };
- let s='<defs><linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d0e0e8"/><stop offset=".48" stop-color="#5b7a90"/><stop offset="1" stop-color="#d6e0e8"/></linearGradient><linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#163d60"/><stop offset=".58" stop-color="#0c1e37"/><stop offset="1" stop-color="#073a4d"/></linearGradient></defs>';
- s+='<rect x="46" y="11" width="188" height="441" rx="37" fill="url(#rim)"/><rect x="50" y="15" width="180" height="433" rx="34" fill="'+(side==='front'?'#020d1d':'#6e889d')+'"/>';
- s+='<rect x="42" y="101" width="4" height="39" rx="2" fill="#b7cfd9"/><rect x="42" y="153" width="4" height="59" rx="2" fill="#b7cfd9"/><rect x="234" y="130" width="4" height="66" rx="2" fill="#b7cfd9"/>';
- if(side==='front'){
-  s+='<rect x="55" y="20" width="170" height="423" rx="31" fill="url(#screen)"/><circle cx="187" cy="318" r="104" fill="none" stroke="#277fa5" stroke-opacity=".36" stroke-width="2"/><circle cx="73" cy="126" r="96" fill="none" stroke="#38d0c8" stroke-opacity=".18" stroke-width="2"/>';
-  s+='<rect x="116" y="28" width="49" height="16" rx="8" fill="#03101d"/><circle cx="154" cy="36" r="2.6" fill="#376280"/><rect x="113" y="434" width="55" height="4" rx="2" fill="#ced8e6" opacity=".5"/>';
-  s+='<rect x="112" y="5" width="57" height="3" rx="1.5" fill="#98b9c9"/><rect x="121" y="451" width="39" height="4" rx="2" fill="#889eab"/>';
-  for(let n=0;n<5;n++){s+='<circle cx="'+(73+n*6)+'" cy="451" r="1.7" fill="#aac2cf"/><circle cx="'+(187+n*6)+'" cy="451" r="1.7" fill="#aac2cf"/>';}
-  if(focus==='top'||focus==='both')s+=circles(141,36);
-  if(focus==='topMic')s+=circles(159,36);
-  if(focus==='bottom'||focus==='both')s+=circles(202,450);
-  if(focus==='bottomMic')s+=circles(85,450);
- } else {
-  s+='<rect x="57" y="22" width="166" height="415" rx="30" fill="#54728a"/><rect x="60" y="25" width="96" height="117" rx="23" fill="#344b64" stroke="#a8bdcb" stroke-width="3"/>';
-  [[86,53],[130,92],[86,116]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="23" fill="#0c1b2f" stroke="#8eaebe" stroke-width="4"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="11" fill="#1a4665"/>';});
-  s+='<circle cx="132" cy="48" r="4" fill="#061826"/><circle cx="141" cy="259" r="29" fill="none" stroke="#bbd5e2" opacity=".17"/>';
-  if(focus==='rearMic')s+=circles(132,48);
+ catalogue.render(el,selectedModel,side,focus);
+}
+function showDevice(){
+ stagePhone($('start-device'),previewSide,'');
+ $('start-component-label').textContent=selectedModel?selectedModel.name:'Select a model';
+ $('model-caption').textContent=selectedModel?'Model-matched front and rear illustration':'Select a model to see your handset.';
+ $('flip-preview').textContent=previewSide==='front'?'View rear of handset ↻':'View front of handset ↻';
+ $('start-btn').disabled=!selectedModel;
+ $('quick-clear').disabled=!selectedModel;
+ $('model-share').disabled=!selectedModel;
+}
+function pickDevice(slug){
+ const device=catalogue.getModel(slug);
+ selectedModel=device;previewSide='front';
+ $('phone-model').value=device?device.slug:'';
+ const url=new URL(location.href);
+ if(device)url.searchParams.set('model',device.slug);else url.searchParams.delete('model');
+ try{history.replaceState(null,'',url.pathname+url.search+url.hash);}catch(e){}
+ showDevice();
+}
+function setupModels(){
+ let years=[...new Set(catalogue.models.map(m=>m.year))].sort((a,b)=>b-a);
+ const select=$('phone-model');
+ for(const year of years){
+  const group=document.createElement('optgroup');group.label=String(year);
+  catalogue.models.filter(m=>m.year===year).forEach(m=>{
+   const option=document.createElement('option');option.value=m.slug;option.textContent=m.name;group.appendChild(option);
+  });
+  select.appendChild(group);
  }
- el.innerHTML=s;
- el.classList.toggle('rear',side==='rear');
- el.setAttribute('aria-label',side==='rear'?'Rear iPhone microphone area':'Front iPhone audio component illustration');
+ select.addEventListener('change',()=>pickDevice(select.value));
+ $('flip-preview').addEventListener('click',()=>{previewSide=previewSide==='front'?'rear':'front';showDevice();});
+ $('model-share').addEventListener('click',async()=>{
+  if(!selectedModel)return;
+  const url=new URL(location.href);url.searchParams.set('model',selectedModel.slug);
+  try{await navigator.clipboard.writeText(url.toString());toast('Model link copied');}
+  catch(e){toast('Copy link from Safari address bar');}
+ });
+ const query=new URLSearchParams(location.search).get('model');
+ if(query&&catalogue.getModel(query))pickDevice(query);
+ else showDevice();
 }
 function view(name){
  currentView=name;document.querySelectorAll('.view').forEach(e=>e.classList.toggle('active',e.id===name));
@@ -220,7 +243,7 @@ async function micStart(){
   const input=micCtx.createMediaStreamSource(stream);
   analyser=micCtx.createAnalyser();analyser.fftSize=2048;input.connect(analyser);
   const buf=new Float32Array(analyser.fftSize),bars=Array.from($('meter').children);
-  $('test-note').textContent='Safari uses its available microphone; native iOS can select this source.';
+  $('test-note').textContent='Safari uses its available mic input. Physical source selection requires native iOS.';
   function frame(){
    if(!analyser||currentView!=='test'||steps[index].id!==id)return;
    analyser.getFloatTimeDomainData(buf);
@@ -253,6 +276,7 @@ function renderTest(){
 function reportValue(t){return answers[t.id]||'CANNOT TEST';}
 function renderReport(){
  clearMic();stopTone();view('results');
+ $('report-device').textContent=(selectedModel?selectedModel.name:'iPhone')+' · Your audio test observations';
  let pass=0,fail=0,unable=0;
  const labels={'PASS':'Pass','FAIL':'Fail','CANNOT TEST':'Cannot test'};
  $('report').innerHTML=steps.map(t=>{
@@ -264,7 +288,7 @@ function renderReport(){
 }
 function answer(value){answers[steps[index].id]=value;index++;if(index===steps.length)renderReport();else renderTest();}
 function reportText(){
- return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: iPhone (exact model unavailable in browser)','Assessment: user-observed browser preview','',...steps.map(t=>t.part+': '+reportValue(t)),'','Note: Safari cannot select individual built-in microphone sources or isolate the receiver. Left and right tracks are used for preview only; they do not confirm which physical speaker played. Native iOS testing is required.'].join('\n');
+ return ['iREPAIR AUDIO DIAGNOSTICS','Date: '+new Date().toLocaleString('en-GB'),'Device: '+(selectedModel?selectedModel.name:'Unidentified iPhone'),'Assessment: user-observed browser preview','',...steps.map(t=>t.part+': '+reportValue(t)),'','Note: iPhone model was selected by the customer, not automatically detected. Model-matched drawings show approximate audio areas. Safari cannot select individual physical microphone sources or isolate receiver output. Stereo tracks do not confirm independent physical speaker operation. Native iOS testing is required.'].join('\n');
 }
 async function copyReport(){
  const value=reportText();
@@ -323,7 +347,8 @@ async function runRecovery(){
   recoveryTimer=setTimeout(()=>{if(version!==cleanVersion)return;stopRecovery();$('recovery-note').textContent='Cycle complete. Re-test the speaker to compare.';},8120);
  }catch(e){stopRecovery();toast('Sound cycle could not start');}
 }
-$('start-btn').addEventListener('click',()=>{index=0;answers={};renderTest();});
+$('start-btn').addEventListener('click',()=>{if(!selectedModel)return;index=0;answers={};renderTest();});
+$('change-model').addEventListener('click',()=>{clearMic();stopTone();view('start');showDevice();});
 $('quick-clear').addEventListener('click',()=>{stopTone();displayRecovery();view('recovery');});
 $('back').addEventListener('click',()=>{if(index){index--;renderTest();}else{clearMic();stopTone();view('start');}});
 $('replay').addEventListener('click',()=>{if(toneNodes.length)stopTone();else playTone(steps[index].type);});
@@ -338,7 +363,7 @@ $('recovery-go').addEventListener('click',runRecovery);
 $('recovery-stop').addEventListener('click',stopRecovery);
 window.addEventListener('pagehide',()=>{clearMic();stopTone();stopRecovery();if(ctx)ctx.close().catch(()=>{});});
 $('meter').innerHTML=Array.from({length:25},()=>'<span></span>').join('');
-stagePhone($('start-device'),'front','both');
+setupModels();
 })();
 </script>
 </body>
