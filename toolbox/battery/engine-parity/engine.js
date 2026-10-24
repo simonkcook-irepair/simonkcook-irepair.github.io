@@ -333,13 +333,26 @@
   }
   function elapsedObservation() {
     if (timerStart === null) return;
-    const minutes = Math.max(1, Math.ceil((Date.now() - timerStart) / 60000));
-    $("elapsedMinutes").value = Math.min(1440, minutes);
+    const elapsedMs = Date.now() - timerStart;
     timerStart = null;
     $("observationStart").disabled = choices.safety === "YES";
     $("observationStop").disabled = true;
+    if (elapsedMs < 60000) {
+      $("observationStatus").textContent =
+        "Observation was shorter than one minute and was not saved as a one-minute reading. Repeat for longer or enter a measured interval manually.";
+      return;
+    }
+    const minutes = Math.max(1, Math.min(1440, Math.round(elapsedMs / 60000)));
+    $("elapsedMinutes").value = minutes;
     $("observationStatus").textContent =
       "Timed interval saved: " + minutes + " minute(s) from the browser clock. Enter starting and ending iOS percentages to calculate the observed trend.";
+  }
+  function updateManualChargeReadout() {
+    const raw = $("currentCharge").value.trim();
+    const n = raw ? Number(raw) : null;
+    const valid = n !== null && Number.isInteger(n) && n >= 0 && n <= 100;
+    $("chargeReadoutValue").textContent = valid ? n + "%" : "—%";
+    $("chargeReadoutFill").style.width = (valid ? n : 0) + "%";
   }
   function reset() {
     ["generation","modelName","capacity","cycleCount","secondCapacity","secondCycleCount",
@@ -364,6 +377,7 @@
     $("observationStop").disabled = true;
     $("observationStatus").textContent = "Optional: a timer can fill the elapsed duration. The start/end percentages are always entered manually on iPhone Safari.";
     timerStart = null;
+    updateManualChargeReadout();
     clipboardReport = "";
     cachedResult = null;
     showView("home");
@@ -402,9 +416,18 @@
       "Observation started. Read the iOS battery percentage now; after a safe interval, finish the timer and enter the ending percentage.";
   });
   $("observationStop").addEventListener("click", elapsedObservation);
+  $("currentCharge").addEventListener("input", updateManualChargeReadout);
+  $("capacity").addEventListener("input", () => { readingsFromLog.capacity = false; });
+  $("cycleCount").addEventListener("input", () => { readingsFromLog.cycle = false; });
   $("analyticsFile").addEventListener("change", async event => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
+    // Never silently retain data from a DIFFERENT imported analytics file.
+    if (readingsFromLog.capacity) $("capacity").value = "";
+    if (readingsFromLog.cycle) $("cycleCount").value = "";
+    readingsFromLog = { cycle: false, capacity: false };
+    $("useLogValues").textContent = "Use recognised log values in health review";
+    $("useLogValues").disabled = false;
     if (file.size > 8 * 1024 * 1024) {
       $("logSummary").innerHTML = "<b>File too large</b>Choose an analytics file smaller than 8 MB. Nothing was uploaded.";
       $("useLogValues").hidden = true;
