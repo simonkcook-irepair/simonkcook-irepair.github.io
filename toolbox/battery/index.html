@@ -360,7 +360,7 @@ function results(){
  $("resultTitle").textContent=a.title;
  $("resultLead").textContent="Guided review of Apple-reported details and observed symptoms.";
  const rows=[
-   ["Device",v.name|| (v.family==="SE"?"iPhone SE / earlier":v.family==="Duo"?"iPhone Duo":v.family==="Air"?"iPhone Air":v.family==="unknown"||!v.family?"Model not identified":"iPhone "+v.family+" series")],
+   ["Device",v.name|| (v.family==="SE"?"iPhone SE / earlier":v.family==="Duo"?"iPhone Duo":v.family==="Air"?"iPhone Air":v.family==="18"?"iPhone 18 Pro series":v.family==="unknown"||!v.family?"Model not identified":"iPhone "+v.family+" series")],
    ["Maximum capacity",v.capacity===null?"Not supplied":v.capacity+"% (iOS-reported)"],
    ["Battery health message",v.condition==="SERVICE"?"Service recommended":v.condition==="NORMAL"?"Normal / no service warning":"Not supplied"],
    ["Cycle count",v.cycles===null?"Not supplied":v.cycles+" (iOS-reported)"],
