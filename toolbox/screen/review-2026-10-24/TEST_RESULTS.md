@@ -57,3 +57,25 @@ Simon explicitly approved the 12-point narrated-video change specification, then
 
 ## Next action
 Send public review URL to Simon for a fresh narrated screen recording. Any further feedback must be transcribed with Descript and cross-referenced to timestamps before altering this protected review state.
+
+## CR-14: Verified-position touch fail-safe (24 October 2026)
+
+**User approval:** Return to the original mechanism: the location of a successfully depressed numbered test button becomes the fail-safe for progression when another region is unresponsive.
+
+**Implementation:** The separate fixed-position “Unable to tap every number” control is removed. Once a numbered button registers its completed click, an equal-sized circular **FINISH HERE** control appears directly over that now-verified location. As each subsequent target registers, the fail-safe moves to the latest known working location. Using it deliberately records the unfinished touch test as FAIL and opens the unchanged perimeter introduction. Once all nine register, the fail-safe disappears and normal PASS progression occurs.
+
+**Automated browser verification:**
+- On first tap, the fail-safe appears at exactly the same target-centre coordinates (measured displacement: **0 pixels**) — PASS.
+- On subsequent taps, the fail-safe moves to the last working target — PASS.
+- No unexpected advancement after 1 or 2 button presses — PASS.
+- Tapping the fail-safe on a working numbered position deliberately opens the perimeter introduction — PASS.
+- All nine numbered targets still complete as PASS — PASS.
+- Full display → touch → perimeter → report journey: PASS/PASS/PASS — PASS.
+- Browser JavaScript errors: **0**.
+- Deployed HTML bytes match the locally tested source, and the public review URL responds HTTP 200 — PASS.
+- Exact earlier approved landing-page HTML, perimeter-test implementation and landing CSS compared with approved source version and are **unchanged**.
+- Original protected production URL still serves its original 29,994-byte version, no promotion performed.
+
+**Review deployment:** `dpl_JDspz2H33Xp49g1HCMykKVbHot5b`.
+
+**Important:** Tests were performed in a headless Chromium mobile viewport. Physical iPhone Safari verification and user sign-off for the revised fail-safe remain pending. The proposed future full-screen diagnostic surface is **discussion only** and was not implemented.
