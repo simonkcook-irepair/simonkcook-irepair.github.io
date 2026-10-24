@@ -264,13 +264,20 @@ function startEdge(){
     mask.setAttribute('stroke-dasharray','100 100');pct.textContent='Perimeter complete ✓';
     msg.textContent='Perfect — watch the light return to the iRepair core';
     const raw=direction===-1?0:N,from=samples[raw],t0=performance.now();
+    // Safeguard against browsers throttling requestAnimationFrame during completion.
+    function showReadyCore(){
+      if(core.classList.contains('ready'))return;
+      runner.style.opacity='0';ring.style.opacity='0';
+      core.classList.add('ready');msg.textContent='Tap the glowing iRepair core to finish';
+    }
     function glide(now){
       const t=Math.min(1,(now-t0)/820),q=1-Math.pow(1-t,3),bend=Math.sin(Math.PI*q)*22;
       const x=from[0]+(50-from[0])*q+bend,y=from[1]+(107-from[1])*q;
       runner.setAttribute('cx',x);runner.setAttribute('cy',y);ring.setAttribute('cx',x);ring.setAttribute('cy',y);
-      if(t<1)requestAnimationFrame(glide);else{runner.style.opacity='0';ring.style.opacity='0';core.classList.add('ready');msg.textContent='Tap the glowing iRepair core to finish'}
+      if(t<1)requestAnimationFrame(glide);else showReadyCore()
     }
     requestAnimationFrame(glide);
+    setTimeout(showReadyCore,1150);
   }
   function startAt(cx,cy){
     if(edgeComplete)return false;
