@@ -2,6 +2,14 @@
 
 **Date:** 24 October 2026
 
+**PROJECT STATUS: COMPLETE — USER-ACCEPTED, FUNCTIONAL, VISUALLY APPROVED.**
+
+**Final user acceptance, 24 October 2026:** “This is perfect. Let Mark this off as complete. It is functional. It looks perfect.”
+
+**Scope of completion:** Browser-accessible Screen Diagnostics app, including all eight full-screen visual patterns, nine-point touch test, 264-area coverage scan, perimeter test, and copyable results. This release is frozen; all approved visuals and behaviour must be preserved. A native App Store version, if undertaken, is a **separate future project** requiring native device testing and App Store validation; it is not implied to be completed here.
+
+**Release policy:** No code or deployment changes without a new, separately approved change request. Current deployment `dpl_34goSLEui35ifes2b6r7qxTDMpVh` and source commit `8f6412fcbf6b82c65e8a9114cc070b9274f1c601` are the protected baseline.
+
 ## User's explicit approval
 After testing the experimental Full Coverage Lab on an iPhone, the user stated that they:
 - really like the more thorough diagnostic version;
