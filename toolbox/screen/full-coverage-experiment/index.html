@@ -566,7 +566,7 @@ function reportText(){
    'Edge response: '+(results.edge||'UNABLE TO TEST')+' ('+Math.round(edgeProgress*100)+'%)',
    '',
    'Scope: browser viewport only. Safari or iOS may reserve screen areas. Cells not reached are untested, not independently verified hardware failures. Display assessments are visual and user-observed.'
- ].join('\\n')
+ ].join('\n')
 }
 $('copyReport').onclick=async()=>{try{await navigator.clipboard.writeText(reportText());$('copyReport').textContent='Report copied ✓'}catch(e){prompt('Copy this report:',reportText())}};
 $('again').onclick=()=>{showView('home');results={};touchHits.clear();edgeProgress=0;coverageSnapshot={visited:0,total:264,percent:0,corners:0}};
