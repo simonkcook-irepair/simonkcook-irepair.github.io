@@ -256,6 +256,17 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 .fieldGroup[hidden],.guideBox[hidden],button[hidden]{display:none!important}
 .fieldInput:disabled{color:#738da0}
 
+
+/* Live-looking presentation without mislabelling manually entered data as a measurement. */
+.batteryReadout{border:1px solid #fff;border-radius:22px;padding:15px 17px;background:linear-gradient(140deg,#fffffff3,#e7f5ffea);box-shadow:inset 0 2px 1px #fff,0 10px 25px #4182b42b}
+.batteryReadoutHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;color:#47759a}
+.batteryReadoutHead strong{font-size:27px;color:#1469aa;letter-spacing:-.6px}
+.batteryReadoutHead span{font-size:11px;font-weight:750;text-align:right}
+.batteryReadoutRail{height:16px;margin-top:9px;border-radius:100px;overflow:hidden;background:linear-gradient(180deg,#d8ecff,#c4deef);border:1px solid #fff;box-shadow:inset 0 2px 3px #276aa73d}
+.batteryReadoutFill{height:100%;width:0%;border-radius:100px;background:linear-gradient(95deg,#20d7bf,#55dcee,#0988eb);box-shadow:0 0 11px #22cced88,inset 0 1px #ffffffaa;transition:width .25s ease}
+.batteryReadout small{display:block;font-size:10px;color:#65839a;line-height:1.35;margin-top:9px}
+@media(prefers-reduced-motion:reduce){.batteryReadoutFill{transition:none}}
+
 </style>
 </head>
 
@@ -301,6 +312,11 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
   <div class="fieldGroup"><span class="fieldLabel" id="chargeLabel">When safe, does iOS display a charging indication when connected?</span><div class="statusPills" role="group" aria-labelledby="chargeLabel" data-choice="charging"><button type="button" class="choice" data-value="PASS" aria-pressed="false">✓ Pass</button><button type="button" class="choice" data-value="FAIL" aria-pressed="false">✕ Fail</button><button type="button" class="choice" data-value="UNABLE TO TEST" aria-pressed="true">Unable to test</button></div><p class="fieldHint">A charging icon alone does not establish charging-port or battery electrical integrity.</p></div>
   <div class="fieldGroup"><label for="currentCharge">Current battery charge shown by iOS (%) — optional</label><input id="currentCharge" class="fieldInput" inputmode="numeric" type="number" min="0" max="100" step="1" placeholder="e.g. 63"/><p class="fieldHint">Current charge and Maximum Capacity are different values. The browser cannot read either directly on iPhone.</p></div>
 
+  <div class="batteryReadout" aria-label="Manually entered battery charge indication">
+    <div class="batteryReadoutHead"><strong id="chargeReadoutValue">—%</strong><span>Current charge · manual reading</span></div>
+    <div class="batteryReadoutRail"><div id="chargeReadoutFill" class="batteryReadoutFill"></div></div>
+    <small>This visual meter reflects the percentage you enter; it does not independently sample iPhone battery hardware.</small>
+  </div>
   <div class="guideBox"><b>Observed charging trend</b>Enter a starting and ending battery percentage from <strong>iOS Settings or the status indicator</strong>, with the elapsed time. The result shows percentage change over time, not measured charging current.</div>
   <div class="observationGrid">
     <div class="fieldGroup"><label for="startLevel">Start (%)</label><input class="fieldInput" id="startLevel" type="number" min="0" max="100" step="1" inputmode="numeric" placeholder="e.g. 30"/></div>
