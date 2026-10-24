@@ -146,6 +146,33 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 .edgePct{bottom:4%;font-size:12px;color:#fff;text-shadow:0 1px 4px #124875}
 @media(max-height:750px){.edgePhone.phoneArt{height:min(79svh,665px)}}
 
+
+/* CR-13: Retain the EXACT approved iPhone artwork at its native geometry.
+   Scale the ENTIRE rendered handset, not just its width, so its radius,
+   Dynamic Island, side buttons and screen all keep their original proportions. */
+#home .phoneStage{min-height:286px;margin:6px 0 8px}
+#home .phoneArt{
+  position:absolute;
+  left:50%;top:50%;
+  width:258px;
+  transform:translate(-50%,-50%) scale(.51);
+  transform-origin:center center;
+}
+/* Constrained iPhone in-app browsers: preserve handset identity and fit. */
+@media(max-height:750px){
+  #home .phoneStage{min-height:208px;margin:3px 0}
+  #home .phoneArt{width:258px;transform:translate(-50%,-50%) scale(.38)}
+  #home.card{margin-top:6px;padding-top:8px;padding-bottom:7px}
+  #home h1{margin:5px 0}
+  #home .infoBox{padding:7px 11px}
+  #home .actions{margin-top:5px}
+  #home .smallNote{margin-top:3px}
+}
+@media(max-height:630px){
+  #home .phoneStage{min-height:188px}
+  #home .phoneArt{transform:translate(-50%,-50%) scale(.344)}
+}
+
 </style>
 </head>
 <body data-build="approved-screen-review-2026-10-24">
