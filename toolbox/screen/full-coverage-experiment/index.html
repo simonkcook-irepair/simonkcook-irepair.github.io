@@ -260,14 +260,14 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 let results={},touchHits=new Set(),displayIndex=0,edgeProgress=0,edgeStarted=false,edgeComplete=false;
-let coverageSnapshot={visited:0,total:264,percent:0,corners:0};
+let coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0};
 const testLayer=$('testLayer'),surface=$('testSurface'),bottom=$('testBottom'),title=$('testTitle'),inst=$('testInstruction'),next=$('testNext');
 function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));window.scrollTo(0,0)}
 function openTest(){testLayer.classList.add('active');testLayer.classList.remove('displayUnobstructed','coverageMode','painting');surface.onclick=null;surface.onpointerdown=null;surface.onpointermove=null;surface.onpointerup=null;surface.onpointercancel=null;surface.innerHTML='';bottom.style.display='block'}
 function closeTest(){testLayer.classList.remove('active');surface.innerHTML=''}
 $('exit').onclick=()=>{closeTest();showView('home')};
 function infoScreen(kind,heading,copy,buttonText,fn){openTest();bottom.style.display='none';title.textContent=kind;const box=document.createElement('div');box.className='centerInstruction';box.innerHTML='<h2>'+heading+'</h2><p>'+copy+'</p><button class="btn main">'+buttonText+'</button>';box.querySelector('button').onclick=fn;surface.append(box)}
-$('begin').onclick=()=>{results={};touchHits.clear();edgeProgress=0;edgeStarted=false;edgeComplete=false;coverageSnapshot={visited:0,total:264,percent:0,corners:0};infoScreen('Display quality','First, check the picture.','Inspect white, black, solid red, green and blue, RGB bands, and fine vertical and horizontal lines. You can hide the controls to check the complete available browser view.','Start display check',startDisplay)};
+$('begin').onclick=()=>{results={};touchHits.clear();edgeProgress=0;edgeStarted=false;edgeComplete=false;coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0};infoScreen('Display quality','First, check the picture.','Inspect white, black, solid red, green and blue, RGB bands, and fine vertical and horizontal lines. You can hide the controls to check the complete available browser view.','Start display check',startDisplay)};
 function startDisplay(){openTest();displayIndex=0;paintDisplay()}
 
 const DISPLAY_PATTERNS=[
@@ -349,7 +349,7 @@ function startTouch(){
 
 /* Only new experimental stage: full available web-viewport touch sampling. */
 function coverageIntro(){
-  infoScreen('Full-area touch scan','Now cover the entire screen.','Swipe your finger across every reachable area. The grid lights up wherever browser touch events register. Unlike a nine-point test, this records which regions you actually reached. Finish from a location that just registered.','Start full-area scan',startCoverage);
+  infoScreen('Full-area touch scan','Now cover the entire screen.','Swipe slowly across every reachable area. Blue squares light up ONLY where the browser reports touch positions; gaps are never filled by guessing between touch events. Finish from a position that registered.','Start full-area scan',startCoverage);
 }
 function startCoverage(){
   openTest();testLayer.classList.add('coverageMode');bottom.style.display='none';
@@ -366,18 +366,18 @@ function startCoverage(){
   const hud=document.createElement('div');hud.className='coverageHud';
   hud.innerHTML='<strong>0% covered</strong><span>Swipe across all corners and edges</span>';surface.append(hud);
   const hint=document.createElement('div');hint.className='coverageHint';
-  hint.innerHTML='<b>Paint the entire display</b><p>Drag a finger over the grid until the blue light reaches each available region. Lift your finger to reveal FINISH HERE on the last working point.</p>';
+  hint.innerHTML='<b>Paint the entire display</b><p>Move slowly across all rows, edges and corners. Only registered touch positions turn blue. Lift your finger for FINISH HERE on the last working position.</p>';
   surface.append(hint);
   const safe=document.createElement('button');safe.type='button';
   safe.className='btn main coverageSafe';safe.innerHTML='FINISH<small>HERE</small>';
   safe.setAttribute('aria-label','Finish touch coverage scan at last working location');
   surface.append(safe);
   const visited=new Set();
-  let active=false,activeId=null,lastX=0,lastY=0,restoreTimer=null,from=null;
+  let active=false,activeId=null,lastX=0,lastY=0,restoreTimer=null,sampleCount=0;
   function update(){
     const percent=Math.round(visited.size/TOTAL*100);
     hud.querySelector('strong').textContent=percent+'% covered';
-    hud.querySelector('span').textContent=(TOTAL-visited.size)+' untested areas · Keep sweeping';
+    hud.querySelector('span').textContent=visited.size===TOTAL?'All viewport cells sampled · Lift to finish':(TOTAL-visited.size)+' unsampled cells · Move slowly';
   }
   function mark(x,y){
     const rect=surface.getBoundingClientRect();
@@ -389,19 +389,24 @@ function startCoverage(){
       visited.add(i);nodes[i].classList.add('touched');update();
     }
     lastX=x-rect.left;lastY=y-rect.top;
+    sampleCount++;
   }
-  function markLine(ax,ay,bx,by){
-    const rect=surface.getBoundingClientRect();
-    const step=Math.max(4,Math.min(rect.width/COLS,rect.height/ROWS)*.42);
-    const d=Math.hypot(bx-ax,by-ay),N=Math.max(1,Math.ceil(d/step));
-    for(let i=0;i<=N;i++){const t=i/N;mark(ax+(bx-ax)*t,ay+(by-ay)*t)}
+  // Never interpolate or invent touch positions between browser events.
+  // A dead strip could otherwise look tested even if no samples arrived.
+  function markEvent(e){
+    // Historical coalesced pointer events are actual browser input samples.
+    const coalesced=typeof e.getCoalescedEvents==='function'?e.getCoalescedEvents():null;
+    if(coalesced&&coalesced.length){
+      for(const sample of coalesced)mark(sample.clientX,sample.clientY);
+    }
+    mark(e.clientX,e.clientY);
   }
   function finish(){
     if(!visited.size)return;
     const corners=[0,COLS-1,(ROWS-1)*COLS,TOTAL-1];
     const cornerCount=corners.filter(i=>visited.has(i)).length;
     const percent=Math.round(visited.size/TOTAL*100);
-    coverageSnapshot={visited:visited.size,total:TOTAL,percent,corners:cornerCount};
+    coverageSnapshot={visited:visited.size,total:TOTAL,percent,corners:cornerCount,samples:sampleCount};
     // Incomplete coverage is not automatically a hardware failure:
     // the user may simply have skipped those locations.
     results.coverage=percent>=92&&cornerCount===4?'PASS':'INCOMPLETE';
@@ -410,7 +415,7 @@ function startCoverage(){
   safe.onclick=e=>{e.preventDefault();e.stopPropagation();finish()};
   function stop(){
     if(!active)return;
-    active=false;activeId=null;from=null;
+    active=false;activeId=null;
     testLayer.classList.remove('painting');
     if(visited.size){
       clearTimeout(restoreTimer);
@@ -427,22 +432,20 @@ function startCoverage(){
   }
   surface.onpointerdown=e=>{
     if(e.target.closest('button')||active)return;
-    active=true;activeId=e.pointerId;from={x:e.clientX,y:e.clientY};
+    active=true;activeId=e.pointerId;
     clearTimeout(restoreTimer);safe.classList.remove('show');
     testLayer.classList.add('painting');hint.classList.add('dismissed');
-    mark(e.clientX,e.clientY);
+    markEvent(e);
     try{surface.setPointerCapture(e.pointerId)}catch(_){}
     e.preventDefault();
   };
   surface.onpointermove=e=>{
-    if(!active||e.pointerId!==activeId||!from)return;
-    markLine(from.x,from.y,e.clientX,e.clientY);
-    from={x:e.clientX,y:e.clientY};e.preventDefault();
+    if(!active||e.pointerId!==activeId)return;
+    markEvent(e);e.preventDefault();
   };
   surface.onpointerup=e=>{
     if(e.pointerId!==activeId)return;
-    if(from)markLine(from.x,from.y,e.clientX,e.clientY);
-    stop();e.preventDefault();
+    markEvent(e);stop();e.preventDefault();
   };
   surface.onpointercancel=e=>{if(e.pointerId===activeId)stop()};
 }
@@ -573,7 +576,7 @@ function finishAll(){
   ];
   $('reportRows').innerHTML=rows.map(([n,v])=>'<div class="reportRow"><span>'+n+'</span><b class="'+(v==='PASS'?'good':v==='FAIL'?'bad':'neutral')+'">'+v+'</b></div>').join('')+
     '<div class="reportRow"><span>Browser viewport sampled</span><b>'+coverageSnapshot.percent+'% · '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' cells</b></div>'+
-    '<p class="smallNote">Four corners sampled: '+coverageSnapshot.corners+'/4. Untested cells do not automatically indicate faulty hardware.</p>';
+    '<p class="smallNote">Four corners sampled: '+coverageSnapshot.corners+'/4. Positions are coloured only when touch coordinates were received; unsampled cells are not confirmed faults.</p>';
 }
 function reportText(){
  return ['iREPAIR SCREEN DIAGNOSTICS — FULL COVERAGE EXPERIMENT',
@@ -581,14 +584,14 @@ function reportText(){
    'Display patterns: 8 guided visual observations',
    'Display quality: '+(results.display||'UNABLE TO TEST'),
    'Nine-point touch: '+(results.touch||'UNABLE TO TEST')+' ('+touchHits.size+'/9 targets)',
-   'Full-area touch: '+(results.coverage||'UNABLE TO TEST')+' ('+coverageSnapshot.percent+'% visited, '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' viewport cells; corners '+coverageSnapshot.corners+'/4)',
+   'Full-area touch: '+(results.coverage||'UNABLE TO TEST')+' ('+coverageSnapshot.percent+'% visited, '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' viewport cells; corners '+coverageSnapshot.corners+'/4; browser samples '+coverageSnapshot.samples+')',
    'Edge response: '+(results.edge||'UNABLE TO TEST')+' ('+Math.round(edgeProgress*100)+'%)',
    '',
-   'Scope: browser viewport only. Safari or iOS may reserve screen areas. Cells not reached are untested, not independently verified hardware failures. Display assessments are visual and user-observed.'
+   'Scope: browser viewport only. Safari or iOS may reserve screen areas. Only received pointer-event positions were counted; no movement-gap interpolation. Cells not reached are untested, not independently verified hardware failures. Display assessments are visual and user-observed.'
  ].join('\n')
 }
 $('copyReport').onclick=async()=>{try{await navigator.clipboard.writeText(reportText());$('copyReport').textContent='Report copied ✓'}catch(e){prompt('Copy this report:',reportText())}};
-$('again').onclick=()=>{showView('home');results={};touchHits.clear();edgeProgress=0;coverageSnapshot={visited:0,total:264,percent:0,corners:0}};
+$('again').onclick=()=>{showView('home');results={};touchHits.clear();edgeProgress=0;coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0}};
 })();
 </script>
 </body>
