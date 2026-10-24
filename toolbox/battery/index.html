@@ -195,6 +195,8 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 .phoneBattery:after{content:"⚡";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:42px;font-weight:900;text-shadow:0 0 10px #1389e9,0 1px 2px #166197}
 .phoneBatteryGlow{position:absolute;left:6%;right:6%;top:35%;height:35%;border-radius:50%;background:#51dbff90;filter:blur(24px)}
 .card.diagnostic{gap:0}
+/* Explicitly respect hidden panels even where flex layout rules apply. */
+[hidden]{display:none!important}
 .card.diagnostic h1{font-size:clamp(32px,8.3vw,43px);margin:12px 0 7px}
 .card.diagnostic .lead{font-size:15px;line-height:1.43}
 .progressTrack{height:8px;border-radius:100px;background:#bbdfff;border:1px solid #fff;box-shadow:inset 0 1px 2px #549dd681;margin:16px 0 18px;overflow:hidden}
@@ -260,7 +262,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <div id="step1" class="stepPanel active">
   <div class="guideBox"><b>Model identification</b>For the exact name, open <strong>Settings → General → About → Model Name</strong> on your iPhone. Safari cannot reliably identify the precise model.</div>
   <div class="fieldGroup"><label for="generation">iPhone model family</label><select class="fieldSelect" id="generation">
-   <option value="">Choose a model family</option><option value="17">iPhone 17 series</option><option value="16">iPhone 16 series</option><option value="15">iPhone 15 series</option><option value="14">iPhone 14 series</option><option value="13">iPhone 13 series</option><option value="12">iPhone 12 series</option><option value="11">iPhone 11 series</option><option value="SE">iPhone SE / earlier</option><option value="unknown">Not sure</option>
+   <option value="">Choose a model family</option><option value="18">iPhone 18 Pro series</option><option value="Duo">iPhone Duo</option><option value="Air">iPhone Air</option><option value="17">iPhone 17 series</option><option value="16">iPhone 16 series</option><option value="15">iPhone 15 series</option><option value="14">iPhone 14 series</option><option value="13">iPhone 13 series</option><option value="12">iPhone 12 series</option><option value="11">iPhone 11 series</option><option value="SE">iPhone SE / earlier</option><option value="unknown">Not sure</option>
   </select></div>
   <div class="fieldGroup"><label for="modelName">Exact model (optional)</label><input class="fieldInput" id="modelName" type="text" placeholder="e.g. iPhone 15 Pro Max" autocomplete="off" maxlength="60"/><p class="fieldHint">A browser preview cannot read this automatically. Native identification will be explored separately.</p></div>
   <div class="guideBox"><b>Privacy first</b>Your entries stay on this page until you leave or restart. Nothing is uploaded to a server. You can copy the final report.</div>
@@ -319,7 +321,7 @@ function stage(n){
  $("next").textContent=n===3?"Review results →":"Continue →";
  const family=$("generation").value;
  if(n===2){
-   $("settingsGuide").innerHTML="<b>Find your battery details</b>Open <strong>Settings → Battery → "+(family && (family==="SE" || (!isNaN(Number(family)) && Number(family)<=14))?"Battery Health &amp; Charging":"Battery Health")+"</strong>. Enter only values actually displayed by iOS.";
+   $("settingsGuide").innerHTML="<b>Find your battery details</b>Open <strong>Settings → Battery → "+(family && (family==="SE" || (!isNaN(Number(family)) && Number(family)<=14))?"Battery Health &amp; Charging":"Battery Health")+"</strong>. Enter only values actually displayed by iOS."+(family==="Duo"?" <strong>iPhone Duo has two batteries:</strong> record one battery here and note the other battery’s readings in the final notes field. This preview cannot provide a complete dual-battery assessment.":"");
    $("cycleGroup").hidden=family==="SE"||!!family&&family!=="unknown"&&Number(family)<=14;
  }
  showView("wizard");
@@ -358,7 +360,7 @@ function results(){
  $("resultTitle").textContent=a.title;
  $("resultLead").textContent="Guided review of Apple-reported details and observed symptoms.";
  const rows=[
-   ["Device",v.name|| (v.family==="SE"?"iPhone SE / earlier":v.family==="unknown"||!v.family?"Model not identified":"iPhone "+v.family+" series")],
+   ["Device",v.name|| (v.family==="SE"?"iPhone SE / earlier":v.family==="Duo"?"iPhone Duo":v.family==="Air"?"iPhone Air":v.family==="unknown"||!v.family?"Model not identified":"iPhone "+v.family+" series")],
    ["Maximum capacity",v.capacity===null?"Not supplied":v.capacity+"% (iOS-reported)"],
    ["Battery health message",v.condition==="SERVICE"?"Service recommended":v.condition==="NORMAL"?"Normal / no service warning":"Not supplied"],
    ["Cycle count",v.cycles===null?"Not supplied":v.cycles+" (iOS-reported)"],
@@ -368,7 +370,7 @@ function results(){
    ["Current charge level",v.level===null?"Not supplied":v.level+"% (user-entered)"]
  ];
  $("reportRows").innerHTML=rows.map(function(r){return '<div class="reportRow"><span>'+esc(r[0])+'</span><b class="'+(r[1]==="FAIL"||r[1]==="Reported"?"bad":r[1]==="PASS"?"good":"neutral")+'">'+esc(r[1])+'</b></div>'}).join("");
- $("resultNote").textContent=a.detail;
+ $("resultNote").textContent=a.detail+(v.family==="Duo"?" iPhone Duo has two separately reported batteries; a single set of readings is not a complete dual-battery assessment.":"");
  const guide=(!v.family||v.family==="unknown")?"Model unknown — no model-specific cycle reference":(v.family==="SE"||Number(v.family)<=14)?"500 cycles (iPhone 14 or earlier design context)":"1,000 cycles (iPhone 15 or later design context)";
  lastReport=[
   "iREPAIR TOOLBOX — BATTERY DIAGNOSTICS",
@@ -385,6 +387,7 @@ function results(){
   "Apple design reference: "+guide,
   "Assessment: "+a.title,
   "Notes: "+human(v.notes),
+  ...(v.family==="Duo"?["Dual battery scope: One battery reading only; check both batteries separately."]:[]),
   "",
   "Interpretation: "+a.detail,
   "Limitations: Browser Safari cannot directly access iPhone battery health, cycle count or charging status. Observations are reported, not measured; symptoms do not prove a specific component fault. No independent electrical or battery-capacity test was performed."
