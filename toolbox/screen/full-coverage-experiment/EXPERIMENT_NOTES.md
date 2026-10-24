@@ -41,3 +41,14 @@ Browser Web APIs only test the webpage's **available viewport**, not the complet
 
 ## Guardrail
 Do NOT alter either existing locked final app or its URL. Keep this feature branch and Vercel project isolated. Only after explicit user approval can a new release be considered.
+
+## Final deployed verification (24 October 2026)
+
+- Latest Vercel deployment: `dpl_HbQREdFe3h4KJMSCTLegF3x3fxcd`, publicly reachable through the lab's stable URL.
+- Final tested code includes fully visible bottom-corner fail-safe and **rectangular clickable area** under its rounded visual treatment.
+- Automated bottom-left actual known-good touch coordinate test: PASS (the Finish control is wholly inside the 390×844 viewport and the exact tested coordinate activates it).
+- Full automated **public URL** end-to-end browser test: PASS (8 unobstructed display patterns, nine original touch targets, 264/264 full-area coverage and four corners, click-to-finish from tested region, original perimeter animation to completion, PASS/PASS/PASS/PASS report).
+- Separate incomplete run: 3/264 visited regions -> INCOMPLETE, with real newline characters in the copyable report; PASS.
+- Both final and experimental Vercel domains return HTTP 200 with different respective build identifiers; the final application's 38,751-byte build remains unchanged.
+
+**Pending user decision:** Review the experimental lab on an actual iPhone in Safari; it remains experimental and separate from the locked final app.
