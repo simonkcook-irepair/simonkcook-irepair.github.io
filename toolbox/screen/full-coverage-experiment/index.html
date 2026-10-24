@@ -401,7 +401,11 @@ function startCoverage(){
       clearTimeout(restoreTimer);
       restoreTimer=setTimeout(()=>{
         if(!testLayer.classList.contains('coverageMode'))return;
-        safe.style.left=lastX+'px';safe.style.top=lastY+'px';
+        // Keep the entire button visible at corners. Its hit area still
+        // CONTAINS the exact last successfully registered touch point.
+        const bounds=surface.getBoundingClientRect(),halfW=42,halfH=32;
+        safe.style.left=Math.max(halfW,Math.min(bounds.width-halfW,lastX))+'px';
+        safe.style.top=Math.max(halfH,Math.min(bounds.height-halfH,lastY))+'px';
         safe.classList.add('show');
       },90);
     }
