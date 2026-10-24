@@ -289,7 +289,7 @@ function paintDisplay(){
   const instruction=document.createElement('div');instruction.className='displayInstruction';
   const copy=document.createElement('div');copy.className='displayText';copy.textContent=pattern.name+' — '+pattern.help;
   const reveal=document.createElement('button');reveal.type='button';reveal.className='btn unobstructBtn';
-  reveal.textContent='Inspect the full colour';
+  reveal.textContent='View in full screen mode';
   reveal.onclick=e=>{e.preventDefault();e.stopPropagation();testLayer.classList.add('displayUnobstructed')};
   const tip=document.createElement('small');tip.className='displayTip';tip.textContent='Tap the blank screen once to restore Next / Exit';
   instruction.append(copy,reveal,tip);surface.replaceChildren(instruction);
