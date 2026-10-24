@@ -275,6 +275,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <div id="step3" class="stepPanel">
   <div class="guideBox"><b>Simple real-world observations</b>These are guided checks, not electrical measurements. Do not connect a charger if the battery is swollen, damaged or unusually hot.</div>
   <div class="fieldGroup"><span class="fieldLabel" id="chargeLabel">When safe, does iOS display a charging indication when connected?</span><div class="statusPills" role="group" aria-labelledby="chargeLabel" data-choice="charging"><button type="button" class="choice" data-value="PASS" aria-pressed="false">✓ Pass</button><button type="button" class="choice" data-value="FAIL" aria-pressed="false">✕ Fail</button><button type="button" class="choice" data-value="UNABLE TO TEST" aria-pressed="true">Unable to test</button></div><p class="fieldHint">A charging icon alone does not establish charging-port or battery electrical integrity.</p></div>
+  <div class="fieldGroup"><label for="currentCharge">Current battery charge shown by iOS (%) — optional</label><input id="currentCharge" class="fieldInput" inputmode="numeric" type="number" min="0" max="100" step="1" placeholder="e.g. 63"/><p class="fieldHint">Current charge and Maximum Capacity are different values. The browser cannot read either directly on iPhone.</p></div>
   <hr class="sectionLine"/>
   <div class="fieldGroup"><span class="fieldLabel" id="shutdownLabel">Any unexpected shutdowns or serious battery-performance warnings?</span><div class="statusPills" role="group" aria-labelledby="shutdownLabel" data-choice="shutdown"><button type="button" class="choice" data-value="NO" aria-pressed="false">No</button><button type="button" class="choice" data-value="YES" aria-pressed="false">Yes</button><button type="button" class="choice" data-value="UNKNOWN" aria-pressed="true">Not sure</button></div></div>
   <hr class="sectionLine"/>
@@ -336,7 +337,9 @@ function readValues(){
  const shown=!$("cycleGroup").hidden;
  const cycles=shown?numberOrNull("cycleCount",0,50000):null;
  if(cycles===false)return null;
- return {family:$("generation").value,name:$("modelName").value.trim().slice(0,60),capacity:capacity,cycles:cycles,condition:$("condition").value,charging:choiceValues.charging,shutdown:choiceValues.shutdown,safety:choiceValues.safety,notes:$("notes").value.trim().slice(0,500)};
+ const level=numberOrNull("currentCharge",0,100);
+ if(level===false)return null;
+ return {family:$("generation").value,name:$("modelName").value.trim().slice(0,60),capacity:capacity,cycles:cycles,level:level,condition:$("condition").value,charging:choiceValues.charging,shutdown:choiceValues.shutdown,safety:choiceValues.safety,notes:$("notes").value.trim().slice(0,500)};
 }
 function assessment(v){
  if(v.safety==="YES")return {title:"Stop and seek inspection.",detail:"Swelling, damage or unusually high heat was reported. Do not charge or continue using the device until it has been professionally assessed.",className:"bad"};
@@ -361,11 +364,12 @@ function results(){
    ["Cycle count",v.cycles===null?"Not supplied":v.cycles+" (iOS-reported)"],
    ["Charging indication",v.charging],
    ["Unexpected shutdowns",v.shutdown==="YES"?"Reported":v.shutdown==="NO"?"Not reported":"Not sure"],
-   ["Heat, swelling or damage",v.safety==="YES"?"Reported":v.safety==="NO"?"Not reported":"Not sure"]
+   ["Heat, swelling or damage",v.safety==="YES"?"Reported":v.safety==="NO"?"Not reported":"Not sure"],
+   ["Current charge level",v.level===null?"Not supplied":v.level+"% (user-entered)"]
  ];
  $("reportRows").innerHTML=rows.map(function(r){return '<div class="reportRow"><span>'+esc(r[0])+'</span><b class="'+(r[1]==="FAIL"||r[1]==="Reported"?"bad":r[1]==="PASS"?"good":"neutral")+'">'+esc(r[1])+'</b></div>'}).join("");
  $("resultNote").textContent=a.detail;
- const guide=(v.family==="SE"||(!isNaN(Number(v.family))&&v.family!==""&&Number(v.family)<=14))?"500 cycles (iPhone 14 or earlier design context)":"1,000 cycles (iPhone 15 or later design context, if applicable)";
+ const guide=(!v.family||v.family==="unknown")?"Model unknown — no model-specific cycle reference":(v.family==="SE"||Number(v.family)<=14)?"500 cycles (iPhone 14 or earlier design context)":"1,000 cycles (iPhone 15 or later design context)";
  lastReport=[
   "iREPAIR TOOLBOX — BATTERY DIAGNOSTICS",
   "Date: "+new Date().toLocaleString("en-GB"),
@@ -375,6 +379,7 @@ function results(){
   "Battery health message: "+rows[2][1],
   "Cycle count: "+rows[3][1],
   "Charging indicator check: "+rows[4][1],
+  "Current charge level: "+rows[7][1],
   "Unexpected shutdowns: "+rows[5][1],
   "Swelling / heat / damage: "+rows[6][1],
   "Apple design reference: "+guide,
@@ -404,7 +409,7 @@ $("copyReport").addEventListener("click",async function(){
  catch(e){const el=document.createElement("textarea");el.value=lastReport;el.style.position="fixed";el.style.opacity="0";document.body.append(el);el.select();let copied=false;try{copied=document.execCommand("copy")}catch(_){}el.remove();if(copied)$("copyReport").textContent="Report copied ✓";else prompt("Copy this report:",lastReport)}
 });
 $("again").addEventListener("click",function(){
- ["generation","modelName","capacity","cycleCount","notes"].forEach(function(id){$(id).value=""});
+ ["generation","modelName","capacity","cycleCount","currentCharge","notes"].forEach(function(id){$(id).value=""});
  $("condition").value="UNKNOWN";
  ["charging","shutdown","safety"].forEach(function(field){choiceValues[field]=field==="charging"?"UNABLE TO TEST":"UNKNOWN";document.querySelectorAll('[data-choice="'+field+'"] [data-value]').forEach(function(button){button.setAttribute("aria-pressed",String(button.dataset.value===choiceValues[field]))})});
  $("safetyNotice").hidden=true;
