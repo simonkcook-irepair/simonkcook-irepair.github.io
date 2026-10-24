@@ -184,6 +184,19 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
   #home .smallNote{margin-top:4px}
 }
 
+
+/* CR-14 (touch only): return fallback to the last verified working numbered spot. */
+.touchSafe{
+  display:none;position:absolute;left:0;top:0;z-index:30;
+  transform:translate(-50%,-50%);width:66px;height:66px;min-height:66px;
+  border-radius:50%;padding:2px;font-size:10px;line-height:1.05;
+  touch-action:manipulation;
+}
+.touchSafe.show{display:flex;align-items:center;justify-content:center}
+@media(max-height:720px){
+  .touchSafe{width:60px;height:60px;min-height:60px}
+}
+
 </style>
 </head>
 <body data-build="approved-screen-review-2026-10-24">
@@ -230,12 +243,15 @@ function startTouch(){
   title.textContent='Touch 0 / 9';touchHits.clear();
   const guidance=document.createElement('div');
   guidance.className='touchGuidance';
-  guidance.innerHTML='<strong>Tap every number</strong><span>Green means registered. If a target cannot be tapped, use the option below.</span>';
+  guidance.innerHTML='<strong>Tap every number</strong><span>Green means registered. If a number will not respond, tap FINISH HERE on a working number.</span>';
   surface.append(guidance);
   const cluster=document.createElement('div');cluster.className='touchCluster';surface.append(cluster);
+  // The fallback follows a proven, working touch position; it is never fixed
+  // somewhere that may be damaged. It appears AFTER the target click completes.
   const safe=document.createElement('button');
-  safe.className='btn unable touchSafe';
-  safe.textContent='Unable to tap every number? Finish as incomplete';
+  safe.type='button';safe.className='btn main touchSafe';
+  safe.innerHTML='FINISH<br>HERE';
+  safe.setAttribute('aria-label','Finish incomplete touch test from this working target');
   safe.onclick=()=>{
     if(touchHits.size===9)return;
     results.touch=touchHits.size?'FAIL':'UNABLE TO TEST';
@@ -243,18 +259,26 @@ function startTouch(){
   };
   surface.append(safe);
   for(let i=0;i<9;i++){
-    const d=document.createElement('button');d.className='touchDot';
-    d.textContent=i+1;d.setAttribute('aria-label','Touch target '+(i+1));
-    d.onpointerdown=e=>{
-      e.preventDefault();
+    const d=document.createElement('button');d.type='button';
+    d.className='touchDot';d.textContent=i+1;
+    d.setAttribute('aria-label','Touch target '+(i+1));
+    d.onclick=()=>{
+      // Use completed click (not pointerdown): do not put the finish control
+      // under the finger before its original tap has finished.
       if(touchHits.has(i))return;
       touchHits.add(i);d.classList.add('hit');
       d.setAttribute('aria-pressed','true');
       title.textContent='Touch '+touchHits.size+' / 9';
       if(touchHits.size===9){
-        safe.disabled=true;
+        safe.classList.remove('show');safe.disabled=true;
         setTimeout(()=>{results.touch='PASS';edgeIntro()},480);
+        return;
       }
+      // Match the exact position of the last verified working numbered button.
+      const r=d.getBoundingClientRect(),sr=surface.getBoundingClientRect();
+      safe.style.left=(r.left+r.width/2-sr.left)+'px';
+      safe.style.top=(r.top+r.height/2-sr.top)+'px';
+      safe.classList.add('show');
     };
     cluster.append(d);
   }
