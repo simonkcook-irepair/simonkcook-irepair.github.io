@@ -173,6 +173,17 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
   #home .phoneArt{transform:translate(-50%,-50%) scale(.344)}
 }
 
+
+/* Keep the full premium handset visible on taller phones without introducing scrolling. */
+@media(min-height:751px){
+  #home .phoneStage{min-height:282px;margin:4px 0 6px}
+  #home.card{padding-top:17px}
+  #home h1{margin:9px 0}
+  #home .infoBox{padding-top:11px;padding-bottom:11px}
+  #home .actions{margin-top:9px}
+  #home .smallNote{margin-top:4px}
+}
+
 </style>
 </head>
 <body data-build="approved-screen-review-2026-10-24">
