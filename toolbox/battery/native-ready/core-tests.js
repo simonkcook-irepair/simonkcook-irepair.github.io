@@ -1,0 +1,37 @@
+/* Run: node core-tests.js  (requires core.js in same directory) */
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm");
+const ctx={};vm.runInNewContext(fs.readFileSync(__dirname+"/core.js","utf8"),ctx);
+const Core=ctx.iRepairBatteryCore;
+let n=0;
+function ok(name,condition){assert.ok(condition,name);n++;console.log("PASS "+name);}
+let f=Core.parseAnalytics('{"last_value_CycleCount":129,"last_value_AppleRawMaxCapacity":4849,"last_value_NominalChargeCapacity":4827,"last_value_MaximumFCC":4917,"last_value_MaximumQmax":4986,"last_value_TotalOperatingTime":3018,"last_value_AverageTemperature":27,"last_value_MaximumTemperature":515,"deviceId":"SECRET_DO_NOT_REPORT"}');
+ok("129 cycles extracted",f.cycles.value===129);
+ok("7 additional raw counters",f.raw.length===7);
+ok("health not fabricated",f.health.value===null);
+let a=Core.assess({analytics:f,serviceStatus:"unknown"});
+ok("cycles-only result partial",a.level==="partial"&&a.capacity===null);
+a=Core.assess({analytics:f,capacity:87,capacitySource:"manual",serviceStatus:"normal"});
+ok("settings 87% merges with 129 cycles",a.capacity===87&&a.cycles===129&&a.level==="reported");
+ok("provenance retains settings",a.capacitySource==="Customer-entered iOS Battery Health");
+ok("report doesn't include raw values or identifier",!Core.report(a).includes("4849")&&!Core.report(a).includes("SECRET_DO_NOT_REPORT"));
+ok("private field inventory excludes ID",!Core.fieldSummary(f).includes("deviceId")&&!Core.fieldSummary(f).includes("SECRET_DO_NOT_REPORT"));
+let b=Core.assess({analytics:f,serviceStatus:"service"});
+ok("reported iOS service warning takes priority",b.level==="service");
+let g=Core.parseAnalytics('{"productType":"iPhone18,2","last_value_CycleCount":360,"last_value_MaximumCapacityPercent":83}');
+ok("known hardware code resolved",Core.modelLabel(g.model).includes("iPhone 17 Pro Max"));
+b=Core.assess({analytics:g,capacity:83,capacitySource:"analytic-prefill",serviceStatus:"unknown"});
+ok("unconfirmed file capacity keeps provenance",b.capacitySource.includes("Unverified analytics"));
+b=Core.assess({analytics:g,capacity:96,capacitySource:"manual",serviceStatus:"normal"});
+ok("Settings conflict noted, Settings prioritised",b.mismatch&&b.capacity===96);
+let c=Core.parseAnalytics('{"CycleCount":400,"CycleCount":430,"MaximumCapacityPercent":null}');
+ok("conflicting cycles not arbitrarily chosen",c.cycles.conflict&&c.cycles.value===null);
+let d=Core.parseAnalytics('{"modelIdentifier":"iPhone19,9","last_value_CycleCount":10}');
+ok("unknown model stays raw",Core.modelLabel(d.model).includes("unverified")&&!d.model.name);
+const native={source:"ios-native",modelIdentifier:"iPhone18,2",chargePercent:65,chargingState:"charging",iosVersion:"27.0"};
+b=Core.assess({native,serviceStatus:"unknown"});
+ok("native identifier and charging read",b.native.chargePercent===65&&b.native.chargingState==="charging"&&b.model.name==="iPhone 17 Pro Max");
+ok("foreign bridge cannot forge measurements",Core.nativeSnapshot({...native,source:"analytics"})===null);
+b=Core.assess({analytics:g,capacity:79,capacitySource:"manual",serviceStatus:"normal"});
+ok("80-or-less service review",b.level==="review");
+console.log("ALL "+n+" BATTERY CORE TESTS PASSED");
