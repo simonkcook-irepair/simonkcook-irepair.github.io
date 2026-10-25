@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#e9f6ff">
+<title>iRepair Toolbox | Battery Diagnostics — Engine Review</title>
+<style>
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--ink:#16395f;--muted:#5d7893;--blue:#0b78e7;--cyan:#52e5ff;--mint:#24c8a1;--green:#20b37d;--red:#d84d6d}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--ink)}
+body{background:radial-gradient(circle at 10% 4%,#fff 0,transparent 36%),radial-gradient(circle at 92% 18%,#89caff8d 0,transparent 42%),radial-gradient(circle at 12% 86%,#d7f7ff 0,transparent 48%),linear-gradient(160deg,#f5fbff 0%,#d8edff 52%,#f6fbff 100%);min-height:100svh;overflow-x:hidden}
+.shell{width:min(100%,500px);min-height:100svh;margin:auto;padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column}
+.glass{border:1px solid #fff;background:linear-gradient(160deg,#ffffffef,#e6f5ffcc 68%,#d6edffce);box-shadow:inset 0 2px 1px #fff,inset 0 -4px 12px #6da7db1a,0 10px 30px #4381b42b;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
+.header{border-radius:24px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}.logo{width:46px;height:46px;border-radius:16px;background:#f5fbff url("https://simonkcook-irepair.github.io/icon-192.png") center/cover no-repeat;border:1px solid #fff;box-shadow:inset 0 1px 1px #fff,0 0 0 1px #fff,0 0 16px #66baff5e,0 8px 18px #3c84b738}
+.brand b{display:block;font-size:17px;letter-spacing:-.5px;color:#16395f}.brand span{display:block;font-size:10px;font-weight:850;letter-spacing:2.1px;color:#3574a8;margin-top:2px}.badge{font-size:10px;font-weight:850;letter-spacing:1px;color:#2a6594;border:1px solid #fff;border-radius:999px;padding:10px 13px;background:linear-gradient(145deg,#fff,#e7f5ffd8);box-shadow:inset 0 1px #fff,0 4px 12px #498ac426;white-space:nowrap}
+.card{margin-top:16px;border-radius:34px;padding:31px 30px 22px;display:flex;flex-direction:column;min-height:calc(100svh - 118px)}
+.eyebrow{text-align:center;color:#0d79c8;font-size:11px;font-weight:900;letter-spacing:2.2px;text-transform:uppercase}
+h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-align:center;margin:18px 0;color:#17395f;text-shadow:0 1px #fff9}.lead{text-align:center;color:#5d7892;font-size:17px;line-height:1.55;margin:0 auto;max-width:390px}
+.phoneStage{margin:26px 0 20px;border:1px solid #fff;border-radius:31px;min-height:520px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#ffffffee,transparent 64%),linear-gradient(145deg,#ffffffb7,#dff2ffd0 58%,#fbfdffbf);box-shadow:inset 0 2px 2px #fff,inset 0 -8px 26px #9cc8e527,0 15px 38px #3c81b231}
+.phoneGlow{position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#75c8ff70 0,transparent 68%);filter:blur(26px)}
+.phoneArt{position:relative;width:min(66vw,258px);aspect-ratio:.475;border-radius:46px;padding:8px;background:linear-gradient(145deg,#f2fbff 0%,#a3bfd2 5%,#53728c 10%,#203b55 24%,#0e2338 72%,#071725 100%);box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff;overflow:visible}
+.phoneArt:before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:linear-gradient(126deg,#ffffffba 0,transparent 13%,transparent 78%,#4bc3ff30 100%);mix-blend-mode:screen}
+.phoneArt:after{content:"";position:absolute;left:7%;right:7%;bottom:-10px;height:18px;border-radius:50%;background:#19375355;filter:blur(8px)}
+.side{position:absolute;background:linear-gradient(#9fb6c8,#294763);border-radius:4px;box-shadow:inset 0 1px #fff8}.side.s1{left:-5px;top:22%;width:5px;height:46px}.side.s2{left:-5px;top:34%;width:5px;height:76px}.side.s3{right:-5px;top:31%;width:5px;height:96px}
+.phoneScreen{position:absolute;inset:8px;border-radius:39px;overflow:hidden;background:radial-gradient(circle at 31% 16%,#e6fbff 0,transparent 31%),radial-gradient(circle at 62% 28%,#a7e5ff4a 0,transparent 27%),linear-gradient(158deg,#91ddff 0%,#58afe9 33%,#347fca 68%,#2550a2 100%);box-shadow:inset 0 0 28px #1e5d9c35}
+.dynamicIsland{position:absolute;top:17px;left:50%;transform:translateX(-50%);width:76px;height:24px;border-radius:999px;background:#081726;z-index:8;box-shadow:inset 0 -1px #ffffff14}.dynamicIsland:after{content:"";position:absolute;right:9px;top:9px;width:5px;height:5px;border-radius:50%;background:#123959}
+.screenGlow{position:absolute;inset:-30% -65%;transform:translateX(-72%) rotate(13deg);background:linear-gradient(90deg,transparent 35%,#ffffff06 41%,#ffffffdd 48%,#e6f9ffc2 52%,#ffffff18 57%,transparent 62%);filter:blur(1.4px);animation:sweep 4.5s cubic-bezier(.45,0,.55,1) infinite}.screenGlow2{position:absolute;inset:-20% -50%;transform:translateX(-90%) rotate(13deg);background:linear-gradient(90deg,transparent 41%,#95ecff15 45%,#ffffff7c 50%,transparent 58%);animation:sweep2 4.5s .45s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes sweep{0%,15%{transform:translateX(-72%) rotate(13deg);opacity:.24}48%{opacity:1}79%,100%{transform:translateX(72%) rotate(13deg);opacity:.24}}@keyframes sweep2{0%,20%{transform:translateX(-90%) rotate(13deg);opacity:.14}55%{opacity:.72}83%,100%{transform:translateX(90%) rotate(13deg);opacity:.08}}
+.infoBox{border:1px solid #fff;border-radius:26px;padding:22px 23px;background:linear-gradient(145deg,#fffffff0,#e9f6ffe0);box-shadow:inset 0 2px 2px #fff,0 8px 24px #4182b425;color:#456783;font-size:15px;line-height:1.7}.infoBox b{color:#2e5477}.actions{margin-top:22px}
+.btn{position:relative;overflow:hidden;isolation:isolate;width:100%;min-height:61px;border-radius:21px;border:1px solid #d0eaff;background:linear-gradient(180deg,#fff 0%,#eaf6ff 42%,#bddfff 100%);color:#185b94;font-weight:850;font-size:17px;box-shadow:inset 0 2px 1px #ffffffed,inset 0 -6px 12px #6399c53b,0 0 0 1px #c5e7ff73,0 0 10px #75caff50,0 6px 16px #4484b64d;transition:transform .15s ease}.btn:before{content:"";position:absolute;z-index:-1;left:1px;right:1px;top:1px;height:45%;border-radius:19px 19px 46% 46%;background:linear-gradient(145deg,#ffffffc4,#ffffff54 52%,#ffffff0c 82%)}.btn.main{border-color:#5ee7ff;background:radial-gradient(circle at 50% 0,#7be5ff,transparent 50%),linear-gradient(180deg,#2eaaff 0%,#0874e9 56%,#064eb2 100%);color:#fff;text-shadow:0 1px 3px #073a80a8;box-shadow:inset 0 2px 1px #fff,inset 0 -7px 13px #003b9863,0 0 0 1px #6de9ff,0 0 14px #3bdcffbe,0 0 27px #198cff75,0 8px 20px #1675d16e}.btn.pass{border-color:#92f1c7;background:radial-gradient(circle at 50% 0,#e9fff3,transparent 65%),linear-gradient(180deg,#c8f8df 0%,#4dca93 55%,#159465 100%);color:#064d34}.btn.fail{border-color:#ffacc1;background:radial-gradient(circle at 50% 0,#fff0f4,transparent 65%),linear-gradient(180deg,#ffe1e9 0%,#f27c9b 55%,#ca355b 100%);color:#76213a}.btn.unable{background:linear-gradient(180deg,#fff,#edf2fa 45%,#cbdbea);color:#496782;border-color:#fff}.btn:active{transform:scale(.97)}
+.smallNote{text-align:center;color:#67829a;font-size:11px;line-height:1.5;margin:12px 0 0}.view{display:none}.view.active{display:flex;flex-direction:column;flex:1}
+.testLayer{position:fixed;inset:0;z-index:100;display:none;background:radial-gradient(circle at 50% 42%,#fff,#e6f4ff 76%);touch-action:none;overflow:hidden}.testLayer.active{display:block}.testTop{position:absolute;z-index:130;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 12px) 15px 11px;display:flex;align-items:center;justify-content:space-between;background:#f6fbffed;border-bottom:1px solid #fff;backdrop-filter:blur(20px);color:#17466e}.testTop .btn{width:auto;min-height:42px;padding:8px 15px;font-size:13px}.testSurface{position:absolute;inset:0;touch-action:none}.centerInstruction{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(84vw,370px);padding:27px 24px;border-radius:28px;text-align:center;border:1px solid #fff;background:linear-gradient(145deg,#fffffff6,#e5f4ffe8);box-shadow:inset 0 2px 2px #fff,0 18px 44px #397daf34;backdrop-filter:blur(22px);color:#244f73}.centerInstruction h2{margin:0 0 10px;font-size:28px;letter-spacing:-.6px;color:#173b60}.centerInstruction p{margin:0;color:#5b7690;line-height:1.55}.centerInstruction .btn{margin-top:18px}.testBottom{position:absolute;z-index:130;bottom:0;left:0;right:0;padding:10px 16px calc(env(safe-area-inset-bottom) + 11px);background:#f6fbffed;border-top:1px solid #fff;backdrop-filter:blur(20px)}.testBottom p{margin:0 0 7px;text-align:center;color:#56728c;font-size:12px}
+.touchCluster{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;grid-template-columns:repeat(3,58px);gap:14px;padding:16px;border:1px solid #fff;border-radius:28px;background:linear-gradient(145deg,#fffffff2,#e2f3ffda);box-shadow:inset 0 2px 2px #fff,0 16px 38px #397eb233;backdrop-filter:blur(20px)}.touchDot{width:58px;height:58px;border-radius:50%;border:1px solid #8ee8ff;color:#fff;font-size:19px;font-weight:900;background:radial-gradient(circle at 50% 0,#8cecff,transparent 58%),linear-gradient(#2ca9ff,#0874e9 60%,#0750b4);box-shadow:inset 0 2px #fff,0 0 0 5px #42cfff1c,0 0 14px #40d9ff88,0 7px 14px #347db747}.touchDot.hit{background:radial-gradient(circle at 50% 0,#ecfff7,transparent 60%),linear-gradient(#80e1ba,#20ad7f);box-shadow:inset 0 2px #fff,0 0 0 5px #4bddaa24,0 0 15px #39ddaa7e}.touchCounter{position:absolute;top:18%;left:0;right:0;text-align:center;color:#2c6c99;font-size:13px;font-weight:850}.touchSafe{position:absolute;z-index:30;transform:translate(-50%,-50%);width:76px;height:76px;min-height:76px;border-radius:50%;padding:0;font-size:10px;line-height:1.05;display:none}.touchSafe.show{display:block}
+.edgeStage{position:absolute;inset:calc(env(safe-area-inset-top) + 67px) 0 calc(env(safe-area-inset-bottom) + 5px);display:grid;place-items:center;touch-action:none}.edgePhone{position:relative;height:min(79svh,720px);aspect-ratio:100/214;max-width:90vw;border-radius:10.5%/5%;padding:7px;background:linear-gradient(145deg,#f1f9ff 0,#829bb3 7%,#29435c 20%,#11283c 58%,#071928 100%);box-shadow:0 34px 70px #1f578653,0 0 0 1px #fff9,inset 0 2px 2px #fff;filter:drop-shadow(0 0 20px #55c6ff24);isolation:isolate;touch-action:none}.edgePhone:before{content:"";position:absolute;inset:2px;border-radius:inherit;background:linear-gradient(122deg,#ffffffa3 0,transparent 14%,transparent 80%,#4bc4ff29);z-index:10;pointer-events:none}.edgeScreen{position:absolute;inset:8px;border-radius:9.3%/4.5%;overflow:hidden;background:radial-gradient(circle at 50% 43%,#fff 0,#f4fbff 42%,#e0f0ff 75%,#c7e4fb 100%);box-shadow:inset 0 0 28px #4c8dbb2e;touch-action:none}.edgeIsland{position:absolute;z-index:12;top:2.2%;left:50%;transform:translateX(-50%);width:31%;height:3.4%;border-radius:999px;background:#091827;pointer-events:none}.edgeSvg{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}.rail{fill:none;stroke:#67a7d04c;stroke-width:5.2;stroke-linecap:round}.railHi{fill:none;stroke:#ffffffb5;stroke-width:1.05;stroke-linecap:round}.cobHalo{fill:none;stroke:url(#cob);stroke-width:8.2;stroke-linecap:round;opacity:.64;filter:url(#glow)}.cobStrip{fill:none;stroke:url(#cob);stroke-width:3.45;stroke-linecap:round;pathLength:100;stroke-dasharray:.7 .32;filter:url(#glow)}.runner{fill:#fff;stroke:#43e5ff;stroke-width:1.2;filter:url(#runnerGlow)}.runnerRing{fill:none;stroke:#8ef5ff;stroke-width:.85;filter:url(#runnerGlow);transform-box:fill-box;transform-origin:center;animation:ring 1.25s ease-in-out infinite}@keyframes ring{50%{transform:scale(1.8);opacity:.18}}.edgeMsg{position:absolute;top:5.1%;left:50%;transform:translateX(-50%);z-index:30;width:min(84vw,345px);padding:9px 13px;border:1px solid #fff;border-radius:999px;background:linear-gradient(145deg,#fffffff4,#e4f4ffe4);color:#236391;font-size:11px;font-weight:850;text-align:center;box-shadow:inset 0 1px #fff,0 7px 19px #3c7eae2b;backdrop-filter:blur(15px);pointer-events:none}.edgePct{position:absolute;bottom:4.7%;left:50%;transform:translateX(-50%);z-index:30;color:#32698f;font-size:11px;font-weight:850;pointer-events:none}.edgeFailSafe{position:absolute;z-index:35;left:50%;top:4.85%;transform:translate(-50%,-50%);width:66px;height:66px;min-height:66px;border-radius:50%;padding:0;font-size:19px;display:none;box-shadow:inset 0 2px 1px #fff,inset 0 -7px 13px #003b9863,0 0 0 1px #6de9ff,0 0 16px #3bdcffd4,0 0 30px #198cff85,0 8px 20px #1675d16e}.edgeFailSafe.show{display:block}.core{position:absolute;left:50%;top:50.5%;width:88px;height:88px;transform:translate(-50%,-50%) scale(.72);opacity:.1;z-index:15;pointer-events:none;transition:.5s cubic-bezier(.22,1,.36,1)}.core.ready{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}.coreHalo{position:absolute;inset:-16px;border-radius:50%;border:2px solid #6defff58;box-shadow:0 0 20px #32cfff7c;animation:pulse 1.8s ease-out infinite}.coreCog{position:absolute;inset:-8px;border-radius:50%;background:repeating-conic-gradient(#32d8ff 0 6deg,transparent 6deg 14deg);-webkit-mask:radial-gradient(circle,transparent 0 58%,#000 60% 70%,transparent 72%);mask:radial-gradient(circle,transparent 0 58%,#000 60% 70%,transparent 72%);filter:drop-shadow(0 0 7px #32cfff)}.core.ready .coreCog{animation:spin 9s linear infinite}.coreLogo{position:absolute;inset:13px;border-radius:16px;background:#fff url("https://simonkcook-irepair.github.io/icon-192.png") center/cover no-repeat;box-shadow:0 0 0 1px #fff,0 6px 18px #337fb14b}@keyframes pulse{from{transform:scale(.76);opacity:.82}to{transform:scale(1.2);opacity:0}}@keyframes spin{to{transform:rotate(360deg)}}.results .eyebrow{margin-top:6px}.reportRow{display:flex;justify-content:space-between;gap:12px;padding:14px 15px;margin:8px 0;border:1px solid #fff;border-radius:16px;background:linear-gradient(145deg,#fffffff0,#e8f5ffe0);box-shadow:inset 0 1px 2px #fff,0 5px 15px #5389b522}.good{color:#16835f}.bad{color:#b83a57}.neutral{color:#936d28}@media(max-width:430px){.card{padding:28px 26px 21px}.phoneStage{min-height:500px}.infoBox{font-size:14px}.phoneArt{width:min(66vw,245px)}}@media(max-height:750px){.card{padding-top:22px}.phoneStage{min-height:410px}.phoneArt{width:min(54vw,220px)}.edgePhone{height:72svh}}@media(prefers-reduced-motion:reduce){.screenGlow,.screenGlow2,.runnerRing,.coreHalo,.core.ready .coreCog{animation:none}}
+
+/* APPROVED CHANGES 2026-10-24 — scoped overrides; original styling retained */
+
+/* 01: Fit the complete approved opening design within portrait height. */
+#home .phoneStage{margin:9px 0 10px;min-height:clamp(220px,25svh,270px)}
+#home .phoneArt{width:min(35vw,12svh,125px)}
+@media(max-height:750px){
+  #home .phoneStage{min-height:190px;margin:7px 0}
+  #home .phoneArt{width:min(32vw,12svh,100px)}
+}
+
+/* Compact spacing only where necessary to prevent portrait scrolling. */
+#home.card{padding-top:20px;padding-bottom:15px}
+#home h1{font-size:clamp(36px,9vw,48px);margin:12px 0}
+#home .lead{font-size:16px;line-height:1.4}
+#home .infoBox{padding:14px 17px;font-size:13px;line-height:1.48}
+#home .actions{margin-top:13px}
+#home .smallNote{margin-top:7px}
+/* Portrait compactness for shorter iPhones; no change to approved styling on larger screens. */
+@media(max-height:720px){
+  .header{padding:9px 12px}
+  .header .logo{width:40px;height:40px}
+  .header .brand{gap:8px}
+  .header .brand b{font-size:15px}
+  .header .brand span{font-size:8px;letter-spacing:1.55px}
+  #home.card{margin-top:9px;padding:12px 16px 10px;border-radius:27px}
+  #home h1{font-size:clamp(30px,8.4vw,36px);line-height:1.02;margin:7px 0}
+  #home .lead{font-size:13px;line-height:1.3}
+  #home .phoneStage{min-height:162px;margin:7px 0}
+  #home .phoneArt{width:min(31vw,10.5svh,78px)}
+  #home .infoBox{padding:10px 12px;font-size:12px;line-height:1.28;border-radius:19px}
+  #home .actions{margin-top:8px}
+  #home .actions .btn{min-height:52px}
+  #home .smallNote{font-size:10px;line-height:1.25;margin-top:5px}
+}
+/* 03–04: Centre display-test instructions without altering test backgrounds. */
+.displayInstruction{
+  position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);
+  z-index:8;width:min(82vw,335px);padding:20px 18px;
+  text-align:center;color:#244f73;font-size:16px;font-weight:750;line-height:1.55;
+  border:1px solid #fff;border-radius:24px;
+  background:linear-gradient(145deg,#fffffff6,#e5f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 16px 40px #397daf34;
+  backdrop-filter:blur(18px)
+}
+/* 05: Only the display assessment card becomes slightly more compact. */
+.centerInstruction.displayAssessBox{width:min(78vw,325px);padding:20px 19px}
+.displayAssessBox h2{font-size:24px}
+.displayAssessBox .btn{min-height:51px}
+
+/* 07–09: Keep all nine touch targets independently accessible. */
+.touchCluster{grid-template-columns:repeat(3,66px);gap:15px}
+.touchDot{width:66px;height:66px}
+.touchGuidance{
+  position:absolute;top:calc(50% - 205px);left:50%;transform:translateX(-50%);
+  width:min(86vw,330px);padding:12px 16px;border:1px solid #fff;
+  border-radius:20px;text-align:center;color:#386e97;
+  background:linear-gradient(145deg,#fffffff6,#e5f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 10px 26px #397daf27;
+  z-index:12;line-height:1.35
+}
+.touchGuidance strong{display:block;font-size:15px;color:#235c84}
+.touchGuidance span{display:block;font-size:12px;margin-top:4px}
+.touchSafe{
+  display:block;left:50%;top:calc(50% + 196px);
+  transform:translateX(-50%);width:min(80vw,300px);height:auto;
+  min-height:52px;padding:10px 15px;border-radius:18px;
+  font-size:13px;line-height:1.35;white-space:normal
+}
+@media(max-height:720px){
+  .touchCluster{grid-template-columns:repeat(3,60px);gap:12px;padding:12px}
+  .touchDot{width:60px;height:60px}
+  .touchGuidance{top:calc(50% - 172px)}
+  .touchSafe{top:calc(50% + 162px)}
+}
+
+/* 11–12: Use the approved landing handset design, without shine animation. */
+.edgeStage{inset:calc(env(safe-area-inset-top) + 69px) 0 calc(env(safe-area-inset-bottom) + 5px)}
+.edgePhone.phoneArt{
+  width:auto;height:min(83svh,760px);aspect-ratio:.475;
+  max-width:calc(100vw - 30px);border-radius:46px;padding:8px;
+  background:linear-gradient(145deg,#f2fbff 0%,#a3bfd2 5%,#53728c 10%,#203b55 24%,#0e2338 72%,#071725 100%);
+  box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff
+}
+.edgePhone.phoneArt:before{
+  inset:-1px;background:linear-gradient(126deg,#ffffffba 0,transparent 13%,transparent 78%,#4bc3ff30 100%);
+  mix-blend-mode:screen;z-index:10
+}
+.edgeScreen.phoneScreen{
+  inset:8px;border-radius:39px;
+  background:radial-gradient(circle at 31% 16%,#e6fbff 0,transparent 31%),
+    radial-gradient(circle at 62% 28%,#a7e5ff4a 0,transparent 27%),
+    linear-gradient(158deg,#91ddff 0%,#58afe9 33%,#347fca 68%,#2550a2 100%);
+  box-shadow:inset 0 0 28px #1e5d9c35
+}
+.edgeIsland.dynamicIsland{
+  top:2.7%;height:3.5%;width:28%;z-index:12
+}
+/* The illuminated runner is always in FRONT of the Dynamic Island. */
+.edgeSvg{z-index:24}
+.edgeMsg{
+  top:31%;width:78%;max-width:310px;padding:13px 15px;
+  border-radius:22px;font-size:13px;line-height:1.38;font-weight:800;
+  background:linear-gradient(145deg,#fffffff7,#e4f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 12px 30px #397daf30
+}
+.core{width:102px;height:102px;opacity:.6;z-index:25}
+.core.ready{opacity:1}
+.edgeFailSafe{top:76%;z-index:35}
+.edgePct{bottom:4%;font-size:12px;color:#fff;text-shadow:0 1px 4px #124875}
+@media(max-height:750px){.edgePhone.phoneArt{height:min(79svh,665px)}}
+
+
+/* CR-13: Retain the EXACT approved iPhone artwork at its native geometry.
+   Scale the ENTIRE rendered handset, not just its width, so its radius,
+   Dynamic Island, side buttons and screen all keep their original proportions. */
+#home .phoneStage{min-height:286px;margin:6px 0 8px}
+#home .phoneArt{
+  position:absolute;
+  left:50%;top:50%;
+  width:258px;
+  transform:translate(-50%,-50%) scale(.51);
+  transform-origin:center center;
+}
+/* Constrained iPhone in-app browsers: preserve handset identity and fit. */
+@media(max-height:750px){
+  #home .phoneStage{min-height:208px;margin:3px 0}
+  #home .phoneArt{width:258px;transform:translate(-50%,-50%) scale(.38)}
+  #home.card{margin-top:6px;padding-top:8px;padding-bottom:7px}
+  #home h1{margin:5px 0}
+  #home .infoBox{padding:7px 11px}
+  #home .actions{margin-top:5px}
+  #home .smallNote{margin-top:3px}
+}
+@media(max-height:630px){
+  #home .phoneStage{min-height:188px}
+  #home .phoneArt{transform:translate(-50%,-50%) scale(.344)}
+}
+
+
+/* Keep the full premium handset visible on taller phones without introducing scrolling. */
+@media(min-height:751px){
+  #home .phoneStage{min-height:282px;margin:4px 0 6px}
+  #home.card{padding-top:17px}
+  #home h1{margin:9px 0}
+  #home .infoBox{padding-top:11px;padding-bottom:11px}
+  #home .actions{margin-top:9px}
+  #home .smallNote{margin-top:4px}
+}
+
+
+
+
+/* BATTERY DIAGNOSTICS only; shared approved Toolbox visuals above remain unchanged */
+.fieldGroup[hidden],.guideBox[hidden]{display:none!important}
+.phoneBattery{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:5;width:118px;height:58px;border-radius:16px;border:5px solid #edffff;box-shadow:0 0 18px #6bffffbd,inset 0 0 15px #57e1ff9c,0 10px 20px #136ec074;background:linear-gradient(90deg,#16e7c6,#73eaf9 62%,#e5ffff)}
+.phoneBattery:before{content:"";position:absolute;top:15px;right:-17px;width:11px;height:20px;border-radius:0 5px 5px 0;background:#e6ffff;box-shadow:0 0 9px #69e8ff}
+.phoneBattery:after{content:"⚡";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:42px;font-weight:900;text-shadow:0 0 10px #1389e9,0 1px 2px #166197}
+.phoneBatteryGlow{position:absolute;left:6%;right:6%;top:35%;height:35%;border-radius:50%;background:#51dbff90;filter:blur(24px)}
+.card.diagnostic{gap:0}
+/* Explicitly respect hidden panels even where flex layout rules apply. */
+[hidden]{display:none!important}
+.card.diagnostic h1{font-size:clamp(32px,8.3vw,43px);margin:12px 0 7px}
+.card.diagnostic .lead{font-size:15px;line-height:1.43}
+.progressTrack{height:8px;border-radius:100px;background:#bbdfff;border:1px solid #fff;box-shadow:inset 0 1px 2px #549dd681;margin:16px 0 18px;overflow:hidden}
+.progressFill{height:100%;width:33.33%;background:linear-gradient(90deg,#68e9ff,#097ae9);border-radius:inherit;box-shadow:0 0 14px #57c8ff9c;transition:width .2s ease}
+.stepPanel{display:none;flex-direction:column;gap:12px;padding:0 0 10px}
+.stepPanel.active{display:flex}
+.fieldGroup{display:flex;flex-direction:column;gap:6px}
+.fieldGroup label,.fieldGroup .fieldLabel{color:#28587c;font-size:14px;font-weight:850;line-height:1.3}
+.fieldHint{font-size:12px;color:#607f99;line-height:1.4;margin:0}
+.fieldInput,.fieldSelect,.fieldTextarea{border:1px solid #fff;border-radius:17px;width:100%;font:600 16px -apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;color:#214f74;background:linear-gradient(150deg,#fff,#eaf6ffed);padding:13px 14px;min-height:50px;box-shadow:inset 0 1px 3px #b2d8f74f,0 6px 12px #4b91c01e;outline-offset:2px}
+.fieldInput:focus,.fieldSelect:focus,.fieldTextarea:focus{outline:2px solid #1599ef}
+.fieldInput::placeholder,.fieldTextarea::placeholder{color:#7898b0}
+.fieldTextarea{resize:vertical;min-height:74px;line-height:1.4}
+.guideBox{border:1px solid #fff;border-radius:21px;padding:14px 16px;background:linear-gradient(145deg,#ffffffed,#e4f3ffed);color:#406888;font-size:13px;line-height:1.48;box-shadow:inset 0 2px 2px #fff,0 9px 21px #5490b729}
+.guideBox b{display:block;color:#185a8b;font-size:14px;margin-bottom:5px}
+.guideBox strong{color:#185a8b}
+.guideBox.warning{background:linear-gradient(145deg,#fff9e7,#ffeed9);color:#855d3c;border-color:#fff3cc}
+.guideBox.warning b,.guideBox.warning strong{color:#906019}
+.wizardNav{margin-top:auto;display:grid;grid-template-columns:minmax(95px,1fr) 2fr;gap:11px;padding-top:12px}
+.wizardNav .btn{font-size:15px;min-height:57px}
+.statusPills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.choice{min-height:53px;border:1px solid #fff;border-radius:15px;padding:7px 5px;background:linear-gradient(150deg,#fff,#d7edff);box-shadow:inset 0 2px 2px #fff,0 6px 12px #387db625;color:#315f81;font-size:12px;font-weight:850;line-height:1.2}
+.choice[aria-pressed=true]{border-color:#47d9ff;background:linear-gradient(180deg,#58c9ff,#0780e8);color:#fff;text-shadow:0 1px 3px #164e86;box-shadow:inset 0 1px #fff9,0 0 13px #59bfff91}
+.choice:focus-visible{outline:3px solid #0a88ea;outline-offset:1px}
+.sectionLine{height:1px;background:#fff;border:0;margin:2px 0}
+#results .reportRow{font-size:13px;align-items:flex-start}
+#results .reportRow span{max-width:60%}
+#results .reportRow b{text-align:right;font-size:13px}
+#results h1{font-size:clamp(30px,8vw,45px)}
+.assessmentNote{border-radius:18px;background:linear-gradient(145deg,#fffffff1,#e6f5ff);border:1px solid #fff;padding:14px;color:#416b89;font-size:12px;line-height:1.45;margin-top:12px}
+.inlineTags{display:flex;align-items:center;flex-wrap:wrap;gap:7px;justify-content:center;padding-top:10px}
+.inlineTag{font-weight:800;font-size:10px;padding:7px 10px;border-radius:999px;background:linear-gradient(145deg,#ffffffef,#e6f3ff);border:1px solid #fff;color:#3977a3}
+#home .phoneScreen .screenGlow,#home .phoneScreen .screenGlow2{z-index:7;pointer-events:none}
+#home .phoneBattery{z-index:3}
+@media(max-width:380px){
+ .card.diagnostic{padding:17px 18px}
+ .card.diagnostic .fieldHint{font-size:11px}
+ .statusPills{gap:5px}
+ .choice{font-size:11px}
+ .wizardNav{grid-template-columns:1fr 1.6fr}
+ .fieldInput,.fieldSelect{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.progressFill{transition:none}}
+
+
+/* ENGINE-PARITY REVIEW: new guided diagnostic modules only. All original
+   glass styling, the opening phone illustration and shimmer stay unchanged. */
+.observationGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.timerBar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.timerBar .btn{min-height:52px;font-size:12px;padding:7px}
+.timerBar .btn:disabled{opacity:.44;filter:grayscale(.2)}
+#analyticsFile{padding:12px 11px;font-size:13px}
+#analyticsFile::file-selector-button{margin-right:9px;background:linear-gradient(155deg,#fff,#d9edff);border:1px solid #fff;border-radius:9px;padding:8px 9px;color:#175a90;font-weight:800}
+#logSummary{overflow-wrap:anywhere}
+#useLogValues{font-size:13px;min-height:53px}
+.assessmentMeta{margin-top:6px;color:#536e87;font-size:12px;line-height:1.6}
+.fieldGroup[hidden],.guideBox[hidden],button[hidden]{display:none!important}
+.fieldInput:disabled{color:#738da0}
+
+
+/* Live-looking presentation without mislabelling manually entered data as a measurement. */
+.batteryReadout{border:1px solid #fff;border-radius:22px;padding:15px 17px;background:linear-gradient(140deg,#fffffff3,#e7f5ffea);box-shadow:inset 0 2px 1px #fff,0 10px 25px #4182b42b}
+.batteryReadoutHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;color:#47759a}
+.batteryReadoutHead strong{font-size:27px;color:#1469aa;letter-spacing:-.6px}
+.batteryReadoutHead span{font-size:11px;font-weight:750;text-align:right}
+.batteryReadoutRail{height:16px;margin-top:9px;border-radius:100px;overflow:hidden;background:linear-gradient(180deg,#d8ecff,#c4deef);border:1px solid #fff;box-shadow:inset 0 2px 3px #276aa73d}
+.batteryReadoutFill{height:100%;width:0%;border-radius:100px;background:linear-gradient(95deg,#20d7bf,#55dcee,#0988eb);box-shadow:0 0 11px #22cced88,inset 0 1px #ffffffaa;transition:width .25s ease}
+.batteryReadout small{display:block;font-size:10px;color:#65839a;line-height:1.35;margin-top:9px}
+@media(prefers-reduced-motion:reduce){.batteryReadoutFill{transition:none}}
+
+
+
+/* Battery Analytics — customer-first flow. New screens only; locked visual master intact. */
+.card.quick{gap:13px;min-height:calc(100svh - 118px);padding-top:23px}
+.card.quick h1{font-size:clamp(30px,8vw,40px);line-height:1.04;margin:10px 0}
+.card.quick .lead{font-size:15px;line-height:1.45;margin:0 auto 7px}
+.uploadSurface{position:relative;border:1px solid #fff;border-radius:27px;background:radial-gradient(circle at 50% 0,#ffffffef,transparent 75%),linear-gradient(150deg,#fefefe,#d9efffee);padding:21px 17px 18px;box-shadow:inset 0 2px 2px #fff,0 9px 25px #468abc29;text-align:center}
+.uploadIcon{display:grid;place-items:center;width:72px;height:72px;margin:0 auto 12px;border:1px solid #fff;border-radius:24px;background:linear-gradient(145deg,#dff5ff,#64c8ff);box-shadow:inset 0 3px #fff,0 0 17px #4de2ff8f;color:#1766a6;font-size:36px}
+.uploadSurface h2{font-size:20px;letter-spacing:-.5px;margin:5px 0;color:#194f7a}
+.uploadSurface p{font-size:13px;line-height:1.5;color:#5c7893;margin:4px 0 17px}
+.uploadButton{display:flex;align-items:center;justify-content:center;min-height:65px;padding:12px 9px;font-size:17px;cursor:pointer;text-align:center}
+.uploadButton:focus-within{outline:2px solid #098fe8;outline-offset:3px}
+.fileControl{position:absolute;width:1px;height:1px;padding:0;opacity:0;clip-path:inset(50%);overflow:hidden}
+.uploadStatus{min-height:0;margin:10px 0 0;color:#386c92;font-size:13px;line-height:1.45}
+.uploadStatus:empty{display:none}
+.simplePrivacy{display:flex;gap:6px;align-items:center;justify-content:center;margin:11px 0 0;font-size:11px;color:#6487a1}
+.simpleGuide{border:1px solid #fff;border-radius:19px;padding:0;background:linear-gradient(145deg,#fffffff1,#e8f5ffe9);box-shadow:inset 0 1px #fff,0 6px 16px #448bc421}
+.simpleGuide summary{list-style:none;cursor:pointer;padding:15px 17px;font-size:14px;color:#215b86;font-weight:850}
+.simpleGuide summary::-webkit-details-marker{display:none}
+.simpleGuide summary:after{content:"＋";float:right}
+.simpleGuide[open] summary:after{content:"−"}
+.simpleGuide .detailBody{padding:0 17px 16px;font-size:12px;line-height:1.55;color:#52728d}
+.simpleGuide ol{margin:5px 0 0;padding-left:21px}
+.simpleGuide li{padding-bottom:5px}
+.simpleGuide .fieldTextarea{width:100%;min-height:105px;margin:8px 0;font-size:12px;line-height:1.35}
+.quickActions{display:flex;flex-direction:column;gap:9px;margin-top:auto}
+.quickActions .btn{min-height:55px;font-size:15px}
+.dividerWords{display:flex;gap:10px;align-items:center;justify-content:center;color:#7e9aaf;font-size:12px;font-weight:800}
+.dividerWords:before,.dividerWords:after{content:"";height:1px;background:#fff;flex:1}
+.singleChoice{display:flex;flex-direction:column;gap:11px}
+.singleChoice button{min-height:61px}
+.singleChoice button:focus-visible{outline:3px solid #037cdb;outline-offset:3px}
+.choiceNote{text-align:center;margin:2px 0;color:#65829b;font-size:12px;line-height:1.55}
+.resultHeading{text-align:center;font-size:12px;color:#3679a9;font-weight:850;letter-spacing:1.3px;text-transform:uppercase}
+.resultSummary{margin:7px 0 3px;border:1px solid #fff;border-radius:23px;padding:19px 14px;text-align:center;background:linear-gradient(150deg,#ffffffed,#e1f2fff0);box-shadow:inset 0 2px #fff,0 9px 25px #4189ad30}
+.resultSummary h2{color:#1e527b;font-size:24px;line-height:1.18;letter-spacing:-.6px;margin:3px 0 8px}
+.resultSummary p{color:#5c7a94;font-size:13px;line-height:1.5;margin:0}
+.resultSummary.attention{background:linear-gradient(150deg,#fff7e8,#f9e9d0);border-color:#fff4cf}
+.resultSummary.attention h2{color:#986628}
+.resultSummary.safety{background:linear-gradient(150deg,#fff5f5,#ffe6eb)}
+.resultSummary.safety h2{color:#ab4358}
+.resultDetails{display:flex;flex-direction:column;gap:7px;margin:3px 0 0}
+.resultDetails .reportRow{padding:13px 14px;margin:0;align-items:center}
+.resultDetails .reportRow b{text-align:right;font-size:14px}
+.resultDisclosure{margin-top:7px;font-size:11px;line-height:1.5;color:#617f97}
+.resultGuide{border:1px solid #fff;border-radius:18px;padding:14px;background:linear-gradient(145deg,#fffffff1,#e6f4ffed);font-size:12px;line-height:1.48;color:#547590}
+.resultGuide b{color:#235f8f}
+.simpleGuide button.btn{font-size:13px;min-height:48px}
+.card.quick .smallNote{margin-top:8px}
+@media(max-width:370px){.card.quick{padding:18px 16px}.uploadSurface{padding:16px 12px}.simpleGuide summary{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.uploadButton{transition:none}}
+</style>
+</head>
+<body data-build="battery-analytics-first-v1">
+<main class="shell">
+<header class="header glass"><div class="brand"><div class="logo"></div><div><b>iRepair Toolbox</b><span>BATTERY DIAGNOSTICS</span></div></div><div class="badge">GUIDED TEST</div></header>
+<section id="home" class="card glass view active">
+ <div class="eyebrow">Guided battery diagnostics</div>
+ <h1>Let’s check your<br>iPhone battery.</h1>
+ <p class="lead">We’ll review battery health, charging behaviour and the information your iPhone provides.</p>
+ <div class="phoneStage"><div class="phoneGlow"></div><div class="phoneArt" aria-label="Premium illustrated iPhone with glowing battery symbol"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><div class="dynamicIsland"></div><div class="phoneBatteryGlow"></div><div class="phoneBattery"></div><div class="screenGlow"></div><div class="screenGlow2"></div></div></div></div>
+ <div class="infoBox"><b>What we’ll check</b><br>🔋 Apple-reported battery health<br>🔄 Cycle count where available<br>⚡ Charging and performance observations</div>
+ <div class="actions"><button id="begin" class="btn main">Begin Battery Check →</button></div>
+ <p class="smallNote">Guided iPhone browser assessment. Safari cannot independently read battery health or cycle count.</p>
+</section>
+
+<section id="upload" class="card glass view quick">
+ <div class="eyebrow">Battery diagnostics</div>
+ <h1>Upload your<br>analytics file.</h1>
+ <p class="lead">We’ll look for battery information automatically. No long forms or numbers to enter.</p>
+ <div class="uploadSurface">
+  <div class="uploadIcon" aria-hidden="true">↥</div>
+  <h2>Choose your iPhone file</h2>
+  <p>Select a recent <strong>Analytics-</strong> file saved in Files. We’ll read it on your iPhone.</p>
+  <label for="analyticsFile" class="btn main uploadButton">Upload Analytics File</label>
+  <input id="analyticsFile" class="fileControl" type="file" accept=".ips,.txt,.json,.log,text/plain,application/json" aria-label="Choose an iPhone analytics file"/>
+  <p id="uploadStatus" class="uploadStatus" role="status" aria-live="polite"></p>
+  <div class="simplePrivacy">🔒 Analysed locally · Nothing uploaded to us</div>
+ </div>
+ <details class="simpleGuide" id="helpFile">
+  <summary>Where do I find my file?</summary>
+  <div class="detailBody">
+   <ol>
+    <li>Open <strong>Settings → Privacy &amp; Security</strong>.</li>
+    <li>Tap <strong>Analytics &amp; Improvements → Analytics Data</strong>.</li>
+    <li>Open a recent file beginning <strong>Analytics-</strong>.</li>
+    <li>Use Share to <strong>Save to Files</strong>, then return here and tap Upload Analytics File.</li>
+   </ol>
+   <p>Some iPhones may not have a recent analytics file. That’s fine.</p>
+  </div>
+ </details>
+ <details class="simpleGuide" id="pasteHelp">
+  <summary>Copied analytics text instead?</summary>
+  <div class="detailBody">
+   <label for="pasteInput">Paste the copied text here:</label>
+   <textarea id="pasteInput" class="fieldTextarea" placeholder="Paste analytics text…" rows="4"></textarea>
+   <button id="parsePasted" class="btn unable" type="button">Check pasted analytics</button>
+   <p id="pasteStatus" role="status"></p>
+  </div>
+ </details>
+ <div class="quickActions">
+  <div class="dividerWords">or</div>
+  <button id="noFile" class="btn unable" type="button">I don’t have an analytics file</button>
+  <button id="homeFromUpload" class="btn unable" type="button">← Back</button>
+ </div>
+ <p class="smallNote">Files don’t always include battery data. No data found doesn’t mean there’s a fault.</p>
+</section>
+<section id="guided" class="card glass view quick">
+ <div class="eyebrow">No file needed</div>
+ <h1>Check Battery<br>Health in Settings.</h1>
+ <p class="lead">Open <strong>Settings → Battery → Battery Health</strong> (or Battery Health &amp; Charging on some iPhones).</p>
+ <div class="uploadSurface" style="padding:16px">
+  <div class="uploadIcon" aria-hidden="true">🔋</div>
+  <h2>What does your iPhone say?</h2>
+  <p>Just choose the message you see. No figures to type.</p>
+  <div class="singleChoice">
+   <button class="btn main" data-guided="NORMAL" type="button">Battery Health is normal</button>
+   <button class="btn unable" data-guided="SERVICE" type="button">Service is recommended</button>
+   <button class="btn unable" data-guided="UNKNOWN" type="button">I can’t find this information</button>
+  </div>
+ </div>
+ <div class="quickActions">
+  <button id="backToUpload" class="btn unable" type="button">← Back to file upload</button>
+ </div>
+ <p class="smallNote">If your battery is swollen, damaged or unusually hot, stop using or charging it and seek professional inspection.</p>
+</section>
+<section id="results" class="card glass view quick">
+ <div class="eyebrow">Your battery review</div>
+ <div id="resultBox" class="resultSummary"><div class="resultHeading" id="resultLabel">Diagnostics</div><h2 id="resultTitle">Battery data</h2><p id="resultSubtitle">Here’s what we found.</p></div>
+ <div class="resultDetails" id="reportRows"></div>
+ <div class="resultGuide" id="resultExplanation"></div>
+ <p class="resultDisclosure">Results use analytics fields or the message you chose in Settings. Safari cannot independently measure battery health, charging current or temperature.</p>
+ <div class="quickActions">
+  <button id="copyReport" class="btn main" type="button">Copy diagnostic report</button>
+  <button id="anotherFile" class="btn unable" type="button">Check another file</button>
+  <button id="restart" class="btn unable" type="button">Return to start</button>
+ </div>
+</section>
+</main>
+<script src="./engine.js"></script>
+</body>
+</html>
