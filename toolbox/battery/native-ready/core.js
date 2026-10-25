@@ -90,7 +90,7 @@ function assess(input){
  const entered=Number.isInteger(manual)&&manual>=1&&manual<=100;
  const fromLog=a?.health&&!a.health.conflict? a.health.value:null;
  const capacity=entered?manual:(Number.isInteger(fromLog)?fromLog:null);
- const source=entered?(input?.capacitySource==="analytic-prefill"?"Analytics figure confirmed or edited by user":"Customer-entered iOS Battery Health"):
+ const source=entered?(input?.capacitySource==="analytic-prefill"?"Unverified analytics file (prefilled; check Settings)":"Customer-entered iOS Battery Health"):
   capacity!==null?"Unverified analytics file":null;
  const status=["normal","service","unknown"].includes(input?.serviceStatus)?input.serviceStatus:"unknown";
  const model=n?.model||a?.model||null;
