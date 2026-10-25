@@ -66,3 +66,24 @@ Primary Apple references:
 
 ## Freeze and rollback policy
 The completed Screen Diagnostics app and all old Battery Diagnostics URLs/deployments remain untouched. This candidate is isolated; no code or deployment should be promoted into an accepted app without explicit approval.
+
+## Deployed browser review — 25 October 2026
+
+**Public Safari preview:** https://irepair-battery-native-ready-review-simon-cook.vercel.app/  
+**Dedicated Vercel project:** `prj_fvzUHvIrmZekpVd190PHJYkjH6S7`  
+**Deployment:** `dpl_9fzeHxdvVKibUwkNYSSRsBqdaRBv`  
+**Git branch:** `toolbox/battery-native-ready-v1-2026-10-25`
+
+### Verified in published website
+- HTTP 200 for index/core/engine; deployed HTML, core and JS byte-for-byte match tested GitHub source.
+- 129-cycle / seven-raw-metric analytics → no fabricated capacity; manual Settings entry of 87% and no-service warning → coherent combined report: PASS.
+- Prefilled analytics maximum capacity keeps unverified provenance: PASS.
+- Service recommendation, invalid percentage and user unable to check: PASS.
+- Model identification from analytics; no forced model selection: PASS.
+- Future native WKWebView bridge simulated using actual reply with iPhone18,2 / iOS 27.0 / 65% charge / charging state: model correctly shown, no fake browser-only readings: PASS.
+- A4 print CSS hides interactive controls and browser site header and displays the report: PASS (not verified as an actual iPhone PDF file).
+- 17 pure analysis regression cases: PASS.
+- Protected previous Battery previews and the accepted Screen Diagnostics Vercel URLs: unchanged and publicly reachable.
+- Physical iPhone Safari QA and **actual Swift/Xcode compile and device tests remain outstanding**.
+
+**Customer acceptance still required.** The user asked to bring the engine as close to the intended native application as possible and only *then consider* freezing the browser prototype until Apple Developer Programme setup. Do not mark the new version complete or overwrite older public previews before explicit sign-off.
