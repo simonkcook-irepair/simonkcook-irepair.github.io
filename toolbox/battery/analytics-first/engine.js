@@ -3,6 +3,7 @@
 const $=id=>document.getElementById(id);
 const MAX_FILE_SIZE=40*1024*1024;
 let lastReport="";
+let fieldSummary="";
 let lastResult=null;
 function show(page){
  for(const card of document.querySelectorAll(".view"))card.classList.toggle("active",card.id===page);
@@ -53,6 +54,58 @@ function findDeviceModel(text){
  return {code:null,name:null,ambiguous:values.size>1,found:values.size>0};
 }
 
+
+/* A small whitelist of observed CoreAnalytics fields. The values below have
+   device-dependent/undocumented units and must never be sold as health %,
+   charging current, measured temperature or genuine-parts verification. */
+const RAW_METRIC_SPECS=[
+ {key:"AppleRawMaxCapacity",title:"Raw maximum capacity",min:1,max:300000},
+ {key:"NominalChargeCapacity",title:"Nominal charge capacity",min:1,max:300000},
+ {key:"MaximumFCC",title:"Maximum FCC",min:1,max:300000},
+ {key:"MaximumQmax",title:"Maximum Qmax",min:1,max:300000},
+ {key:"TotalOperatingTime",title:"Total operating-time counter",min:0,max:100000000},
+ {key:"AverageTemperature",title:"Average temperature (raw)",min:0,max:10000},
+ {key:"MaximumTemperature",title:"Maximum temperature (raw)",min:0,max:10000}
+];
+function readAdditionalFields(text){
+ return RAW_METRIC_SPECS.map(spec=>{
+  const metric=findMetric(text,[
+   "last_value_"+spec.key,spec.key,"com.apple.power.battery."+spec.key
+  ],spec.min,spec.max);
+  return {key:spec.key,title:spec.title,value:metric.value,ambiguous:metric.ambiguous,seen:metric.seen};
+ }).filter(entry=>entry.seen>0);
+}
+function readBatteryKeyNames(text){
+ const result=new Set(),rx=/"([A-Za-z_][A-Za-z0-9_]{2,79})"\s*:/g;let match;
+ while((match=rx.exec(text))!==null){
+  const key=match[1];
+  if(!/(battery|cycle|capacity|charge|qmax|fcc|temperature|voltage|soc)/i.test(key))continue;
+  if(/(deviceid|serial|uuid|account|imei|token|person|location|username|phoneNumber)/i.test(key))continue;
+  result.add(key);
+  if(result.size===90)break;
+ }
+ return [...result].sort();
+}
+function rawReading(entry){
+ return entry.ambiguous?"Different values recorded":entry.value===null?"Unavailable":String(entry.value)+" (raw)";
+}
+function buildSafeFieldSummary(data){
+ const output=[
+  "iREPAIR BATTERY FIELD SUMMARY",
+  "Only recognised battery field names/values; NOT the analytics file.",
+  "iPhone model: "+deviceModelText(data.model),
+  "CycleCount: "+sourceText(data.cycles," (unverified analytics value)"),
+  "MaximumCapacityPercent: "+sourceText(data.health,"% (unverified analytics value)"),
+  "Other recognised battery metrics:"
+ ];
+ if(!data.additional.length)output.push("  None");
+ for(const item of data.additional)output.push("  "+item.key+": "+rawReading(item));
+ output.push("Other battery-related FIELD NAMES found (values omitted):");
+ output.push(...(data.keyNames.length?data.keyNames.map(k=>"  "+k):["  None"]));
+ output.push("Note: No serial numbers, device IDs, location, accounts, or raw log contents are included. Raw metric units are unverified. No battery diagnosis is established.");
+ return output.join("\n");
+}
+
 function parseAnalytics(text){
  const cycles=findMetric(text,[
   "last_value_CycleCount","BatteryCycleCount","battery_cycle_count",
@@ -64,7 +117,11 @@ function parseAnalytics(text){
   "maximum_capacity_percent"
  ],1,100);
  const model=findDeviceModel(text);
- return {cycles,health,model,found:cycles.seen>0||health.seen>0,conflict:cycles.ambiguous||health.ambiguous};
+ const additional=readAdditionalFields(text);
+ const keyNames=readBatteryKeyNames(text);
+ return {cycles,health,model,additional,keyNames,
+  found:cycles.seen>0||health.seen>0,
+  conflict:cycles.ambiguous||health.ambiguous};
 }
 function deviceModelText(model){
  if(!model||!model.found)return "Not identified in this file";
@@ -87,6 +144,8 @@ function makeReport(info){
   items.push("iPhone model: "+deviceModelText(info.data.model));
   items.push("Maximum capacity: "+sourceText(info.data.health,"% (unverified analytics field)"));
   items.push("Cycle count: "+sourceText(info.data.cycles," (unverified analytics field)"));
+  items.push("Additional raw telemetry fields: "+info.data.additional.length);
+  for(const item of info.data.additional)items.push("  "+item.title+": "+rawReading(item));
   items.push("Conflicting metric values: "+(info.data.conflict?"Yes":"No"));
   items.push("Analytics recognised: "+(info.data.found?"At least one supported field":"No supported battery fields"));
  }else{
@@ -104,18 +163,26 @@ function metricRow(label,value){
  div.append(left,right);return div;
 }
 function resultForAnalytics(data){
- if(!data.found)return {source:"analytics",data,title:"No battery readings found",label:"UNABLE TO TEST",kind:"neutral",
+ if(!data.found&&!data.additional.length)return {source:"analytics",data,title:"No battery readings found",label:"UNABLE TO TEST",kind:"neutral",
   subtitle:"This file didn’t contain fields we can reliably recognise.",
   explanation:"No recognised battery health percentage or cycle count was found. That is not a fault. Try another recent Analytics- file, or use the quick guided check in Battery Health."};
+ if(!data.found&&data.additional.length)return {source:"analytics",data,title:"Partial battery data found",label:"LIMITED DATA",kind:"neutral",
+  subtitle:"This file contains some battery telemetry, but not a health percentage or cycle count.",
+  explanation:"We found additional technical battery readings in the file. Their units are not verified, so they cannot safely replace Apple’s displayed Battery Health percentage. Open the optional technical details for the supported raw values."};
  if(data.conflict)return {source:"analytics",data,title:"Battery data needs review",label:"INCONCLUSIVE",kind:"attention",
   subtitle:"The file includes different values for the same battery metric.",
   explanation:"Some extracted fields disagree, possibly because the file contains older records or multiple batteries. We haven't chosen an arbitrary value. Check iOS Battery Health or use a more recent analytics file."};
  if(data.health.value!==null&&data.health.value<=80)return {source:"analytics",data,title:"Battery wear worth checking",label:"REVIEW ADVISED",kind:"attention",
   subtitle:"A maximum-capacity percentage at or below 80% was found.",
   explanation:"The value in this file suggests battery wear. Confirm the current figure in Settings before considering battery service or replacement. This isn't an independent hardware test."};
+ if(data.health.value===null)return {source:"analytics",data,title:"Partial battery information",label:"MORE DATA NEEDED",kind:"neutral",
+  subtitle:data.cycles.value!==null?
+   "We found "+data.cycles.value+" charge cycles, but no battery health percentage.":
+   "This file contains some battery details, but not an interpretable health percentage.",
+  explanation:"Charge cycles are useful, but cannot establish battery condition on their own. If available, open a more recent Analytics- file, or check Settings → Battery → Battery Health for Apple’s current maximum-capacity percentage. Additional raw telemetry is available below where present."};
  return {source:"analytics",data,title:"Battery information found",label:"DATA EXTRACTED",kind:"normal",
-  subtitle:"We've pulled out the battery readings available in this file.",
-  explanation:"These are the reported values present in the imported analytics text. They may be old or incomplete. No hardware fault has been proven; check Settings if you need to verify the current battery condition."};
+  subtitle:"We found recognised capacity and battery-cycle information where available.",
+  explanation:"These readings are present in the selected analytics file. They may be old, incomplete or unverified. No hardware fault has been proven; check Settings for Apple's current battery-health information."};
 }
 function resultForGuided(status){
  if(status==="SERVICE")return {source:"guided",guided:"Service recommended (user-observed)",title:"Battery service advised",label:"REVIEW ADVISED",kind:"attention",
@@ -140,10 +207,34 @@ function renderResult(info){
   rows.append(metricRow("Maximum capacity",sourceText(info.data.health,"%")));
   rows.append(metricRow("Charge cycles",sourceText(info.data.cycles,"")));
   rows.append(metricRow("Source","Imported analytics file"));
+  if(info.data.additional.length)rows.append(metricRow("Other battery readings",info.data.additional.length+" technical fields found"));
  }else{
   rows.append(metricRow("iOS Battery Health",info.guided.replace(" (user-observed)","")));
   rows.append(metricRow("Source","Your answer in Settings"));
  }
+ const technical=$("technicalDetails");
+ technical.hidden=info.source!=="analytics";
+ technical.open=false;
+ const keyBox=$("technicalReadings");keyBox.replaceChildren();
+ if(info.source==="analytics"){
+  fieldSummary=buildSafeFieldSummary(info.data);
+  const entries=info.data.additional;
+  if(entries.length){
+   for(const metric of entries){
+    const line=document.createElement("div");line.className="technicalMetric";
+    const label=document.createElement("span");label.textContent=metric.title;
+    const value=document.createElement("b");value.textContent=rawReading(metric);
+    line.append(label,value);keyBox.append(line);
+   }
+  }else{
+   const p=document.createElement("p");p.className="fieldHint";
+   p.textContent="No additional recognised battery metrics in this file.";
+   keyBox.append(p);
+  }
+  const count=document.createElement("p");count.className="fieldHint";
+  count.textContent=info.data.keyNames.length+" battery-related field names found. The copyable summary lists these names without raw personal identifiers.";
+  keyBox.append(count);
+ }else{fieldSummary="";}
  $("resultExplanation").replaceChildren();
  const strong=document.createElement("b");strong.textContent="What this means";
  const description=document.createElement("p");description.textContent=info.explanation;description.style.margin="6px 0 0";
@@ -225,6 +316,7 @@ function resetToUpload(){
  $("pasteInput").value="";
  $("pasteStatus").textContent="";
  $("uploadStatus").textContent="";
+ fieldSummary="";
  show("upload");
 }
 $("begin").addEventListener("click",resetToUpload);
@@ -264,6 +356,21 @@ for(const btn of document.querySelectorAll("[data-guided]")){
  btn.addEventListener("click",()=>renderResult(resultForGuided(btn.dataset.guided)));
 }
 $("anotherFile").addEventListener("click",resetToUpload);
+$("copyFieldSummary").addEventListener("click",async()=>{
+ if(!fieldSummary)return;
+ try{
+  await navigator.clipboard.writeText(fieldSummary);
+  $("copyFieldSummary").textContent="Battery field summary copied ✓";
+ }catch(e){
+  const ta=document.createElement("textarea");
+  ta.value=fieldSummary;ta.style.cssText="position:fixed;left:-5000px;opacity:0";
+  document.body.append(ta);ta.select();
+  let ok=false;try{ok=document.execCommand("copy");}catch(_){}
+  ta.remove();
+  if(ok)$("copyFieldSummary").textContent="Battery field summary copied ✓";
+  else prompt("Copy this privacy-safe battery field summary:",fieldSummary);
+ }
+});
 $("restart").addEventListener("click",()=>show("home"));
 $("copyReport").addEventListener("click",async()=>{
  if(!lastReport)return;
