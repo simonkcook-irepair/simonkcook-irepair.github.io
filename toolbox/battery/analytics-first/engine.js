@@ -10,7 +10,7 @@ function show(page){
 }
 function escapeHTML(x){return String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function findMetric(input,names,min,max){
- const rx=new RegExp("(?:^|[\\s,{;])[\\"']?("+names.join("|")+")[\\"']?\\s*[:=]\\s*[\\"']?(\\d{1,6})(?=[\\"',}\\s]|$)","gi");
+ const rx=new RegExp(String.raw`(?:^|[\s,{;])["']?(${names.join("|")})["']?\s*[:=]\s*["']?(\d{1,6})(?=["',}\s]|$)`,"gi");
  const values=[];let m;
  while((m=rx.exec(input))!==null){
   const n=Number(m[2]);
