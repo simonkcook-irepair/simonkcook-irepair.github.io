@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 const $=id=>document.getElementById(id);
-const MAX_FILE_SIZE=20*1024*1024;
+const MAX_FILE_SIZE=40*1024*1024;
 let lastReport="";
 let lastResult=null;
 function show(page){
@@ -20,6 +20,39 @@ function findMetric(input,names,min,max){
  const unique=[...new Set(values.map(v=>v.value))];
  return {value:unique.length===1?unique[0]:null,ambiguous:unique.length>1,seen:values.length,keys:[...new Set(values.map(v=>v.name))].slice(0,6)};
 }
+
+/* Only use identifiers explicitly labelled as a device model in the
+   analytics file. Never infer a customer model from the browser user agent.
+   Mapping references: https://theapplewiki.com/wiki/Models/iPhone */
+const MODEL_NAMES={
+ "iPhone14,2":"iPhone 13 Pro","iPhone14,3":"iPhone 13 Pro Max",
+ "iPhone14,4":"iPhone 13 mini","iPhone14,5":"iPhone 13",
+ "iPhone15,2":"iPhone 14 Pro","iPhone15,3":"iPhone 14 Pro Max",
+ "iPhone15,4":"iPhone 15","iPhone15,5":"iPhone 15 Plus",
+ "iPhone16,1":"iPhone 15 Pro","iPhone16,2":"iPhone 15 Pro Max",
+ "iPhone17,1":"iPhone 16 Pro","iPhone17,2":"iPhone 16 Pro Max",
+ "iPhone17,3":"iPhone 16","iPhone17,4":"iPhone 16 Plus",
+ "iPhone17,5":"iPhone 16e",
+ "iPhone18,1":"iPhone 17 Pro","iPhone18,2":"iPhone 17 Pro Max",
+ "iPhone18,3":"iPhone 17","iPhone18,4":"iPhone Air",
+ "iPhone18,5":"iPhone 17e",
+ "iPhone19,2":"iPhone 18 Pro","iPhone19,3":"iPhone 18 Pro Max",
+ "iPhone19,4":"iPhone Duo","iPhone19,7":"iPhone 18 Pro Max"
+};
+function findDeviceModel(text){
+ const re=/(?:^|[\s,{;])["']?(?:productType|product_type|_productModel|productModel|deviceModel|device_model|modelIdentifier|model_identifier|hardwareModel|model)["']?\s*[:=]\s*["']?(iPhone\d{1,2},\d{1,2})(?=["',}\s]|$)/gim;
+ const values=new Set();let m;
+ while((m=re.exec(text))!==null){
+  values.add(m[1].replace(/^iphone/i,"iPhone"));
+  if(values.size>8)break;
+ }
+ if(values.size===1){
+  const id=values.values().next().value;
+  return {code:id,name:MODEL_NAMES[id]||null,ambiguous:false,found:true};
+ }
+ return {code:null,name:null,ambiguous:values.size>1,found:values.size>0};
+}
+
 function parseAnalytics(text){
  const cycles=findMetric(text,[
   "last_value_CycleCount","BatteryCycleCount","battery_cycle_count",
@@ -30,7 +63,13 @@ function parseAnalytics(text){
   "MaximumCapacityPercent","battery_maximum_capacity_percent",
   "maximum_capacity_percent"
  ],1,100);
- return {cycles,health,found:cycles.seen>0||health.seen>0,conflict:cycles.ambiguous||health.ambiguous};
+ const model=findDeviceModel(text);
+ return {cycles,health,model,found:cycles.seen>0||health.seen>0,conflict:cycles.ambiguous||health.ambiguous};
+}
+function deviceModelText(model){
+ if(!model||!model.found)return "Not identified in this file";
+ if(model.ambiguous)return "Several different model identifiers found";
+ return model.name?model.name+" ("+model.code+")":model.code+" (model identifier; exact name unverified)";
 }
 function sourceText(metric,suffix){
  if(metric.ambiguous)return "Conflicting readings";
@@ -45,6 +84,7 @@ function makeReport(info){
   "Assessment: "+info.title
  ];
  if(info.source==="analytics"){
+  items.push("iPhone model: "+deviceModelText(info.data.model));
   items.push("Maximum capacity: "+sourceText(info.data.health,"% (unverified analytics field)"));
   items.push("Cycle count: "+sourceText(info.data.cycles," (unverified analytics field)"));
   items.push("Conflicting metric values: "+(info.data.conflict?"Yes":"No"));
@@ -96,6 +136,7 @@ function renderResult(info){
  $("resultBox").className="resultSummary"+(info.kind==="attention"?" attention":info.kind==="safety"?" safety":"");
  const rows=$("reportRows");rows.replaceChildren();
  if(info.source==="analytics"){
+  rows.append(metricRow("iPhone model",deviceModelText(info.data.model)));
   rows.append(metricRow("Maximum capacity",sourceText(info.data.health,"%")));
   rows.append(metricRow("Charge cycles",sourceText(info.data.cycles,"")));
   rows.append(metricRow("Source","Imported analytics file"));
@@ -119,24 +160,64 @@ function scanText(text){
  if(!text.trim()){return null;}
  return resultForAnalytics(parseAnalytics(text));
 }
+function readFileText(file){
+ return new Promise((resolve,reject)=>{
+  if(typeof FileReader==="undefined"){
+   if(typeof file.text==="function")file.text().then(resolve,reject);
+   else reject(new Error("This browser cannot read selected files."));
+   return;
+  }
+  const reader=new FileReader();
+  reader.onload=()=>resolve(typeof reader.result==="string"?reader.result:"");
+  reader.onerror=()=>{
+   if(typeof file.text==="function")file.text().then(resolve,reject);
+   else reject(reader.error||new Error("File reading failed"));
+  };
+  reader.onabort=()=>reject(new Error("File reading cancelled"));
+  try{reader.readAsText(file)}catch(err){
+   if(typeof file.text==="function")file.text().then(resolve,reject);
+   else reject(err);
+  }
+ });
+}
 async function importFile(file){
- $("uploadStatus").textContent="";
- if(!file)return;
- if(!/\.(ips|json|log|txt)$/i.test(file.name)){
-  reportError("Please select an .ips, .json, .log or .txt analytics file.","upload");return;
+ if(!file){
+  reportError("No file was returned. Try again, or use the pasted-text option under Help.","upload");
+  return;
+ }
+ // Files on iOS may supply Analytics-*.ips.ca.synced or an extensionless
+ // copy. Reject obvious non-text media, but inspect other filenames by
+ // content rather than relying on file-extension filtering.
+ if(/\.(pdf|jpe?g|png|heic|heif|mp4|mov|zip|docx?|xlsx?|pages|numbers)$/i.test(file.name)){
+  reportError("That is not an analytics text file. Choose an Analytics- file, often ending .ips.ca.synced.","upload");
+  return;
  }
  if(file.size>MAX_FILE_SIZE){
-  reportError("That file is too large. Please choose one under 20 MB.","upload");return;
+  reportError("This file is over 40 MB and cannot be checked here. Choose a smaller Analytics- file.","upload");
+  return;
  }
- if(!file.size){reportError("That file is empty. Please choose another.","upload");return;}
- $("uploadStatus").textContent="Reading this file on your device…";
+ if(!file.size){
+  reportError("The selected file is empty. Choose another Analytics- file.","upload");
+  return;
+ }
+ const visibleName=file.name.length>58?file.name.slice(0,52)+"…":file.name;
+ $("uploadStatus").textContent="Selected "+visibleName+". Reading on your iPhone…";
+ // Give iPhone Safari a chance to paint progress before analysing the file.
+ await new Promise(done=>setTimeout(done,35));
  try{
-  const content=await file.text();
+  const content=await readFileText(file);
+  if(!content||!content.trim()){
+   reportError("The selected file had no readable analytics text. Choose another file.","upload");
+   return;
+  }
   const info=scanText(content);
-  if(!info){reportError("The file did not contain readable text. Please choose another.","upload");return;}
+  if(!info){
+   reportError("We could not read battery information from that file. Choose another recent Analytics- file.","upload");
+   return;
+  }
   renderResult(info);
  }catch(e){
-  reportError("Unable to read that file. Please try another analytics file.","upload");
+  reportError("The file was selected but Safari couldn't read it. Save it to On My iPhone in Files, then try again, or use Paste under Help.","upload");
  }
 }
 function resetToUpload(){
@@ -147,7 +228,28 @@ function resetToUpload(){
  show("upload");
 }
 $("begin").addEventListener("click",resetToUpload);
-$("analyticsFile").addEventListener("change",e=>importFile(e.target.files&&e.target.files[0]));
+const fileInput=$("analyticsFile");
+let lastSelectedFile=null;
+fileInput.addEventListener("click",()=>{
+ // Reset for a repeated selection of the SAME .ips file; Safari may not
+ // dispatch change unless the previous input value is cleared.
+ fileInput.value="";
+ lastSelectedFile=null;
+ $("uploadStatus").textContent="Choose an Analytics- file in Files. The check will start when you select it.";
+});
+function fileChosen(){
+ const file=fileInput.files&&fileInput.files[0];
+ if(!file)return;
+ if(file===lastSelectedFile)return; // input + change may both fire
+ lastSelectedFile=file;
+ $("uploadStatus").textContent="File selected. Preparing analysis…";
+ void importFile(file);
+}
+fileInput.addEventListener("change",fileChosen);
+fileInput.addEventListener("input",fileChosen);
+fileInput.addEventListener("cancel",()=>{
+ if(!lastSelectedFile)$("uploadStatus").textContent="No file was returned from Files. Try again or choose Paste under the help instructions.";
+});
 $("parsePasted").addEventListener("click",()=>{
  const text=$("pasteInput").value;
  if(!text.trim()){reportError("Paste the copied analytics text first.","paste");return;}
