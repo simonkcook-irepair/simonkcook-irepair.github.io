@@ -40,7 +40,7 @@ async function requestNativeSnapshot(){
   if(reply&&typeof reply.then==="function"){
    const payload=await reply;
    const parsed=typeof payload==="string"?JSON.parse(payload):payload;
-   state.native=Core.nativeSnapshot(parsed);
+   state.native=Core.nativeSnapshot(parsed)?parsed:null; // retain verified raw modelIdentifier for evaluation
   }
  }catch(e){state.native=null;}
  nativeDisplay();
