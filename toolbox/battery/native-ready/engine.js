@@ -236,6 +236,7 @@ fileInput.addEventListener("input",selectedFile);
 fileInput.addEventListener("cancel",()=>setFileStatus("No file returned. You can try again or continue without one."));
 $("parsePasted").addEventListener("click",()=>{
  const text=$("pasteInput").value;
+ $("pasteInput").value=""; // do not leave pasted analytics in the page after checking
  if(!text.trim()){$("pasteStatus").textContent="Paste analytics text first.";return;}
  if(text.length>MAX_FILE_SIZE){$("pasteStatus").textContent="Text too large. Choose a smaller file.";return;}
  try{void importText(text)}catch(e){$("pasteStatus").textContent="Could not read pasted analytics text.";}
