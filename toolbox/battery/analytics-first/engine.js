@@ -248,7 +248,7 @@ function fileChosen(){
 fileInput.addEventListener("change",fileChosen);
 fileInput.addEventListener("input",fileChosen);
 fileInput.addEventListener("cancel",()=>{
- if(!lastSelectedFile)$("uploadStatus").textContent="No file was returned from Files. Try again or choose Paste under the help instructions.";
+ $("uploadStatus").textContent="No file was returned from Files. Try again or choose Paste under the help instructions.";
 });
 $("parsePasted").addEventListener("click",()=>{
  const text=$("pasteInput").value;
