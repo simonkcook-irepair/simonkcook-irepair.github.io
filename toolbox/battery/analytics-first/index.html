@@ -352,9 +352,19 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  #upload h1{font-size:29px}
  #upload .smallNote{margin-top:0}
 }
+
+/* Additional findings stay collapsed until the customer asks for them. */
+#technicalDetails .detailBody{padding-top:1px}
+#technicalReadings{display:flex;flex-direction:column;gap:7px;margin:5px 0 12px}
+#technicalReadings .technicalMetric{display:flex;align-items:start;justify-content:space-between;gap:9px;padding:8px 11px;border:1px solid #fff;border-radius:13px;background:#ffffffa6;color:#52758f;font-size:12px;line-height:1.35}
+#technicalReadings .technicalMetric span{min-width:0;overflow-wrap:anywhere}
+#technicalReadings .technicalMetric b{text-align:right;white-space:nowrap;color:#245d87}
+#technicalDetails .fieldHint{font-size:11px;color:#6786a0;line-height:1.45}
+#technicalDetails .btn{margin:8px 0;min-height:50px;font-size:13px}
+#results.card.quick{padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 32px))}
 </style>
 </head>
-<body data-build="battery-analytics-safari-fix-v2">
+<body data-build="battery-expanded-insights-v3">
 <main class="shell">
 <header class="header glass"><div class="brand"><div class="logo"></div><div><b>iRepair Toolbox</b><span>BATTERY DIAGNOSTICS</span></div></div><div class="badge">GUIDED TEST</div></header>
 <section id="home" class="card glass view active">
@@ -431,6 +441,15 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <div class="eyebrow">Your battery review</div>
  <div id="resultBox" class="resultSummary"><div class="resultHeading" id="resultLabel">Diagnostics</div><h2 id="resultTitle">Battery data</h2><p id="resultSubtitle">Here’s what we found.</p></div>
  <div class="resultDetails" id="reportRows"></div>
+ <details class="simpleGuide" id="technicalDetails" hidden>
+  <summary>View additional battery details</summary>
+  <div class="detailBody">
+   <div id="technicalReadings"></div>
+   <p class="fieldHint">These are raw analytics fields, not measured battery health. Units and interpretation may depend on the iPhone and iOS version.</p>
+   <button id="copyFieldSummary" class="btn unable" type="button">Copy battery field summary</button>
+   <p class="fieldHint">Copies recognised field names and numeric values only—not your original analytics file or device identifiers.</p>
+  </div>
+ </details>
  <div class="resultGuide" id="resultExplanation"></div>
  <p class="resultDisclosure">Results use analytics fields or the message you chose in Settings. Safari cannot independently measure battery health, charging current or temperature.</p>
  <div class="quickActions">
@@ -440,6 +459,6 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  </div>
 </section>
 </main>
-<script src="./engine.js?v=safari-file-fix-2"></script>
+<script src="./engine.js?v=expanded-insights-3"></script>
 </body>
 </html>
