@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#e9f6ff">
-<title>iRepair Toolbox | Battery Diagnostics — Engine Review</title>
+<title>iRepair Toolbox | Battery Diagnostics</title>
 <style>
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -279,7 +279,9 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 .uploadSurface p{font-size:13px;line-height:1.5;color:#5c7893;margin:4px 0 17px}
 .uploadButton{display:flex;align-items:center;justify-content:center;min-height:65px;padding:12px 9px;font-size:17px;cursor:pointer;text-align:center}
 .uploadButton:focus-within{outline:2px solid #098fe8;outline-offset:3px}
-.fileControl{position:absolute;width:1px;height:1px;padding:0;opacity:0;clip-path:inset(50%);overflow:hidden}
+.fileControl{position:absolute;inset:0;z-index:5;width:100%;height:100%;opacity:.005;cursor:pointer;touch-action:manipulation;font-size:0;appearance:none;-webkit-appearance:none}
+.fileControl:focus-visible{outline:3px solid #0e8dff;outline-offset:3px}
+.uploadButton{position:relative;overflow:hidden}
 .uploadStatus{min-height:0;margin:10px 0 0;color:#386c92;font-size:13px;line-height:1.45}
 .uploadStatus:empty{display:none}
 .simplePrivacy{display:flex;gap:6px;align-items:center;justify-content:center;margin:11px 0 0;font-size:11px;color:#6487a1}
@@ -352,7 +354,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 }
 </style>
 </head>
-<body data-build="battery-analytics-first-v1">
+<body data-build="battery-analytics-safari-fix-v2">
 <main class="shell">
 <header class="header glass"><div class="brand"><div class="logo"></div><div><b>iRepair Toolbox</b><span>BATTERY DIAGNOSTICS</span></div></div><div class="badge">GUIDED TEST</div></header>
 <section id="home" class="card glass view active">
@@ -372,10 +374,12 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <div class="uploadSurface">
   <div class="uploadIcon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 32V10"/><path d="m14 20 10-10 10 10"/><path d="M11 30v8c0 2 2 3 4 3h18c2 0 4-1 4-3v-8"/></svg></div>
   <h2>Choose your iPhone file</h2>
-  <p>Select a recent <strong>Analytics-</strong> file saved in Files. We’ll read it on your iPhone.</p>
-  <label for="analyticsFile" class="btn main uploadButton">Upload Analytics File</label>
-  <input id="analyticsFile" class="fileControl" type="file" accept=".ips,.txt,.json,.log,text/plain,application/json" aria-label="Choose an iPhone analytics file"/>
-  <p id="uploadStatus" class="uploadStatus" role="status" aria-live="polite"></p>
+  <p>Choose a recent <strong>Analytics-</strong> file from Files. Your iPhone will analyse it locally.</p>
+  <label class="btn main uploadButton" for="analyticsFile">
+   <span aria-hidden="true">Upload Analytics File</span>
+   <input id="analyticsFile" class="fileControl" type="file" aria-label="Upload iPhone analytics file"/>
+  </label>
+  <p id="uploadStatus" class="uploadStatus" role="status" aria-live="polite" aria-atomic="true"></p>
   <div class="simplePrivacy">🔒 Analysed locally · Nothing uploaded to us</div>
  </div>
  <details class="simpleGuide" id="helpFile">
@@ -387,7 +391,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
     <li>Open a recent file beginning <strong>Analytics-</strong>.</li>
     <li>Use Share to <strong>Save to Files</strong>, then return here and tap Upload Analytics File.</li>
    </ol>
-   <p>Some iPhones may not have a recent analytics file. That’s fine.</p>
+   <p>Some iPhones may not have a recent analytics file. That’s fine. Files ending <strong>.ips.ca.synced</strong> are supported too.</p>
    <div class="pasteAlt">
     <strong>Copied analytics text instead?</strong>
     <label for="pasteInput">Paste it here:</label>
