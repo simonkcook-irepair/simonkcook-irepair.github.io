@@ -1,12 +1,13 @@
 # iRepair Toolbox — Motion & Haptics Diagnostics
 
-**Status:** New, UNAPPROVED browser review candidate · 26 October 2026.
-**Independent source branch:** `toolbox/motion-haptics-glass-preview-2026-10-26`
+**Status:** **USER-APPROVED AND FROZEN** browser prototype · 26 October 2026. Native iOS implementation is a distinct future phase.
+**Review branch (historical):** `toolbox/motion-haptics-glass-preview-2026-10-26`
+**Approved snapshot branch:** `toolbox/motion-haptics-locked-2026-10-26`
 **Directory:** `toolbox/motion/preview/`
 **Vercel project:** `prj_HYytm3JBh9VIYYoq34sM3JHBez0D` (`irepair-motion-haptics-review`).
 
 ## Safeguards
-- **Do not change any of the five user-locked iRepair Toolbox prototypes** (Screen, Battery, Audio, Panic or Camera Diagnostics), their production deployments, files or locks.
+- **Do not change any of the six user-locked iRepair Toolbox prototypes** (Screen, Battery, Audio, Panic, Camera or Motion & Haptics Diagnostics), their published deployments, files or locks, without explicit new permission.
 - Copied the approved camera glass theme to this app to achieve consistent branding without importing or editing the camera's locked sources.
 - The source/model schematic is a visual aid, not a sensor result.
 - Never simulate sensor data. Motion readings come only from browser `devicemotion` and `deviceorientation` events after an explicit permission gesture, and display '—' unless numerical data is actually received.
@@ -65,7 +66,7 @@ collapsed under "View technical readings"; it remains available in technician
 reports with provenance. Permission denied/unavailable is not treated as a failed
 sensor. All other prototypes remain locked and untouched.
 
-V2 is **NOT APPROVED OR LOCKED**; real-iPhone Safari testing and visual review
+V2 was **not approved at that earlier stage**; real-iPhone Safari testing and visual review
 are still required. Do not alter the five approved app prototypes.
 
 
@@ -93,6 +94,59 @@ manual Pass / Fail / Unable. Stage-specific sensor thresholds are qualitative,
 **not proof of component health**, calibration, fault isolation or physical
 distance measurement.
 
-This remains a review candidate, **not yet user-locked**. Test in actual iPhone
+This was the pre-approval status. User approved and locked v3 on 26 October 2026. Test in actual iPhone
 Safari; browser permissions and Core Motion hardware should be verified separately
 before commercial release. Keep Screen, Battery, Audio, Panic and Camera locked.
+
+## APPROVAL AND IMMUTABLE BASELINE — 26 October 2026
+
+**Approval:** User reviewed the final v3 experience on an iPhone and stated
+"This is perfection. Let's sign this prototype off as completed." Accepted as
+the sixth completed browser prototype. Its approved source is the **app code
+and assets at commit `6a59cf3ee3e520a082ac8de899780714f2ecc6cf`**.
+Approval documentation is a later README-only change; app files, appearance,
+behaviour, and published preview must not be changed without explicit approval.
+
+**Approved live URL:** https://irepair-motion-haptics-review-simon-cook.vercel.app/
+**Approved Vercel production deployment:** `dpl_43WDiFbT4HgfLMTz8tNR95AqPvFx`
+(READY; same app source as approved commit).
+
+**Freeze instruction:** Preserve this snapshot as a permanent rollback and
+native-development reference. Never alter the six frozen browser prototypes,
+their preview URLs, visual assets, routing or test logic without separate
+express authorisation. This browser prototype is complete, **not** a compiled
+or clinically/device-verified native App Store diagnostic. The user has
+approved visual and workflow experience, not independent sensor calibration
+or proof of physical hardware health.
+
+### Native iOS autonomy specification (future development, not yet shipped)
+Apple's public **Core Motion / CMMotionManager** can expose accelerometer,
+gyroscope, magnetometer and fused device-motion samples with availability
+checks. On supported iPhones, a dedicated Swift engine should automatically
+record measurable signal response and transitions; the user still performs
+the requested safe movement. The Compass step can become a live measured
+magnetometer/heading check, with magnetic-interference cautions.
+
+Apple's `UIDevice.isProximityMonitoringEnabled` and `proximityState` can
+monitor supported proximity sensors natively, which may eliminate the
+existing requirement for a call. It must be verified per supported device
+and disabled after testing. Not all iOS devices expose proximity monitoring.
+
+Use `CHHapticEngine` / UIKit feedback generators to trigger deliberate
+haptic patterns while respecting user settings, hardware support, and iOS
+interruptions. **The public APIs do not give a calibrated actual tactile
+motor-output reading**, so customer felt-feedback confirmation remains
+necessary. A successful engine command is not physical Taptic Engine PASS.
+
+Design the native app to preserve v3's **DO THIS → YOUR IPHONE · LIVE →
+simple result** experience, minimize technical details, never manufacture
+sensor observations, never infer PASS from unsupported APIs, and retain
+Pass/Fail/Unable for customer confirmation and ambiguity.
+
+Public API references (verified against Apple developer docs, 26 Oct 2026):
+- https://developer.apple.com/documentation/coremotion/cmmotionmanager
+- https://developer.apple.com/documentation/uikit/uidevice/isproximitymonitoringenabled
+- https://developer.apple.com/documentation/corehaptics/chhapticengine
+
+**Next validation:** Swift app build / App Store signing and real-device sensor
+QA remain outstanding and are explicitly NOT implied by this lock.
