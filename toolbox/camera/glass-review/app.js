@@ -80,7 +80,7 @@ function showModelIllustration(step){
  $("cameraFallback").hidden=true;
  const svg=$("modelDiagram");
  cat.render(svg,plan.modelSlug||"iphone-17","rear","");
- svg.hidden=false;
+ svg.removeAttribute("hidden");
  svg.setAttribute("aria-label",plan.modelName+" rear camera schematic (illustrative only)");
  $("retryCamera").hidden=true;
  $("previewLabel").hidden=true;
@@ -92,7 +92,7 @@ async function openCamera(facing){
  const myGen=++generation;
  cleanupTorch();
  discardPhoto();
- $("modelDiagram").hidden=true;
+ $("modelDiagram").setAttribute("hidden","");
  $("retryCamera").hidden=true;
  $("torchButton").hidden=true;
  $("photoPanel").hidden=true;
@@ -182,7 +182,7 @@ function renderStep(){
  $("previous").disabled=index===0;
  $("retryCamera").hidden=step.mode==="native-guided";
  $("torchButton").hidden=true;
- $("modelDiagram").hidden=true;
+ $("modelDiagram").setAttribute("hidden","");
  if(step.mode==="native-guided"){
   showModelIllustration(step);
  }else{
