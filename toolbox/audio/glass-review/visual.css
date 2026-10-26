@@ -287,3 +287,23 @@ button:disabled{opacity:.5;filter:saturate(.7)}
  #results:before{content:"iREPAIR TOOLBOX | AUDIO DIAGNOSTICS";display:block;text-align:center;font-size:12pt;font-weight:900;letter-spacing:1pt;color:#176a9d;margin-bottom:12mm}
  .stat,.report-line{box-shadow:none!important;border:1px solid #b7d2e9!important;break-inside:avoid}
 }
+
+
+/* Final mobile tightening: primary action remains visible without hiding features. */
+@media(max-width:500px){
+ #start.card{padding:17px 20px 15px;gap:3px}
+ #start .start-copy{margin:0}
+ #start h1{font-size:35px;margin:6px 0}
+ #start .lead{font-size:13px;line-height:1.35}
+ #start .stage{height:198px;min-height:198px;margin:0}
+ #start .heroPremium .phoneArt{width:92px}
+ #start .premium-device.has-model .device{height:189px}
+ #start .device-picker{padding:7px 11px;gap:3px;margin:3px 0}
+ #start .device-picker select{min-height:41px;padding:8px 12px}
+ #start #flip-preview{min-height:20px}
+ #start .start-bottom{margin-top:0}
+ #start .start-bottom .btn.main{min-height:53px}
+ #start #quick-clear{min-height:41px!important;margin-top:6px!important}
+ #start .footnote{margin:7px 0 0;font-size:10px}
+ .shell>.footnote{margin-top:6px;font-size:9px}
+}
