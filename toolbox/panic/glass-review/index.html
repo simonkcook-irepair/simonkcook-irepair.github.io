@@ -522,6 +522,30 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  #resultTags span{border:1px solid #c6dae9!important}
  #results:after{content:"Diagnostic interpretation is preliminary; panic signatures do not independently prove component or logic-board failure.";display:block;text-align:center;font-size:9pt;color:#7890a1;margin-top:11mm}
 }
+
+/* Refreshed reference catalogue status — the existing glass design remains locked. */
+.referenceBar{display:flex;align-items:center;justify-content:center;gap:9px;min-height:43px;
+  padding:8px 11px;margin:9px 0 0;border-radius:17px;background:linear-gradient(145deg,#fffffff1,#e6f4ffea);
+  border:1px solid #fff;box-shadow:inset 0 2px #fff,0 5px 14px #4d94bd25;
+  font-size:11px;line-height:1.4;font-weight:740;color:#326e97;text-align:left}
+.referenceBar #referenceStatusText{flex:1;min-width:0}
+.referenceBar .referenceDot{width:9px;height:9px;flex:0 0 9px;border-radius:50%;
+  background:#4fb6f0;box-shadow:0 0 0 4px #52bdf521}
+.referenceBar[data-mode="checking"] .referenceDot{animation:reference-pulse 1.25s ease-in-out infinite}
+.referenceBar[data-mode="offline"] .referenceDot{background:#9aa7b5;box-shadow:0 0 0 4px #adb9c526}
+.referenceBar[data-mode="fresh"] .referenceDot{background:#21b290;box-shadow:0 0 0 4px #54dabc1e}
+.referenceBar[data-mode="older"] .referenceDot{background:#bc995a;box-shadow:0 0 0 4px #e1bf842a}
+.referenceBar #referenceRetry{font:inherit;font-size:11px;font-weight:830;color:#195d99;background:#fff;
+  border:1px solid #e1f1ff;padding:6px 10px;border-radius:11px;cursor:pointer;min-height:33px}
+.referenceBar #referenceRetry[hidden],#referenceFindings[hidden]{display:none!important}
+#referenceFindingsList{display:grid;gap:9px}
+#referenceFindingsList .referenceItem{border:1px solid #fff;border-radius:15px;padding:11px 13px;
+  background:#ffffffb9;line-height:1.5;color:#55748c;font-size:12px}
+#referenceFindingsList .referenceItem strong{display:block;color:#205c89;margin-bottom:5px}
+#referenceFindingsList .referenceItem a{color:#1768aa;text-decoration:underline;overflow-wrap:anywhere}
+@keyframes reference-pulse{50%{opacity:.4;transform:scale(.75)}}
+@media(prefers-reduced-motion:reduce){.referenceBar[data-mode="checking"] .referenceDot{animation:none}}
+@media print{.referenceBar,#referenceFindings{display:none!important}}
 </style></head><body data-build="panic-glass-review-v1"><main class="shell"><header class="header glass"><div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>PANIC DIAGNOSTICS</span></div></div><div class="badge">GUIDED TEST</div></header><section id="home" class="card glass view active">
 <div class="eyebrow">Guided panic diagnostics</div>
 <h1>Let’s investigate<br>your iPhone.</h1>
@@ -539,6 +563,11 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
   </div></div>
 </div>
 <div class="infoBox"><b>What we’ll investigate</b><br>🔍 Panic and watchdog signatures<br>🧩 Missing-sensor communication clues<br>🛠️ Sensible next steps for diagnosis</div>
+<div id="referenceStatusBar" class="referenceBar" role="status" aria-live="polite" data-mode="checking">
+ <span class="referenceDot" aria-hidden="true"></span>
+ <span id="referenceStatusText">Checking for reviewed panic-reference updates…</span>
+ <button id="referenceRetry" type="button" hidden aria-label="Retry diagnostic-reference update">Retry</button>
+</div>
 <div class="actions"><button id="begin" type="button" class="btn main">Begin Panic Check →</button></div>
 <p class="smallNote">Guided log interpretation. The browser cannot access protected iPhone logs or independently confirm a hardware fault.</p>
 </section><section id="import" class="card glass view panicCard">
@@ -589,6 +618,10 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <div id="resultTags" aria-label="Evidence summary"></div>
  <div id="evidenceList" aria-live="polite"></div>
  <div id="resultExplanation" class="resultGuide"></div>
+ <details id="referenceFindings" class="simpleGuide" hidden>
+  <summary>Additional reviewed panic references</summary>
+  <div id="referenceFindingsList" class="detailBody"></div>
+ </details>
  <button id="editModel" type="button" class="btn unable" hidden>Choose your iPhone model →</button>
  <details class="simpleGuide" id="technicianDetails">
   <summary>Technician details</summary>
@@ -607,4 +640,4 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
    <button id="checkAnother" class="btn unable" type="button">Check another log</button>
  </div>
  <p class="tinyDisclaimer">Panic logs help guide investigation. Individual flexes, sensors and logic-board faults require further diagnosis; no component is declared defective by this browser tool.</p>
-</section></main><script src="./models.js?v=panic-review-1"></script><script src="./core.js?v=panic-review-2"></script><script src="./app.js?v=panic-review-2"></script></body></html>
+</section></main><script src="./models.js?v=panic-review-1"></script><script src="./core.js?v=panic-update-1"></script><script src="./reference.js?v=panic-update-1"></script><script src="./app.js?v=panic-update-1"></script></body></html>
