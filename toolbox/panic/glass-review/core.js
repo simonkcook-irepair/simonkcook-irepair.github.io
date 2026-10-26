@@ -149,5 +149,5 @@ function report(result,device){
  ];
  return rows.join("\n");
 }
-root.iRepairPanicCore=Object.freeze({parse,extractModel,modelLabel,report,redact});
+root.iRepairPanicCore=Object.freeze({parse,extractPanic,extractModel,modelLabel,report,redact});
 })(typeof window!=="undefined"?window:globalThis);
