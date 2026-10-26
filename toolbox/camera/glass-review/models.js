@@ -208,7 +208,8 @@ function draw(svg, modelLike, side, focus) {
      }
      str+='</g>';
    }
-   svg.dataset.opticalPosition=(selectedIndex!==null&&positions[selectedIndex])?"checked":
+   svg.dataset.opticalPosition=focus==="lidarScanner"&&/^iphone-(12|13|14|15|16|17|18)-pro(?:-max)?$/.test(actual.slug)?"lidar":
+      (selectedIndex!==null&&positions[selectedIndex])?"checked":
       (focus==="flashLed"?"flash":"group");
  }
  svg.innerHTML=str;
