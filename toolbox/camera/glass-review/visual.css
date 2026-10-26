@@ -667,3 +667,22 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  .cameraCard .triageHints:not([hidden]){display:block!important;break-inside:avoid}
  .cameraCard .triageRow{box-shadow:none!important;break-inside:avoid}
 }
+
+/* Camera diagnostic symptom follow-up — scoped, optional and touch accessible. */
+.cameraCard .symptomPanel[hidden],.cameraCard .nativeFace[hidden]{display:none!important}
+.cameraCard .symptomPanel,.cameraCard .nativeFace{
+ border:1px solid #fff;border-radius:19px;padding:14px;
+ background:linear-gradient(145deg,#ffffffed,#e2f2ffef);
+ box-shadow:inset 0 1px #fff,0 6px 14px #5b9ac52b;
+ display:grid;gap:9px}
+.cameraCard .symptomPanel>strong{font-size:14px;color:#265c85}
+.cameraCard .symptomPanel>p,.cameraCard .nativeFace p{font-size:12px;line-height:1.45;color:#527792;margin:0}
+.cameraCard .symptomOptions{display:grid;gap:8px}
+.cameraCard .symptomOption{
+ display:flex;gap:11px;align-items:center;border:1px solid #fff;
+ background:linear-gradient(145deg,#fff,#e6f4ff);border-radius:14px;
+ min-height:46px;padding:9px 12px;color:#285d86;
+ font-size:12px;font-weight:750;line-height:1.35;cursor:pointer}
+.cameraCard .symptomOption input{width:21px;height:21px;flex:none;accent-color:#238cd2}
+.cameraCard .symptomPanel>.btn,.cameraCard .nativeFace>.btn{min-height:48px}
+@media print{.cameraCard .symptomPanel,.cameraCard .nativeFace{display:none!important}}

@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#e9f6ff">
 <meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Camera Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=camera-tech-3">
+<link rel="stylesheet" href="./visual.css?v=camera-tech-4">
 </head>
-<body data-build="camera-glass-review-2">
+<body data-build="camera-glass-review-3">
 <main class="shell">
 <header class="header glass">
   <div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>CAMERA DIAGNOSTICS</span></div></div>
@@ -110,6 +110,16 @@
     <button data-answer="FAIL" class="btn fail" type="button">✕ Fail</button>
     <button data-answer="UNABLE" class="btn unable" type="button">Unable to Test</button>
   </div>
+  <section id="symptomPanel" class="symptomPanel" aria-label="Optional observed fault symptoms" hidden>
+    <strong>What did you notice?</strong>
+    <p>Select anything you observed. This helps a repair technician investigate; it does not prove a faulty part.</p>
+    <div id="symptomOptions" class="symptomOptions"></div>
+    <button class="btn main" id="symptomContinue" type="button">Continue →</button>
+  </section>
+  <div class="nativeFace" id="nativeFace" hidden>
+    <button class="btn main" id="nativeFaceButton" type="button">Check Face ID with iOS</button>
+    <p id="nativeFaceStatus" role="status" aria-live="polite">Native iOS only. Safari cannot run this authentication check.</p>
+  </div>
   <div class="testBottomControls">
     <button id="previous" class="btn unable" type="button">← Previous</button>
     <button id="leave" class="btn unable" type="button">Exit test</button>
@@ -142,7 +152,7 @@
   <p class="smallNote">Guided Face ID recognition is separate from the visible selfie camera. No biometric data is captured. A visual test cannot guarantee optical focus calibration, physical lens isolation or the condition of individual TrueDepth components.</p>
 </section>
 </main>
-<script src="./models.js?v=camera-tech-3"></script>
-<script src="./core.js?v=camera-tech-3"></script>
-<script src="./app.js?v=camera-tech-3"></script>
+<script src="./models.js?v=camera-tech-4"></script>
+<script src="./core.js?v=camera-tech-4"></script>
+<script src="./app.js?v=camera-tech-4"></script>
 </body></html>

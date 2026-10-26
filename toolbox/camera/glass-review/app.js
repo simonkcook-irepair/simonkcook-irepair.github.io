@@ -6,7 +6,7 @@
 const $=id=>document.getElementById(id);
 const cat=window.IRepairDeviceCatalogue,core=window.iRepairCameraCore;
 if(!cat||!core)throw Error("iRepair Camera Diagnostics catalogue/engine unavailable");
-let plan=core.createPlan("",cat),index=0,answers={};
+let plan=core.createPlan("",cat),index=0,answers={},symptoms={},nativeFaceId=null;
 let stream=null,activeFacing="",generation=0,torchTimer=null,torchUsed=false,report="";
 const $video=$("cameraVideo");
 function show(view){
@@ -175,10 +175,29 @@ function drawProgress(){
  }
  el.setAttribute("aria-label","Camera check "+(index+1)+" of "+plan.steps.length);
 }
+function showSymptomFollowup(step){
+ const panel=$("symptomPanel"),choices=$("symptomOptions");
+ choices.replaceChildren();
+ for(const labelText of core.symptomOptions[step.id]||[]){
+  const label=document.createElement("label");label.className="symptomOption";
+  const check=document.createElement("input");check.type="checkbox";check.value=labelText;
+  check.checked=Array.isArray(symptoms[step.id])&&symptoms[step.id].includes(labelText);
+  label.append(check,document.createTextNode(labelText));choices.append(label);
+ }
+ panel.hidden=false;
+ $("symptomContinue").focus();
+}
+function advanceStep(){
+ $("symptomPanel").hidden=true;
+ if(index>=plan.steps.length-1)showResults();
+ else {index++;renderStep()}
+}
 function renderStep(){
  const step=getStep();
  if(!step){showResults();return}
  show("test");
+ $("symptomPanel").hidden=true;
+ $("nativeFace").hidden=true;
  drawProgress();
  text($("stepCounter"),"Camera "+(index+1)+" / "+plan.steps.length);
  text($("stepEyebrow"),step.id==="faceid"?"Face ID / TrueDepth check":
@@ -196,6 +215,11 @@ function renderStep(){
  "An unstable picture or high-pitched noise is a possible focus/OIS clue, not proof of a damaged camera module.":
  "Mark your own visual observation. A live preview is not an automated hardware diagnosis.");
  $("previous").disabled=index===0;
+ const nativeBridge=window.webkit?.messageHandlers?.iRepairCameraDevice;
+ $("nativeFace").hidden=!(step.id==="faceid"&&typeof nativeBridge?.postMessage==="function");
+ text($("nativeFaceStatus"),nativeFaceId?
+   "System result: "+nativeFaceId.outcome+". This is not a component-level hardware test.":
+   "Uses iOS LocalAuthentication. No Face ID biometric data is accessible to this app.");
  $("retryCamera").hidden=step.mode==="native-guided"||step.mode==="system-guided";
  $("torchButton").hidden=true;
  $("modelDiagram").setAttribute("hidden","");
@@ -212,12 +236,15 @@ function mark(answer){
  if(!step)return;
  answers=core.setAnswer(answers,step.id,answer);
  discardPhoto();
- if(index>=plan.steps.length-1)showResults();
- else {index++;renderStep()}
+ if(answer==="FAIL"&&core.symptomOptions[step.id]){
+  showSymptomFollowup(step);return;
+ }
+ delete symptoms[step.id];
+ advanceStep();
 }
 function startTests(){
  stopStream();
- answers={};torchUsed=false;index=0;plan=core.createPlan($("phoneModel").value,cat);
+ answers={};symptoms={};nativeFaceId=null;torchUsed=false;index=0;plan=core.createPlan($("phoneModel").value,cat);
  renderStep();
 }
 function showResults(){
@@ -239,9 +266,15 @@ function showResults(){
    "Customer reported system Face ID recognition. The app did not capture biometric data or test individual TrueDepth parts.":
    step.mode==="native-guided"?"Customer observation in Apple Camera app; physical lens was not verified independently.":
    step.mode==="torch-or-native-guided"?"Rear LED observation; "+(torchUsed?"browser torch was activated":"native Camera app check or browser support may be limited")+".":"Customer observation of the browser camera preview.";
-  row.append(title,note);rows.append(row);
+  row.append(title,note);
+  if(value==="FAIL"&&symptoms[step.id]?.length){
+   const tags=document.createElement("span");
+   tags.textContent="Observed: "+symptoms[step.id].join("; ");
+   row.append(tags);
+  }
+  rows.append(row);
  }
- const clues=core.interpretation(plan,answers);
+ const clues=core.interpretation(plan,answers,symptoms);
  const hints=$("triageHints"),hintRows=$("triageRows");
  hintRows.replaceChildren();hints.hidden=clues.length===0;
  for(const hint of clues){
@@ -250,7 +283,7 @@ function showResults(){
   const detail=document.createElement("span");detail.textContent=hint.detail;
   card.append(title,detail);hintRows.append(card);
  }
- report=core.report(plan,answers,{flashTorchUsed:torchUsed});
+ report=core.report(plan,answers,{flashTorchUsed:torchUsed,symptoms,faceIdNative:nativeFaceId});
  text($("copyReport"),"Copy technician report");
  text($("shareReport"),"Share report");
  show("results");
@@ -304,6 +337,30 @@ function captureFrame(){
 function leaveTest(){
  stopStream();show("setup");
 }
+$("symptomContinue").addEventListener("click",()=>{
+ const step=getStep();if(!step||answers[step.id]!=="FAIL")return;
+ symptoms[step.id]=Array.from($("symptomOptions").querySelectorAll("input:checked"),input=>input.value);
+ advanceStep();
+});
+$("nativeFaceButton").addEventListener("click",async()=>{
+ if(getStep()?.id!=="faceid")return;
+ const bridge=window.webkit?.messageHandlers?.iRepairCameraDevice;
+ if(typeof bridge?.postMessage!=="function")return;
+ const button=$("nativeFaceButton");button.disabled=true;
+ text($("nativeFaceStatus"),"iOS is checking system Face ID authentication…");
+ try{
+  const result=await bridge.postMessage({action:"faceIdAuthentication"});
+  if(getStep()?.id!=="faceid")return;
+  const outcomes=new Set(["authenticated","recognitionFailed","notEnrolled","lockedOut","unavailable","cancelled","interrupted","unsupported"]);
+  nativeFaceId=result?.source==="ios-native"&&outcomes.has(result?.outcome)&&result?.biometryType==="faceID"?
+    {outcome:result.outcome}:null;
+  text($("nativeFaceStatus"),nativeFaceId?
+   "System result: "+nativeFaceId.outcome+". Record your conclusion below; this does not test individual TrueDepth parts.":
+   "A native Face ID result was unavailable; choose Unable to Test if necessary.");
+ }catch(e){
+  text($("nativeFaceStatus"),"Native authentication unavailable; choose Unable to Test if appropriate.");
+ }finally{button.disabled=false;}
+});
 $("begin").addEventListener("click",()=>show("setup"));
 $("setupBack").addEventListener("click",()=>show("home"));
 $("start").addEventListener("click",startTests);

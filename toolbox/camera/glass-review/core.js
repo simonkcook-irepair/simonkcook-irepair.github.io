@@ -38,6 +38,12 @@ const faceid=Object.freeze({id:"faceid",title:"Face ID",label:"Face ID recogniti
  instruction:"On a Face ID-enabled iPhone, use Face ID as you normally would to unlock the device or authenticate in a trusted app. Return here to record the result. Do not enter a passcode into this app, reset Face ID, or attempt to view its infrared camera. If Face ID is not enrolled, disabled, blocked or temporarily unavailable, choose Unable to Test.",
  check:"When Face ID is already set up, does the iPhone successfully recognise your face and authenticate without using your passcode?",
  mode:"system-guided",category:"Face ID / TrueDepth authentication"});
+const symptomOptions=Object.freeze({
+ rear:Object.freeze(["No image / black view","Frozen preview or camera app closes","Distorted colours, lines or spots"]),
+ focus:Object.freeze(["Permanently blurred","Near focus will not settle","Distant focus will not settle","Repeated focus hunting"]),
+ stability:Object.freeze(["Shaky image while the phone is still","High-pitched buzzing or whining","Rattling or clicking when camera starts","Intermittent shake or focus"]),
+ flash:Object.freeze(["Torch does not illuminate","Photo flash does not fire","Flash works only intermittently"])
+});
 const ids=new Set([...basics,stability,flash,ultra,tele,front,faceid].map(v=>v.id));
 function faceIdSupported(model){
  // The home-button iPhones in this catalogue use Touch ID, not Face ID.
@@ -76,9 +82,10 @@ function setAnswer(answers,id,status){
  if(!allowed.includes(status))throw Error("Unrecognised result");
  return {...answers,[id]:status};
 }
-function interpretation(plan,answers){
+function interpretation(plan,answers,symptoms){
  // These are correlations for technician triage, not board-level diagnoses.
  const hints=[];
+ const observed=id=>Array.isArray(symptoms?.[id])?symptoms[id].filter(v=>symptomOptions[id]?.includes(v)):[];
  if(answers?.rear==="FAIL"&&answers?.flash==="FAIL"){
   hints.push({id:"rear-flash",title:"Rear camera + flash both reported faulty",
    detail:"This combined symptom can indicate a camera-system communication, shared supply or connection problem on some models. It does not prove a common power rail or identify a failed camera module. Compare the rear module, connector, torch and model-specific circuit evidence."});
@@ -92,6 +99,11 @@ function interpretation(plan,answers){
  if(answers?.stability==="FAIL"||answers?.focus==="FAIL"){
   hints.push({id:"focus-stability",title:"Investigate autofocus / image-stabilisation behaviour",
    detail:"Blurred or wandering focus, a shaky view while the phone is stationary, and unusual buzzing after impact may be consistent with autofocus or optical-stabilisation actuator damage. Magnets, accessories and software can cause similar symptoms. Confirm on the affected camera and with a known-good module before replacement."});
+ }
+ const mechanical=[...observed("focus"),...observed("stability")];
+ if(mechanical.length&&hints.some(h=>h.id==="focus-stability")){
+  const hint=hints.find(h=>h.id==="focus-stability");
+  hint.detail="Customer-observed symptoms: "+mechanical.join("; ")+". "+hint.detail;
  }
  if(plan.faceIdCapable&&answers?.front==="PASS"&&answers?.faceid==="FAIL"){
   hints.push({id:"truedepth",title:"Selfie camera works but Face ID was reported failing",
@@ -117,16 +129,29 @@ function report(plan,answers,evidence){
   const value=answers?.[step.id]||"UNANSWERED";
   const method=step.mode==="browser"?"Customer observed browser live camera preview":
     step.mode==="native-guided"?"Customer observed Apple Camera app; physical lens not independently verified":
-    step.mode==="system-guided"?"Customer reported Apple system Face ID recognition; no biometric or infrared data was accessed":
+    step.mode==="system-guided"?(src.faceIdNative?.outcome==="authenticated"?
+      "Native iOS LocalAuthentication reported successful Face ID authentication; no individual TrueDepth component was tested":
+      "Customer reported Apple system Face ID recognition; no biometric or infrared data was accessed"):
     src.flashTorchUsed?"Customer activated browser-exposed LED torch":
     "Customer observed flash via Camera app, or could not access it independently";
   lines.push(step.label+": "+value);
   lines.push("  Method: "+method);
  }
- const clues=interpretation(plan,answers);
+ const symptoms=src.symptoms||{};
+ for(const step of plan.steps){
+  const reported=Array.isArray(symptoms[step.id])?symptoms[step.id].filter(v=>symptomOptions[step.id]?.includes(v)):[];
+  if(answers?.[step.id]==="FAIL"&&reported.length){
+   lines.push("Customer-described "+step.label+" symptoms: "+reported.join("; "));
+  }
+ }
+ const clues=interpretation(plan,answers,symptoms);
  if(clues.length){
   lines.push("","TECHNICIAN TRIAGE CLUES — NOT CONFIRMED HARDWARE FAULTS");
   for(const clue of clues)lines.push(clue.title+": "+clue.detail);
+ }
+ if(src.faceIdNative?.outcome){
+  lines.push("","Native Face ID evidence: "+String(src.faceIdNative.outcome)+
+   " (LocalAuthentication system outcome only; not an infrared camera or dot-projector component test).");
  }
  lines.push("","Camera access: Permission requested only during live preview; no photos uploaded or stored.");
  lines.push("Face ID: A guided system authentication observation is distinct from the RGB selfie camera. The app never accesses infrared or biometric templates.");
@@ -134,5 +159,5 @@ function report(plan,answers,evidence){
  lines.push("Native follow-up: AVFoundation discovery, effective device verification and on-iPhone testing still required.");
  return lines.join("\n");
 }
-root.iRepairCameraCore=Object.freeze({createPlan,lensAvailability,faceIdSupported,tally,setAnswer,interpretation,report});
+root.iRepairCameraCore=Object.freeze({createPlan,lensAvailability,faceIdSupported,symptomOptions,tally,setAnswer,interpretation,report});
 })(typeof window!=="undefined"?window:globalThis);

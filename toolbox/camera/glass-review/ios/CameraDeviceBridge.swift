@@ -5,6 +5,7 @@
 //
 import UIKit
 import AVFoundation
+import LocalAuthentication
 import WebKit
 import Darwin
 
@@ -16,7 +17,17 @@ final class CameraDeviceBridge: NSObject, WKScriptMessageHandlerWithReply {
     ) {
         guard message.name == "iRepairCameraDevice",
               let request = message.body as? [String: Any],
-              request["action"] as? String == "inventory" else {
+              let action = request["action"] as? String else {
+            replyHandler(nil, "Unsupported camera request")
+            return
+        }
+        // Only a customer-initiated tap may request Face ID. WKWebView supplies
+        // no direct TrueDepth biometric/infrared component-level diagnostics.
+        if action == "faceIdAuthentication" {
+            authenticateFaceID(replyHandler: replyHandler)
+            return
+        }
+        guard action == "inventory" else {
             replyHandler(nil, "Unsupported camera request")
             return
         }
@@ -66,6 +77,59 @@ final class CameraDeviceBridge: NSObject, WKScriptMessageHandlerWithReply {
         ], nil)
     }
 
+    private func authenticateFaceID(
+        replyHandler: @escaping (Any?, String?) -> Void
+    ) {
+        DispatchQueue.main.async {
+            let context = LAContext()
+            var availabilityError: NSError?
+            let available = context.canEvaluatePolicy(
+                .deviceOwnerAuthenticationWithBiometrics,
+                error: &availabilityError
+            )
+            guard context.biometryType == .faceID else {
+                replyHandler([
+                    "source": "ios-native", "schema": 1,
+                    "biometryType": "none", "outcome": "unsupported"
+                ], nil)
+                return
+            }
+            guard available else {
+                replyHandler([
+                    "source": "ios-native", "schema": 1,
+                    "biometryType": "faceID",
+                    "outcome": Self.faceIDOutcome(for: availabilityError)
+                ], nil)
+                return
+            }
+            context.evaluatePolicy(
+                .deviceOwnerAuthenticationWithBiometrics,
+                localizedReason: "Check Face ID authentication for your iPhone camera assessment"
+            ) { success, error in
+                DispatchQueue.main.async {
+                    replyHandler([
+                        "source": "ios-native", "schema": 1,
+                        "biometryType": "faceID",
+                        "outcome": success ? "authenticated" : Self.faceIDOutcome(for: error)
+                    ], nil)
+                }
+            }
+        }
+    }
+
+    private static func faceIDOutcome(for error: Error?) -> String {
+        guard let error else { return "unavailable" }
+        switch LAError.Code(rawValue: (error as NSError).code) {
+        case .biometryNotEnrolled: return "notEnrolled"
+        case .biometryLockout: return "lockedOut"
+        case .biometryNotAvailable: return "unavailable"
+        case .authenticationFailed: return "recognitionFailed"
+        case .userCancel, .userFallback: return "cancelled"
+        case .appCancel, .systemCancel: return "interrupted"
+        default: return "unavailable"
+        }
+    }
+
     func install(on controller: WKUserContentController) {
         controller.addScriptMessageHandler(self, contentWorld: .page, name: "iRepairCameraDevice")
     }
@@ -83,6 +147,12 @@ final class CameraDeviceBridge: NSObject, WKScriptMessageHandlerWithReply {
 }
 
 /*
+ IMPORTANT: Add NSFaceIDUsageDescription to Info.plist before using
+ LocalAuthentication. This bridge is only scaffold code and has not been
+ compiled or physically tested on an iPhone. The result is the system's
+ authentication outcome, NOT a diagnostic for the IR camera, flood
+ illuminator, dot projector or any individual TrueDepth component.
+
  Next native milestones, outside the completed Safari app:
  1. Build a signed standalone iOS SwiftUI camera UI and AVCaptureSession.
  2. Request NSCameraUsageDescription permission explicitly before capture.
