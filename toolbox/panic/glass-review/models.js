@@ -44,7 +44,7 @@ const columns = [
 ["iphone-17e","iPhone 17e",2026,"notch","single",146.7,71.5],
 ["iphone-18-pro","iPhone 18 Pro",2026,"small-island","plateau-triple",150.0,71.9],
 ["iphone-18-pro-max","iPhone 18 Pro Max",2026,"small-island","plateau-triple",163.4,78.0],
-["iphone-duo","iPhone Duo (foldable · coming soon)",2026,"duo","duo",117.8,84.1]
+["iphone-duo","iPhone Duo",2026,"duo","duo",117.8,84.1]
 ];
 const models = columns.map(function (m) { return Object.freeze({slug:m[0],name:m[1],year:m[2],front:m[3],rear:m[4],heightMm:m[5],widthMm:m[6]}); });
 const bySlug = Object.fromEntries(models.map(m=>[m.slug,m]));
