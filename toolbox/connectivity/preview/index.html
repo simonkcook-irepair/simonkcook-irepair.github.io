@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en-GB"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eaf6ff"><meta name="color-scheme" content="light">
+<title>iRepair Toolbox | Connectivity Diagnostics</title>
+<link rel="stylesheet" href="./visual.css?v=connect-review-1">
+</head>
+<body data-build="connectivity-glass-review-1"><main class="shell">
+<header class="header glass"><div class="brand">
+ <div class="logo" aria-hidden="true"></div>
+ <div><b>iRepair Toolbox</b><span>CONNECTIVITY DIAGNOSTICS</span></div>
+ </div><span class="badge">GUIDED TEST</span></header>
+<section id="home" class="card glass view active">
+ <div class="eyebrow">iPhone Connectivity</div>
+ <h1>Let’s get you<br>connected.</h1>
+ <p class="lead">Six simple checks for the ways your iPhone connects to the world.</p>
+ <div class="phoneStage connectHero" aria-label="Premium iPhone illustration with illuminated connection waves">
+  <div class="phoneGlow"></div><div class="phoneArt" aria-hidden="true">
+   <span class="side s1"></span><span class="side s2"></span><span class="side s3"></span>
+   <div class="phoneScreen"><div class="dynamicIsland"></div>
+    <svg class="connectSymbol" viewBox="0 0 160 170" fill="none" aria-hidden="true">
+     <circle cx="80" cy="106" r="9" fill="#aaf9ff"/>
+     <path d="M40 65Q80 26 120 65" stroke="#bdfcff" stroke-width="10" stroke-linecap="round" />
+     <path d="M55 83Q80 60 105 83" stroke="#77eaff" stroke-width="10" stroke-linecap="round"/>
+     <path d="M23 47Q80 -4 137 47" stroke="#4cd3ff" stroke-width="7" stroke-linecap="round" opacity=".76"/>
+     <circle cx="80" cy="106" r="26" stroke="#4ceeff" stroke-opacity=".22" stroke-width="2"/>
+     <circle cx="80" cy="106" r="43" stroke="#55e6ff" stroke-opacity=".14" stroke-width="2"/>
+    </svg><div class="connectRipple r1"></div><div class="connectRipple r2"></div>
+    <div class="screenGlow"></div>
+   </div>
+  </div>
+ </div>
+ <div class="infoBox"><b>What we’ll check</b>
+  <div><span class="tinyIcon">◉</span> Internet, Wi-Fi and mobile data</div>
+  <div><span class="tinyIcon">⌁</span> Bluetooth and AirDrop</div>
+  <div><span class="tinyIcon">◎</span> Location services</div>
+ </div>
+ <div class="actions"><button id="begin" type="button" class="btn main">Start Connectivity Check →</button></div>
+ <p class="smallNote">Uses genuine browser connection and location checks where permitted. Other checks require your confirmation.</p>
+</section>
+<section id="setup" class="card glass view">
+ <div class="eyebrow">Getting started</div><h1>Just a few<br>simple checks.</h1>
+ <p class="lead">We’ll show you what to do, then what result to look for.</p>
+ <div class="glassy setupMotion">
+  <label for="phoneModel">Your iPhone model (optional)</label>
+  <select id="phoneModel"><option value="">Choose your iPhone…</option></select>
+  <p class="smallExplanation" id="modelHelp">Choosing a model adds detail to your report. Safari cannot confirm the exact model automatically.</p>
+ </div>
+ <div class="planPreview"><strong>Six quick checks</strong><p>Internet · Wi-Fi · Mobile data · Bluetooth · Location · AirDrop</p></div>
+ <div class="privacyNotice"><strong>Privacy first</strong><p>Location is requested only if you tap Check location. Your exact coordinates never appear in the report or leave the page through our diagnostic code. Network checks fetch a small iRepair test resource.</p></div>
+ <div class="setupBottom">
+  <button id="start" class="btn main" type="button">Begin Guided Tests →</button>
+  <button id="setupBack" class="btn unable" type="button">← Back</button>
+ </div>
+</section>
+<section id="test" class="card glass view connectivityTest" aria-label="Guided connectivity check">
+ <div class="stepHead"><span id="stepCounter">Check 1 of 6</span><button id="exitTest" class="btn unable mini" type="button">Exit</button></div>
+ <div id="progress" class="track" aria-label="Progress"></div>
+ <div class="eyebrow" id="stepEyebrow">A SIMPLE GUIDED CHECK</div>
+ <h1 id="stepTitle">Internet</h1>
+ <p class="lead instructionBrief" id="stepInstruction">Tap Check connection to try reaching the test page.</p>
+ <div id="connectStage" class="connectStage stage-internet">
+  <section class="stagePanel instructionPane">
+   <div class="stageSectionLabel"><span>1</span> DO THIS</div>
+   <div class="connectArt" aria-hidden="true">
+    <div class="connectArtPhone"><div class="smallIsland"></div>
+     <div class="innerSymbol signalInternet">◉</div>
+     <div class="innerSymbol signalWifi"><svg viewBox="0 0 100 100" fill="none"><path d="M10 35Q50 3 90 35M24 53Q50 33 76 53M38 71Q50 62 62 71" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><circle cx="50" cy="86" r="6" fill="currentColor"/></svg></div>
+     <div class="innerSymbol signalMobile"><svg viewBox="0 0 100 100" fill="currentColor"><rect x="12" y="68" width="13" height="23" rx="4"/><rect x="33" y="51" width="13" height="40" rx="4"/><rect x="54" y="32" width="13" height="59" rx="4"/><rect x="75" y="13" width="13" height="78" rx="4"/></svg></div>
+     <div class="innerSymbol signalBluetooth">ᛒ</div>
+     <div class="innerSymbol signalLocation"><svg viewBox="0 0 100 100" fill="none"><path d="M50 90C27 60 23 49 23 37a27 27 0 0154 0c0 12-4 23-27 53Z" stroke="currentColor" stroke-width="6"/><circle cx="50" cy="37" r="10" stroke="currentColor" stroke-width="5"/></svg></div>
+     <div class="innerSymbol signalAirdrop">◎</div>
+    </div>
+    <div class="connectWaves"><span></span><span></span><span></span></div>
+   </div>
+   <strong id="guideActionLabel" class="stageActionText">Check your connection</strong>
+  </section>
+  <section class="stagePanel responsePane">
+   <div class="stageSectionLabel"><span>2</span><span id="responseHeading">YOUR IPHONE · LIVE</span></div>
+   <div class="responseDisplay">
+    <div id="liveBadge" class="liveBadge" aria-hidden="true">◌</div>
+    <div class="responseCopy" role="status" aria-live="polite">
+     <strong id="resultTitle">Ready to check</strong>
+     <span id="resultDetail">Tap the button below when you're ready.</span>
+    </div>
+   </div>
+  </section>
+ </div>
+ <div class="stageTestActions" id="stageTestActions">
+  <div id="selectionPrompt" class="selectionPrompt" hidden>
+    <label class="modeConfirm"><input id="routeConfirmed" type="checkbox"><span id="confirmLabel">I have selected the requested connection</span></label>
+  </div>
+  <button id="runTest" type="button" class="btn main">Check connection</button>
+  <span id="testExplanation" class="measurementCaution">This checks whether the iRepair test page is reachable, not which radio is in use.</span>
+ </div>
+ <details id="technicalPanel" class="technicalPanel" hidden>
+  <summary>View technical details <span>⌄</span></summary>
+  <div id="technicalReadings" class="techText">No measurements yet.</div>
+ </details>
+ <div class="testQuestion" id="testQuestion">Did the connection work?</div>
+ <div class="testActions">
+  <button class="btn pass" data-answer="PASS" type="button">✓ Pass</button>
+  <button class="btn fail" data-answer="FAIL" type="button">✕ Fail</button>
+  <button class="btn unable" data-answer="UNABLE" type="button">Unable to Test</button>
+ </div>
+ <section id="symptomPanel" class="symptomPanel" aria-label="Optional symptoms" hidden>
+  <strong>What did you notice?</strong><p>Select any that apply.</p>
+  <div id="symptomOptions" class="symptomOptions"></div>
+  <button id="symptomContinue" type="button" class="btn main">Continue →</button>
+ </section>
+ <div class="testBottomControls">
+  <button id="previous" type="button" class="btn unable">← Previous</button>
+  <button id="leave" type="button" class="btn unable">Exit test</button>
+ </div>
+ <p class="smallNote">A successful browser check is useful evidence, not proof of healthy wireless hardware. Every result is your choice.</p>
+</section>
+<section id="results" class="card glass view connectivityResults">
+ <div class="eyebrow">Your connectivity review</div><h1>All checks<br>complete.</h1>
+ <p class="lead" id="resultIntro">Your connectivity results and observations.</p>
+ <div class="stats"><div><strong id="passCount">0</strong><span>Pass</span></div><div><strong id="failCount">0</strong><span>Fail</span></div><div><strong id="unableCount">0</strong><span>Unable</span></div></div>
+ <div id="resultRows" class="resultRows"></div>
+ <div id="triageHints" class="triageHints" hidden><strong class="triageHeading">Technician clues · not a diagnosis</strong><div id="triageRows"></div></div>
+ <div class="resultActions">
+  <button id="copyReport" type="button" class="btn main">Copy technician report</button>
+  <div class="pair"><button id="shareReport" type="button" class="btn unable">Share report</button><button id="printReport" type="button" class="btn unable">Save / Print PDF</button></div>
+  <button id="startOver" type="button" class="btn unable">Run connectivity checks again</button>
+ </div>
+ <p class="smallNote">No exact location coordinates are stored in this report. Browser checks cannot isolate individual radios.</p>
+</section>
+</main>
+<script src="./models.js?v=connect-review-1"></script>
+<script src="./core.js?v=connect-review-1"></script>
+<script src="./app.js?v=connect-review-1"></script>
+</body></html>

@@ -1,0 +1,55 @@
+/* iRepair Connectivity Diagnostics deterministic regression checks.
+   Run: node toolbox/connectivity/preview/tests/core-tests.js */
+const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
+const dir=path.resolve(__dirname,".."),root={};
+for(const file of ["models.js","core.js"])vm.runInNewContext(fs.readFileSync(path.join(dir,file),"utf8"),{window:root,Date});
+const e=root.IRepairConnectivityCore,models=root.IRepairDeviceCatalogue;
+let checked=0;function check(name,condition){assert.ok(condition,name);checked++;console.log("PASS",name)}
+const plan=e.createPlan("iphone-17-pro-max",models);
+check("Six customer-first connectivity checks",plan.steps.length===6);
+check("Correct simple sequence",plan.steps.map(s=>s.id).join(",")==="internet,wifi,cellular,bluetooth,location,airdrop");
+check("Model label correctly selected",plan.modelName==="iPhone 17 Pro Max");
+check("Unknown model not auto-guessed",e.createPlan("",models).modelName==="Not selected");
+check("All checks have simple guidance",plan.steps.every(s=>s.instruction&&s.question&&s.short));
+check("Guided Bluetooth is not claimed as live scan",plan.steps.find(s=>s.id==="bluetooth").mode==="guided");
+check("AirDrop requires customer observation",plan.steps.find(s=>s.id==="airdrop").mode==="guided");
+check("No internet Pass before actual reachability",!e.canConfirmPass(plan.steps[0],{},{}));
+check("Valid web response enables internet Pass",{status:"reached"}&&e.canConfirmPass(plan.steps[0],{internet:{status:"reached",elapsedMs:30}},{}));
+check("Failed internet probe does not enable Pass",!e.canConfirmPass(plan.steps[0],{internet:{status:"failed"}},{}));
+check("Wi-Fi Pass requires explicit customer network confirmation",!e.canConfirmPass(plan.steps[1],{wifi:{status:"reached",elapsedMs:14}},{}));
+check("Wi-Fi Pass allowed after reachability AND customer setting",e.canConfirmPass(plan.steps[1],{wifi:{status:"reached",elapsedMs:14}},{wifi:true}));
+check("Mobile-data Pass requires customer confirmation",!e.canConfirmPass(plan.steps[2],{cellular:{status:"reached",elapsedMs:30}},{}));
+check("Mobile-data Pass only with both evidence and customer route confirmation",e.canConfirmPass(plan.steps[2],{cellular:{status:"reached",elapsedMs:30}},{cellular:true}));
+check("Location Pass not allowed without geolocation result",!e.canConfirmPass(plan.steps[4],{location:{status:"failed"}},{}));
+check("Location Pass uses browser result only",e.canConfirmPass(plan.steps[4],{location:{status:"received",accuracy:18}},{}));
+check("Location result cannot assert GPS-only hardware",e.evidenceLine(plan.steps[4],{location:{status:"received",accuracy:18}}).includes("NOT proof of GPS"));
+check("Reachability result cannot claim current network radio",e.evidenceLine(plan.steps[2],{cellular:{status:"reached",elapsedMs:100}}).includes("NOT independently verified"));
+let answers={};for(const s of plan.steps)answers=e.setAnswer(answers,s.id,s.id==="bluetooth"?"FAIL":s.id==="location"?"UNABLE":"PASS");
+const summary=e.tally(plan,answers);
+check("Counts pass fail unable accurately",summary.PASS===4&&summary.FAIL===1&&summary.UNABLE===1);
+check("Unanswered never auto-pass",e.tally(plan,{}).UNANSWERED===6);
+assert.throws(()=>e.setAnswer({},"fabricated","PASS"));checked++;
+assert.throws(()=>e.setAnswer({},"wifi","SUCCESS"));checked++;
+const data={internet:{status:"reached",elapsedMs:44},wifi:{status:"reached",elapsedMs:27},
+ cellular:{status:"reached",elapsedMs:70},location:{status:"received",accuracy:13.4}};
+const output=e.report(plan,answers,data,{wifi:true,cellular:true},{bluetooth:["Accessory not discovered"]});
+check("Customer selected model in report",output.includes("iPhone 17 Pro Max"));
+check("Probe elapsed timing in report",output.includes("44 ms"));
+check("Wi-Fi route user confirmation recorded",output.includes("User states connection type was set as instructed: Yes"));
+check("Bluetooth failed symptom retained",output.includes("Accessory not discovered"));
+check("No exact geographic coordinates in report",!output.includes("latitude")&&!output.includes("longitude"));
+check("Location accuracy never treated as GNSS proof",output.includes("NOT proof of GPS sensor health"));
+check("Privacy mentions first-party request and standard logs",output.includes("ordinary website access logs may exist"));
+check("Report cautions on hardware overclaim",output.includes("cannot isolate individual radios"));
+check("Unexpected symptom not injected",!e.report(plan,answers,data,{}, {bluetooth:["Bluetooth chip burned out"]}).includes("chip burned out"));
+check("Wi-Fi failure produces cautious triage",e.interpret(plan,{wifi:"FAIL"}).some(h=>h.detail.includes("before considering antenna")));
+check("GPS/location failure prompts permissions first",e.interpret(plan,{location:"FAIL"}).some(h=>h.detail.includes("permission")));
+const html=fs.readFileSync(path.join(dir,"index.html"),"utf8"),app=fs.readFileSync(path.join(dir,"app.js"),"utf8");
+check("Do This and response split visibly labelled",html.includes("DO THIS")&&html.includes("YOUR IPHONE · LIVE"));
+check("Manual guided mode clearly labelled",app.includes("WHAT TO LOOK FOR"));
+check("Geolocation coordinates not stored in app evidence",app.includes("evidence.location={status:\"received\",accuracy:value}")&&!app.includes("coords.latitude"));
+check("Same origin probe token enforced",app.includes('text.trim()!=="IREPAIR_CONNECTIVITY_PROBE_V1"'));
+check("Connection proof guarded against race",app.includes("if(id!==activeRequest)return"));
+check("Only current test can be marked PASS",app.includes('if(value==="PASS"&&!core.canConfirmPass(s,evidence,confirmed))return'));
+check("Report copy share PDF interfaces exist",["copyReport","shareReport","printReport"].every(id=>html.includes('id="'+id+'"')));
+console.log("ALL",checked,"CONNECTIVITY CHECKS PASSED");
