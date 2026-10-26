@@ -5,28 +5,28 @@
 const states=Object.freeze(["PASS","FAIL","UNABLE"]);
 const steps=Object.freeze([
  {id:"accel",title:"Accelerometer",subtitle:"Motion along three axes",icon:"↗",mode:"web-motion",
-  instruction:"Hold your iPhone securely. Gently tilt it left, right, forwards and backwards. Look for the X, Y and Z acceleration values changing. Avoid shaking or dropping it.",
-  question:"Do the acceleration readings respond when you move the phone?",
+  instruction:"Hold the iPhone securely. Move it gently side to side, then forwards and backwards. Watch for two green ticks. No need to shake it.",
+  question:"Did the iPhone detect both movement directions?",
   evidence:"Browser motion-event samples, where permission and Safari support allow"},
  {id:"gyro",title:"Gyroscope",subtitle:"Rotation response",icon:"⟳",mode:"web-motion",
-  instruction:"Holding the iPhone firmly, rotate it slowly around its three axes. Watch whether angular rotation-rate values respond. A blank reading is not evidence of a defective gyroscope.",
-  question:"Do the rotation-rate readings respond consistently as the phone turns?",
+  instruction:"Hold the iPhone securely and turn it slowly in your hand. Follow the circular motion shown below.",
+  question:"Was rotation detected while you turned the phone?",
   evidence:"Browser rotation-rate event fields, where exposed by Safari"},
  {id:"tilt",title:"Orientation",subtitle:"Pitch and roll",icon:"◇",mode:"web-orientation",
-  instruction:"Slowly tilt your phone forward, backwards and side to side. The glowing handset illustration should follow the available pitch and roll values. Keep a firm grip.",
-  question:"Does the handset illustration respond appropriately to your movements?",
+  instruction:"Slowly tilt your iPhone forwards and backwards, then left and right. If Safari allows access, the little phone follows your tilt.",
+  question:"Did both tilt directions respond?",
   evidence:"Browser deviceorientation samples when available"},
  {id:"compass",title:"Compass",subtitle:"Magnetic heading",icon:"◎",mode:"system-guided",
-  instruction:"Open Apple's Compass app and slowly turn the iPhone on a flat surface. Does the heading move smoothly and settle? Keep it away from magnetic cases, mounts, speakers and large metal objects. Return here to record your observation.",
-  question:"Does the Compass app respond to your turns and settle on a heading?",
+  instruction:"Open the Compass app on your iPhone. Turn the phone gently and see whether its direction changes. Keep away from magnets and metal.",
+  question:"Did the compass heading change correctly?",
   evidence:"Customer observation in Apple's Compass app; no native magnetometer stream"},
  {id:"haptics",title:"Haptics",subtitle:"Taptic Engine response",icon:"◌",mode:"haptic-guided",
-  instruction:"On your iPhone, check Settings → Sounds & Haptics and use a system haptic preview or another known haptic interaction. Ensure haptics are enabled and the phone is not preventing feedback. Come back here to record what you felt.",
-  question:"Could you physically feel the iPhone's normal haptic feedback?",
+  instruction:"Open Settings → Sounds & Haptics and try a normal haptic feedback preview. Can you feel the gentle tap or vibration?",
+  question:"Could you clearly feel the vibration?",
   evidence:"Customer-confirmed tactile feedback; browser cannot measure physical vibration"},
  {id:"proximity",title:"Proximity sensor",subtitle:"Near-ear response",icon:"⊙",mode:"system-guided",
-  instruction:"During a normal phone call, carefully place the earpiece near your ear and move it away. Check whether the display turns off near the ear and returns when moved away. Do not start a call while driving, and avoid covering the screen with your finger.",
-  question:"During a call, does the display darken near your ear and wake when moved away?",
+  instruction:"During an ordinary phone call, bring the iPhone towards your ear, then move it away again. Check whether the screen goes dark and lights up again.",
+  question:"Did the screen turn off near your ear and on again afterwards?",
   evidence:"Customer observation during a phone call; Safari cannot read proximity hardware"}
 ]);
 const symptoms=Object.freeze({
@@ -86,6 +86,14 @@ function report(plan,answers,evidence,reported){
  for(const step of plan.steps){
   lines.push(step.title+": "+(answers?.[step.id]||"UNANSWERED"));
   lines.push("  Method: "+evidenceMethod(step,evidence));
+  const measured=evidence?.detected?.[step.id];
+  if(["accel","gyro","tilt"].includes(step.id)&&measured){
+   lines.push("  Live movement evidence: "+(measured.complete?"Two response checkpoints observed":
+     measured.events?"Partial movement response; checkpoints incomplete":"No response checkpoints observed")+
+     " (not an independent hardware verdict)");
+   if(step.id==="gyro")lines.push("  Peak observed angular rate: "+measured.peakRotation+" degrees/s");
+   else lines.push("  Observed channel ranges: "+measured.ranges.map(v=>v===null?"not available":String(v)).join(", "));
+  }
   const selected=Array.isArray(reported?.[step.id])?reported[step.id].filter(v=>symptoms[step.id].includes(v)):[];
   if(answers?.[step.id]==="FAIL"&&selected.length)lines.push("  Observed symptoms: "+selected.join("; "));
  }
