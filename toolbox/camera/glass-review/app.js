@@ -37,7 +37,8 @@ function updateSetup(){
  if(plan.lenses.ultra)extra.push("ultra-wide");
  if(plan.lenses.tele)extra.push("telephoto");
  text($("planTitle"),plan.steps.length+" guided camera checks"+(plan.modelSlug?" · "+plan.modelName:""));
- text($("planText"),"Rear picture, near/far focus"+(extra.length?", "+extra.join(" and "):"")+", front camera and flash.");
+ text($("planText"),"Rear image, focus, shake/noise and flash"+(extra.length?", "+extra.join(" and "):"")+
+   ", front camera"+(plan.faceIdCapable?" and Face ID recognition":"")+".");
  text($("modelHelp"),plan.modelSlug?"Customer-selected "+plan.modelName+". Lens checks follow its published camera layout; Safari cannot independently verify those physical lenses.":"Year-grouped newest-first models. Skip this if unsure: the core rear/front camera checks still work.");
 }
 function cleanupTorch(){
@@ -75,20 +76,24 @@ function fallback(heading,message){
 }
 function showModelIllustration(step){
  stopStream();
- fallback("Check in the iPhone Camera app",
-   "Return to this test to record the camera image you observed.");
+ const faceId=step.id==="faceid";
+ fallback(faceId?"Face ID is an Apple system feature":"Check in the iPhone Camera app",
+   "Return here to record the result you observed.");
  $("cameraFallback").hidden=true;
  const svg=$("modelDiagram");
- cat.render(svg,plan.modelSlug||"iphone-17","rear","");
+ const side=faceId?"front":"rear";
+ cat.render(svg,plan.modelSlug||"iphone-17",side,faceId?"frontMic":"");
  svg.removeAttribute("hidden");
- svg.setAttribute("aria-label",plan.modelName+" rear camera schematic (illustrative only)");
+ svg.setAttribute("aria-label",plan.modelName+" "+side+" camera illustration — not a measured hardware test");
  $("retryCamera").hidden=true;
  $("previewLabel").hidden=true;
- $("streamStatus").textContent="Safari cannot confirm that the "+(step.id==="ultra"?"0.5× ultra-wide":"telephoto")+" physical lens is isolated. Open Apple's Camera app to inspect it.";
+ $("streamStatus").textContent=faceId?
+   "Safari cannot read Face ID or the infrared TrueDepth image. Use your iPhone's normal Face ID authentication, then return here; never share your passcode.":
+   "Safari cannot confirm that the "+(step.id==="ultra"?"0.5× ultra-wide":"telephoto")+" physical lens is isolated. Open Apple's Camera app to inspect it.";
 }
 async function openCamera(facing){
  const step=getStep();
- if(!step||step.mode==="native-guided")return;
+ if(!step||step.mode==="native-guided"||step.mode==="system-guided")return;
  const myGen=++generation;
  cleanupTorch();
  discardPhoto();
@@ -176,19 +181,25 @@ function renderStep(){
  show("test");
  drawProgress();
  text($("stepCounter"),"Camera "+(index+1)+" / "+plan.steps.length);
- text($("stepEyebrow"),step.mode==="native-guided"?"Guided lens observation":
-   step.id==="flash"?"Flash observation":"Live camera check");
+ text($("stepEyebrow"),step.id==="faceid"?"Face ID / TrueDepth check":
+   step.mode==="native-guided"?"Guided lens observation":
+   step.id==="flash"?"Flash and rear-camera comparison":
+   step.id==="stability"?"Image stabilisation observation":"Live camera check");
  text($("stepTitle"),step.title);
  text($("stepInstruction"),step.instruction);
  text($("testQuestion"),step.check);
- text($("testFoot"),step.mode==="native-guided"?
+ text($("testFoot"),step.mode==="system-guided"?
+ "Record Pass only if system Face ID actually recognised you. If not enrolled or unavailable, select Unable to Test. A selfie preview is not a TrueDepth test.":
+ step.mode==="native-guided"?
  "Record only what you observed in Apple's Camera app; Safari cannot independently confirm the physical lens.":
+ step.id==="stability"?
+ "An unstable picture or high-pitched noise is a possible focus/OIS clue, not proof of a damaged camera module.":
  "Mark your own visual observation. A live preview is not an automated hardware diagnosis.");
  $("previous").disabled=index===0;
- $("retryCamera").hidden=step.mode==="native-guided";
+ $("retryCamera").hidden=step.mode==="native-guided"||step.mode==="system-guided";
  $("torchButton").hidden=true;
  $("modelDiagram").setAttribute("hidden","");
- if(step.mode==="native-guided"){
+ if(step.mode==="native-guided"||step.mode==="system-guided"){
   showModelIllustration(step);
  }else{
   // Release capture when changing camera direction to prevent iOS conflicts.
@@ -224,9 +235,20 @@ function showResults(){
   const title=document.createElement("strong");title.textContent=step.label+" — "+(value==="UNABLE"?"Unable to Test":value==="PASS"?"Pass":"Fail");
   title.className=value==="PASS"?"good":value==="FAIL"?"bad":"neutral";
   const note=document.createElement("span");
-  note.textContent=step.mode==="native-guided"?"Customer observation in Apple Camera app; physical lens was not verified independently.":
+  note.textContent=step.mode==="system-guided"?
+   "Customer reported system Face ID recognition. The app did not capture biometric data or test individual TrueDepth parts.":
+   step.mode==="native-guided"?"Customer observation in Apple Camera app; physical lens was not verified independently.":
    step.mode==="torch-or-native-guided"?"Rear LED observation; "+(torchUsed?"browser torch was activated":"native Camera app check or browser support may be limited")+".":"Customer observation of the browser camera preview.";
   row.append(title,note);rows.append(row);
+ }
+ const clues=core.interpretation(plan,answers);
+ const hints=$("triageHints"),hintRows=$("triageRows");
+ hintRows.replaceChildren();hints.hidden=clues.length===0;
+ for(const hint of clues){
+  const card=document.createElement("div");card.className="triageRow";
+  const title=document.createElement("strong");title.textContent=hint.title;
+  const detail=document.createElement("span");detail.textContent=hint.detail;
+  card.append(title,detail);hintRows.append(card);
  }
  report=core.report(plan,answers,{flashTorchUsed:torchUsed});
  text($("copyReport"),"Copy technician report");
@@ -308,7 +330,7 @@ $("startOver").addEventListener("click",()=>{stopStream();show("setup");updateSe
 document.addEventListener("visibilitychange",()=>{
  if(document.hidden){
   stopStream();
- }else if(document.querySelector("#test.active")&&getStep()?.mode!=="native-guided"){
+ }else if(document.querySelector("#test.active")&&getStep()?.mode!=="native-guided"&&getStep()?.mode!=="system-guided"){
   fallback("Camera paused","The app was in the background. Tap Try camera again to restart the preview.");
   $("retryCamera").hidden=false;
   text($("streamStatus"),"Camera was released while the page was in the background.");
