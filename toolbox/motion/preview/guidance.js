@@ -1,47 +1,48 @@
-/* iRepair Toolbox — Motion v2. Pure stage-specific movement evidence.
-   No generated values. Thresholds indicate changing browser data, NOT healthy ICs. */
+/* Motion v3: genuine, sequential gesture evidence. Visual demonstration is separate.
+   Thresholds are UI response indicators, never calibrated hardware health tests. */
 (function(root){
 "use strict";
 const finite=n=>typeof n==="number"&&Number.isFinite(n);
+const descriptors=Object.freeze({
+ accel:{kind:"acceleration",labels:["Left and right","Towards you and away"],instructions:["Move your iPhone left and right","Move it towards you, then away"]},
+ gyro:{kind:"rotation",labels:["Rotation started","Rotation continued"],instructions:["Turn your iPhone gently","Keep turning your iPhone"]},
+ tilt:{kind:"orientation",labels:["Forward and backward tilt","Left and right tilt"],instructions:["Tilt forwards and backwards","Now tilt left and right"]}
+});
 function create(stage){
- const axis=[{min:Infinity,max:-Infinity,seen:0},{min:Infinity,max:-Infinity,seen:0}];
- let events=0,activeRotations=0,peakRotation=0;
+ const d=descriptors[stage]||null;
+ let events=0,first=false,second=false,peakRotation=0,rotationEvents=0;
+ const stats=[{min:Infinity,max:-Infinity,seen:0},{min:Infinity,max:-Infinity,seen:0}];
+ function range(i){const a=stats[i];return a.seen>=3?a.max-a.min:0}
+ function updateAxis(i,v){
+  if(!finite(v))return;
+  const a=stats[i];a.seen++;a.min=Math.min(a.min,v);a.max=Math.max(a.max,v);
+ }
  function observe(kind,values){
-  const expected=stage==="accel"?"acceleration":stage==="gyro"?"rotation":stage==="tilt"?"orientation":null;
-  if(!expected||expected!==kind||!Array.isArray(values))return snapshot();
-  const available=values.filter(finite);
-  if(!available.length)return snapshot();
+  if(!d||kind!==d.kind||!Array.isArray(values)||!values.some(finite))return snapshot();
   events++;
   if(stage==="gyro"){
-   const maximum=Math.max(...available.map(Math.abs));
-   peakRotation=Math.max(peakRotation,maximum);
-   if(maximum>=12)activeRotations++;
-  }else{
-   for(let i=0;i<2;i++){
-    const v=values[i];
-    if(finite(v)){axis[i].seen++;axis[i].min=Math.min(axis[i].min,v);axis[i].max=Math.max(axis[i].max,v)}
-   }
+   const peak=Math.max(...values.filter(finite).map(Math.abs));
+   peakRotation=Math.max(peakRotation,peak);
+   if(peak>=12){rotationEvents++;if(rotationEvents>=1)first=true;if(rotationEvents>=3)second=true}
+  }else if(!first){
+   // Collect ONLY the first requested direction. Do not credit both phases
+   // from the same sample or from an earlier side-to-side movement.
+   updateAxis(0,stage==="accel"?values[0]:values[0]);
+   if(range(0)>=(stage==="accel"?1.4:13))first=true;
+  }else if(!second){
+   // Accelerometer Z is normal to the screen (towards/away in portrait);
+   // orientation gamma is roll (left/right). Each starts with fresh data.
+   updateAxis(1,stage==="accel"?values[2]:values[1]);
+   if(range(1)>=(stage==="accel"?1.0:13))second=true;
   }
   return snapshot();
  }
  function snapshot(){
-  let first=false,second=false,labels=[];
-  if(stage==="accel"){
-   first=axis[0].seen>1&&axis[0].max-axis[0].min>=3.2;
-   second=axis[1].seen>1&&axis[1].max-axis[1].min>=3.2;
-   labels=["Side-to-side movement","Forward/back movement"];
-  }else if(stage==="gyro"){
-   first=activeRotations>=1;second=activeRotations>=3;
-   labels=["Rotation started","Rotation continued"];
-  }else if(stage==="tilt"){
-   first=axis[0].seen>1&&axis[0].max-axis[0].min>=13;
-   second=axis[1].seen>1&&axis[1].max-axis[1].min>=13;
-   labels=["Forward/back tilt","Side-to-side tilt"];
-  }
-  return {stage,events,first,second,complete:first&&second,
-   labels,peakRotation:Math.round(peakRotation*10)/10,
-   ranges:axis.map(item=>Number.isFinite(item.min)&&Number.isFinite(item.max)?
-     Math.round((item.max-item.min)*10)/10:null)};
+  const complete=first&&second,phase=!first?"first":!second?"second":"complete";
+  const ranges=stats.map(a=>a.seen>1?Math.round((a.max-a.min)*10)/10:null);
+  return {stage,events,first,second,complete,phase,labels:d?.labels||[],
+   instruction:d?d.instructions[complete?1:phase==="second"?1:0]:"",
+   peakRotation:Math.round(peakRotation*10)/10,ranges};
  }
  return Object.freeze({observe,snapshot});
 }
