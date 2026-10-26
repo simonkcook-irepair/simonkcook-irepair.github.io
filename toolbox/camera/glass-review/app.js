@@ -217,7 +217,7 @@ function renderStep(){
  "The rear image was marked Fail. Check the torch independently: both failing can be a useful shared-system clue, not proof of a common power rail.":
  "Mark your own visual observation. A live preview is not an automated hardware diagnosis.");
  $("previous").disabled=index===0;
- const nativeBridge=window.webkit?.messageHandlers?.iRepairCameraDevice;
+ const nativeBridge=window.webkit?.messageHandlers?.iRepairFaceID;
  $("nativeFace").hidden=!(step.id==="faceid"&&typeof nativeBridge?.postMessage==="function");
  text($("nativeFaceStatus"),nativeFaceId?
    "System result: "+nativeFaceId.outcome+". This is not a component-level hardware test.":
@@ -346,16 +346,16 @@ $("symptomContinue").addEventListener("click",()=>{
 });
 $("nativeFaceButton").addEventListener("click",async()=>{
  if(getStep()?.id!=="faceid")return;
- const bridge=window.webkit?.messageHandlers?.iRepairCameraDevice;
+ const bridge=window.webkit?.messageHandlers?.iRepairFaceID;
  if(typeof bridge?.postMessage!=="function")return;
  const button=$("nativeFaceButton");button.disabled=true;
  text($("nativeFaceStatus"),"iOS is checking system Face ID authentication…");
  try{
-  const result=await bridge.postMessage({action:"faceIdAuthentication"});
+  const result=await bridge.postMessage({action:"authenticateFaceID"});
   if(getStep()?.id!=="faceid")return;
-  const outcomes=new Set(["authenticated","recognitionFailed","notEnrolled","lockedOut","unavailable","cancelled","interrupted","unsupported"]);
-  nativeFaceId=result?.source==="ios-native"&&outcomes.has(result?.outcome)&&result?.biometryType==="faceID"?
-    {outcome:result.outcome}:null;
+  const outcomes=new Set(["authenticated","notConfirmed","unavailable","unsupported"]);
+  nativeFaceId=result?.source==="ios-native"&&outcomes.has(result?.status)?
+    {outcome:result.status}:null;
   text($("nativeFaceStatus"),nativeFaceId?
    "System result: "+nativeFaceId.outcome+". Record your conclusion below; this does not test individual TrueDepth parts.":
    "A native Face ID result was unavailable; choose Unable to Test if necessary.");
