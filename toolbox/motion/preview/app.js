@@ -2,8 +2,8 @@
 (function(){
 "use strict";
 const $=id=>document.getElementById(id),core=window.IRepairMotionCore,cat=window.IRepairDeviceCatalogue;
-if(!core||!cat||!window.IRepairSensorFeed)throw Error("Motion Toolbox modules missing");
-let plan=core.createPlan("",cat),index=0,answers={},symptoms={},reportText="";
+if(!core||!cat||!window.IRepairSensorFeed||!window.IRepairMotionGuidance)throw Error("Motion Toolbox modules missing");
+let plan=core.createPlan("",cat),index=0,answers={},symptoms={},reportText="",tracker=null,detections={};
 const set=(id,value)=>{$(id).textContent=String(value)};
 const current=()=>plan.steps[index];
 const fmt=v=>Number.isFinite(v)?(v>=0?"+":"")+v.toFixed(2):"—";
@@ -11,20 +11,36 @@ function show(id){
  document.querySelectorAll(".view").forEach(n=>n.classList.toggle("active",n.id===id));
  try{window.scrollTo({top:0,behavior:"instant"})}catch(e){}
 }
+function updateDetected(status){
+ const s=current();if(!s||!tracker)return;
+ const data=status||tracker.snapshot();
+ detections[s.id]=data;
+ const box=$("detectionPanel"),done=data.complete;
+ box.dataset.state=done?"detected":data.events?"in-progress":"waiting";
+ set("detectionIcon",done?"✓":data.events?"↗":"◌");
+ set("detectionTitle",done?"Movement detected":data.events?"Movement coming through":"Ready to detect movement");
+ set("detectionDetail",done?"Both movement checks responded. You can mark Pass and continue.":
+  data.events?"Follow the movement shown above until both checks turn green.":
+  "Enable motion access, then move your iPhone as instructed.");
+ for(const [id,label,ok] of [["checkA",data.labels[0],data.first],["checkB",data.labels[1],data.second]]){
+  const el=$(id);el.textContent=(ok?"✓ ":"◌ ")+label;el.classList.toggle("done",ok);
+ }
+ const pass=document.querySelector('[data-answer="PASS"]');
+ pass.disabled=!done;pass.textContent=done?"✓ Pass & Continue":"✓ Pass";
+}
 function onSensor(kind,nums,count){
  if(!document.querySelector("#test.active"))return;
  const labels=kind==="acceleration"?["X · m/s²","Y · m/s²","Z · m/s²"]:
   kind==="rotation"?["α · °/s","β · °/s","γ · °/s"]:["PITCH · °","ROLL · °","YAW · °"];
  ["X","Y","Z"].forEach((key,i)=>{set("read"+key+"Label",labels[i]);set("read"+key,fmt(nums[i]))});
- set("sensorStatus",count+" real "+kind+" event"+(count===1?"":"s")+" received for this check.");
+ if(tracker)updateDetected(tracker.observe(kind,nums));
+ set("sensorStatus",count+" real sensor samples received. Detailed values are under ‘View technical readings’.");
  if(kind==="orientation"){
   const pitch=Number.isFinite(nums[0])?Math.max(-23,Math.min(23,-nums[0]*.23)):0;
   const roll=Number.isFinite(nums[1])?Math.max(-24,Math.min(24,nums[1]*.45)):0;
   $("demoDevice").style.setProperty("--rx",pitch+"deg");
   $("demoDevice").style.setProperty("--ry",roll+"deg");
-  $("demoDevice").setAttribute("aria-label","Live orientation, pitch "+
-    (Number.isFinite(nums[0])?nums[0].toFixed(0):"unknown")+
-    " degrees, roll "+(Number.isFinite(nums[1])?nums[1].toFixed(0):"unknown")+" degrees.");
+  $("demoDevice").setAttribute("aria-label","iPhone illustration following live pitch and roll data");
  }
 }
 const feed=window.IRepairSensorFeed.create(onSensor,message=>set("sensorStatus",message));
@@ -53,40 +69,57 @@ function progress(){
 }
 function renderStep(){
  const s=current();if(!s){results();return}
- feed.setStage(s.id);show("test");$("symptomPanel").hidden=true;progress();
- set("stepCounter","Sensor "+(index+1)+" / "+plan.steps.length);
- set("stepTitle",s.title);set("stepInstruction",s.instruction);set("testQuestion",s.question);
- set("stepEyebrow",s.mode==="web-motion"||s.mode==="web-orientation"?"Live sensor observation":
-  s.id==="haptics"?"Tactile feedback check":s.id==="proximity"?"Near-ear response":"Compass guidance");
- set("stepMethod",s.mode==="web-motion"||s.mode==="web-orientation"?
-  "Readings are genuine browser sensor events if available, never an automatic hardware verdict.":
-  s.id==="haptics"?"Only you can verify physically felt haptic feedback.":
-  "Guided observation in an Apple system feature, not an electronic sensor measurement.");
- $("previous").disabled=index===0;
  const measuring=["accel","gyro","tilt"].includes(s.id);
+ feed.setStage(s.id);tracker=measuring?window.IRepairMotionGuidance.create(s.id):null;
+ show("test");$("symptomPanel").hidden=true;progress();
+ set("stepCounter","Check "+(index+1)+" of "+plan.steps.length);
+ set("stepTitle",s.title);set("stepInstruction",s.instruction);set("testQuestion",s.question);
+ const subtitles={accel:"MOVE YOUR PHONE",gyro:"ROTATE YOUR PHONE",tilt:"TILT YOUR PHONE",
+  compass:"CHECK THE COMPASS",haptics:"FEEL THE VIBRATION",proximity:"CHECK NEAR YOUR EAR"};
+ set("stepEyebrow",subtitles[s.id]);
+ set("stepMethod",measuring?
+  "A green detection means real sensor values changed; it does not certify every hardware function.":
+  "This is a guided observation. Confirm what you saw or felt.");
+ $("previous").disabled=index===0;
+ $("technicalPanel").hidden=!measuring;$("technicalPanel").open=false;
  $("readings").hidden=!measuring;
  $("permissionButton").hidden=!measuring||feed.active;
- $("permissionButton").textContent=feed.permission==="not-requested"?"Enable Live Motion Sensors":"Retry / Enable Motion Access";
- $("hapticButton").hidden=s.id!=="haptics";
- $("hapticButton").textContent="Request Haptic Feedback";
+ $("permissionButton").textContent=feed.permission==="not-requested"?"Enable Motion Detection":"Try Motion Access Again";
+ $("hapticButton").hidden=s.id!=="haptics"||typeof navigator.vibrate!=="function";
+ $("hapticButton").textContent="Try Haptic Feedback";
  const stage=$("motionStage");
+ ["accel","gyro","tilt","compass","haptics","proximity"].forEach(type=>
+  stage.classList.toggle("stage-"+type,s.id===type));
  stage.classList.toggle("guided",!measuring);
  stage.classList.toggle("proximityStage",s.id==="proximity");
  stage.classList.toggle("hapticStage",s.id==="haptics");
  $("demoDevice").style.removeProperty("--rx");$("demoDevice").style.removeProperty("--ry");
- $("demoDevice").setAttribute("aria-label",measuring?"Illustrative phone; orientation changes only with live sensor values":"Animated example illustration, not live sensor data");
- set("stageLabel",measuring?"LIVE DATA · IF AVAILABLE":s.id==="compass"?"APPLE COMPASS APP":
-  s.id==="proximity"?"PROXIMITY · CALL":"TACTILE CHECK · FEEL IT");
+ $("demoDevice").setAttribute("aria-label",measuring?
+  "Animated movement instruction; live orientation follows sensor values when available":
+  "Illustration of the guided test, not a measured sensor value");
+ set("stageLabel",measuring?s.id==="accel"?"MOVE SIDE TO SIDE":s.id==="gyro"?"TURN YOUR PHONE":"TILT YOUR PHONE":
+  s.id==="compass"?"COMPASS APP":s.id==="haptics"?"FEEL THE HAPTIC":"NEAR YOUR EAR");
+ $("checkpoints").hidden=!measuring;
+ const box=$("detectionPanel");box.dataset.state=measuring?"waiting":"guided";
  if(measuring){
+  updateDetected();
   const labels=s.id==="accel"?["X · m/s²","Y · m/s²","Z · m/s²"]:
    s.id==="gyro"?["α · °/s","β · °/s","γ · °/s"]:["PITCH · °","ROLL · °","YAW · °"];
   ["X","Y","Z"].forEach((key,i)=>{set("read"+key+"Label",labels[i]);set("read"+key,"—")});
-  set("sensorStatus",feed.active?"Move gently and watch for actual "+s.title.toLowerCase()+" readings.":
-   "Tap Enable Live Motion Sensors; Safari may request permission.");
- }else set("sensorStatus",s.id==="haptics"?
-  "Safari may not be able to vibrate the Taptic Engine. Check feedback in Settings → Sounds & Haptics.":
-  s.id==="proximity"?"Observe the screen during a normal phone call; Safari cannot measure proximity.":
-  "Use Apple's Compass app. Browser heading data is not claimed.");
+  set("sensorStatus",feed.active?"Move the phone as shown above; we’ll detect the response.":
+   "Tap Enable Motion Detection to allow Safari to read actual movement.");
+ }else{
+  document.querySelector('[data-answer="PASS"]').disabled=false;
+  set("detectionIcon",s.id==="compass"?"◎":s.id==="haptics"?"◌":"◉");
+  set("detectionTitle",s.id==="compass"?"Open Apple's Compass app":
+    s.id==="haptics"?"Feel the vibration":"Check the screen near your ear");
+  set("detectionDetail",s.id==="compass"?"Watch whether the compass heading changes as you turn the phone.":
+    s.id==="haptics"?"Try a normal iPhone haptic in Settings, then tell us if you felt it.":
+    "During a call, see whether the screen sleeps and wakes again.");
+  set("sensorStatus",s.id==="haptics"?"Safari may not be able to trigger an iPhone haptic; use system feedback.":
+    s.id==="proximity"?"Use an ordinary phone call. This website does not access the proximity sensor.":
+    "Use Apple's Compass app. No live magnetic heading is being claimed.");
+ }
 }
 function advance(){if(index>=plan.steps.length-1)results();else {index++;renderStep()}}
 function mark(status){
@@ -130,12 +163,12 @@ function results(){
   const description=document.createElement("span");description.textContent=h.detail;
   node.append(name,description);rows.append(node);
  });
- reportText=core.report(plan,answers,evidence,symptoms);
+ reportText=core.report(plan,answers,{...evidence,detected:detections},symptoms);
  set("copyReport","Copy technician report");set("shareReport","Share report");show("results");
 }
-function begin(){feed.reset();answers={};symptoms={};reportText="";index=0;
+function begin(){feed.reset();answers={};symptoms={};detections={};tracker=null;reportText="";index=0;
  plan=core.createPlan($("phoneModel").value,cat);renderStep()}
-function exit(){feed.stop();show("setup")}
+function exit(){feed.stop();tracker=null;show("setup")}
 function haptic(){
  try{
   if(typeof navigator.vibrate==="function"&&navigator.vibrate([120,90,120]))
