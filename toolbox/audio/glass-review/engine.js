@@ -22,6 +22,9 @@ function stagePhone(el,side,focus){
 }
 function showDevice(){
  $('start-stage').classList.toggle('has-model',!!selectedModel);
+ // Keep the approved illustrated front handset even after model selection.
+ // Only the existing rear-view control temporarily reveals its model SVG.
+ $('start-stage').classList.toggle('show-rear',!!selectedModel&&previewSide==='rear');
  stagePhone($('start-device'),previewSide,'');
  $('start-component-label').textContent=selectedModel?selectedModel.name:'Select a model';
  $('model-caption').textContent=selectedModel?'Model-matched front and rear illustration':'Select a model to see your handset.';
