@@ -62,3 +62,39 @@ async function sensorChecks(){
  console.log("ALL",n,"MOTION TESTS PASSED");
 }
 sensorChecks().catch(error=>{console.error(error);process.exitCode=1});
+
+/* V2 qualitative detection: genuine input only, no fake PASS. */
+vm.runInNewContext(fs.readFileSync(path.join(dir,"guidance.js"),"utf8"),ctx);
+const guidance=windowObject.IRepairMotionGuidance;
+const accel=guidance.create("accel");
+pass("Movement starts unconfirmed",accel.snapshot().events===0&&!accel.snapshot().complete);
+accel.observe("acceleration",[0,0,9.8]);
+accel.observe("acceleration",[4,0,8]);
+pass("Sideways movement alone does not complete",accel.snapshot().first&&!accel.snapshot().second&&!accel.snapshot().complete);
+accel.observe("acceleration",[4,4,8]);
+pass("Two independent accelerometer directions complete",accel.snapshot().complete);
+const wrong=guidance.create("gyro");
+wrong.observe("orientation",[30,30,12]);
+pass("Wrong event type is ignored",wrong.snapshot().events===0);
+wrong.observe("rotation",[3,2,4]);wrong.observe("rotation",[16,null,0]);
+pass("One rotation spike cannot complete",wrong.snapshot().first&&!wrong.snapshot().second);
+wrong.observe("rotation",[19,0,0]);wrong.observe("rotation",[20,1,0]);
+pass("Sustained genuine rotation samples complete",wrong.snapshot().complete);
+const tilt=guidance.create("tilt");
+tilt.observe("orientation",[0,0,0]);tilt.observe("orientation",[14,0,0]);
+pass("Pitch change alone incomplete",tilt.snapshot().first&&!tilt.snapshot().second);
+tilt.observe("orientation",[14,17,0]);
+pass("Independent pitch and roll complete",tilt.snapshot().complete);
+const missing=guidance.create("accel");
+missing.observe("acceleration",[null,NaN,undefined]);
+pass("Missing numeric data never completes",missing.snapshot().events===0&&!missing.snapshot().complete);
+const rendering=fs.readFileSync(path.join(dir,"index.html"),"utf8");
+const appSource=fs.readFileSync(path.join(dir,"app.js"),"utf8");
+pass("Visual stage has unique compass and haptic illustrations",
+ rendering.includes("compassArt")&&rendering.includes("hapticWaves")&&rendering.includes("proximityArt"));
+pass("Technical values hidden behind details",rendering.includes('<details id="technicalPanel"'));
+pass("Physical sensor PASS locked until detection",appSource.includes('pass.disabled=!done'));
+pass("No browser sensors requested by the guided compass and proximity stages",
+ appSource.includes('const measuring=["accel","gyro","tilt"].includes(s.id)'));
+pass("Changed data is reported without fabricated health verdict",
+ core.report(plan,answers,{detected:{accel:accel.snapshot()}},{}).includes("not an independent hardware verdict"));
