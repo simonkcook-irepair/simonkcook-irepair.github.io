@@ -1,7 +1,7 @@
 # iRepair Toolbox — Battery Diagnostics native-ready candidate
 
 **Prepared:** 25 October 2026  
-**Status:** Browser prototype candidate for customer sign-off; **NOT** a compiled native iOS app or an App Store submission.
+**Status:** ✅ **USER-APPROVED FINAL BROWSER PROTOTYPE — 26 October 2026. LOCKED.** Not a compiled native iOS app or App Store submission.
 
 ## Product requirement and accepted design
 - Preserve the fully approved **Screen Diagnostics** glass design and opening handset animation. This candidate literally copies the established styling and landing-page HTML; no edits to Screen Diagnostics or earlier Battery previews.
@@ -86,4 +86,4 @@ The completed Screen Diagnostics app and all old Battery Diagnostics URLs/deploy
 - Protected previous Battery previews and the accepted Screen Diagnostics Vercel URLs: unchanged and publicly reachable.
 - Physical iPhone Safari QA and **actual Swift/Xcode compile and device tests remain outstanding**.
 
-**Customer acceptance still required.** The user asked to bring the engine as close to the intended native application as possible and only *then consider* freezing the browser prototype until Apple Developer Programme setup. Do not mark the new version complete or overwrite older public previews before explicit sign-off.
+**Customer acceptance received on 26 October 2026.** User: “Yes, will mark this tool as completed. Let’s revamp and complete the next.” Freeze this live browser preview as the approved Battery Diagnostics reference. Do not amend the interface, flow, parser or live deployment without a new explicitly authorised scope. Native Xcode/physical-device and App Store work remain later milestones and are NOT implied complete.
