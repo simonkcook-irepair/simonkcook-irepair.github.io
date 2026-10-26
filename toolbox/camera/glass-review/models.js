@@ -80,6 +80,8 @@ function draw(svg, modelLike, side, focus) {
  if (!svg) return;
  const m = typeof modelLike==="string"?getModel(modelLike):modelLike;
  const actual = m||bySlug["iphone-17"];
+ // Never carry a verified rear lens selection into a later front-camera drawing.
+ delete svg.dataset.opticalPosition;
  side = side==="rear"?"rear":"front";
  const duo=actual.front==="duo";
  const H=duo?320:Math.round(Math.min(432,Math.max(385,actual.heightMm/163*431)));

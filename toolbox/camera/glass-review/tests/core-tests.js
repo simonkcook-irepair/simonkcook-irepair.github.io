@@ -61,3 +61,7 @@ models.render(svgMock,"iphone-17-pro-max","rear","flashLed");
 check("Flash location is highlighted independently",svgMock.dataset.opticalPosition==="flash"&&svgMock.innerHTML.includes("cameraGuideRing"));
 models.render(svgMock,"iphone-x","front","faceIdArea");
 check("Face ID area illustration distinct from individual infrared-component test",svgMock.innerHTML.includes("cameraGuideHalo"));
+
+models.render(svgMock,"iphone-17-pro-max","rear","tele");
+models.render(svgMock,"iphone-17-pro-max","front","selfie");
+check("Front camera highlight clears prior rear optical-lens verification",!svgMock.dataset.opticalPosition&&svgMock.innerHTML.includes("cameraGuideHalo"));
