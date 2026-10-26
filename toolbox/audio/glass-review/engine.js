@@ -39,6 +39,43 @@ function pickDevice(slug){
  try{history.replaceState(null,'',url.pathname+url.search+url.hash);}catch(e){}
  showDevice();
 }
+
+/* Native iPhone handoff: no browser user-agent guessing.
+   The host must explicitly expose a public-API-backed device snapshot. */
+const nativeAudioModels=Object.freeze({
+ 'iPhone14,2':'iphone-13-pro','iPhone14,3':'iphone-13-pro-max',
+ 'iPhone14,4':'iphone-13-mini','iPhone14,5':'iphone-13',
+ 'iPhone15,2':'iphone-14-pro','iPhone15,3':'iphone-14-pro-max',
+ 'iPhone15,4':'iphone-15','iPhone15,5':'iphone-15-plus',
+ 'iPhone16,1':'iphone-15-pro','iPhone16,2':'iphone-15-pro-max',
+ 'iPhone17,1':'iphone-16-pro','iPhone17,2':'iphone-16-pro-max',
+ 'iPhone17,3':'iphone-16','iPhone17,4':'iphone-16-plus',
+ 'iPhone17,5':'iphone-16e',
+ 'iPhone18,1':'iphone-17-pro','iPhone18,2':'iphone-17-pro-max',
+ 'iPhone18,3':'iphone-17','iPhone18,4':'iphone-air'
+});
+let nativeIdentified=false;
+async function detectNativeModel(){
+ const handler=window.webkit?.messageHandlers?.iRepairAudioDevice;
+ if(typeof handler?.postMessage!=='function')return;
+ try{
+  const reply=handler.postMessage({action:'identifyDevice',schema:1});
+  if(!reply||typeof reply.then!=='function')return;
+  const payload=await reply;
+  const data=typeof payload==='string'?JSON.parse(payload):payload;
+  if(!data||data.source!=='ios-native'||typeof data.modelIdentifier!=='string')return;
+  const slug=nativeAudioModels[data.modelIdentifier];
+  if(!slug||!catalogue.getModel(slug))return;
+  // A model choice supplied in an incoming link is not silently overwritten.
+  if(selectedModel)return;
+  pickDevice(slug);
+  nativeIdentified=true;
+  $('model-caption').textContent='Detected by iOS · handset illustration selected automatically';
+ }catch(e){
+  // A bridge failure never creates a fake device identification.
+ }
+}
+
 function setupModels(){
  let years=[...new Set(catalogue.models.map(m=>m.year))].sort((a,b)=>b-a);
  const select=$('phone-model');
@@ -345,5 +382,6 @@ $('recovery-stop').addEventListener('click',stopRecovery);
 window.addEventListener('pagehide',()=>{clearMic();stopTone();stopRecovery();if(ctx)ctx.close().catch(()=>{});});
 $('meter').innerHTML=Array.from({length:25},()=>'<span></span>').join('');
 setupModels();
+void detectNativeModel();
 renderSoundChooser();
 })();
