@@ -321,12 +321,14 @@ button:disabled{opacity:.5;filter:saturate(.7)}
              0 15px 38px #3c81b231;
 }
 #start #start-stage .heroPremium .phoneArt{
-  position:relative;
+  position:absolute;
+  left:50%;
+  top:50%;
   width:258px;
   aspect-ratio:.475;
   border-radius:46px;
   padding:8px;
-  transform:scale(var(--reference-phone-scale));
+  transform:translate(-50%,-50%) scale(var(--reference-phone-scale));
   transform-origin:center center;
   box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff;
 }
