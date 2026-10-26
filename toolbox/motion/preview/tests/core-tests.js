@@ -63,38 +63,46 @@ async function sensorChecks(){
 }
 sensorChecks().catch(error=>{console.error(error);process.exitCode=1});
 
-/* V2 qualitative detection: genuine input only, no fake PASS. */
+/* V3 instruction-first and live-result split: real events drive only live state. */
 vm.runInNewContext(fs.readFileSync(path.join(dir,"guidance.js"),"utf8"),ctx);
 const guidance=windowObject.IRepairMotionGuidance;
 const accel=guidance.create("accel");
-pass("Movement starts unconfirmed",accel.snapshot().events===0&&!accel.snapshot().complete);
+pass("Accelerometer starts on side-to-side instruction",accel.snapshot().phase==="first"&&accel.snapshot().instruction.includes("left and right"));
 accel.observe("acceleration",[0,0,9.8]);
-accel.observe("acceleration",[4,0,8]);
-pass("Sideways movement alone does not complete",accel.snapshot().first&&!accel.snapshot().second&&!accel.snapshot().complete);
-accel.observe("acceleration",[4,4,8]);
-pass("Two independent accelerometer directions complete",accel.snapshot().complete);
+accel.observe("acceleration",[1,0,9.8]);
+accel.observe("acceleration",[3,0,9.8]);
+pass("First direction unlocks next instructional phase",accel.snapshot().first&&!accel.snapshot().second&&accel.snapshot().phase==="second"&&accel.snapshot().instruction.includes("towards you"));
+accel.observe("acceleration",[10,10,9.8]);
+accel.observe("acceleration",[15,15,9.8]);
+accel.observe("acceleration",[20,20,9.8]);
+pass("Extra side motion cannot masquerade as forward/back motion",!accel.snapshot().second);
+accel.observe("acceleration",[20,20,11.3]);
+pass("Normal-to-screen Z motion completes second phase",accel.snapshot().complete&&accel.snapshot().phase==="complete");
 const wrong=guidance.create("gyro");
 wrong.observe("orientation",[30,30,12]);
-pass("Wrong event type is ignored",wrong.snapshot().events===0);
+pass("Wrong sensor events ignored",wrong.snapshot().events===0);
 wrong.observe("rotation",[3,2,4]);wrong.observe("rotation",[16,null,0]);
-pass("One rotation spike cannot complete",wrong.snapshot().first&&!wrong.snapshot().second);
+pass("One rotation spike insufficient",wrong.snapshot().first&&!wrong.snapshot().second);
 wrong.observe("rotation",[19,0,0]);wrong.observe("rotation",[20,1,0]);
-pass("Sustained genuine rotation samples complete",wrong.snapshot().complete);
+pass("Continued genuine rotation completes gyroscope",wrong.snapshot().complete);
 const tilt=guidance.create("tilt");
-tilt.observe("orientation",[0,0,0]);tilt.observe("orientation",[14,0,0]);
-pass("Pitch change alone incomplete",tilt.snapshot().first&&!tilt.snapshot().second);
-tilt.observe("orientation",[14,17,0]);
-pass("Independent pitch and roll complete",tilt.snapshot().complete);
-const missing=guidance.create("accel");
-missing.observe("acceleration",[null,NaN,undefined]);
-pass("Missing numeric data never completes",missing.snapshot().events===0&&!missing.snapshot().complete);
+tilt.observe("orientation",[0,0,0]);tilt.observe("orientation",[7,0,0]);tilt.observe("orientation",[15,0,0]);
+pass("Forward/back tilt first, side tilt second",tilt.snapshot().first&&!tilt.snapshot().second&&tilt.snapshot().phase==="second");
+tilt.observe("orientation",[20,0,0]);tilt.observe("orientation",[21,8,0]);tilt.observe("orientation",[22,16,0]);
+pass("Separate left/right tilt values finish after phase switch",tilt.snapshot().complete);
+const absent=guidance.create("accel");
+absent.observe("acceleration",[null,NaN,undefined]);
+pass("Invalid readings cannot count as motion",absent.snapshot().events===0&&!absent.snapshot().complete);
 const rendering=fs.readFileSync(path.join(dir,"index.html"),"utf8");
 const appSource=fs.readFileSync(path.join(dir,"app.js"),"utf8");
-pass("Visual stage has unique compass and haptic illustrations",
- rendering.includes("compassArt")&&rendering.includes("hapticWaves")&&rendering.includes("proximityArt"));
-pass("Technical values hidden behind details",rendering.includes('<details id="technicalPanel"'));
-pass("Physical sensor PASS locked until detection",appSource.includes('pass.disabled=!done'));
-pass("No browser sensors requested by the guided compass and proximity stages",
- appSource.includes('const measuring=["accel","gyro","tilt"].includes(s.id)'));
-pass("Changed data is reported without fabricated health verdict",
- core.report(plan,answers,{detected:{accel:accel.snapshot()}},{}).includes("not an independent hardware verdict"));
+const styles=fs.readFileSync(path.join(dir,"visual.css"),"utf8");
+pass("Central card separates what-to-do from live result",rendering.includes('class="instructionPane"')&&rendering.includes('class="responsePane"'));
+pass("Guided checks label expected behaviour instead of false live data",appSource.includes('WHAT TO LOOK FOR')&&rendering.includes('id="guidedOutcome"'));
+pass("All guided illustrations have distinct elements",["guideCompass","guideRipples","guideEar"].every(n=>rendering.includes(n)));
+pass("Customer instructions change when tracker phase changes",appSource.includes('set("guideActionLabel",data.instruction)')&&appSource.includes('stage.dataset.phase=data.phase'));
+pass("Live iPhone visual is not pre-animated",styles.includes('.responsePane .demoDevice')&&styles.includes('animation:none!important'));
+pass("Technical values hidden in expand-only section",rendering.includes('<details id="technicalPanel"')&&rendering.indexOf('id="sensorStatus"')>rendering.indexOf('<details id="technicalPanel"'));
+pass("Browser sensor PASS stays locked until both checks",appSource.includes('pass.disabled=!done')&&appSource.includes('if(status==="PASS"&&tracker&&!tracker.snapshot().complete)return'));
+pass("Guide-only tests do not pretend to get motion sensor data",appSource.includes('const measuring=["accel","gyro","tilt"].includes(s.id)'));
+pass("Accelerometer forward/back demo uses visual depth cue",styles.includes('.stage-accel[data-phase="second"] .guideDepth'));
+pass("Technician report retains provenance and caveat",core.report(plan,answers,{detected:{accel:accel.snapshot()}},{}).includes("not an independent hardware verdict"));
