@@ -67,3 +67,32 @@ sensor. All other prototypes remain locked and untouched.
 
 V2 is **NOT APPROVED OR LOCKED**; real-iPhone Safari testing and visual review
 are still required. Do not alter the five approved app prototypes.
+
+
+## Review build v3: effortless customer experience
+User guiding principle: the interface should have the simplicity of a "For Dummies"
+explanation, while maintaining premium iRepair glass styling and real technical
+rigour under the surface.
+
+The central test stage is now always split into two separate, labelled panels:
+**1 · DO THIS** (illustrative animation; never called sensor evidence) and
+**2 · YOUR IPHONE · LIVE** (a small handset whose movement is driven exclusively by
+actual browser readings). For Compass, Haptics and Proximity, panel 2 becomes
+**WHAT TO LOOK FOR** with clearly customer-observed expected behaviour.
+
+Accelerometer and orientation tests have genuinely **sequential** actions:
+side-to-side then towards/away (accelerometer X then screen-normal Z), and
+pitch then roll (orientation beta then gamma). Completing the first switches the
+instruction and animated guide for the next action. The first action's samples
+cannot be reused to credit the second. Rotation needs repeated actual gyroscope
+response samples. The demo can animate, but the live handset never animates
+without actual sensor readings. Raw numbers/sample counts are behind the closed
+technical-details panel. Physical Pass remains gated to response evidence for
+browser-measured stages, but is always customer-confirmed; guided steps remain
+manual Pass / Fail / Unable. Stage-specific sensor thresholds are qualitative,
+**not proof of component health**, calibration, fault isolation or physical
+distance measurement.
+
+This remains a review candidate, **not yet user-locked**. Test in actual iPhone
+Safari; browser permissions and Core Motion hardware should be verified separately
+before commercial release. Keep Screen, Battery, Audio, Panic and Camera locked.
