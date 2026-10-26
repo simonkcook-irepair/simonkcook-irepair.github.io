@@ -3,7 +3,8 @@
 **Created:** 26 October 2026.  
 **Status:** Working review prototype — **NOT YET USER-APPROVED OR LOCKED**.  
 **Safari preview:** https://irepair-camera-glass-review-simon-cook.vercel.app/  
-**Vercel project:** `prj_HsDKyquDCwJOozz3tzQbKVUNAabo` (`irepair-camera-glass-review`).  
+**Vercel project:** `prj_HsDKyquDCwJOozz3tzQbKVUNAabo` (`irepair-camera-glass-review`).
+**Latest live verified deployment:** `dpl_2mcoEPueGhBfZN6LbPJHwBofcAwc` (**READY**). Earlier review rollback: `dpl_Hg6tqXd2yJbS8iRQe3y1HEuQhtA4`.  
 **GitHub branch:** `toolbox/camera-glass-preview-2026-10-26` (isolated from working iRepair Core and the four completed apps).  
 **Source folder:** `toolbox/camera/glass-review/`.
 
@@ -69,3 +70,13 @@ Web capture reference: https://developer.mozilla.org/en-US/docs/Web/API/MediaDev
 
 ## Freeze gate
 Do not label Camera Diagnostics completed or final until the user visually compares the Safari preview with the four locked apps and evaluates it on a real iPhone. Preserve praised elements; make only requested changes on this isolated Camera branch. Keep the other four approved apps completely frozen.
+
+## Final public review verification — 26 October 2026
+
+All five production assets `index.html`, `visual.css`, `models.js`, `core.js` and `app.js` returned HTTP 200 at the public Safari review URL and **byte-matched the current GitHub branch**. Vercel reports the reviewed deployment READY.
+
+Production mobile Chromium walkthrough at 390×844 used simulated video hardware and confirmed: brand-continuous landing, 2026→2017 year groups, six-step iPhone 17 Pro Max camera plan, real browser video permission, local sample still capture/discard, rear focus, model-specific ultra-wide/telephoto schematic **without falsely presenting a live isolated lens**, front camera stream switching, browser capability-gated torch control, 3 Pass / 1 Fail / 2 Unable report, copyable evidence, A4 print and no POST/uploads or uncaught JavaScript errors. Also tested four-step iPhone Air plan, rerun and exit.
+
+Permission-denied environment completed all core stages as **Unable to Test**, without camera access, fake PASS or a blocked interface. Mobile 375×667 and 430×932 layouts had no horizontal overflow and preserved the approved iPhone illustration proportions. Print CSS was checked for the correct **Camera** title and limitation wording, with no inherited Panic or Battery disclaimer.
+
+**Acceptance gate remains OPEN:** physical Safari microphone/camera/torch permissions and video routing need real iPhone confirmation, and the user must approve the revised Camera landing/test screens before the browser prototype can be labelled complete/locked. Xcode and device-specific AVFoundation tests remain for the native App Store phase. The previously locked Screen, Battery, Audio and Panic applications were verified HTTP 200 and remain unchanged.
