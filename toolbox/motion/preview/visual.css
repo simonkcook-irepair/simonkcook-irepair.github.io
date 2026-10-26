@@ -816,3 +816,100 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 
 /* Preserve native hidden behaviour over generic layout rules. */
 [hidden]{display:none!important}
+
+/* Motion & Haptics v2 — familiar signature glass, one guided action per screen. */
+.motionHero{min-height:490px;perspective:none}
+.motionHero .phoneArt{transform:none!important;animation:none!important;z-index:2}
+.motionHero .phoneScreen .motionSymbol{width:73%;animation:motionSymbolDrift 8s ease-in-out infinite}
+.motionHero .phoneScreen .gyroScreenGlow{opacity:.83}
+.motionTest .lead{font-size:16px!important;line-height:1.46;max-width:340px}
+.motionTest h1{margin-top:12px;margin-bottom:12px}
+.motionTest .eyebrow{letter-spacing:1.45px}
+.motionStage{height:min(34svh,300px);min-height:250px;transition:background .45s ease;overflow:hidden}
+.motionStage .demoDevice{width:117px;height:232px;--tx:0px;--ty:0px;--rz:0deg}
+.motionStage .motionRing{opacity:0;transition:opacity .3s ease}
+.motionStage .motionAxis{display:none}
+.motionStage .stageLabel{font-size:9px;letter-spacing:1px}
+.directionArrows{position:absolute;inset:0;pointer-events:none;z-index:2}
+.motionArrow{position:absolute;font-size:32px;font-weight:900;color:#319bd5;text-shadow:0 0 12px #8af1ff,0 2px #fff;opacity:0}
+.motionArrow.left{left:9%;top:44%}.motionArrow.right{right:9%;top:44%}
+.motionArrow.up{left:48%;top:7%}.motionArrow.down{left:48%;bottom:7%}
+.motionStage.stage-accel .motionArrow{opacity:1}
+.motionStage.stage-accel .motionArrow.left,.motionStage.stage-accel .motionArrow.right{animation:motionArrowHorizontal 2.1s ease-in-out infinite}
+.motionStage.stage-accel .motionArrow.up,.motionStage.stage-accel .motionArrow.down{animation:motionArrowVertical 2.1s ease-in-out infinite}
+.motionStage.stage-accel .demoDevice{transform:translate(var(--tx),var(--ty))!important}
+.motionStage.stage-gyro .motionRing{opacity:.85}
+.motionStage.stage-gyro .ringA{animation:motionRingTurn 5s linear infinite}
+.motionStage.stage-gyro .ringB{animation:motionRingTurnB 6s linear infinite}
+.motionStage.stage-gyro .demoDevice{transform:rotateZ(var(--rz))!important}
+.motionStage.stage-tilt .ringC{opacity:.5}
+.motionStage.stage-tilt .demoDevice{transform:rotateX(var(--rx)) rotateY(var(--ry))!important}
+.motionStage.stage-tilt .motionGlow{background:radial-gradient(circle,#6fc4ff9c,transparent 68%)}
+.motionStage.stage-compass .demoDevice{transform:translateX(-30px) rotate(-6deg)!important;animation:none!important}
+.compassArt{display:none;position:absolute;right:5%;top:22%;z-index:3;width:126px;height:126px;
+ border:3px solid #8cd8f8;border-radius:50%;background:radial-gradient(circle,#fff,#d6f1ff);
+ box-shadow:0 0 22px #51bfff4d,inset 0 0 17px #fff}
+.motionStage.stage-compass .compassArt{display:block}
+.compassArt span:not(.compassNeedle){position:absolute;color:#2f80b1;font-size:12px;font-weight:950}
+.compassArt .north{top:5px;left:calc(50% - 5px)}.compassArt .south{bottom:5px;left:calc(50% - 4px)}
+.compassArt .west{left:10px;top:calc(50% - 7px)}.compassArt .east{right:10px;top:calc(50% - 7px)}
+.compassNeedle{position:absolute;inset:15px 48px;border-radius:100% 100% 100% 100%;
+ transform:rotate(31deg);background:linear-gradient(#109ad4 0 47%,#b8daea 48% 100%);
+ clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+ animation:compassIllustrate 3.2s ease-in-out infinite}
+.motionStage.stage-haptics .demoDevice{animation:none!important;transform:none!important}
+.hapticWaves{position:absolute;inset:0;display:none;z-index:1;pointer-events:none;place-items:center}
+.motionStage.stage-haptics .hapticWaves{display:grid}
+.hapticWaves span{grid-area:1/1;width:165px;height:165px;border:3px solid #74eaff;border-radius:50%;
+ box-shadow:0 0 15px #65bfff90;animation:hapticRadiate 2.4s ease-out infinite}
+.hapticWaves span:nth-child(2){animation-delay:.8s}.hapticWaves span:nth-child(3){animation-delay:1.6s}
+.motionStage.stage-haptics .demoCore{animation:none!important}
+.motionStage.stage-haptics .motionRing{animation:none!important;opacity:0}
+.motionStage.stage-proximity .demoDevice{transform:translateX(-27px)!important;animation:nearEar 3.5s ease-in-out infinite!important}
+.proximityArt{display:none;position:absolute;right:6%;top:24%;width:100px;height:158px;z-index:2}
+.motionStage.stage-proximity .proximityArt{display:block}
+.proximityArt svg{width:100%;height:100%;filter:drop-shadow(0 5px 12px #3ab3ef7a)}
+.nearBeam{position:absolute;left:-35px;top:27%;height:53px;width:67px;border-radius:50%;
+ background:radial-gradient(ellipse,#79f0ff9c,transparent 66%);filter:blur(6px);animation:nearGlow 3.5s ease-in-out infinite}
+.detectionPanel{display:flex;align-items:center;gap:14px;min-height:80px;padding:12px 15px;
+ background:linear-gradient(150deg,#fff,#e5f4ff);border-radius:21px;border:1px solid #fff;
+ box-shadow:inset 0 1px #fff,0 7px 19px #4f91bb2d}
+.detectionPanel .detectionIcon{display:grid;place-items:center;flex:none;width:48px;height:48px;
+ border-radius:16px;background:linear-gradient(145deg,#f2faff,#b8def9);font-weight:900;font-size:25px;
+ color:#3c85b6;box-shadow:inset 0 1px #fff,0 4px 12px #53a1ce3a}
+.detectionPanel[data-state="detected"] .detectionIcon{background:linear-gradient(#d9fff0,#57d9ab);
+ color:#086245;box-shadow:inset 0 1px #fff,0 0 12px #5ce5b87f}
+.detectionCopy{display:grid;gap:4px;min-width:0}
+.detectionCopy strong{font-size:15px;color:#20567e;line-height:1.18}
+.detectionPanel[data-state="detected"] strong{color:#0d865e}
+.detectionCopy span{font-size:12px;line-height:1.45;color:#557c99}
+.checkpoints{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.checkItem{display:flex;align-items:center;justify-content:center;text-align:center;
+ padding:10px 6px;min-height:45px;border:1px solid #fff;border-radius:15px;
+ background:#edf6ff;color:#6685a0;font-weight:800;font-size:11px;line-height:1.35}
+.checkItem.done{color:#096747;background:linear-gradient(#e5fff1,#bef3d9);
+ border-color:#a9efcb}
+.technicalPanel{margin:9px 0 1px;border:1px solid #daeefa;border-radius:15px;padding:0 10px;
+ background:#f6fbffe0}
+.technicalPanel summary{cursor:pointer;padding:10px 2px;font-size:11px;font-weight:800;color:#477da3;
+ display:flex;justify-content:space-between}
+.technicalPanel .readings{margin:5px 0 9px}
+.technicalPanel p{font-size:10px;color:#6b879c;margin:4px 0 10px}
+.liveStatus{font-size:11px;min-height:0;margin:8px 0 5px;line-height:1.5}
+.motionTest .testQuestion{font-size:15px!important;font-weight:850;color:#315a77;margin:16px 0 2px}
+.motionTest .testActions .btn{min-height:53px}
+.motionTest .testActions .btn.pass:disabled{opacity:.44;filter:grayscale(.35);box-shadow:none}
+.motionTest .methodNote{font-size:10px;line-height:1.4;margin:6px 0 8px}
+.motionTest .testBottomControls{margin-top:15px}
+@keyframes motionArrowHorizontal{0%,100%{transform:translateX(0);opacity:.35}50%{transform:translateX(7px);opacity:1}}
+@keyframes motionArrowVertical{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(7px);opacity:1}}
+@keyframes motionRingTurn{from{transform:rotate(-35deg)}to{transform:rotate(325deg)}}
+@keyframes motionRingTurnB{from{transform:rotate(53deg)}to{transform:rotate(-307deg)}}
+@keyframes compassIllustrate{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(28deg)}}
+@keyframes hapticRadiate{0%{transform:scale(.7);opacity:.85}100%{transform:scale(1.65);opacity:0}}
+@keyframes nearEar{0%,100%{transform:translateX(-27px)}50%{transform:translateX(-12px)}}
+@keyframes nearGlow{0%,100%{opacity:.26}50%{opacity:1}}
+@media(max-width:370px){.checkpoints{grid-template-columns:1fr}.motionStage{min-height:225px}}
+@media(prefers-reduced-motion:reduce){
+ .motionHero .phoneScreen .motionSymbol,.motionArrow,.motionStage .motionRing,.compassNeedle,
+ .hapticWaves span,.motionStage.stage-proximity .demoDevice,.nearBeam{animation:none!important}}
