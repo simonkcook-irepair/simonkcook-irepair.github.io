@@ -307,3 +307,71 @@ button:disabled{opacity:.5;filter:saturate(.7)}
  #start .footnote{margin:7px 0 0;font-size:10px}
  .shell>.footnote{margin-top:6px;font-size:9px}
 }
+
+
+/* AUDIO LANDING HANDSET ONLY — 26 October 2026.
+   The 258px native geometry below is the exact approved Screen/Battery
+   handset, uniformly scaled *as a whole*, retaining its radius, island,
+   side controls and diagonal glass shine. No other UI is restyled. */
+#start #start-stage{
+  --reference-phone-scale:.43;
+  background:radial-gradient(ellipse at 50% 42%,#ffffffee,transparent 64%),
+             linear-gradient(145deg,#ffffffb7,#dff2ffd0 58%,#fbfdffbf);
+  box-shadow:inset 0 2px 2px #fff,inset 0 -8px 26px #9cc8e527,
+             0 15px 38px #3c81b231;
+}
+#start #start-stage .heroPremium .phoneArt{
+  position:relative;
+  width:258px;
+  aspect-ratio:.475;
+  border-radius:46px;
+  padding:8px;
+  transform:scale(var(--reference-phone-scale));
+  transform-origin:center center;
+  box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff;
+}
+#start #start-stage .heroPremium .phoneScreen{
+  inset:8px;
+  border-radius:39px;
+}
+#start #start-stage .heroPremium .dynamicIsland{
+  top:17px;
+  width:76px;
+  height:24px;
+}
+#start #start-stage .heroPremium .dynamicIsland:after{
+  right:9px;
+  top:9px;
+  width:5px;
+  height:5px;
+}
+#start #start-stage .heroPremium .side.s1{left:-5px;top:22%;width:5px;height:46px}
+#start #start-stage .heroPremium .side.s2{left:-5px;top:34%;width:5px;height:76px}
+#start #start-stage .heroPremium .side.s3{right:-5px;top:31%;width:5px;height:96px}
+/* Audio identification is a modest centre detail, not a different device. */
+#start #start-stage .heroPremium .phoneSoundRune{
+  width:118px;
+  height:118px;
+  opacity:.84;
+  filter:drop-shadow(0 0 10px #74faff9c);
+}
+#start #start-stage .heroPremium .phoneSoundGlow{opacity:.55}
+/* Do not cover the artwork with the previous "Select a model" bubble. */
+#start #start-stage .component-label{display:none!important}
+/* Front must remain identical before AND after customer model selection. */
+#start #start-stage.premium-device.has-model:not(.show-rear) .heroPremium{display:grid}
+#start #start-stage.premium-device.has-model:not(.show-rear) .device{display:none}
+#start #start-stage.premium-device.show-rear .heroPremium{display:none}
+#start #start-stage.premium-device.show-rear .device{
+  display:block;
+  height:225px;
+  min-height:0;
+}
+/* Image-only scale adjustment to retain the original landing layout. */
+@media(max-width:500px){
+  #start #start-stage{--reference-phone-scale:.35}
+  #start #start-stage.premium-device.show-rear .device{height:189px}
+}
+@media(prefers-reduced-motion:reduce){
+  #start #start-stage .heroPremium .phoneSoundGlow{animation:none}
+}
