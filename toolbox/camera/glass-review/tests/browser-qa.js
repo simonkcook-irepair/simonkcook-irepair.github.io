@@ -45,6 +45,14 @@ const base=process.env.CAMERA_TEST_URL ||
   if(name==="Face ID")
    assert.match(await page.locator("#streamStatus").innerText(),/Safari cannot read Face ID/);
   await page.locator('[data-answer="'+value+'"]').click();
+  if(value==="FAIL"&&["Rear camera","Focus response","Image stability","Rear flash"].includes(name)){
+   assert(await page.locator("#symptomPanel").isVisible(),"Missing optional failure follow-up");
+   const checkboxes=page.locator("#symptomOptions input");
+   assert((await checkboxes.count())>=2,"Technical symptom options not supplied");
+   await checkboxes.first().check();
+   if(name==="Image stability")await checkboxes.nth(1).check();
+   await page.locator("#symptomContinue").click();
+  }
  }
  assert.equal(await page.locator("#passCount").innerText(),"1");
  assert.equal(await page.locator("#failCount").innerText(),"5");
@@ -59,6 +67,8 @@ const base=process.env.CAMERA_TEST_URL ||
  assert.match(report,/TECHNICIAN TRIAGE CLUES/);
  assert.match(report,/does not prove a common power rail/);
  assert.match(report,/Face ID recognition: FAIL/);
+ assert.match(report,/Customer-described Rear picture stability & noise symptoms:/);
+ assert.match(report,/High-pitched buzzing or whining/);
  assert(!report.includes("data:image"));
  await page.emulateMedia({media:"print"});
  assert.notEqual(await page.locator("#triageHints").evaluate(el=>getComputedStyle(el).display),"none");
