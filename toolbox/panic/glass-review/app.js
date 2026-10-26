@@ -54,6 +54,9 @@ function displayResult(){
  if(!result)return;
  const selected=userSelectedModel?manualSlug:"";
  const device=core.modelLabel(result,selected,catalogue);
+ // A file may not contain any model code; make the existing Audio-style
+ // year-grouped selector reachable without asking for another file upload.
+ $("editModel").hidden=!(device.name==="Not identified"||device.name==="Conflicting identifiers"||device.source.includes("name unverified"));
  report=core.report(result,device);
  $("resultFlag").textContent=result.kind==="insufficient"?"INSUFFICIENT EVIDENCE":"LOG EVIDENCE FOUND";
  safeText($("resultTitle"),result.title);
@@ -132,6 +135,10 @@ async function copy(text){
 }
 function reset(){
  result=null;report="";selectedFile=null;
+ manualSlug="";userSelectedModel=false;
+ $("phoneModel").value="";
+ $("modelHelp").open=false;
+ $("modelStatus").textContent="Newer models appear first. Older models are grouped below by release year.";
  $("panicFile").value="";$("panicText").value="";
  $("fileStatus").textContent="Processed on this device. Nothing is uploaded.";
  $("pasteStatus").textContent="";
@@ -140,6 +147,11 @@ function reset(){
 }
 $("begin").addEventListener("click",()=>show("import"));
 $("importBack").addEventListener("click",()=>show("home"));
+$("editModel").addEventListener("click",()=>{
+ $("modelHelp").open=true;
+ show("import");
+ $("phoneModel").focus();
+});
 $("panicFile").addEventListener("click",()=>{
  $("panicFile").value="";selectedFile=null;
  $("fileStatus").textContent="Choose a panic-full file from Files…";
