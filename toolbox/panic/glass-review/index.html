@@ -546,6 +546,15 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 @keyframes reference-pulse{50%{opacity:.4;transform:scale(.75)}}
 @media(prefers-reduced-motion:reduce){.referenceBar[data-mode="checking"] .referenceDot{animation:none}}
 @media print{.referenceBar,#referenceFindings{display:none!important}}
+
+@media print{
+ /* Reviewed evidence must appear on printed technician reports when matched,
+    even though the browser keeps the technical panel closed by default. */
+ #results #referenceFindings:not([hidden]){display:block!important;margin-top:12px}
+ #results #referenceFindings > summary{display:none!important}
+ #results #referenceFindings .detailBody{display:grid!important}
+ #results #referenceFindings .referenceItem{box-shadow:none!important;break-inside:avoid;border:1px solid #d5e3ed}
+}
 </style></head><body data-build="panic-glass-review-v1"><main class="shell"><header class="header glass"><div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>PANIC DIAGNOSTICS</span></div></div><div class="badge">GUIDED TEST</div></header><section id="home" class="card glass view active">
 <div class="eyebrow">Guided panic diagnostics</div>
 <h1>Let’s investigate<br>your iPhone.</h1>
