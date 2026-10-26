@@ -19,7 +19,7 @@ const modelMap=Object.freeze({
  "iPhone18,3":"iphone-17","iPhone18,4":"iphone-air"
 });
 function extractModel(text){
- const re=/(?:^|[\s,{;])["']?(?:productType|product_type|productModel|deviceModel|device_model|hardwareModel|modelIdentifier|model_identifier)["']?\s*[:=]\s*["']?(iPhone\d{1,2},\d{1,2})(?=["',}\s]|$)/gim;
+ const re=/(?:^|[\s,{;])["']?(?:product|productType|product_type|productModel|deviceModel|device_model|hardwareModel|modelIdentifier|model_identifier)["']?\s*[:=]\s*["']?(iPhone\d{1,2},\d{1,2})(?=["',}\s]|$)/gim;
  const ids=new Set();let m;
  while((m=re.exec(text))!==null){ids.add(m[1].replace(/^iphone/i,"iPhone"));if(ids.size>8)break;}
  const code=ids.size===1?[...ids][0]:null;
