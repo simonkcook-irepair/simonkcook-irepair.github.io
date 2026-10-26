@@ -1222,3 +1222,63 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
   animation:none!important;
  }
 }
+
+/* Connectivity v3 — Safari recording revealed a real positioning regression:
+   copied #home .phoneArt positions at left/top 50%, but the Connectivity
+   override erroneously set transform:none, removing the centring transform.
+   Keep the full handset and network artwork visible INSIDE its own panel. */
+#home .phoneStage.connectHero{
+ position:relative!important;
+ min-height:352px!important;
+ height:352px!important;
+ margin:9px 0 13px!important;
+ display:block!important;
+ overflow:hidden!important;
+ isolation:isolate!important;
+}
+#home .phoneStage.connectHero .phoneArt{
+ position:absolute!important;
+ left:50%!important;
+ top:50%!important;
+ width:258px!important;
+ height:auto!important;
+ margin:0!important;
+ transform:translate(-50%,-50%) scale(.58)!important;
+ transform-origin:center center!important;
+ z-index:2!important;
+ animation:none!important;
+}
+#home .phoneStage.connectHero .phoneScreen{
+ position:absolute!important;
+ overflow:hidden!important;
+ isolation:isolate;
+}
+#home .phoneStage.connectHero .phoneGlow{
+ position:absolute;
+ top:50%;left:50%;
+ transform:translate(-50%,-50%);
+ width:70%;max-width:270px;
+ opacity:.66;
+ pointer-events:none;
+}
+#home .connectHero .connectHubArtwork{
+ overflow:hidden!important;
+ opacity:1!important;
+}
+#home .connectHero .screenGlow,
+#home .connectHero .screenGlow2{
+ clip-path:inset(0);
+ pointer-events:none;
+}
+@media(max-height:700px){
+ #home .phoneStage.connectHero{height:309px!important;min-height:309px!important}
+ #home .phoneStage.connectHero .phoneArt{
+  transform:translate(-50%,-50%) scale(.52)!important;
+ }
+}
+@media(max-width:340px){
+ #home .phoneStage.connectHero{height:318px!important;min-height:318px!important}
+ #home .phoneStage.connectHero .phoneArt{
+  transform:translate(-50%,-50%) scale(.53)!important;
+ }
+}
