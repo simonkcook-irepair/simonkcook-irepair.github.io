@@ -45,3 +45,19 @@ check("Physical optics disclaimer still present",report.includes("physical lens 
 check("No photo upload language retained",report.includes("no photos uploaded or stored"));
 check("Unknown symptom values excluded",!engine.report(plan,answers,{symptoms:{rear:["Injected claim"]}}).includes("Injected claim"));
 console.log("ALL",n,"CAMERA CORE TESTS PASSED");
+
+const svgMock={id:"cameraLocationTest",dataset:{},classList:{toggle(){}},setAttribute(){},innerHTML:""};
+models.render(svgMock,"iphone-17-pro-max","rear","ultra");
+check("Mapped 17 Pro Max ultra-wide position highlighted",svgMock.dataset.opticalPosition==="checked"&&svgMock.innerHTML.includes("cameraGuideRing"));
+models.render(svgMock,"iphone-13-pro","rear","tele");
+check("Mapped 13 Pro telephoto position highlighted",svgMock.dataset.opticalPosition==="checked"&&svgMock.innerHTML.includes("cameraGuideRing"));
+models.render(svgMock,"iphone-16-pro","rear","ultra");
+check("Unverified Pro layout highlights group, not individual physical lens",svgMock.dataset.opticalPosition==="group"&&((svgMock.innerHTML.match(/class="cameraGuideRing"/g)||[]).length===3));
+models.render(svgMock,"iphone-16","rear","ultra");
+check("Unverified dual-camera layout highlights both lenses",svgMock.dataset.opticalPosition==="group"&&((svgMock.innerHTML.match(/class="cameraGuideRing"/g)||[]).length===2));
+models.render(svgMock,"iphone-air","rear","wide");
+check("Single rear camera receives individual highlight",svgMock.dataset.opticalPosition==="checked");
+models.render(svgMock,"iphone-17-pro-max","rear","flashLed");
+check("Flash location is highlighted independently",svgMock.dataset.opticalPosition==="flash"&&svgMock.innerHTML.includes("cameraGuideRing"));
+models.render(svgMock,"iphone-x","front","faceIdArea");
+check("Face ID area illustration distinct from individual infrared-component test",svgMock.innerHTML.includes("cameraGuideHalo"));

@@ -62,6 +62,20 @@ function lens(x,y,size) {
 function halo(x,y) {
  return '<g class="flash">'+circle(x,y,29,"#4be8d020","#67f3d0",2.4)+circle(x,y,15,"#58e8d036","#b7ffeb",2)+'</g>';
 }
+/* Only assign individual physical lenses when a model's rear layout has been
+   independently cross-checked. For other models illuminate the whole cluster,
+   rather than guess a wide/ultra-wide/telephoto housing position.
+   iPhone 13 Pro / Max: labelled camera-module imagery (DPReview).
+   iPhone 17 Pro / Max: labelled product camera diagram (PetaPixel, Sep 2025).
+   Single-camera housings need no optical-position inference.
+   This is a housing GUIDE, not verification of the active iOS capture device.
+ */
+const checkedOpticalPositions=Object.freeze({
+ "iphone-13-pro":Object.freeze({wide:2,ultra:1,tele:0}),
+ "iphone-13-pro-max":Object.freeze({wide:2,ultra:1,tele:0}),
+ "iphone-17-pro":Object.freeze({wide:2,ultra:0,tele:1}),
+ "iphone-17-pro-max":Object.freeze({wide:2,ultra:0,tele:1})
+});
 function draw(svg, modelLike, side, focus) {
  if (!svg) return;
  const m = typeof modelLike==="string"?getModel(modelLike):modelLike;
@@ -118,6 +132,13 @@ function draw(svg, modelLike, side, focus) {
     both:[gx,y+4]
    };
    if(mark[focus])str+=halo(...mark[focus]);
+   if(focus==="selfie"||focus==="faceIdArea"){
+     const cy=y+(home?H*.079:actual.front==="notch"?18:27);
+     str+='<g class="cameraGuideHalo" aria-hidden="true">'+
+       circle(gx,cy,23,"#57eff02a","#f6ffff",2)+
+       circle(gx,cy,16,"none","#62eaff",3)+
+       circle(gx,cy,29,"none","#57dfff",1.5)+'</g>';
+   }
  } else {
    const isProPlateau=actual.rear==="plateau-triple",isAir=actual.rear==="plateau-single";
    str+=rect(x+6,y+6,W-12,H-12,r-6,"#68869b");
@@ -125,9 +146,10 @@ function draw(svg, modelLike, side, focus) {
    str+=circle(gx,y+H*.51,19,"#a7c2d022");
    const ox=x+15,oy=y+20;
    const cam=actual.rear;
+   const positions=[],flashes=[];
    let micx=x+W*.53,micy=y+66;
-   const L=(dx,dy,s=12)=>lens(x+dx,y+dy,s);
-   const F=(dx,dy)=>circle(x+dx,y+dy,6,"#f1e8ca","#ffeac7",1.4);
+   const L=(dx,dy,s=12)=>{positions.push([x+dx,y+dy,s]);return lens(x+dx,y+dy,s);};
+   const F=(dx,dy)=>{flashes.push([x+dx,y+dy]);return circle(x+dx,y+dy,6,"#f1e8ca","#ffeac7",1.4);};
    if(cam==="single") {
      str+=L(34,40,17)+F(70,40);micx=x+72;micy=y+56;
    } else if(cam==="horizontal") {
@@ -160,12 +182,34 @@ function draw(svg, modelLike, side, focus) {
      micx=x+W-40;micy=y+75;
    }
    if(focus==="rearMic")str+=halo(micx,micy);
+   const mapping=checkedOpticalPositions[actual.slug];
+   const selectedIndex=mapping&&Number.isInteger(mapping[focus])?mapping[focus]:
+      (positions.length===1&&focus==="wide"?0:null);
+   const selected=(focus==="flashLed")?flashes.map(pos=>[pos[0],pos[1],7]):
+     selectedIndex!==null&&positions[selectedIndex]?[positions[selectedIndex]]:
+     ["rearGroup","wide","ultra","tele"].includes(focus)?positions:[];
+   if(selected.length){
+     str+='<g class="cameraGuideHalo" aria-hidden="true">';
+     for(const pos of selected){
+       const [cx,cy,size]=pos;
+       str+='<circle class="cameraGuideAura" cx="'+cx+'" cy="'+cy+'" r="'+(size+13)+'" fill="#5ceeff27" stroke="#69eaff88" stroke-width="1.4"/>';
+       str+='<circle class="cameraGuideRing" cx="'+cx+'" cy="'+cy+'" r="'+(size+6)+'" fill="none" stroke="#edffff" stroke-width="3"/>';
+       str+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(size+3)+'" fill="none" stroke="#35d8ff" stroke-width="2"/>';
+     }
+     str+='</g>';
+   }
+   svg.dataset.opticalPosition=(selectedIndex!==null&&positions[selectedIndex])?"checked":
+      (focus==="flashLed"?"flash":"group");
  }
  svg.innerHTML=str;
  svg.dataset.model=actual.slug;
  svg.classList.toggle("rear",side==="rear");
  svg.setAttribute("role","img");
- svg.setAttribute("aria-label",actual.name+" "+(side==="rear"?"rear camera and microphone area":"front receiver and microphone areas")+" schematic");
+ svg.setAttribute("aria-label",actual.name+" "+(side==="rear"?
+    (svg.dataset.opticalPosition==="checked"?"highlighted rear optical lens":
+      "highlighted camera system"):
+    (focus==="faceIdArea"?"front Face ID system region":"front selfie camera region"))+
+    " schematic, not a verified active capture source");
 }
 root.IRepairDeviceCatalogue=Object.freeze({models:Object.freeze(models),getModel,render:draw});
 })(window);

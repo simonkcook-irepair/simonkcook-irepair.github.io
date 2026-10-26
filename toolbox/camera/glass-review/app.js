@@ -82,7 +82,7 @@ function showModelIllustration(step){
  $("cameraFallback").hidden=true;
  const svg=$("modelDiagram");
  const side=faceId?"front":"rear";
- cat.render(svg,plan.modelSlug||"iphone-17",side,faceId?"frontMic":"");
+ cat.render(svg,plan.modelSlug||"iphone-17",side,faceId?"faceIdArea":step.id);
  svg.removeAttribute("hidden");
  svg.setAttribute("aria-label",plan.modelName+" "+side+" camera illustration — not a measured hardware test");
  $("retryCamera").hidden=true;
@@ -167,6 +167,41 @@ function bindStream(s,facing,step){
   text($("streamStatus"),"Live preview could not begin.");
  });
 }
+function renderLensGuide(step){
+ const guide=$("cameraLensGuide"),svg=$("lensGuideDevice");
+ const illustrated=!plan.modelSlug;
+ const face=step.facing==="user",target=face?(step.id==="faceid"?"faceIdArea":"selfie"):
+   (step.id==="flash"?"flashLed":["ultra","tele"].includes(step.id)?step.id:"rearGroup");
+ cat.render(svg,plan.modelSlug||"iphone-17",face?"front":"rear",target);
+ const isolated=svg.dataset.opticalPosition==="checked";
+ const titles={
+  rear:"Rear camera assembly",focus:"Rear camera · focusing",
+  stability:"Rear camera · stabilisation",flash:"Rear flash / torch",
+  ultra:"Ultra-wide camera · 0.5×",tele:"Telephoto camera",
+  front:"Front selfie camera",faceid:"Face ID / TrueDepth area"
+ };
+ text($("lensGuideTitle"),titles[step.id]||"Camera location guide");
+ let detail="";
+ if(step.id==="rear"||step.id==="focus"||step.id==="stability"){
+  detail="Blue rings show the rear camera group. Safari may use or switch between physical lenses.";
+ }else if(step.id==="flash"){
+  detail="Blue ring marks the rear flash location. Its operation is separate from the camera preview.";
+ }else if(step.id==="ultra"||step.id==="tele"){
+  detail=isolated?
+   "Blue ring marks the reference lens location for this model. Use Apple's Camera app; Safari cannot confirm which lens is active.":
+   "The camera group is highlighted. Individual lens placement is not yet verified for this model; do not use this diagram to identify a particular lens.";
+ }else if(step.id==="front"){
+  detail="Upper front-camera area highlighted. Selfie preview does not verify Face ID.";
+ }else{
+  detail="TrueDepth area illustrated. Neither infrared hardware nor individual Face ID components are tested by Safari.";
+ }
+ text($("lensGuideDetail"),detail);
+ text($("lensGuideSource"),illustrated?"Example iPhone illustration · model not selected":
+    isolated?"Reference physical lens position · not an active-lens measurement":
+    "Schematic location guide · customer-observed result");
+ guide.classList.toggle("compact",step.mode==="native-guided"||step.mode==="system-guided");
+ svg.hidden=step.mode==="native-guided"||step.mode==="system-guided";
+}
 function drawProgress(){
  const el=$("progress");el.replaceChildren();
  for(let i=0;i<plan.steps.length;i++){
@@ -196,6 +231,7 @@ function renderStep(){
  const step=getStep();
  if(!step){showResults();return}
  show("test");
+ renderLensGuide(step);
  $("symptomPanel").hidden=true;
  $("nativeFace").hidden=true;
  drawProgress();

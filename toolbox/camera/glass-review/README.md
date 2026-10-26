@@ -87,3 +87,20 @@ Permission-denied environment completed all core stages as **Unable to Test**, w
 - Face ID remains guided and observational in Safari. Native `ios/CameraDeviceBridge.swift` now contains an uncompiled customer-initiated LocalAuthentication `deviceOwnerAuthenticationWithBiometrics` path with a narrow outcome taxonomy, Face ID gating by actual `biometryType`, no passcode fallback and no access to biometric templates. Requires `NSFaceIDUsageDescription`; requires native Xcode/iPhone verification before App Store release. Successful authentication only verifies that the system authenticated this attempt, not each TrueDepth part.
 - Updated deterministic test expectations for the current 5/6/8-step plans, Home-button exceptions, rear/flash combinations, symptom provenance, Face ID limitations and safe reporting.
 - Approval gate remains **OPEN**; technician and real-device user review required.
+
+## Lens illumination review adjustment (26 October 2026)
+- Added a compact, animated icy-blue camera-location guide beneath live rear/front previews.
+  Existing full-size schematic also highlights the relevant lens/cluster for the
+  native Camera app-guided ultra-wide and telephoto stages; no changes to landing or tests.
+- Individual lens-position circles are permitted only for iPhone 13 Pro/Pro Max and
+  iPhone 17 Pro/Pro Max, where published labelled lens imagery was cross-checked.
+  For other multi-camera iPhones the whole camera cluster glows and the UI explicitly
+  says individual physical-lens placement is **not verified**; single lenses and
+  flash emitters receive their own highlight.
+  - iPhone 13 Pro family labelled lenses: https://www.dpreview.com/files/p/articles/6780391159/iPhone13Pro-3CameraModules.jpeg
+  - iPhone 17 Pro family labelled lenses: https://petapixel.com/2025/09/09/redesigned-iphone-17-pro-has-three-48mp-rear-cameras-and-is-aimed-at-content-creators/
+  - Apple's model-specific camera/system locations: https://support.apple.com/en-gb/guide/iphone/iph1eb828b25/27/ios/27
+- All diagrams are **schematic visual teaching aids**. Browser camera streams are not
+  independently routed to, or proven to originate from, the glowing physical lens;
+  native AVFoundation verification remains a future device-tested activity.
+- All four completed Toolbox apps remain locked and unchanged. Camera approval remains open.

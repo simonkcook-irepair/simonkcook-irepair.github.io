@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#e9f6ff">
 <meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Camera Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=camera-tech-4">
+<link rel="stylesheet" href="./visual.css?v=camera-lens-5">
 </head>
-<body data-build="camera-glass-review-3">
+<body data-build="camera-glass-review-4">
 <main class="shell">
 <header class="header glass">
   <div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>CAMERA DIAGNOSTICS</span></div></div>
@@ -89,6 +89,14 @@
     <span class="previewOverlay" id="previewLabel" hidden>LIVE PREVIEW</span>
     <div class="focusReticle" id="focusReticle" hidden></div>
   </div>
+  <aside id="cameraLensGuide" class="cameraLensGuide" aria-label="Camera location guide">
+    <svg id="lensGuideDevice" viewBox="0 0 280 470" aria-label="Illustrated camera location" role="img"></svg>
+    <div class="cameraLensDescription">
+      <strong id="lensGuideTitle">Camera location guide</strong>
+      <span id="lensGuideDetail">The illuminated area changes with each check.</span>
+      <small id="lensGuideSource">Diagram is illustrative, not a hardware measurement.</small>
+    </div>
+  </aside>
   <p id="streamStatus" class="previewStatus" role="status" aria-live="polite">Camera access is requested only when you begin a preview.</p>
   <div class="previewControls">
     <button id="retryCamera" class="btn unable" type="button" hidden>Try camera again</button>
@@ -152,7 +160,7 @@
   <p class="smallNote">Guided Face ID recognition is separate from the visible selfie camera. No biometric data is captured. A visual test cannot guarantee optical focus calibration, physical lens isolation or the condition of individual TrueDepth components.</p>
 </section>
 </main>
-<script src="./models.js?v=camera-tech-4"></script>
-<script src="./core.js?v=camera-tech-4"></script>
-<script src="./app.js?v=camera-tech-4"></script>
+<script src="./models.js?v=camera-lens-5"></script>
+<script src="./core.js?v=camera-lens-5"></script>
+<script src="./app.js?v=camera-lens-5"></script>
 </body></html>
