@@ -1,7 +1,7 @@
 # iRepair Toolbox — Panic Diagnostics premium glass review
 
 **Prepared:** 26 October 2026  
-**Status:** Live browser **review candidate**. Not yet user-approved or final, and not a native iOS application.
+**Status:** ✅ **USER-APPROVED FINAL BROWSER PROTOTYPE — LOCKED ON 26 OCTOBER 2026.** Native system-log acquisition and a future continuously updated signature database remain separate development milestones; not a native iOS application.
 
 ## Existing prototype and scope
 
@@ -100,8 +100,52 @@ A short **Choose your iPhone model** correction action appears on the results on
 - User data is parsed locally; no analytics POST request was made, PASS.
 - The completed and locked Screen, Battery and Audio sites each remain accessible (HTTP 200), with no changes to their sources or deployments.
 
-**Remaining acceptance gate:** The user must personally inspect the actual Safari app on an iPhone, compare its appearance with the locked tools and try a real panic-full file. This working review is **not** marked complete or locked until the user explicitly approves it.
+**Acceptance complete — 26 October 2026:** The user inspected the live Safari app on their iPhone, approved its consistency with the other three completed apps and successfully imported a real **non-panic** analytics file, which was appropriately recognised as not being a panic log. The user explicitly stated: “For the purpose of the prototype at this stage, I will consider this completed.” This version is now **LOCKED**. No additional code, changes to other completed apps or redeployments are authorised by this sign-off.
 
 **Important native distinction:** Native applications should not equate the host phone's hardware identifier with the log's source-device identity because technicians may import a panic log from a different iPhone. Use explicit log metadata or a customer-confirmed model for the report.
 
 **Sources for panic report structure and conservative interpretation:** Apple device analytics https://www.apple.com/uk/legal/privacy/data/en/device-analytics/ and iFixit kernel panic overview https://www.ifixit.com/Wiki/iPhone_Kernel_Panics .
+
+## User sign-off and future living panic-signature intelligence — 26 October 2026
+
+**Approved final browser URL:** https://irepair-panic-glass-review-simon-cook.vercel.app/  
+**Approved deployment:** `dpl_77yxJ2GUiBxmrJ8oo1f7MMp8Nzh5`.  
+**Source:** `toolbox/panic-glass-review-2026-10-26`.  
+**Scope:** Working browser prototype is **COMPLETED AND LOCKED**, alongside Screen, Battery and Audio Diagnostics. **No UI, parsing code, runtime signature rules, or deployment edits without new explicit permission.**
+
+User praises consistent premium glass UI, automatic recognition of a customer-uploaded non-panic analytics file, and the ability to interpret genuine panic logs. User wants native development to reduce customer intervention as far as legitimate Apple APIs allow, and suggests a future background evidence-source checker to keep the panic-signature library current.
+
+### Native privacy and permission boundary
+
+Ordinary third-party App Store apps are sandboxed and **must not claim to silently scan Settings → Analytics Data or retrieve device-wide `panic-full` logs in the background**. Apple's `MetricKit` provides **the app's own** performance/diagnostic data, not universal logs from other apps and all OS panics. Preferred native customer journey: a native document picker or iOS Share extension receiving a file deliberately selected by the user → one-step local analysis. Explore alternative authorised flows if Apple introduces documented public APIs, but never use private APIs or bypass iOS protections.
+
+Sources:
+- https://support.apple.com/en-ca/guide/security/sec15bfe098e/web
+- https://developer.apple.com/documentation/metrickit
+- https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller
+
+### Planned (NOT implemented) background knowledge-base system
+
+Use a **versioned, separately deployed, read-only-on-device rules catalogue**, with a backend approval workflow and an offline cached snapshot. An established Supabase project could be used for this when separately authorised; no backend/database changes are made by this sign-off.
+
+Suggested canonical rule schema:
+- `rule_id`, `rule_version`, `device_model_code` (or explicitly `all_supported`)
+- `ios_version_from/to` where semantics change
+- `panic_family`, `normalised_signature`, `matching_expression`, `example_sanitised_tokens`
+- `candidate_subsystems[]`, `suspected_components[]`, `next_physical_checks[]`
+- `evidence_grade` (`confirmed_controlled_test`, `multiple_resolved_repairs`, `single_report`, `hypothesis`)
+- `supporting_source_urls[]`, `source_published_or_checked_date`, `licence/permission`
+- `review_status` (`candidate`, `approved`, `disputed`, `deprecated`)
+- `reviewed_by`, `reviewed_at`, `effective_date`, `supersedes_rule_id`
+
+Potential sources checked as of 26 Oct 2026:
+1. **iFixit iPhone Kernel Panics** — https://www.ifixit.com/Wiki/iPhone_Kernel_Panics ; model/sensor and troubleshooting clues, with repeated caveat that a panic string is not a definitive part diagnosis.
+2. **Repair Wiki** — https://repair.wiki/w/How_to_Troubleshoot_And_Fix_iPhone_Random_Restarts_Using_Panic_Logs ; model-specific repair guidance.
+3. **Check Panic Full** — https://checkpanicfull.com/methodology and https://checkpanicfull.com/panic-full-table ; states 111 source-cited model/code rules as of methodology updated 14 Oct 2026, with confidence and disputed mappings; public table advertises CSV export. **Check reuse and licence permissions; do not simply copy or scrape a proprietary database.**
+4. **Independent open-source research** — https://github.com/mwuusd/iphone-panic-analyzer ; explicitly labels its rules experimental and warns against interpreting rule-match scores as proven failure probability. Verify project licence and evidence quality before any reuse.
+
+Background workflow concept: scheduled **weekly source-change monitor** collects permitted headlines/index/links and highlights newly documented panic/model combinations → staged candidate evidence queue → manual verification against original source and model-specific repair cases → approved, versioned rules snapshot → app checks for and obtains that snapshot at next permitted foreground refresh → rollback on erroneous interpretation. Respect site terms, copyright/attribution, security boundaries and avoid receiving customer's raw device analytics centrally without explicit consent.
+
+Avoid auto-publishing community forum guesses as definitive faults; the same code can map to different parts on different models and OS releases. Store multiple sources and contradictory evidence. User-facing results should show *Investigate*, *Likely based on verified evidence*, or *Unable to determine*, never infer proven hardware failure solely from a panic signature. Design diagnostic-confidence language separately from statistical certainty.
+
+**Not running:** no periodic scraper, no Supabase signature sync and no automatic deployed rule updates have been activated. This document merely protects the agreed future direction while leaving the finished prototype frozen.
