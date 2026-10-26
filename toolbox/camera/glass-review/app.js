@@ -141,10 +141,15 @@ function bindStream(s,facing,step){
   $("cameraFallback").hidden=true;
   $video.classList.add("visible");
   $("previewLabel").hidden=false;
-  text($("previewLabel"),facing==="user"?"FRONT CAMERA · LIVE":"REAR CAMERA · LIVE");
+  const mismatch=!!route&&route!==facing;
+  text($("previewLabel"),mismatch?"CAMERA SOURCE · CHECK VIEW":
+    facing==="user"?"FRONT VIEW REQUESTED · LIVE":"REAR VIEW REQUESTED · LIVE");
   $("focusReticle").hidden=step.id!=="focus";
   $("photoPanel").hidden=false;
-  text($("streamStatus"),"Live "+(facing==="user"?"front":"rear")+" camera preview"+(route&&route!==facing?" · actual facing mode not confirmed":"")+" · nothing is recorded automatically.");
+  text($("streamStatus"),mismatch?
+    "Safari returned a different facing-mode stream. Confirm what you see; mark Unable to Test if it is the wrong camera.":
+    (route===facing?"Browser reports a "+(facing==="user"?"front":"rear")+"-facing stream. ":"Safari requested a "+(facing==="user"?"front":"rear")+"-facing stream; verify the view. ")+
+    "Nothing is recorded automatically.");
   if(step.id==="flash"){
    const caps=track?.getCapabilities?.()||{};
    $("torchButton").hidden=caps.torch!==true;
