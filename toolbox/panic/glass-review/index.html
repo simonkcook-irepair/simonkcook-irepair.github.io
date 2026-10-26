@@ -442,6 +442,8 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  display:block;text-align:center;margin-top:14mm;font-size:9pt;color:#72879d}
 }
 
+#editModel[hidden]{display:none!important}
+#editModel{font-size:13px;min-height:49px;margin:0}
 /* Panic Diagnostics: new screens only, retain approved family visual geometry. */
 .phonePanicGlow{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,#80fcffbb,transparent 72%);filter:blur(23px);animation:panicPulse 2.8s ease-in-out infinite}
 .phonePanicSymbol{position:absolute;top:50%;left:50%;z-index:4;width:112px;height:112px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px #78ffffaa)}
@@ -587,6 +589,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <div id="resultTags" aria-label="Evidence summary"></div>
  <div id="evidenceList" aria-live="polite"></div>
  <div id="resultExplanation" class="resultGuide"></div>
+ <button id="editModel" type="button" class="btn unable" hidden>Choose your iPhone model →</button>
  <details class="simpleGuide" id="technicianDetails">
   <summary>Technician details</summary>
   <div class="detailBody">
@@ -604,4 +607,4 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
    <button id="checkAnother" class="btn unable" type="button">Check another log</button>
  </div>
  <p class="tinyDisclaimer">Panic logs help guide investigation. Individual flexes, sensors and logic-board faults require further diagnosis; no component is declared defective by this browser tool.</p>
-</section></main><script src="./models.js?v=panic-review-1"></script><script src="./core.js?v=panic-review-1"></script><script src="./app.js?v=panic-review-1"></script></body></html>
+</section></main><script src="./models.js?v=panic-review-1"></script><script src="./core.js?v=panic-review-2"></script><script src="./app.js?v=panic-review-2"></script></body></html>
