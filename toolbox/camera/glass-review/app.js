@@ -77,6 +77,7 @@ function showModelIllustration(step){
  stopStream();
  fallback("Check in the iPhone Camera app",
    "Return to this test to record the camera image you observed.");
+ $("cameraFallback").hidden=true;
  const svg=$("modelDiagram");
  cat.render(svg,plan.modelSlug||"iphone-17","rear","");
  svg.hidden=false;
