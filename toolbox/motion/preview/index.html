@@ -4,9 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#e9f6ff"><meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Motion & Haptics Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=motion-review-2">
+<link rel="stylesheet" href="./visual.css?v=motion-review-3">
 </head>
-<body data-build="motion-haptics-glass-review-2">
+<body data-build="motion-haptics-glass-review-3">
 <main class="shell">
 <header class="header glass">
  <div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>MOTION & HAPTICS</span></div></div>
@@ -64,28 +64,37 @@
  <div id="stepEyebrow" class="eyebrow">Live motion measurement</div>
  <h1 id="stepTitle">Accelerometer</h1>
  <p id="stepInstruction" class="lead">Gently move the phone and observe the sensor values.</p>
- <div class="motionStage stage-accel" id="motionStage" aria-label="Illustration for the current test">
-  <div class="motionGlow"></div>
-  <div class="motionRing ringA"></div><div class="motionRing ringB"></div><div class="motionRing ringC"></div>
-  <div class="directionArrows" aria-hidden="true"><span class="motionArrow left">←</span><span class="motionArrow right">→</span><span class="motionArrow up">↑</span><span class="motionArrow down">↓</span></div>
-  <div class="compassArt" aria-hidden="true"><span class="north">N</span><span class="east">E</span><span class="south">S</span><span class="west">W</span><span class="compassNeedle"></span></div>
-  <div class="hapticWaves" aria-hidden="true"><span></span><span></span><span></span></div>
-  <div class="proximityArt" aria-hidden="true"><span class="nearBeam"></span><svg viewBox="0 0 70 100" fill="none"><path d="M49 8c-21-6-36 11-34 33 0 10 5 16 10 23 4 6 0 16 9 21 7 4 18-3 18-12 0-7-4-12-4-18 0-6 9-12 9-22 0-8-3-21-8-25Z" stroke="#4696c6" stroke-width="4" stroke-linejoin="round"/><path d="M42 26c-10-7-21 5-16 16 3 5 11 6 12 12" stroke="#77d7f2" stroke-width="4" stroke-linecap="round"/></svg></div>
-  <div class="demoDevice" id="demoDevice" aria-label="iPhone illustration">
-   <div class="demoGlass"><span class="demoIsland"></span>
-    <svg viewBox="0 0 120 120" class="demoCore" fill="none" aria-hidden="true">
-     <circle cx="60" cy="60" r="42" stroke="#a8faff" stroke-width="2"/>
-     <ellipse cx="60" cy="60" rx="40" ry="14" transform="rotate(-33 60 60)" stroke="#5ceaff" stroke-width="3.5"/>
-     <ellipse cx="60" cy="60" rx="14" ry="40" transform="rotate(-33 60 60)" stroke="#e7ffff" stroke-width="3.5"/>
-     <circle cx="60" cy="60" r="7" fill="#b8ffff"/>
-    </svg>
+ <div class="motionStage stage-accel" id="motionStage" data-phase="first">
+  <section class="instructionPane" aria-label="Instruction illustration">
+   <div class="stageSectionLabel"><span class="stageStepNumber">1</span> DO THIS</div>
+   <div class="instructionContents">
+    <div class="guideGraphic" aria-hidden="true">
+     <div class="guidePhone"><div class="guideIsland"></div><svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="30" stroke="#a7f6ff" stroke-width="3"/><ellipse cx="50" cy="50" rx="31" ry="12" transform="rotate(-31 50 50)" stroke="#4bd5f5" stroke-width="3"/><ellipse cx="50" cy="50" rx="12" ry="31" transform="rotate(-31 50 50)" stroke="#d8ffff" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#c8ffff"/></svg></div>
+     <span class="guideSides guideLeft">←</span><span class="guideSides guideRight">→</span>
+     <span class="guideDepth near">⇡</span><span class="guideDepth far">⇣</span>
+     <span class="guideSpin">↻</span>
+     <div class="guideCompass"><b>N</b><i></i><small>S</small></div>
+     <div class="guideRipples"><i></i><i></i><i></i></div>
+     <div class="guideEar"><svg viewBox="0 0 70 100" fill="none"><path d="M49 8C28 2 13 19 15 41c0 10 5 16 10 23 4 6 0 16 9 21 7 4 18-3 18-12 0-7-4-12-4-18 0-6 9-12 9-22 0-8-3-21-8-25Z" stroke="#4292be" stroke-width="4"/><path d="M42 26c-10-7-21 5-16 16 3 5 11 6 12 12" stroke="#81d8f6" stroke-width="4" stroke-linecap="round"/></svg></div>
+    </div>
+    <strong id="guideActionLabel" class="guideActionLabel">Move left and right</strong>
    </div>
-  </div>
-  <div class="stageLabel" id="stageLabel">MOVE YOUR IPHONE</div>
- </div>
- <div class="detectionPanel" id="detectionPanel" role="status" aria-live="polite" data-state="waiting">
-  <div class="detectionIcon" id="detectionIcon" aria-hidden="true">◌</div>
-  <div class="detectionCopy"><strong id="detectionTitle">Ready to detect movement</strong><span id="detectionDetail">Enable access, then follow the simple instruction above.</span></div>
+  </section>
+  <section class="responsePane" aria-label="Phone response">
+   <div class="stageSectionLabel"><span class="stageStepNumber liveStepNumber">2</span> <span id="responseHeading">YOUR IPHONE · LIVE</span></div>
+   <div class="responseContents">
+    <div class="demoDevice" id="demoDevice" aria-label="Live iPhone representation">
+     <div class="demoGlass"><span class="demoIsland"></span>
+      <svg viewBox="0 0 120 120" class="demoCore" fill="none" aria-hidden="true"><circle cx="60" cy="60" r="42" stroke="#a8faff" stroke-width="2"/><ellipse cx="60" cy="60" rx="40" ry="14" transform="rotate(-33 60 60)" stroke="#5ceaff" stroke-width="3.5"/><ellipse cx="60" cy="60" rx="14" ry="40" transform="rotate(-33 60 60)" stroke="#e7ffff" stroke-width="3.5"/><circle cx="60" cy="60" r="7" fill="#b8ffff"/></svg>
+     </div>
+    </div>
+    <div id="guidedOutcome" class="guidedOutcome" aria-hidden="true" hidden>✓</div>
+    <div class="detectionPanel" id="detectionPanel" role="status" aria-live="polite" data-state="waiting">
+     <div class="detectionIcon" id="detectionIcon" aria-hidden="true">◌</div>
+     <div class="detectionCopy"><strong id="detectionTitle">Waiting for movement</strong><span id="detectionDetail">Follow the movement above.</span></div>
+    </div>
+   </div>
+  </section>
  </div>
  <div class="checkpoints" id="checkpoints" aria-label="Movement checks">
   <span id="checkA" class="checkItem">◌ Side to side</span>
@@ -98,12 +107,12 @@
    <div class="reading"><span id="readYLabel">Y</span><strong id="readY">—</strong></div>
    <div class="reading"><span id="readZLabel">Z</span><strong id="readZ">—</strong></div>
   </div>
-  <p id="technicalMethod">These are raw browser values, not an independent hardware pass.</p>
+  <p class="liveStatus" id="sensorStatus" role="status" aria-live="polite">No browser readings yet.</p><p id="technicalMethod">These are raw browser values, not an independent hardware pass.</p>
  </details>
- <p class="liveStatus" id="sensorStatus" role="status" aria-live="polite">Real readings appear here only after supported sensor permission.</p>
+ 
  <button id="permissionButton" class="btn main permitBtn" type="button">Enable Live Motion Sensors</button>
  <button id="hapticButton" class="btn main permitBtn" type="button" hidden>Request Haptic Feedback</button>
- <p id="stepMethod" class="methodNote">Readings are information, not an automatic verdict.</p>
+ <p id="stepMethod" class="methodNote">Results are based on your observation.</p>
  <div class="testQuestion" id="testQuestion">Did the phone respond?</div>
  <div class="testActions" role="group" aria-label="Your observed result">
   <button class="btn pass" data-answer="PASS" type="button">✓ Pass</button>
@@ -138,9 +147,9 @@
  <p class="smallNote">Only the readings actually received by the browser are reported. Native Core Motion, proximity and haptics capabilities need physical iOS testing.</p>
 </section>
 </main>
-<script src="./models.js?v=motion-review-2"></script>
-<script src="./core.js?v=motion-review-2"></script>
-<script src="./sensors.js?v=motion-review-2"></script>
-<script src="./guidance.js?v=motion-review-2"></script>
-<script src="./app.js?v=motion-review-2"></script>
+<script src="./models.js?v=motion-review-3"></script>
+<script src="./core.js?v=motion-review-3"></script>
+<script src="./sensors.js?v=motion-review-3"></script>
+<script src="./guidance.js?v=motion-review-3"></script>
+<script src="./app.js?v=motion-review-3"></script>
 </body></html>
