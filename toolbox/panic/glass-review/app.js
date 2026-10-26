@@ -21,7 +21,7 @@ function referenceStatus(mode,message){
  bar.dataset.mode=mode;
  $("referenceStatusText").textContent=message;
  const retry=$("referenceRetry");
- retry.hidden=mode==="checking";
+ retry.hidden=mode!=="offline"; // show Retry only when the network update failed
  retry.textContent=mode==="offline"?"Retry":"Refresh";
 }
 async function checkForReviewedReferences(){
