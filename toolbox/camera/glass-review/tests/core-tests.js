@@ -14,7 +14,7 @@ check("iPhone X supports Face ID",engine.faceIdSupported(models.getModel("iphone
 check("iPhone 8 Plus Touch ID not Face ID",!engine.faceIdSupported(models.getModel("iphone-8-plus")));
 check("iPhone SE 2020 Touch ID not Face ID",!engine.faceIdSupported(models.getModel("iphone-se-2020")));
 check("iPhone SE 2022 Touch ID not Face ID",!engine.faceIdSupported(models.getModel("iphone-se-2022")));
-check("iPhone 17 Pro Max eight-step plan",engine.createPlan("iphone-17-pro-max",models).steps.map(s=>s.id).join(",")==="rear,focus,stability,flash,ultra,tele,front,faceid");
+check("iPhone 17 Pro Max nine-step plan with LiDAR",engine.createPlan("iphone-17-pro-max",models).steps.map(s=>s.id).join(",")==="rear,focus,stability,flash,ultra,tele,lidar,front,faceid");
 check("iPhone Air has six stages incl Face ID",engine.createPlan("iphone-air",models).steps.length===6);
 check("iPhone 8 has five stages without Face ID",engine.createPlan("iphone-8",models).steps.length===5);
 check("iPhone 8 Plus has telephoto no ultrawide",engine.createPlan("iphone-8-plus",models).lenses.tele&&!engine.createPlan("iphone-8-plus",models).lenses.ultra);
@@ -24,8 +24,8 @@ check("iPhone 11 Pro has triple rear",engine.createPlan("iphone-11-pro",models).
 const plan=engine.createPlan("iphone-17-pro-max",models);
 let answers={};for(const step of plan.steps)answers=engine.setAnswer(answers,step.id,step.id==="rear"||step.id==="flash"||step.id==="stability"?"FAIL":step.id==="tele"?"UNABLE":"PASS");
 const counts=engine.tally(plan.steps,answers);
-check("Tally includes all eight tests",counts.PASS===4&&counts.FAIL===3&&counts.UNABLE===1&&counts.UNANSWERED===0);
-check("Unanswered results never auto-pass",engine.tally(plan.steps,{}).UNANSWERED===8);
+check("Tally includes all nine tests",counts.PASS===5&&counts.FAIL===3&&counts.UNABLE===1&&counts.UNANSWERED===0);
+check("Unanswered results never auto-pass",engine.tally(plan.steps,{}).UNANSWERED===9);
 assert.throws(()=>engine.setAnswer({},"nonexistent","PASS"));n++;
 assert.throws(()=>engine.setAnswer({},"rear","AUTOPASS"));n++;
 const symptoms={rear:["No image / black view"],stability:["High-pitched buzzing or whining"]};
@@ -65,3 +65,19 @@ check("Face ID area illustration distinct from individual infrared-component tes
 models.render(svgMock,"iphone-17-pro-max","rear","tele");
 models.render(svgMock,"iphone-17-pro-max","front","selfie");
 check("Front camera highlight clears prior rear optical-lens verification",!svgMock.dataset.opticalPosition&&svgMock.innerHTML.includes("cameraGuideHalo"));
+
+check("iPhone 12 Pro and 12 Pro Max have LiDAR",engine.lidarSupported(models.getModel("iphone-12-pro"))&&engine.lidarSupported(models.getModel("iphone-12-pro-max")));
+check("iPhone 18 Pro and Pro Max have LiDAR",engine.lidarSupported(models.getModel("iphone-18-pro"))&&engine.lidarSupported(models.getModel("iphone-18-pro-max")));
+check("11 Pro predates LiDAR",!engine.lidarSupported(models.getModel("iphone-11-pro")));
+check("iPhone 17 non-Pro and iPhone Air omit LiDAR",!engine.lidarSupported(models.getModel("iphone-17"))&&!engine.lidarSupported(models.getModel("iphone-air")));
+check("Unknown model does not invent LiDAR",!engine.lidarSupported(null)&&!engine.createPlan("",models).steps.some(s=>s.id==="lidar"));
+check("LiDAR step has customer-guided mode",engine.createPlan("iphone-17-pro-max",models).steps.find(s=>s.id==="lidar")?.mode==="native-guided");
+models.render(svgMock,"iphone-17-pro-max","rear","lidarScanner");
+check("iPhone 17 Pro Max rear LiDAR illuminated",svgMock.dataset.opticalPosition==="lidar"&&svgMock.innerHTML.includes("cameraGuideRing"));
+models.render(svgMock,"iphone-11-pro","rear","lidarScanner");
+check("No false LiDAR indicator on 11 Pro",svgMock.dataset.opticalPosition!=="lidar"&&!svgMock.innerHTML.includes("cameraGuideHalo"));
+const lidarAnswers={lidar:"FAIL",rear:"PASS",flash:"PASS"};
+const lidarPlan=engine.createPlan("iphone-17-pro-max",models);
+check("LiDAR triage is cautious",engine.interpretation(lidarPlan,lidarAnswers).some(t=>t.id==="lidar-depth"&&t.detail.includes("not proof of LiDAR failure")));
+check("LiDAR report names Measure observation",engine.report(lidarPlan,lidarAnswers).includes("Customer observed Apple's Measure app; Safari did not access LiDAR depth maps"));
+check("Non-LiDAR report does not invent depth result",!engine.report(engine.createPlan("iphone-17",models),{}).includes("LiDAR / distance sensing:"));

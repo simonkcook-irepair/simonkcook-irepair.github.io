@@ -26,6 +26,10 @@ const tele=Object.freeze({id:"tele",title:"Telephoto camera",label:"Telephoto le
  instruction:"Open the iPhone Camera app, select its optical telephoto option (for example 2×, 3×, 5×, or another model-specific lens) and inspect fine detail. Return here to record the result. Avoid judging a digitally cropped zoom as an isolated lens.",
  check:"Does the Camera app offer a clear optical telephoto view without spots, lines or distortion?",
  mode:"native-guided",category:"telephoto camera"});
+const lidar=Object.freeze({id:"lidar",title:"LiDAR scanner",label:"LiDAR / distance sensing",facing:"environment",
+ instruction:"On an iPhone fitted with LiDAR, open Apple's Measure app. In good lighting, slowly move the iPhone towards a nearby textured surface, then try measuring a clearly visible object. Keep the LiDAR area clean and uncovered. Return here to record your observation. Measure can work using cameras and motion sensors too, so this is not a direct LiDAR hardware test.",
+ check:"Does the Measure app track the surroundings and provide reasonably stable distance or length measurements?",
+ mode:"native-guided",category:"rear depth sensing"});
 const front=Object.freeze({id:"front",title:"Front camera",label:"Selfie image & colour",facing:"user",
  instruction:"Look at the live front-camera picture. Check your face and a bright background for sharpness, correct colour, distortion or damage.",
  check:"Is the front-facing image clear and normally coloured?",
@@ -42,9 +46,18 @@ const symptomOptions=Object.freeze({
  rear:Object.freeze(["No image / black view","Frozen preview or camera app closes","Distorted colours, lines or spots"]),
  focus:Object.freeze(["Permanently blurred","Near focus will not settle","Distant focus will not settle","Repeated focus hunting"]),
  stability:Object.freeze(["Shaky image while the phone is still","High-pitched buzzing or whining","Rattling or clicking when camera starts","Intermittent shake or focus"]),
- flash:Object.freeze(["Torch does not illuminate","Photo flash does not fire","Flash works only intermittently"])
+ flash:Object.freeze(["Torch does not illuminate","Photo flash does not fire","Flash works only intermittently"]),
+ lidar:Object.freeze(["Measurements cannot be placed","Measurements repeatedly jump or disappear","AR tracking repeatedly loses the scene"])
 });
-const ids=new Set([...basics,stability,flash,ultra,tele,front,faceid].map(v=>v.id));
+const ids=new Set([...basics,stability,flash,ultra,tele,lidar,front,faceid].map(v=>v.id));
+/* Verified Apple technical specifications: LiDAR is present on iPhone 12 Pro,
+   12 Pro Max and subsequent Pro/Pro Max families through iPhone 18 Pro/Max.
+   No inference from number of rear cameras, and never guess an unknown model.
+   Native iOS must still query ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth).
+ */
+function lidarSupported(model){
+ return !!model && /^iphone-(12|13|14|15|16|17|18)-pro(?:-max)?$/.test(model.slug);
+}
 function faceIdSupported(model){
  // The home-button iPhones in this catalogue use Touch ID, not Face ID.
  // An unselected/unknown model must not be guessed as capable.
@@ -64,10 +77,11 @@ function createPlan(modelSlug,cat){
  const plan=[...basics,stability,flash];
  if(lens.ultra)plan.push(ultra);
  if(lens.tele)plan.push(tele);
+ if(lidarSupported(model))plan.push(lidar);
  plan.push(front);
  if(faceIdSupported(model))plan.push(faceid);
  return {modelSlug:model?.slug||"",modelName:model?.name||"Not selected",year:model?.year||null,lenses:lens,
-  faceIdCapable:faceIdSupported(model),steps:plan.map(step=>({...step}))};
+  faceIdCapable:faceIdSupported(model),lidarCapable:lidarSupported(model),steps:plan.map(step=>({...step}))};
 }
 function tally(steps,answers){
  const counts={PASS:0,FAIL:0,UNABLE:0,UNANSWERED:0};
@@ -105,6 +119,10 @@ function interpretation(plan,answers,symptoms){
   const hint=hints.find(h=>h.id==="focus-stability");
   hint.detail="Customer-observed symptoms: "+mechanical.join("; ")+". "+hint.detail;
  }
+ if(plan.lidarCapable&&answers?.lidar==="FAIL"){
+  hints.push({id:"lidar-depth",title:"LiDAR / augmented-reality distance check reported failing",
+   detail:"This is a customer observation in Apple's Measure app, not proof of LiDAR failure. Measure may rely on camera images, motion tracking, lighting and nearby surface detail. For a native diagnosis, check ARKit sceneDepth availability, depth-map continuity and confidence on a supported iPhone before investigating the LiDAR system."});
+ }
  if(plan.faceIdCapable&&answers?.front==="PASS"&&answers?.faceid==="FAIL"){
   hints.push({id:"truedepth",title:"Selfie camera works but Face ID was reported failing",
    detail:"A visible selfie image does not verify the infrared camera, dot projector or the complete TrueDepth authentication path. Check enrolled/locked-out status, screen obstruction and Apple's Face ID troubleshooting before investigating the system."});
@@ -127,7 +145,9 @@ function report(plan,answers,evidence){
  ];
  for(const step of plan.steps){
   const value=answers?.[step.id]||"UNANSWERED";
-  const method=step.mode==="browser"?"Customer observed browser live camera preview":
+  const method=step.id==="lidar"?
+    "Customer observed Apple's Measure app; Safari did not access LiDAR depth maps or independently verify the sensor":
+    step.mode==="browser"?"Customer observed browser live camera preview":
     step.mode==="native-guided"?"Customer observed Apple Camera app; physical lens not independently verified":
     step.mode==="system-guided"?(src.faceIdNative?.outcome==="authenticated"?
       "Native iOS LocalAuthentication reported successful Face ID authentication; no individual TrueDepth component was tested":
@@ -155,9 +175,10 @@ function report(plan,answers,evidence){
  }
  lines.push("","Camera access: Permission requested only during live preview; no photos uploaded or stored.");
  lines.push("Face ID: A guided system authentication observation is distinct from the RGB selfie camera. The app never accesses infrared or biometric templates.");
+ if(plan.lidarCapable)lines.push("LiDAR: The Measure app can use camera/motion AR tracking; its behaviour alone cannot independently confirm scanner hardware. Native ARKit sceneDepth capture requires a physical iPhone.");
  lines.push("Limitation: Safari cannot independently guarantee rear physical wide/ultra-wide/telephoto lens isolation, calibrated focus accuracy, optical image stabilisation, TrueDepth sensors or flash availability.");
  lines.push("Native follow-up: AVFoundation discovery, effective device verification and on-iPhone testing still required.");
  return lines.join("\n");
 }
-root.iRepairCameraCore=Object.freeze({createPlan,lensAvailability,faceIdSupported,symptomOptions,tally,setAnswer,interpretation,report});
+root.iRepairCameraCore=Object.freeze({createPlan,lensAvailability,faceIdSupported,lidarSupported,symptomOptions,tally,setAnswer,interpretation,report});
 })(typeof window!=="undefined"?window:globalThis);

@@ -104,3 +104,37 @@ Permission-denied environment completed all core stages as **Unable to Test**, w
   independently routed to, or proven to originate from, the glowing physical lens;
   native AVFoundation verification remains a future device-tested activity.
 - All four completed Toolbox apps remain locked and unchanged. Camera approval remains open.
+
+## LiDAR proposal incorporated into Camera review — 26 October 2026
+The user approved the existing visual experience, then raised adding the rear
+distance scanner before final lock. A **model-gated LiDAR / distance sensing**
+stage is now included for documented Pro iPhone families (12–18), placed after
+rear optical lens checks and before the selfie/Face ID stages. The glowing
+LiDAR housing schematic reuses the existing rings without redesigning the
+approved handset illustration. The stage is deliberately limited to a guided
+observation in Apple's Measure app; that app also uses camera/motion-based AR
+tracking, so it does NOT independently establish that LiDAR hardware works.
+A native ARKit check will use
+`ARWorldTrackingConfiguration.supportsFrameSemantics(.sceneDepth)`,
+`ARFrame.sceneDepth` and `ARDepthData.depthMap` with confidence values on
+physical iPhones. An unsupported device or missing scene-depth data is not
+automatically a proved faulty sensor. Stage supports Pass / Fail / Unable,
+symptom tags, report provenance and technician cautious triage.
+
+**TrueDepth native roadmap:** Apple's AVFoundation public
+`builtInTrueDepthCamera` and `AVCaptureDepthDataOutput` can deliver a
+per-pixel depth stream. This may provide useful evidence that the front depth
+sensing path operates, but does NOT directly test the secure Face ID hardware,
+dot projector / flood illuminator individually or biometric identity. Use a
+separate LocalAuthentication system check. No direct IR biometric template
+readout, emitter-only verdict or fabricated physical hardware result.
+References:
+- https://developer.apple.com/documentation/arkit/arframe/scenedepth
+- https://developer.apple.com/documentation/arkit/ardepthdata
+- https://developer.apple.com/documentation/avfoundation/streaming-depth-data-from-the-truedepth-camera
+- https://developer.apple.com/documentation/avfoundation/capturing-photos-with-depth
+- https://support.apple.com/en-gb/108044
+- https://www.apple.com/uk/iphone-18-pro/specs/
+
+This browser code does not access ARKit or TrueDepth depth APIs. Native iPhone
+validation and the user's final prototype approval are both still required.

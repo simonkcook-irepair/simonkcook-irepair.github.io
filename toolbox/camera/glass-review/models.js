@@ -184,6 +184,14 @@ function draw(svg, modelLike, side, focus) {
      micx=x+W-40;micy=y+75;
    }
    if(focus==="rearMic")str+=halo(micx,micy);
+   if(focus==="lidarScanner"&&/^iphone-(12|13|14|15|16|17|18)-pro(?:-max)?$/.test(actual.slug)){
+     const px=x+(isProPlateau?W-44:92),py=y+114;
+     str+='<g class="cameraGuideHalo" aria-hidden="true">'+
+       '<circle class="cameraGuideAura" cx="'+px+'" cy="'+py+'" r="23" fill="#5ceeff27" stroke="#69eaff88" stroke-width="1.4"/>'+
+       '<circle class="cameraGuideRing" cx="'+px+'" cy="'+py+'" r="15" fill="none" stroke="#edffff" stroke-width="3"/>'+
+       '<circle cx="'+px+'" cy="'+py+'" r="12" fill="none" stroke="#35d8ff" stroke-width="2"/></g>';
+     svg.dataset.opticalPosition="lidar";
+   }
    const mapping=checkedOpticalPositions[actual.slug];
    const selectedIndex=mapping&&Number.isInteger(mapping[focus])?mapping[focus]:
       (positions.length===1&&focus==="wide"?0:null);

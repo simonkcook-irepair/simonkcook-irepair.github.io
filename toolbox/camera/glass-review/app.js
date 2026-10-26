@@ -38,6 +38,7 @@ function updateSetup(){
  if(plan.lenses.tele)extra.push("telephoto");
  text($("planTitle"),plan.steps.length+" guided camera checks"+(plan.modelSlug?" · "+plan.modelName:""));
  text($("planText"),"Rear image, focus, shake/noise and flash"+(extra.length?", "+extra.join(" and "):"")+
+   (plan.lidarCapable?", LiDAR distance sensing":"")+
    ", front camera"+(plan.faceIdCapable?" and Face ID recognition":"")+".");
  text($("modelHelp"),plan.modelSlug?"Customer-selected "+plan.modelName+". Lens checks follow its published camera layout; Safari cannot independently verify those physical lenses.":"Year-grouped newest-first models. Skip this if unsure: the core rear/front camera checks still work.");
 }
@@ -77,18 +78,21 @@ function fallback(heading,message){
 function showModelIllustration(step){
  stopStream();
  const faceId=step.id==="faceid";
- fallback(faceId?"Face ID is an Apple system feature":"Check in the iPhone Camera app",
+ fallback(faceId?"Face ID is an Apple system feature":
+   step.id==="lidar"?"Check in Apple's Measure app":"Check in the iPhone Camera app",
    "Return here to record the result you observed.");
  $("cameraFallback").hidden=true;
  const svg=$("modelDiagram");
  const side=faceId?"front":"rear";
- cat.render(svg,plan.modelSlug||"iphone-17",side,faceId?"faceIdArea":step.id);
+ cat.render(svg,plan.modelSlug||"iphone-17",side,faceId?"faceIdArea":step.id==="lidar"?"lidarScanner":step.id);
  svg.removeAttribute("hidden");
  svg.setAttribute("aria-label",plan.modelName+" "+side+" camera illustration — not a measured hardware test");
  $("retryCamera").hidden=true;
  $("previewLabel").hidden=true;
  $("streamStatus").textContent=faceId?
    "Safari cannot read Face ID or the infrared TrueDepth image. Use your iPhone's normal Face ID authentication, then return here; never share your passcode.":
+   step.id==="lidar"?
+   "Safari cannot read the LiDAR scanner's depth map. Use the Measure app for a guided observation; a successful measurement is not proof of LiDAR hardware health.":
    "Safari cannot confirm that the "+(step.id==="ultra"?"0.5× ultra-wide":"telephoto")+" physical lens is isolated. Open Apple's Camera app to inspect it.";
 }
 async function openCamera(facing){
@@ -171,14 +175,14 @@ function renderLensGuide(step){
  const guide=$("cameraLensGuide"),svg=$("lensGuideDevice");
  const illustrated=!plan.modelSlug;
  const face=step.facing==="user",target=face?(step.id==="faceid"?"faceIdArea":"selfie"):
-   (step.id==="flash"?"flashLed":["ultra","tele"].includes(step.id)?step.id:"rearGroup");
+   (step.id==="flash"?"flashLed":step.id==="lidar"?"lidarScanner":["ultra","tele"].includes(step.id)?step.id:"rearGroup");
  cat.render(svg,plan.modelSlug||"iphone-17",face?"front":"rear",target);
  const isolated=svg.dataset.opticalPosition==="checked";
  const titles={
   rear:"Rear camera assembly",focus:"Rear camera · focusing",
   stability:"Rear camera · stabilisation",flash:"Rear flash / torch",
   ultra:"Ultra-wide camera · 0.5×",tele:"Telephoto camera",
-  front:"Front selfie camera",faceid:"Face ID / TrueDepth area"
+  front:"Front selfie camera",faceid:"Face ID / TrueDepth area",lidar:"LiDAR depth scanner"
  };
  text($("lensGuideTitle"),titles[step.id]||"Camera location guide");
  let detail="";
@@ -190,6 +194,8 @@ function renderLensGuide(step){
   detail=isolated?
    "Blue ring marks the reference lens location for this model. Use Apple's Camera app; Safari cannot confirm which lens is active.":
    "The camera group is highlighted. Individual lens placement is not yet verified for this model; do not use this diagram to identify a particular lens.";
+ }else if(step.id==="lidar"){
+  detail="Blue ring shows the rear LiDAR scanner. Safari cannot independently read its depth measurements.";
  }else if(step.id==="front"){
   detail="Upper front-camera area highlighted. Selfie preview does not verify Face ID.";
  }else{
@@ -237,13 +243,16 @@ function renderStep(){
  drawProgress();
  text($("stepCounter"),"Camera "+(index+1)+" / "+plan.steps.length);
  text($("stepEyebrow"),step.id==="faceid"?"Face ID / TrueDepth check":
+   step.id==="lidar"?"Guided depth observation":
    step.mode==="native-guided"?"Guided lens observation":
    step.id==="flash"?"Flash and rear-camera comparison":
    step.id==="stability"?"Image stabilisation observation":"Live camera check");
  text($("stepTitle"),step.title);
  text($("stepInstruction"),step.instruction);
  text($("testQuestion"),step.check);
- text($("testFoot"),step.mode==="system-guided"?
+ text($("testFoot"),step.id==="lidar"?
+ "Measure can use cameras and motion tracking as well as LiDAR. Pass records your observation only; native ARKit depth-data testing is a separate future check.":
+ step.mode==="system-guided"?
  "Record Pass only if system Face ID actually recognised you. If not enrolled or unavailable, select Unable to Test. A selfie preview is not a TrueDepth test.":
  step.mode==="native-guided"?
  "Record only what you observed in Apple's Camera app; Safari cannot independently confirm the physical lens.":
@@ -302,6 +311,7 @@ function showResults(){
   const note=document.createElement("span");
   note.textContent=step.mode==="system-guided"?
    "Customer reported system Face ID recognition. The app did not capture biometric data or test individual TrueDepth parts.":
+   step.id==="lidar"?"Customer observation in Apple Measure app; LiDAR depth data was not independently verified.":
    step.mode==="native-guided"?"Customer observation in Apple Camera app; physical lens was not verified independently.":
    step.mode==="torch-or-native-guided"?"Rear LED observation; "+(torchUsed?"browser torch was activated":"native Camera app check or browser support may be limited")+".":"Customer observation of the browser camera preview.";
   row.append(title,note);
