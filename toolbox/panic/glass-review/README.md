@@ -148,4 +148,23 @@ Background workflow concept: scheduled **weekly source-change monitor** collects
 
 Avoid auto-publishing community forum guesses as definitive faults; the same code can map to different parts on different models and OS releases. Store multiple sources and contradictory evidence. User-facing results should show *Investigate*, *Likely based on verified evidence*, or *Unable to determine*, never infer proven hardware failure solely from a panic signature. Design diagnostic-confidence language separately from statistical certainty.
 
-**Not running:** no periodic scraper, no Supabase signature sync and no automatic deployed rule updates have been activated. This document merely protects the agreed future direction while leaving the finished prototype frozen.
+**Updated 26 October 2026:** a separately hosted human-reviewed, versioned *read-only reference feed* has now been deployed and linked to the approved Panic prototype with explicit user authorisation. The app checks that feed on launch. There is still no external website scraper, autonomous knowledge-base publication or Supabase signature sync. See the acceptance/update record below.
+
+## FINAL APPROVAL — live panic-reference refresh added and locked (26 October 2026)
+
+**Explicit customer approval:** “Okay, that’s absolutely perfect. Looks and feels right. Will consider this prototype complete. Let’s move to the next one.”
+
+- **Final approved Panic Safari app:** https://irepair-panic-glass-review-simon-cook.vercel.app/
+- **Final approved production deployment:** `dpl_E4K5biz7KPUvne1AujxVwC4RyXJQ`.
+- **Approved source branch:** `toolbox/panic-live-references-2026-10-26`, files `toolbox/panic/glass-review/`.
+- **Rollback original approved browser version:** `dpl_77yxJ2GUiBxmrJ8oo1f7MMp8Nzh5`.
+- **Live separately hosted reference catalogue:** https://irepair-panic-reference-library-simon-cook.vercel.app/latest.json — initial curated version `2026.10.26.1`, human-reviewed 26 October 2026; reference sources and cautious guidance are in `toolbox/panic/reference-library/v1/`.
+- On each app launch, visible reference status displays “Checking for reviewed panic-reference updates…” and then real reviewed date or an honest offline/built-in fallback. **Never claim the app has just scraped every external source.**
+- A matching, reviewed entry can add source-cited supplementary *investigation guidance* and appear on print, copied reports and an optional collapsed detail section. A reference never confirms physical hardware failure.
+- Private panic logs are only parsed locally; fetch is a small GET of the curated catalogue, never an upload. No automatic background access to iOS system logs.
+- Full E2E tests run **against the final public URL**: visible loading state, live CORS GET, version/review date, file-picker, actual additional reference matches, unchanged original panic classifier, privacy/reporting/print, non-panic files, offline retry/recovery, future catalogue version simulation, malformed feed rejection and mobile dimensions all passed.
+- **No automatic weekly research monitor active**: a requested watch could not be created because the account had reached its active-task limit. Catalogue publication is manual and human-reviewed.
+- **FREEZE:** This final, user-approved version must not be changed or redeployed without a new scoped user instruction. Other locked Screen, Battery and Audio apps are also protected.
+
+### Future native work
+User-initiated log import / Share Extension remains the iOS-compliant default absent a new public Apple API. A running browser reference-refresh service is distinct from continuous research or system-level panic-log extraction. Do not claim native app completion or individual hardware access.
