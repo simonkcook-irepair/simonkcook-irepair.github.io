@@ -7,9 +7,66 @@
 const $=id=>document.getElementById(id);
 const core=window.iRepairPanicCore;
 const catalogue=window.IRepairDeviceCatalogue;
+const references=window.iRepairPanicReferences;
 if(!core||!catalogue)throw new Error("Panic reader or model catalogue did not load");
 const MAX_SIZE=30*1024*1024;
 let result=null,report="",manualSlug="",userSelectedModel=false,selectedFile=null;
+let reviewedLibrary=null,referenceCheck=null,referenceController=null,referenceRequestId=0,referenceState="checking";
+/* App starts immediately with its built-in conservative rules. Each launch
+   performs an actual network check against the separately updated curated
+   reference library; there is no live scraping or access to user logs. */
+function referenceStatus(mode,message){
+ referenceState=mode;
+ const bar=$("referenceStatusBar");
+ bar.dataset.mode=mode;
+ $("referenceStatusText").textContent=message;
+ const retry=$("referenceRetry");
+ retry.hidden=mode==="checking";
+ retry.textContent=mode==="offline"?"Retry":"Refresh";
+}
+async function checkForReviewedReferences(){
+ const requestId=++referenceRequestId;
+ if(referenceController)referenceController.abort();
+ referenceController=new AbortController();
+ const controller=referenceController;
+ referenceStatus("checking","Checking for reviewed panic-reference updates…");
+ let timer;
+ try{
+  if(!references)throw new Error("Reference module unavailable");
+  timer=setTimeout(()=>controller.abort(),5500);
+  const response=await fetch(references.endpoint+"?checked="+Date.now(),{
+    method:"GET",cache:"no-store",mode:"cors",credentials:"omit",
+    redirect:"error",signal:controller.signal
+  });
+  if(!response.ok)throw new Error("Reference feed unavailable");
+  const data=await response.text();
+  if(data.length>120000)throw new Error("Reference feed too large");
+  const library=references.validate(JSON.parse(data));
+  if(requestId!==referenceRequestId)return;
+  reviewedLibrary=library;
+  const older=library.ageDays>60;
+  referenceStatus(older?"older":"fresh",
+    "References checked · reviewed "+references.date(library)+
+    " · v"+library.version+(older?" (older review)":""));
+ }catch(error){
+  if(requestId!==referenceRequestId)return;
+  reviewedLibrary=null;
+  referenceStatus("offline","Update unavailable · using built-in panic references");
+ }finally{
+  if(timer)clearTimeout(timer);
+  if(requestId===referenceRequestId)referenceController=null;
+ }
+}
+function beginReferenceCheck(){
+ referenceCheck=checkForReviewedReferences();
+ return referenceCheck;
+}
+async function ensureReferenceChecked(){
+ if(referenceState!=="checking"||!referenceCheck)return;
+ // Import need not block for an unreliable network. If the check exceeds
+ // the short grace period, this particular result honestly uses built-in rules.
+ await Promise.race([referenceCheck,new Promise(resolve=>setTimeout(resolve,1800))]);
+}
 function show(name){
  document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===name));
  try{window.scrollTo({top:0,behavior:"instant"});}catch(e){}
@@ -58,6 +115,7 @@ function displayResult(){
  // year-grouped selector reachable without asking for another file upload.
  $("editModel").hidden=!(device.name==="Not identified"||device.name==="Conflicting identifiers"||device.source.includes("name unverified"));
  report=core.report(result,device);
+ if(references)report+=references.report(result.referenceLibrary,result.referenceMatches);
  $("resultFlag").textContent=result.kind==="insufficient"?"INSUFFICIENT EVIDENCE":"LOG EVIDENCE FOUND";
  safeText($("resultTitle"),result.title);
  safeText($("resultSubtitle"),result.headline);
@@ -66,12 +124,33 @@ function displayResult(){
  setTag(result.kind==="insufficient"?"Unclassified file":"Preliminary panic interpretation");
  setTag(result.extractedSignature?"panicString extracted":"Signature unavailable");
  if(device.name!=="Not identified")setTag(device.name);
+ if(references){
+  setTag(result.referenceLibrary?
+    "References reviewed "+references.date(result.referenceLibrary):
+    "Built-in reference library");
+ }
  $("evidenceList").replaceChildren();
  addEvidence("iPhone model",device.name+" · "+device.source);
  addEvidence("What the log suggests",result.explanation);
  if(result.tokens.length)addEvidence("Recognised diagnostic identifiers",result.tokens.map(x=>x.label).join(" · "));
  else addEvidence("Recognised identifiers","None in the supported signature catalogue.");
  addEvidence("Recommended next step",result.next);
+ const extra=$("referenceFindings"),list=$("referenceFindingsList");
+ list.replaceChildren();
+ const approved=result.referenceMatches||[];
+ extra.hidden=approved.length===0;
+ extra.open=false;
+ for(const match of approved){
+  const item=document.createElement("div");item.className="referenceItem";
+  const heading=document.createElement("strong");heading.textContent=match.title;
+  const meaning=document.createElement("p");
+  meaning.textContent=match.summary+" Suggested check: "+match.action;
+  const link=document.createElement("a");
+  link.href=match.source.url;
+  link.rel="noopener noreferrer";link.target="_blank";
+  link.textContent="Reviewed source: "+match.source.title;
+  item.append(heading,meaning,link);list.append(item);
+ }
  safeText($("resultExplanation"),result.caution);
  const tech=$("technicianDetails");
  tech.open=false;
@@ -82,6 +161,14 @@ function displayResult(){
 function analyseText(text){
  const data=core.parse(text);
  if(data.error)return {error:data.error};
+ // Keep remote evidence separate from the existing local panic classifier.
+ // Only match the extracted panicString, never entire unrelated metadata.
+ const snapshot=reviewedLibrary;
+ data.referenceLibrary=snapshot;
+ data.referenceMatches=[];
+ if(references&&snapshot&&data.found&&data.extractedSignature){
+  data.referenceMatches=references.matches(core.extractPanic(text),snapshot);
+ }
  result=data;
  if(data.model?.slug&&!userSelectedModel){
   const m=catalogue.getModel(data.model.slug);
@@ -116,6 +203,7 @@ async function importFile(file){
  try{
   const raw=await readFile(file);
   if(!raw.trim()){$("fileStatus").textContent="No readable text found in this file.";return;}
+  await ensureReferenceChecked();
   const outcome=analyseText(raw);
   // Raw log text exists only inside this call; do not retain it.
   if(outcome.error)$("fileStatus").textContent=outcome.error;
@@ -165,10 +253,11 @@ function fileChosen(){
 $("panicFile").addEventListener("change",fileChosen);
 $("panicFile").addEventListener("input",fileChosen);
 $("panicFile").addEventListener("cancel",()=>{$("fileStatus").textContent="Files did not return a selection. Try again or use the paste option.";});
-$("analyseText").addEventListener("click",()=>{
+$("analyseText").addEventListener("click",async()=>{
  const input=$("panicText"),text=input.value;
  input.value=""; // clear potentially personal log text from the form
  if(text.length>MAX_SIZE){$("pasteStatus").textContent="Pasted text is too large. Select a smaller log.";return;}
+ await ensureReferenceChecked();
  const data=analyseText(text);
  if(data.error)$("pasteStatus").textContent=data.error;
 });
@@ -185,5 +274,7 @@ $("shareReport").addEventListener("click",async()=>{
 });
 $("printReport").addEventListener("click",()=>window.print());
 $("checkAnother").addEventListener("click",reset);
+$("referenceRetry").addEventListener("click",()=>{void beginReferenceCheck();});
 buildModels();
+void beginReferenceCheck();
 })();
