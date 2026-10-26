@@ -643,3 +643,11 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  #results .resultRow{padding:9px 12px}
  #results #resultIntro{display:block!important}
 }
+
+/* Camera-only report footer: prevent inherited Panic/Battery print copy. */
+@media print{
+ #results:after{
+  content:"Customer-guided visual camera observations. Browser preview does not independently prove individual physical lens, flash, autofocus or TrueDepth/Face ID operation.  •  iRepair Toolbox"!important;
+  display:block!important;text-align:center;margin-top:12mm;font-size:9pt;color:#697f95
+ }
+}
