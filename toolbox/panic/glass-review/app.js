@@ -45,9 +45,10 @@ async function checkForReviewedReferences(){
   if(requestId!==referenceRequestId)return;
   reviewedLibrary=library;
   const older=library.ageDays>60;
+  $("referenceStatusBar").title="Curated library v"+library.version;
   referenceStatus(older?"older":"fresh",
     "References checked · reviewed "+references.date(library)+
-    " · v"+library.version+(older?" (older review)":""));
+    (older?" (older review)":""));
  }catch(error){
   if(requestId!==referenceRequestId)return;
   reviewedLibrary=null;
