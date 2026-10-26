@@ -34,7 +34,17 @@ function onSensor(kind,nums,count){
   kind==="rotation"?["α · °/s","β · °/s","γ · °/s"]:["PITCH · °","ROLL · °","YAW · °"];
  ["X","Y","Z"].forEach((key,i)=>{set("read"+key+"Label",labels[i]);set("read"+key,fmt(nums[i]))});
  if(tracker)updateDetected(tracker.observe(kind,nums));
- set("sensorStatus",count+" real sensor samples received. Detailed values are under ‘View technical readings’.");
+ // Visuals follow real event values when exposed; no scripted sensor movement.
+ if(kind==="acceleration"){
+  const vx=Number.isFinite(nums[0])?Math.max(-22,Math.min(22,nums[0]*2)):0;
+  const vy=Number.isFinite(nums[1])?Math.max(-20,Math.min(20,-nums[1]*2)):0;
+  $("demoDevice").style.setProperty("--tx",vx+"px");
+  $("demoDevice").style.setProperty("--ty",vy+"px");
+ }else if(kind==="rotation"){
+  const turn=Number.isFinite(nums[2])?nums[2]:Number.isFinite(nums[0])?nums[0]:0;
+  $("demoDevice").style.setProperty("--rz",Math.max(-23,Math.min(23,turn*.35))+"deg");
+ }
+ set("sensorStatus",count+" real sensor samples received. Technical values are available below.");
  if(kind==="orientation"){
   const pitch=Number.isFinite(nums[0])?Math.max(-23,Math.min(23,-nums[0]*.23)):0;
   const roll=Number.isFinite(nums[1])?Math.max(-24,Math.min(24,nums[1]*.45)):0;
@@ -93,7 +103,7 @@ function renderStep(){
  stage.classList.toggle("guided",!measuring);
  stage.classList.toggle("proximityStage",s.id==="proximity");
  stage.classList.toggle("hapticStage",s.id==="haptics");
- $("demoDevice").style.removeProperty("--rx");$("demoDevice").style.removeProperty("--ry");
+ $("demoDevice").style.removeProperty("--rx");$("demoDevice").style.removeProperty("--ry");$("demoDevice").style.removeProperty("--tx");$("demoDevice").style.removeProperty("--ty");$("demoDevice").style.removeProperty("--rz");
  $("demoDevice").setAttribute("aria-label",measuring?
   "Animated movement instruction; live orientation follows sensor values when available":
   "Illustration of the guided test, not a measured sensor value");
