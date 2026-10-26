@@ -3,9 +3,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eaf6ff"><meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Connectivity Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=connect-review-1">
+<link rel="stylesheet" href="./visual.css?v=connect-review-2">
 </head>
-<body data-build="connectivity-glass-review-1"><main class="shell">
+<body data-build="connectivity-glass-review-2"><main class="shell">
 <header class="header glass"><div class="brand">
  <div class="logo" aria-hidden="true"></div>
  <div><b>iRepair Toolbox</b><span>CONNECTIVITY DIAGNOSTICS</span></div>
@@ -14,19 +14,85 @@
  <div class="eyebrow">iPhone Connectivity</div>
  <h1>Let’s get you<br>connected.</h1>
  <p class="lead">Six simple checks for the ways your iPhone connects to the world.</p>
- <div class="phoneStage connectHero" aria-label="Premium iPhone illustration with illuminated connection waves">
+ <div class="phoneStage connectHero" aria-label="Shining iPhone illustration featuring a glowing hub for Wi-Fi, cellular, Bluetooth, location and AirDrop">
   <div class="phoneGlow"></div><div class="phoneArt" aria-hidden="true">
    <span class="side s1"></span><span class="side s2"></span><span class="side s3"></span>
    <div class="phoneScreen"><div class="dynamicIsland"></div>
-    <svg class="connectSymbol" viewBox="0 0 160 170" fill="none" aria-hidden="true">
-     <circle cx="80" cy="106" r="9" fill="#aaf9ff"/>
-     <path d="M40 65Q80 26 120 65" stroke="#bdfcff" stroke-width="10" stroke-linecap="round" />
-     <path d="M55 83Q80 60 105 83" stroke="#77eaff" stroke-width="10" stroke-linecap="round"/>
-     <path d="M23 47Q80 -4 137 47" stroke="#4cd3ff" stroke-width="7" stroke-linecap="round" opacity=".76"/>
-     <circle cx="80" cy="106" r="26" stroke="#4ceeff" stroke-opacity=".22" stroke-width="2"/>
-     <circle cx="80" cy="106" r="43" stroke="#55e6ff" stroke-opacity=".14" stroke-width="2"/>
-    </svg><div class="connectRipple r1"></div><div class="connectRipple r2"></div>
-    <div class="screenGlow"></div>
+    <svg class="connectHubArtwork" viewBox="0 0 240 470" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" focusable="false">
+     <defs>
+      <radialGradient id="hubAtmosphere"><stop stop-color="#8cffff" stop-opacity=".50"/><stop offset=".52" stop-color="#40b4fb" stop-opacity=".25"/><stop offset="1" stop-color="#174a9c" stop-opacity="0"/></radialGradient>
+      <linearGradient id="hubLink" x1="30" y1="100" x2="205" y2="395" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".32"/><stop offset=".45" stop-color="#dbffff" stop-opacity=".83"/><stop offset="1" stop-color="#77e6ff" stop-opacity=".32"/></linearGradient>
+      <linearGradient id="hubCoreFill" x1="76" y1="188" x2="169" y2="284" gradientUnits="userSpaceOnUse"><stop stop-color="#ebffff"/><stop offset=".24" stop-color="#77eaff"/><stop offset=".57" stop-color="#169fdf"/><stop offset="1" stop-color="#03509f"/></linearGradient>
+      <linearGradient id="hubNodeFill" x1="-30" y1="-30" x2="31" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#f2ffff" stop-opacity=".85"/><stop offset=".21" stop-color="#6bdbff" stop-opacity=".75"/><stop offset=".72" stop-color="#147bb8" stop-opacity=".75"/><stop offset="1" stop-color="#104b9a" stop-opacity=".73"/></linearGradient>
+      <filter id="hubSoftGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="9"/></filter>
+      <filter id="hubTightGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.4"/></filter>
+     </defs>
+     <ellipse cx="120" cy="247" rx="119" ry="202" fill="url(#hubAtmosphere)" opacity=".95"/>
+     <g class="hubOrbitPaths" stroke="url(#hubLink)" stroke-width="1.2">
+      <ellipse cx="120" cy="247" rx="95" ry="152" stroke-opacity=".38" stroke-dasharray="2 8"/>
+      <circle cx="120" cy="247" r="90" stroke-opacity=".21" stroke-dasharray="3 9"/>
+     </g>
+     <g class="hubSpokes" stroke="url(#hubLink)" stroke-linecap="round">
+      <path d="M120 244 120 112" stroke-width="1.8"/>
+      <path d="M118 248 45 193" stroke-width="1.7"/>
+      <path d="M122 248 195 193" stroke-width="1.7"/>
+      <path d="M114 255 64 354" stroke-width="1.7"/>
+      <path d="M126 255 176 354" stroke-width="1.7"/>
+     </g>
+     <g class="hubSpokeLights" fill="#d9ffff">
+      <circle cx="120" cy="166" r="3"/><circle cx="79" cy="219" r="3"/>
+      <circle cx="161" cy="219" r="3"/><circle cx="90" cy="307" r="3"/>
+      <circle cx="150" cy="307" r="3"/>
+     </g>
+     <g class="hubCentre">
+      <circle cx="120" cy="247" r="59" fill="#64eaff" opacity=".36" filter="url(#hubSoftGlow)"/>
+      <circle cx="120" cy="247" r="56" stroke="#efffff" stroke-opacity=".33" stroke-width="1.5"/>
+      <circle class="hubCoreHalo" cx="120" cy="247" r="49" stroke="#d5ffff" stroke-opacity=".65" stroke-width="2.3"/>
+      <circle cx="120" cy="247" r="43" fill="url(#hubCoreFill)" stroke="#f1ffff" stroke-opacity=".95" stroke-width="2.5"/>
+      <circle cx="120" cy="247" r="32" stroke="#ddffff" stroke-opacity=".42"/>
+      <path d="M119 210v10M119 274v10M83 247h10M146 247h10" stroke="#ebffff" stroke-opacity=".76" stroke-width="2.2" stroke-linecap="round"/>
+      <rect x="107" y="224" width="26" height="45" rx="6.5" fill="#073b73" fill-opacity=".82" stroke="#f5ffff" stroke-width="2.3"/>
+      <rect x="111" y="230" width="18" height="32" rx="3.4" fill="#b9ffff" fill-opacity=".32"/>
+      <rect x="115" y="226.5" width="10" height="2.3" rx="1" fill="#d9ffff"/>
+      <circle cx="120" cy="265.7" r="1.7" fill="#e8ffff"/>
+      <circle cx="120" cy="247" r="4" fill="#f3ffff"/>
+     </g>
+     <g class="hubNode hubNodeWifi" transform="translate(120 112)">
+      <circle class="hubNodeAura" r="34" fill="#82efff" opacity=".37" filter="url(#hubSoftGlow)"/>
+      <circle r="30" fill="url(#hubNodeFill)" stroke="#ddffff" stroke-opacity=".8" stroke-width="1.7"/>
+      <path d="M-18 -5Q0 -21 18 -5 M-12 2Q0 -8 12 2 M-6 9Q0 4 6 9" stroke="#f1ffff" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cy="16" r="3.4" fill="#edffff"/>
+     </g>
+     <g class="hubNode hubNodeCell" transform="translate(45 193)">
+      <circle class="hubNodeAura" r="32" fill="#7cffff" opacity=".25" filter="url(#hubSoftGlow)"/>
+      <circle r="29" fill="url(#hubNodeFill)" stroke="#dcffff" stroke-opacity=".73" stroke-width="1.6"/>
+      <g fill="#e9ffff"><rect x="-17" y="7" width="6.8" height="11" rx="2"/><rect x="-7" y="-2" width="6.8" height="20" rx="2"/><rect x="3" y="-11" width="6.8" height="29" rx="2"/><rect x="13" y="-18" width="6.8" height="36" rx="2"/></g>
+     </g>
+     <g class="hubNode hubNodeBluetooth" transform="translate(195 193)">
+      <circle class="hubNodeAura" r="32" fill="#7cffff" opacity=".25" filter="url(#hubSoftGlow)"/>
+      <circle r="29" fill="url(#hubNodeFill)" stroke="#dcffff" stroke-opacity=".73" stroke-width="1.6"/>
+      <path d="M-11 -13 11 12 0 23V-22L11 -12 -11 13" stroke="#eaffff" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+     </g>
+     <g class="hubNode hubNodeLocation" transform="translate(64 354)">
+      <circle class="hubNodeAura" r="33" fill="#7cffff" opacity=".29" filter="url(#hubSoftGlow)"/>
+      <circle r="30" fill="url(#hubNodeFill)" stroke="#ddffff" stroke-opacity=".8" stroke-width="1.7"/>
+      <path d="M0 21C-7 11-16 1-16-9a16 16 0 0 1 32 0C16 1 7 11 0 21Z" fill="#dcffff" fill-opacity=".18" stroke="#efffff" stroke-width="2.9"/>
+      <circle cy="-9" r="6" stroke="#edffff" stroke-width="2.8"/>
+     </g>
+     <g class="hubNode hubNodeTransfer" transform="translate(176 354)">
+      <circle class="hubNodeAura" r="33" fill="#7cffff" opacity=".29" filter="url(#hubSoftGlow)"/>
+      <circle r="30" fill="url(#hubNodeFill)" stroke="#ddffff" stroke-opacity=".8" stroke-width="1.7"/>
+      <path d="M-15 3a19 19 0 0 1 30 0 M-9 8a11 11 0 0 1 18 0" stroke="#efffff" stroke-width="2.9" stroke-linecap="round"/>
+      <path d="m0 -17 0 15 m-7 -7 7 -8 7 8" stroke="#f0ffff" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cy="15" r="3" fill="#eaffff"/>
+     </g>
+     <g class="hubGlints" fill="#efffff">
+      <circle cx="29" cy="119" r="2.4"/><circle cx="207" cy="125" r="1.8"/>
+      <circle cx="21" cy="286" r="1.7"/><circle cx="213" cy="299" r="2.3"/>
+      <circle cx="120" cy="412" r="1.6"/>
+     </g>
+    </svg>
+    <div class="screenGlow"></div><div class="screenGlow2"></div>
    </div>
   </div>
  </div>
@@ -128,7 +194,7 @@
  <p class="smallNote">No exact location coordinates are stored in this report. Browser checks cannot isolate individual radios.</p>
 </section>
 </main>
-<script src="./models.js?v=connect-review-1"></script>
-<script src="./core.js?v=connect-review-1"></script>
-<script src="./app.js?v=connect-review-1"></script>
+<script src="./models.js?v=connect-review-2"></script>
+<script src="./core.js?v=connect-review-2"></script>
+<script src="./app.js?v=connect-review-2"></script>
 </body></html>
