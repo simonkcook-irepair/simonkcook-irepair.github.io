@@ -133,9 +133,9 @@ async function openCamera(facing){
 }
 function bindStream(s,facing,step){
  $video.srcObject=s;
- $video.classList.toggle("selfie",facing==="user");
  const track=s.getVideoTracks?.()[0];
  const route=track?.getSettings?.().facingMode||"";
+ $video.classList.toggle("selfie",facing==="user"&&route!=="environment");
  $video.play().then(()=>{
   if(!stream||stream!==s)return;
   $("cameraFallback").hidden=true;
