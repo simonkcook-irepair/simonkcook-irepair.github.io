@@ -582,6 +582,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  background:#e7ffffb0}.cameraStage .focusReticle:before{width:1px;height:25px;left:50%;top:40px}
 .cameraStage .focusReticle:after{height:1px;width:25px;left:40px;top:50%}
 .cameraStage .focusReticle[hidden]{display:none!important}
+.cameraStage #modelDiagram[hidden]{display:none!important}
 .cameraStage svg.modelDevice{display:block;width:162px;height:280px;overflow:visible;
  filter:drop-shadow(0 10px 14px #3b799a58)}
 .previewStatus{font-size:11px;line-height:1.4;color:#537891;min-height:16px;margin:2px 0 0}
