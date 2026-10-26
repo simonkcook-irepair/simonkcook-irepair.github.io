@@ -39,15 +39,6 @@
       "action": "Check temperature, charging/thermal symptoms and board-level evidence using safe verified procedures.",
       "sourceId": "ifixit-kernel-panics",
       "grade": "reference-reviewed"
-    },
-    {
-      "id": "i2c-bus-uppercase",
-      "match": "I2C",
-      "title": "I²C bus reference (alternate spelling)",
-      "summary": "An I²C reference may require examination of multiple devices sharing a bus; log text alone cannot identify the failed part.",
-      "action": "Use model-specific documentation and repeatable hardware measurements to narrow the affected subsystem.",
-      "sourceId": "ifixit-kernel-panics",
-      "grade": "reference-reviewed"
     }
   ],
   "notes": "A matching reference is a lead for investigation, never a confirmed faulty part. Diagnostic rules are manually reviewed. New sources require verification and reuse permission."
