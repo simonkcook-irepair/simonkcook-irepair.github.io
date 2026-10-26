@@ -4,9 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#e9f6ff"><meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Motion & Haptics Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=motion-review-1">
+<link rel="stylesheet" href="./visual.css?v=motion-review-2">
 </head>
-<body data-build="motion-haptics-glass-review-1">
+<body data-build="motion-haptics-glass-review-2">
 <main class="shell">
 <header class="header glass">
  <div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>MOTION & HAPTICS</span></div></div>
@@ -15,9 +15,9 @@
 <section id="home" class="card glass view active" aria-label="Motion and haptics welcome">
  <div class="eyebrow">Motion & Haptics Diagnostics</div>
  <h1>Let’s check how<br>your iPhone feels.</h1>
- <p class="lead">Explore movement, rotation and touch feedback with a simple, guided hardware review.</p>
+ <p class="lead">A simple guided check for movement, orientation and how your iPhone responds to touch.</p>
  <div class="phoneStage motionHero" aria-label="Illuminated iPhone with animated motion sensor rings">
-  <div class="phoneGlow"></div><div class="gyroOrbit orbitOne"></div><div class="gyroOrbit orbitTwo"></div>
+  <div class="phoneGlow"></div>
   <div class="phoneArt" aria-hidden="true">
    <span class="side s1"></span><span class="side s2"></span><span class="side s3"></span>
    <div class="phoneScreen">
@@ -30,7 +30,7 @@
      <path d="M80 5v19M80 136v19M5 80h19M136 80h19" stroke="#aafaff" stroke-width="4" stroke-linecap="round"/>
      <circle cx="117" cy="46" r="5" fill="#fff"/>
     </svg>
-    <span class="gyroAxis axX">X</span><span class="gyroAxis axY">Y</span><span class="gyroAxis axZ">Z</span>
+    
     <div class="screenGlow"></div><div class="screenGlow2"></div>
    </div>
   </div>
@@ -64,10 +64,14 @@
  <div id="stepEyebrow" class="eyebrow">Live motion measurement</div>
  <h1 id="stepTitle">Accelerometer</h1>
  <p id="stepInstruction" class="lead">Gently move the phone and observe the sensor values.</p>
- <div class="motionStage" id="motionStage">
+ <div class="motionStage stage-accel" id="motionStage" aria-label="Illustration for the current test">
   <div class="motionGlow"></div>
   <div class="motionRing ringA"></div><div class="motionRing ringB"></div><div class="motionRing ringC"></div>
-  <div class="demoDevice" id="demoDevice" aria-label="iPhone orientation illustration. Responds to genuine sensor data when available.">
+  <div class="directionArrows" aria-hidden="true"><span class="motionArrow left">←</span><span class="motionArrow right">→</span><span class="motionArrow up">↑</span><span class="motionArrow down">↓</span></div>
+  <div class="compassArt" aria-hidden="true"><span class="north">N</span><span class="east">E</span><span class="south">S</span><span class="west">W</span><span class="compassNeedle"></span></div>
+  <div class="hapticWaves" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="proximityArt" aria-hidden="true"><span class="nearBeam"></span><svg viewBox="0 0 70 100" fill="none"><path d="M49 8c-21-6-36 11-34 33 0 10 5 16 10 23 4 6 0 16 9 21 7 4 18-3 18-12 0-7-4-12-4-18 0-6 9-12 9-22 0-8-3-21-8-25Z" stroke="#4696c6" stroke-width="4" stroke-linejoin="round"/><path d="M42 26c-10-7-21 5-16 16 3 5 11 6 12 12" stroke="#77d7f2" stroke-width="4" stroke-linecap="round"/></svg></div>
+  <div class="demoDevice" id="demoDevice" aria-label="iPhone illustration">
    <div class="demoGlass"><span class="demoIsland"></span>
     <svg viewBox="0 0 120 120" class="demoCore" fill="none" aria-hidden="true">
      <circle cx="60" cy="60" r="42" stroke="#a8faff" stroke-width="2"/>
@@ -77,19 +81,30 @@
     </svg>
    </div>
   </div>
-  <div class="motionAxis axisX">X</div><div class="motionAxis axisY">Y</div><div class="motionAxis axisZ">Z</div>
-  <div class="stageLabel" id="stageLabel">SENSOR GUIDE</div>
+  <div class="stageLabel" id="stageLabel">MOVE YOUR IPHONE</div>
  </div>
- <div id="readings" class="readings" aria-label="Live sensor readings">
-  <div class="reading"><span id="readXLabel">X</span><strong id="readX">—</strong></div>
-  <div class="reading"><span id="readYLabel">Y</span><strong id="readY">—</strong></div>
-  <div class="reading"><span id="readZLabel">Z</span><strong id="readZ">—</strong></div>
+ <div class="detectionPanel" id="detectionPanel" role="status" aria-live="polite" data-state="waiting">
+  <div class="detectionIcon" id="detectionIcon" aria-hidden="true">◌</div>
+  <div class="detectionCopy"><strong id="detectionTitle">Ready to detect movement</strong><span id="detectionDetail">Enable access, then follow the simple instruction above.</span></div>
  </div>
+ <div class="checkpoints" id="checkpoints" aria-label="Movement checks">
+  <span id="checkA" class="checkItem">◌ Side to side</span>
+  <span id="checkB" class="checkItem">◌ Forwards and backwards</span>
+ </div>
+ <details id="technicalPanel" class="technicalPanel">
+  <summary>View technical readings <span aria-hidden="true">⌄</span></summary>
+  <div id="readings" class="readings" aria-label="Live sensor readings">
+   <div class="reading"><span id="readXLabel">X</span><strong id="readX">—</strong></div>
+   <div class="reading"><span id="readYLabel">Y</span><strong id="readY">—</strong></div>
+   <div class="reading"><span id="readZLabel">Z</span><strong id="readZ">—</strong></div>
+  </div>
+  <p id="technicalMethod">These are raw browser values, not an independent hardware pass.</p>
+ </details>
  <p class="liveStatus" id="sensorStatus" role="status" aria-live="polite">Real readings appear here only after supported sensor permission.</p>
  <button id="permissionButton" class="btn main permitBtn" type="button">Enable Live Motion Sensors</button>
  <button id="hapticButton" class="btn main permitBtn" type="button" hidden>Request Haptic Feedback</button>
  <p id="stepMethod" class="methodNote">Readings are information, not an automatic verdict.</p>
- <div class="testQuestion" id="testQuestion">Did the values respond?</div>
+ <div class="testQuestion" id="testQuestion">Did the phone respond?</div>
  <div class="testActions" role="group" aria-label="Your observed result">
   <button class="btn pass" data-answer="PASS" type="button">✓ Pass</button>
   <button class="btn fail" data-answer="FAIL" type="button">✕ Fail</button>
@@ -104,7 +119,7 @@
   <button id="previous" class="btn unable" type="button">← Previous</button>
   <button id="leave" class="btn unable" type="button">Exit test</button>
  </div>
- <p class="smallNote">All results are selected by you. The app will never silently mark an unsupported or missing sensor as working.</p>
+ <p class="smallNote">Motion response is detected from actual sensor events where supported; Pass, Fail or Unable remains your decision. No missing sensor is silently marked as working.</p>
 </section>
 <section id="results" class="card glass view resultMotion" aria-label="Motion and haptics results">
  <div class="eyebrow">Your sensor review</div><h1>Motion diagnostics<br>complete.</h1>
@@ -123,8 +138,9 @@
  <p class="smallNote">Only the readings actually received by the browser are reported. Native Core Motion, proximity and haptics capabilities need physical iOS testing.</p>
 </section>
 </main>
-<script src="./models.js?v=motion-review-1"></script>
-<script src="./core.js?v=motion-review-1"></script>
-<script src="./sensors.js?v=motion-review-1"></script>
-<script src="./app.js?v=motion-review-1"></script>
+<script src="./models.js?v=motion-review-2"></script>
+<script src="./core.js?v=motion-review-2"></script>
+<script src="./sensors.js?v=motion-review-2"></script>
+<script src="./guidance.js?v=motion-review-2"></script>
+<script src="./app.js?v=motion-review-2"></script>
 </body></html>
