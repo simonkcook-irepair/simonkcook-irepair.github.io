@@ -213,6 +213,8 @@ function renderStep(){
  "Record only what you observed in Apple's Camera app; Safari cannot independently confirm the physical lens.":
  step.id==="stability"?
  "An unstable picture or high-pitched noise is a possible focus/OIS clue, not proof of a damaged camera module.":
+ step.id==="flash"&&answers.rear==="FAIL"?
+ "The rear image was marked Fail. Check the torch independently: both failing can be a useful shared-system clue, not proof of a common power rail.":
  "Mark your own visual observation. A live preview is not an automated hardware diagnosis.");
  $("previous").disabled=index===0;
  const nativeBridge=window.webkit?.messageHandlers?.iRepairCameraDevice;
