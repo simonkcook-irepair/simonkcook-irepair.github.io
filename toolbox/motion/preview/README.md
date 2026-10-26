@@ -41,3 +41,29 @@ Relevant Apple developer documentation:
 ## Tests
 `node toolbox/motion/preview/tests/core-tests.js` tests engine totals, provenance, cautionary triage, privacy wording, and mocked permission/real-event state handling.
 Physical Safari motion permission and haptic behaviour **not yet verified** on a real iPhone; the user must inspect and approve this new prototype before a lock.
+
+## Motion & Haptics v2 — customer-friendly review (26 October 2026)
+User requested a simpler, less technical workflow and specifically praised the custom
+motion logo but not the extra external-orbit aesthetic. V2 restores the signature
+single front-facing iPhone on the landing page, with the motion symbol kept centred.
+The six guided stages are now visually distinct:
+- Accelerometer: directional arrows, a phone visual responding to actual acceleration,
+  and separate side-to-side/forward-back observations.
+- Gyroscope: rotating halo with actual rotation responses, checked over repeated samples.
+- Orientation: live illustrated phone pitch and roll with separate detection checks.
+- Compass: recognisable compass display illustration and Apple Compass instructions.
+- Haptics: animated radial waves and a customer-confirmed physical response.
+- Proximity: phone-to-ear illustration and guided normal-call screen check.
+
+**No simulated sensor readings and no auto-passing components.** Browser stages
+disable Pass until the *requested qualitative response* is supported by actual
+device events. Fail and Unable remain accessible. These lightweight response
+thresholds are indicators of movement, **not calibrated specifications, proof
+of a healthy accelerometer/gyro, or fault isolation**. Each successful response
+still requires the customer's Pass confirmation. The numerical telemetry is
+collapsed under "View technical readings"; it remains available in technician
+reports with provenance. Permission denied/unavailable is not treated as a failed
+sensor. All other prototypes remain locked and untouched.
+
+V2 is **NOT APPROVED OR LOCKED**; real-iPhone Safari testing and visual review
+are still required. Do not alter the five approved app prototypes.
