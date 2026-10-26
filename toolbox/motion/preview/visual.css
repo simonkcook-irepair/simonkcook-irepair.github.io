@@ -913,3 +913,134 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 @media(prefers-reduced-motion:reduce){
  .motionHero .phoneScreen .motionSymbol,.motionArrow,.motionStage .motionRing,.compassNeedle,
  .hapticWaves span,.motionStage.stage-proximity .demoDevice,.nearBeam{animation:none!important}}
+
+
+/* Motion & Haptics v3 — beautifully simple, dedicated demonstration above real response.
+   The five approved apps are never imported or changed. */
+.motionTest .lead[hidden]{display:none!important}
+.motionTest .motionStage{
+ display:flex!important;flex-direction:column;gap:9px;align-items:stretch;justify-content:start;
+ height:auto!important;min-height:0!important;overflow:visible!important;padding:10px!important;
+ background:linear-gradient(160deg,#f1faff,#d4edff 65%,#eaf8ff)!important;
+ box-shadow:inset 0 1px 2px #fff,0 12px 29px #4c92c537!important;
+ perspective:none!important;margin:14px 0 10px!important;
+}
+.motionStage .instructionPane,.motionStage .responsePane{
+ position:relative;width:100%;border:1px solid #fff;border-radius:22px;
+ background:linear-gradient(155deg,#ffffffeb,#e4f4ffd8);
+ box-shadow:inset 0 1px #fff,0 3px 12px #4f9dcc21;
+ padding:9px 11px 10px;overflow:hidden;min-width:0
+}
+.motionStage .responsePane{background:linear-gradient(155deg,#e8f7ffeb,#c7e5fce8);}
+.stageSectionLabel{display:flex;align-items:center;gap:7px;
+ color:#276fa2;letter-spacing:1.5px;font-size:9px;font-weight:900}
+.stageStepNumber{display:grid;place-items:center;width:19px;height:19px;border-radius:7px;
+ color:#fff;background:linear-gradient(150deg,#48baff,#1269b9);font-size:10px;letter-spacing:0;
+ box-shadow:0 0 7px #2fa8fa6e}
+.liveStepNumber{background:linear-gradient(150deg,#3eb3d5,#166fa8)}
+.motionStage .instructionContents{display:flex;align-items:center;justify-content:center;gap:16px;
+ min-height:103px}
+.guideActionLabel{display:block;flex:1;max-width:205px;
+ font-size:clamp(16px,4.6vw,20px);line-height:1.18;font-weight:900;letter-spacing:-.4px;color:#194b72}
+.guideGraphic{position:relative;flex:none;width:120px;height:102px;
+ display:flex;align-items:center;justify-content:center;isolation:isolate}
+.guidePhone{width:47px;height:88px;border:3px solid #9fbcd2;border-radius:12px;
+ background:radial-gradient(ellipse at 50% 58%,#168ac4,#092d51 62%,#06192d);
+ box-shadow:inset 0 0 0 1px #daf3ff,0 7px 13px #3283be53,0 0 9px #54d8ff77;
+ display:flex;align-items:center;justify-content:center;position:relative;z-index:3;
+ transform-origin:50% 50%}
+.guidePhone .guideIsland{position:absolute;top:5px;left:50%;transform:translateX(-50%);
+ width:21px;height:5px;border-radius:6px;background:#041b2b}
+.guidePhone svg{width:90%;filter:drop-shadow(0 0 5px #8cecff)}
+.guideSides,.guideDepth,.guideSpin{display:none;position:absolute;
+ color:#2599cd;font-weight:950;text-shadow:0 0 12px #70d8ff,0 1px #fff;pointer-events:none}
+.guideSides{font-size:26px;top:37%}.guideLeft{left:2px}.guideRight{right:2px}
+.guideDepth{font-size:32px}.guideDepth.near{top:0;right:0}.guideDepth.far{bottom:0;left:0}
+.guideSpin{font-size:91px;inset:-3px 0 0;text-align:center;line-height:98px;color:#66bbeb99}
+.motionStage.stage-accel[data-phase="first"] .guideSides{display:block}
+.motionStage.stage-accel[data-phase="first"] .guidePhone{animation:guideHorizontal 2.1s ease-in-out infinite}
+.motionStage.stage-accel[data-phase="second"] .guideDepth{display:block}
+.motionStage.stage-accel[data-phase="second"] .guidePhone{animation:guideNearFar 2.5s ease-in-out infinite}
+.motionStage.stage-gyro .guideSpin{display:block;animation:guideSpiral 3.5s linear infinite}
+.motionStage.stage-gyro .guidePhone{animation:guideRotate 3.5s ease-in-out infinite}
+.motionStage.stage-tilt[data-phase="first"] .guidePhone{animation:guidePitch 2.4s ease-in-out infinite}
+.motionStage.stage-tilt[data-phase="second"] .guidePhone{animation:guideRoll 2.4s ease-in-out infinite}
+.motionStage.stage-tilt[data-phase="second"] .guideSides{display:block}
+.guideCompass{display:none;position:absolute;inset:3px 11px;border:2px solid #8bdcf8;
+ border-radius:50%;background:radial-gradient(circle,#fff,#bfe8ff);z-index:4;
+ box-shadow:0 0 14px #75c3eb60}
+.guideCompass b,.guideCompass small{position:absolute;left:50%;transform:translateX(-50%);
+ font-size:12px;color:#2e77a9}.guideCompass b{top:2px}.guideCompass small{bottom:2px}
+.guideCompass i{position:absolute;left:calc(50% - 6px);top:17%;height:66%;width:12px;
+ background:linear-gradient(#109cd7 0 50%,#b7d8ea 50%);
+ clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+ animation:compassIllustrate 3.4s ease-in-out infinite}
+.motionStage.stage-compass .guidePhone{display:none}
+.motionStage.stage-compass .guideCompass{display:block}
+.guideRipples{display:none;position:absolute;inset:0;place-items:center}
+.guideRipples i{grid-area:1/1;width:62px;height:62px;border:3px solid #5bd4f8;
+ border-radius:50%;animation:hapticRadiate 2.4s ease-out infinite;box-shadow:0 0 10px #74e9ffad}
+.guideRipples i:nth-child(2){animation-delay:.8s}.guideRipples i:nth-child(3){animation-delay:1.6s}
+.motionStage.stage-haptics .guideRipples{display:grid}
+.guideEar{display:none;position:absolute;right:0;top:7px;width:63px;height:92px;z-index:4}
+.guideEar svg{width:100%;height:100%;filter:drop-shadow(0 3px 7px #7fbce95d)}
+.motionStage.stage-proximity .guideEar{display:block}
+.motionStage.stage-proximity .guidePhone{animation:nearEar 3.1s ease-in-out infinite;transform:translateX(-16px)}
+.motionStage .responseContents{display:flex;align-items:center;justify-content:start;
+ gap:16px;padding:8px 4px 1px;min-height:97px}
+.motionStage .responsePane .demoDevice{position:relative;display:block;flex:none;z-index:2;
+ width:45px!important;height:89px!important;border:3px solid #85aaca!important;
+ border-radius:12px!important;box-shadow:inset 0 0 0 1px #d9f2ff,0 5px 11px #4c8dc267!important;
+ background:#0b2945;transform-origin:center;animation:none!important;
+ transition:transform .1s linear!important}
+.motionStage .responsePane .demoGlass{inset:2px!important;border-radius:7px!important}
+.motionStage .responsePane .demoIsland{top:3px!important;left:calc(50% - 11px)!important;
+ width:22px!important;height:5px!important}
+.motionStage .responsePane .demoCore{animation:none!important;filter:drop-shadow(0 0 4px #53e3f9)!important}
+.motionStage .responsePane .detectionPanel{border:0;box-shadow:none;
+ padding:0;min-height:0;background:transparent;gap:7px;flex:1;min-width:0}
+.motionStage .responsePane .detectionIcon{width:32px;height:32px;flex:none;border-radius:11px;
+ font-size:17px}
+.motionStage .responsePane .detectionCopy strong{font-size:clamp(13px,3.9vw,15px);line-height:1.28}
+.motionStage .responsePane .detectionCopy span{font-size:11px;line-height:1.42}
+.motionStage .responsePane .guidedOutcome{display:grid;place-items:center;flex:none;
+ width:54px;height:62px;font-size:35px;font-weight:950;color:#217ba8;
+ text-shadow:0 0 13px #71e5ff}
+.motionStage .responsePane .guidedOutcome[hidden]{display:none!important}
+.motionStage.guided .responsePane .demoDevice{display:none!important}
+.motionStage.guided .responsePane .detectionPanel{flex:1}
+.motionStage .motionGlow,.motionStage>.motionRing,.motionStage>.stageLabel,
+.motionStage>.compassArt,.motionStage>.directionArrows,.motionStage>.proximityArt,
+.motionStage>.hapticWaves{display:none!important}
+.motionTest .checkpoints{margin-top:3px}
+.motionTest .checkItem{font-size:11px;min-height:42px}
+.motionTest .technicalPanel{margin:7px 0 1px}
+.motionTest #permissionButton{margin-top:10px}
+.motionTest .methodNote{margin-top:5px}
+.motionTest .testQuestion{margin-top:14px!important}
+.motionTest .testActions{margin-top:9px}
+.motionTest .testActions .btn{font-size:14px;min-height:52px}
+@keyframes guideHorizontal{0%,100%{transform:translateX(-8px)}50%{transform:translateX(9px)}}
+@keyframes guideNearFar{0%,100%{transform:scale(.86)}50%{transform:scale(1.17)}}
+@keyframes guideSpiral{to{transform:rotate(360deg)}}
+@keyframes guideRotate{0%,100%{transform:rotate(-19deg)}50%{transform:rotate(19deg)}}
+@keyframes guidePitch{0%,100%{transform:perspective(220px) rotateX(-24deg)}50%{transform:perspective(220px) rotateX(24deg)}}
+@keyframes guideRoll{0%,100%{transform:perspective(220px) rotateY(-30deg)}50%{transform:perspective(220px) rotateY(30deg)}}
+@media(max-width:355px){.motionStage .instructionContents{gap:8px}
+ .guideGraphic{width:104px}.guideActionLabel{font-size:15px}
+ .motionStage .responseContents{gap:8px}}
+@media(prefers-reduced-motion:reduce){
+ .motionStage .guidePhone,.motionStage .guideSpin,.motionStage .guideCompass i,
+ .motionStage .guideRipples i{animation:none!important}}
+
+/* Only live values drive the small phone; the demo above may animate independently. */
+.motionStage.stage-accel[data-phase="first"] .responsePane .demoDevice{
+ transform:translateX(var(--tx,0px))!important}
+.motionStage.stage-accel[data-phase="second"] .responsePane .demoDevice{
+ transform:scale(var(--live-scale,1))!important}
+@media(max-width:380px){
+ .motionStage .instructionContents{gap:8px}
+ .motionStage .guideGraphic{width:103px}
+ .motionStage .guideActionLabel{font-size:15px}
+ .motionStage .responseContents{gap:9px}
+}
