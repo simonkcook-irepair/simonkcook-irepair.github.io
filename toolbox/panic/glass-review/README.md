@@ -12,7 +12,8 @@ The existing `toolbox/panic/index.html` and `toolbox/panic/panic.js` on `main` w
 **https://irepair-panic-glass-review-simon-cook.vercel.app/**
 
 - Vercel project: `prj_KITMmrd0sZHxGnnTFZ3bq3LMS8qf`.
-- Approved-for-review deployment: `dpl_A8nfMq723EWBA8TBzP3J8TGuzURp`.
+- Current reviewed deployment: `dpl_77yxJ2GUiBxmrJ8oo1f7MMp8Nzh5`.
+- Earlier review deployment (rollback): `dpl_A8nfMq723EWBA8TBzP3J8TGuzURp`.
 - Previous review deployment for rollback: `dpl_9HgtpwLuMqh9PVp4DmYJ1bdVyMTm`.
 - Source branch: `toolbox/panic-glass-review-2026-10-26`.
 - Source folder: `toolbox/panic/glass-review/`.
@@ -78,3 +79,29 @@ Verified in Chromium at 390×844 and 375×667, and repeated **against the public
 - **Panic Diagnostics is only a comparison review**; no promotion/finalisation until explicit user approval. Prior original Panic source is preserved, and the new Vercel project is separate.
 
 Reference for current release-year names: https://support.apple.com/en-gb/108044 .
+
+## October 26 final review QA and product-code enhancement
+
+**Corrected public Safari preview:** https://irepair-panic-glass-review-simon-cook.vercel.app/  
+**Verified deployment:** `dpl_77yxJ2GUiBxmrJ8oo1f7MMp8Nzh5`.
+
+The parser now recognises `product: "iPhone18,2"`, a common model identifier in actual two-section Apple `panic-full` files, in addition to the older `productType`, `deviceModel`, etc. This gives reliable identification where a verified catalogue mapping exists without introducing another customer form. Unverified codes are displayed without invented model names.
+
+A short **Choose your iPhone model** correction action appears on the results only when the model is unavailable or conflicting. This opens the existing user-approved newest-first, year-grouped iPhone selector; selecting the handset returns to the same parsed report without re-uploading the file. **Check another log** clears any previous manual model selection, preventing a wrong handset being silently attributed to another customer's log.
+
+**Current live browser QA:**
+- GitHub branch index, model catalogue, pure parser and app engine match deployed assets byte-for-byte: PASS.
+- The source already includes 17 repeatable pure-code regression tests at `tests/core-tests.js`, all PASS; additional `product` and model-correction cases tested interactively.
+- Simulated iPhone Safari 390×844: premium handset/design; native Files file chooser; .ips.ca.synced upload; automatic sensor extraction and model mapping; privacy-safe optional technician signature; copyable report; A4 report-only print CSS: PASS.
+- Year groupings in required descending 2026 → 2017 order: PASS.
+- Re-selecting the same file, rejecting a PDF, pasted-log fallback and clearing pasted data: PASS.
+- Correcting missing model from results, returning directly to the report, clearing stale model when analysing a different log, and extracting `product` from an Apple-style split JSON panic log: PASS on the **published** site.
+- Simulated viewport widths 375, 390 and 430 pixels: no horizontal overflow, PASS.
+- User data is parsed locally; no analytics POST request was made, PASS.
+- The completed and locked Screen, Battery and Audio sites each remain accessible (HTTP 200), with no changes to their sources or deployments.
+
+**Remaining acceptance gate:** The user must personally inspect the actual Safari app on an iPhone, compare its appearance with the locked tools and try a real panic-full file. This working review is **not** marked complete or locked until the user explicitly approves it.
+
+**Important native distinction:** Native applications should not equate the host phone's hardware identifier with the log's source-device identity because technicians may import a panic log from a different iPhone. Use explicit log metadata or a customer-confirmed model for the report.
+
+**Sources for panic report structure and conservative interpretation:** Apple device analytics https://www.apple.com/uk/legal/privacy/data/en/device-analytics/ and iFixit kernel panic overview https://www.ifixit.com/Wiki/iPhone_Kernel_Panics .
