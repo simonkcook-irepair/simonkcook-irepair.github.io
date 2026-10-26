@@ -1,7 +1,7 @@
 # iRepair Toolbox — Audio Diagnostics Glass Review
 
 **Created:** 26 October 2026  
-**Status:** WORKING REVIEW PREVIEW, pending explicit user approval and physical iPhone Safari check. Not marked final.
+**Status:** ✅ **USER-APPROVED FINAL BROWSER PROTOTYPE — LOCKED ON 26 OCTOBER 2026.** Native iOS component-level audio routing and physical iPhone verification remain future milestones; this sign-off is **not** approval of native hardware isolation.
 
 ## Context
 User explicitly marked **Battery Diagnostics completed** on 26 October 2026 and asked to revamp and complete the next Toolbox application. The next existing app selected for visual modernisation is **Audio Diagnostics**, whose older working source is `toolbox/audio/index.html` and `toolbox/audio/models.js` on `main`.
@@ -70,4 +70,25 @@ https://irepair-audio-glass-review-simon-cook.vercel.app/
 
 **Verified:** Live public site: HTTP 200 and byte-for-byte match to tested source for index, CSS, models and engine. Playwright mobile browser tests at 390×844, 375×667 and 430×932: correct phone ratio/centering, no extra scroll-width, bubble absent, correct selector behavior, front does not change after model selection, rear flip works in both directions, model-specific diagnostic screen still works. HTML markup and models catalogue match the original Audio review except invisible cache-busting asset versions; previous CSS is preserved as an identical prefix, and engine change is strictly limited to the rear-view class state. Completed Screen + Battery URLs verified HTTP 200 and untouched.
 
-**Status:** Audio revised preview **awaits user visual approval**, not locked as final. Do not edit the accepted Screen or Battery apps.
+**Review gate closed on 26 October 2026:** User explicitly approved the corrected landing-screen consistency and accepted Audio Diagnostics as **completed for the time being**. From this date the browser prototype is **LOCKED**, alongside Screen and Battery. Preserve all three without further changes except new, specifically authorised alterations.
+
+
+## Explicit Audio Diagnostics completion / native handoff — 26 October 2026
+
+**Customer approval:** “Okay, that looks absolutely perfect and definitely in line with what we’ve already got. So I think we can consider this one completed for the time being ... until we can successfully isolate each individual speaker and microphone, this prototype is complete.”
+
+**Approved final browser reference:** https://irepair-audio-glass-review-simon-cook.vercel.app/ (deployment `dpl_DmG1P2iTt1Y6Rj6dSHY4mRLZiSRi`).
+
+### Freeze policy
+- **No further browser UI or audio-engine changes.** This includes the approved glass illustrations, landing proportions, model selection, test flow, premium sounds, recording/playback, recovery and reporting.
+- Do not overwrite the locked Screen or Battery Diagnostics previews, iRepair Core or the original Audio implementation.
+- Source of truth for this accepted Audio browser candidate: `toolbox/audio-landing-handset-match-2026-10-26` at `toolbox/audio/glass-review/`.
+
+### Native iOS milestone — not implemented or verified
+- Implement a native iPhone audio testing layer using **public** `AVAudioSession` / `AVAudioEngine` APIs and supported input data-source selection where available. Identify handset model from a verified native hardware identifier.
+- Investigate the achievable routing and physical isolation **for each model and iOS version**. Do not assume native iOS provides individually selectable receiver/loudspeaker and front/rear/lower microphone for every handset; individual component access is hardware/API dependent.
+- For each candidate independent test, record requested versus **actual effective audio route/data source**, physical device evidence, microphone permissions, interruptions and device configuration. Where isolation is unavailable or cannot be verified, label **Unable to Test Independently**, rather than claiming a hardware PASS or FAIL.
+- Native receiver/loudspeaker output differentiation and microphone selection must be verified on real iPhones. iOS microphone recording availability is not equivalent to individual microphone independence.
+- Build, sign, test, privacy review and App Store submission after Apple Developer Programme/Xcode setup. Browser sign-off does not imply native deployment is ready.
+
+**Completion applies exclusively to the designed browser prototype and supported browser-guided observations.**
