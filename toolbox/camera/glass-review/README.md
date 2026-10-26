@@ -1,12 +1,21 @@
-# iRepair Toolbox — Camera Diagnostics (new browser review)
+# iRepair Toolbox — Camera Diagnostics (approved, locked browser prototype)
 
 **Created:** 26 October 2026.  
-**Status:** Working review prototype — **NOT YET USER-APPROVED OR LOCKED**.  
+**Status:** **APPROVED AND LOCKED** — user confirmed final Camera Diagnostics Safari prototype on 26 October 2026. Native iOS development remains a separate, untested phase.  
 **Safari preview:** https://irepair-camera-glass-review-simon-cook.vercel.app/  
 **Vercel project:** `prj_HsDKyquDCwJOozz3tzQbKVUNAabo` (`irepair-camera-glass-review`).
-**Latest live verified deployment:** `dpl_2mcoEPueGhBfZN6LbPJHwBofcAwc` (**READY**). Earlier review rollback: `dpl_Hg6tqXd2yJbS8iRQe3y1HEuQhtA4`.  
-**GitHub branch:** `toolbox/camera-glass-preview-2026-10-26` (isolated from working iRepair Core and the four completed apps).  
+**Approved live deployment:** `dpl_5JrkD3yTqa1s6dAspuiwNejiftJB` (**READY**, five public files HTTP 200 and byte-identical to source). Original approved application-code commit: `3eb29520b2ac7234e8557c62b1e2c58d5953c1df`.  
+**Review source branch:** `toolbox/camera-glass-preview-2026-10-26` (historical). **Approved snapshot branch:** `toolbox/camera-glass-locked-2026-10-26`.  
 **Source folder:** `toolbox/camera/glass-review/`.
+
+## APPROVAL & FREEZE RECORD — 26 October 2026
+The user reviewed the design, model-aware camera-lens illumination, focus/stability and flash fault triage, Face ID guidance and the final LiDAR / depth-distance stage, then explicitly said **"Yes, this is perfect. Lock this down as the completed prototype."**
+
+**LOCKED SCOPE:** `index.html`, `visual.css`, `models.js`, `core.js`, `app.js` and associated Camera tests/graphics in `toolbox/camera/glass-review/`. Preserve the current hosted Safari review link and approved visual language. Do **not** edit, rebuild, redeploy or replace this accepted browser prototype without fresh explicit authorisation. The existing Screen, Battery, Audio and Panic Diagnostics remain independently locked.
+
+**Native development is NOT part of this approval.** Use a different development branch/project for the eventual iOS application and validate actual iPhone hardware access, ARKit depth data, AVFoundation TrueDepth depth streaming and LocalAuthentication on a physical device. Do not claim that browser tests prove LiDAR/TrueDepth physical hardware operation or individual dot-projector/IR component condition.
+
+**Verification at approval:** 48 named automated assertions and two expected-exception tests passed; all five live public source assets matched the GitHub code and Vercel returned READY. Live physical-device testing of native implementations remains outstanding.
 
 ## Product goal
 A standalone consumer-friendly **guided iPhone camera assessment**, using exactly the premium icy-blue glass branding, handset shape, animated diagonal shine, glowing large controls and typography approved for Screen, Battery, Audio and Panic Diagnostics. Keep the user journey short, accessible and strictly honest about iOS/Browser limitations. Never say a camera, flash, TrueDepth array or physical lens was electronically tested when only the customer visually inspected a picture.
@@ -68,8 +77,8 @@ Web capture reference: https://developer.mozilla.org/en-US/docs/Web/API/MediaDev
 - Browser testing used simulated camera input; **real iPhone Safari camera-permission behaviour, flash device control, manual Camera-app lens visual observation and native Xcode build are NOT yet physically verified**.
 - The approved Screen, Battery, Audio and Panic apps are unchanged. This is a separately hosted and branched review candidate.
 
-## Freeze gate
-Do not label Camera Diagnostics completed or final until the user visually compares the Safari preview with the four locked apps and evaluates it on a real iPhone. Preserve praised elements; make only requested changes on this isolated Camera branch. Keep the other four approved apps completely frozen.
+## Freeze gate — APPROVED AND CLOSED
+Visual review and approval were explicitly completed on 26 October 2026. Freeze all Camera browser prototype files and the published review URL. Future native implementation must develop separately. Keep the other four approved apps completely frozen.
 
 ## Final public review verification — 26 October 2026
 
@@ -79,14 +88,14 @@ Production mobile Chromium walkthrough at 390×844 used simulated video hardware
 
 Permission-denied environment completed all core stages as **Unable to Test**, without camera access, fake PASS or a blocked interface. Mobile 375×667 and 430×932 layouts had no horizontal overflow and preserved the approved iPhone illustration proportions. Print CSS was checked for the correct **Camera** title and limitation wording, with no inherited Panic or Battery disclaimer.
 
-**Acceptance gate remains OPEN:** physical Safari microphone/camera/torch permissions and video routing need real iPhone confirmation, and the user must approve the revised Camera landing/test screens before the browser prototype can be labelled complete/locked. Xcode and device-specific AVFoundation tests remain for the native App Store phase. The previously locked Screen, Battery, Audio and Panic applications were verified HTTP 200 and remain unchanged.
+**Historical note (earlier 26 October build):** the acceptance gate was then open. The user subsequently approved and locked the final camera/browser prototype after the LiDAR addition. Physical native iPhone hardware-validation remains a separate development requirement. Xcode and device-specific AVFoundation tests remain for the native App Store phase. The previously locked Screen, Battery, Audio and Panic applications were verified HTTP 200 and remain unchanged.
 
 ## Technician observations integration — 26 October 2026 (review revision)
 - Preserved approved glass layout, phone illustration, chronological selector, existing video/optics/torch, capture, clipboard and print routes; none of the four locked applications were changed.
 - Preserved and refined rear camera + flash correlation, focus/stability clues and separate Face ID stage already present in the branch. If a customer marks an applicable step **Fail**, an optional high-visibility symptom selection appears before proceeding. Specific observations are kept distinct from suspected causes in results and copied report.
 - Face ID remains guided and observational in Safari. Native `ios/CameraDeviceBridge.swift` now contains an uncompiled customer-initiated LocalAuthentication `deviceOwnerAuthenticationWithBiometrics` path with a narrow outcome taxonomy, Face ID gating by actual `biometryType`, no passcode fallback and no access to biometric templates. Requires `NSFaceIDUsageDescription`; requires native Xcode/iPhone verification before App Store release. Successful authentication only verifies that the system authenticated this attempt, not each TrueDepth part.
 - Updated deterministic test expectations for the current 5/6/8-step plans, Home-button exceptions, rear/flash combinations, symptom provenance, Face ID limitations and safe reporting.
-- Approval gate remains **OPEN**; technician and real-device user review required.
+- **Historical development note:** this gate was open at the time of these edits; closed by explicit user approval on 26 October 2026.
 
 ## Lens illumination review adjustment (26 October 2026)
 - Added a compact, animated icy-blue camera-location guide beneath live rear/front previews.
@@ -103,7 +112,7 @@ Permission-denied environment completed all core stages as **Unable to Test**, w
 - All diagrams are **schematic visual teaching aids**. Browser camera streams are not
   independently routed to, or proven to originate from, the glowing physical lens;
   native AVFoundation verification remains a future device-tested activity.
-- All four completed Toolbox apps remain locked and unchanged. Camera approval remains open.
+- All five completed Toolbox browser prototypes are now approved and frozen (Camera approval followed these earlier review edits).
 
 ## LiDAR proposal incorporated into Camera review — 26 October 2026
 The user approved the existing visual experience, then raised adding the rear
@@ -136,5 +145,4 @@ References:
 - https://support.apple.com/en-gb/108044
 - https://www.apple.com/uk/iphone-18-pro/specs/
 
-This browser code does not access ARKit or TrueDepth depth APIs. Native iPhone
-validation and the user's final prototype approval are both still required.
+This browser code does not access ARKit or TrueDepth depth APIs. User approval of the **browser prototype** was granted on 26 October 2026; native iPhone validation is still required before claims about those hardware measurements.
