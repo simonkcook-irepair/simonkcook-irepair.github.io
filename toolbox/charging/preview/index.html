@@ -2,8 +2,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eaf6ff"><meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Charging Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=charge-review-1">
-</head><body data-build="charging-glass-review-1"><main class="shell">
+<link rel="stylesheet" href="./visual.css?v=charge-review-2">
+</head><body data-build="charging-glass-review-2"><main class="shell">
 <header class="header glass"><div class="brand"><div class="logo" aria-hidden="true"></div>
 <div><b>iRepair Toolbox</b><span>CHARGING DIAGNOSTICS</span></div></div>
 <span class="badge">GUIDED TEST</span></header>
@@ -41,6 +41,13 @@
      <path d="M102 434q-35-20-29-66" stroke="#b2fbff" stroke-opacity=".5" stroke-width="2"/>
      <path d="M138 434q35-20 29-66" stroke="#b2fbff" stroke-opacity=".5" stroke-width="2"/>
     </g>
+    <g class="heroPowerPlug" transform="translate(120 369)">
+     <path d="M0 28v94" stroke="#d7faff" stroke-opacity=".72" stroke-width="6" stroke-linecap="round"/>
+     <rect x="-23" y="-1" width="46" height="54" rx="13" fill="#97d5f2" fill-opacity=".4" stroke="#efffff" stroke-width="2.3"/>
+     <rect x="-13" y="-27" width="26" height="35" rx="6" fill="#c5f3ff" fill-opacity=".74" stroke="#f6ffff" stroke-width="2.5"/>
+     <rect x="-10" y="-18" width="20" height="7" rx="3.5" fill="#267ab0" stroke="#e5ffff" stroke-width="1"/>
+     <path d="M0-44V-64" stroke="#d4ffff" stroke-width="2" stroke-dasharray="4 6"/>
+    </g>
     <g class="chargingFlux" fill="#efffff">
      <circle cx="120" cy="415" r="5"/><circle cx="120" cy="359" r="3.5"/>
      <circle cx="120" cy="312" r="2.4"/><circle cx="83" cy="385" r="2"/>
@@ -53,8 +60,8 @@
  </div>
 </div>
 <div class="infoBox"><b>What we'll check</b>
-<div>⚡ Charging cable and power adapter</div>
-<div>◉ Charging port and connection</div>
+<div>⚡ Charger, cable and contact stability</div>
+<div>◉ Reversible plug and port inspection</div>
 <div>◎ Wireless charging and battery behaviour</div></div>
 <div class="actions"><button id="begin" class="btn main" type="button">Start Charging Check →</button></div>
 <p class="smallNote">Safe, customer-guided checks. Safari can't directly measure charging current, battery charge state or the electrical condition of a port.</p>
@@ -65,23 +72,19 @@
 <div class="glassy setupMotion"><label for="phoneModel">Which iPhone? (optional)</label>
 <select id="phoneModel"><option value="">Choose your iPhone…</option></select>
 <p class="smallExplanation" id="modelHelp">Choosing a model helps us show its charging connector. Safari can't identify it reliably.</p></div>
-<div class="planPreview"><strong id="connectorSummary">Charging connector</strong><p>Six simple, guided checks. Nothing will start charging automatically.</p></div>
+<div class="planPreview"><strong id="connectorSummary">Charging connector</strong><p>Eight simple, guided checks. Nothing will start charging automatically.</p></div>
 <div class="privacyNotice"><strong>Safety comes first</strong><p>If your iPhone is swollen, wet, unusually hot, or a cable or plug looks damaged, don't connect it to power. The first step checks this before anything else.</p></div>
 <div class="setupBottom"><button id="start" class="btn main" type="button">Begin Guided Tests →</button><button id="setupBack" class="btn unable" type="button">← Back</button></div>
 </section>
 <section id="test" class="card glass view chargeTest" aria-label="Guided charging test">
-<div class="stepHead"><span id="stepCounter">Check 1 of 6</span><button id="exitTest" class="btn unable mini" type="button">Exit</button></div>
+<div class="stepHead"><span id="stepCounter">Check 1 of 8</span><button id="exitTest" class="btn unable mini" type="button">Exit</button></div>
 <div id="progress" class="track" aria-label="Test progress"></div>
 <div class="eyebrow">A SIMPLE GUIDED CHECK</div><h1 id="stepTitle">Safe to charge?</h1>
 <p id="stepInstruction" class="lead chargeInstruction">Check the equipment before connecting power.</p>
 <div id="chargingStage" class="chargeStage stage-safety">
  <section class="chargePane instructionPane">
   <div class="chargePaneLabel"><span>1</span> DO THIS</div>
-  <div class="chargeGuideArt" aria-hidden="true">
-   <div class="guideHandset"><div class="miniIsland"></div><span class="guideScreenIcon" id="artIcon">⚡</span><span class="miniBattery"><span></span></span></div>
-   <div class="guideLead"><div class="guideCable"></div><div class="guidePlug"></div><span class="guidePulse"></span></div>
-   <div class="guideQi"><div class="qiDisk"></div><div class="qiPulse"></div></div>
-  </div>
+  <div class="chargeGuideArt chargeGuideArtV2" id="guideArtwork" aria-hidden="true"></div>
   <strong class="chargeAction" id="actionLabel">Check the cable and plug</strong>
  </section>
  <section class="chargePane expectedPane">
@@ -123,7 +126,8 @@
 <button id="startOver" class="btn unable" type="button">Run charging checks again</button></div>
 <p class="smallNote">The browser does not measure electrical hardware. A repair technician can follow up with suitable instruments where needed.</p>
 </section></main>
-<script src="./models.js?v=charge-review-1"></script>
-<script src="./core.js?v=charge-review-1"></script>
-<script src="./app.js?v=charge-review-1"></script>
+<script src="./models.js?v=charge-review-2"></script>
+<script src="./core.js?v=charge-review-2"></script>
+<script src="./art.js?v=charge-review-2"></script>
+<script src="./app.js?v=charge-review-2"></script>
 </body></html>
