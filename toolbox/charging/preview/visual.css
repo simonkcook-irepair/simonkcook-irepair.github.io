@@ -1449,3 +1449,102 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  #results{display:block!important}body{background:white!important}
  .card{border:0!important;box-shadow:none!important;min-height:0!important}
  .resultActions{display:none!important}}
+
+/* Charging v2 visual refinement, scoped to the still-unapproved Charging app.
+   Replaces generic phone/emoji stage drawings with eight bespoke technical scenes. */
+.chargeTest .chargeGuideArtV2{
+ position:relative;display:flex;align-items:center;justify-content:center;
+ height:186px;min-height:186px;max-width:100%;overflow:hidden;isolation:isolate;
+ margin:2px auto 4px;border-radius:17px;
+ background:
+  radial-gradient(ellipse at 50% 56%,#80eaff3a,transparent 51%),
+  radial-gradient(circle at 20% 27%,#eaffffb2,transparent 29%),
+  linear-gradient(140deg,#eaf8fff0,#d6edffe3 53%,#c9e6ffe8);
+ border:1px solid #fffffffa;box-shadow:inset 0 1px 2px #fff,0 3px 12px #3f8bb72b;
+}
+.chargeTest .chargeSceneSvg{
+ width:min(100%,370px);height:100%;max-height:186px;
+ display:block;overflow:visible;filter:drop-shadow(0 7px 10px #4289b25c);
+}
+.chargeTest .chargeSceneSvg .artHandset{
+ filter:drop-shadow(0 1px 5px #2a9ac96c);
+}
+.chargeTest .chargeSceneSvg .artConnector{
+ filter:drop-shadow(0 2px 5px #65d6ef65);
+}
+.chargeTest .chargeStage.stage-flip .artConnector{
+ transform-box:fill-box;transform-origin:center;
+ animation:chargingArtFlip 3.8s ease-in-out infinite;
+}
+.chargeTest .chargeStage.stage-flip .artConnector:nth-child(2){
+ animation-delay:-1.9s;
+}
+.chargeTest .chargeStage.stage-wired .artPowerBolt{
+ animation:chargingArtBolt 2.4s ease-in-out infinite;
+ transform-box:fill-box;transform-origin:center;
+}
+.chargeTest .chargeStage.stage-wireless .artWirelessRing{
+ animation:chargingArtWireless 3s ease-in-out infinite;
+ transform-box:fill-box;transform-origin:center;
+}
+.chargeTest .chargeStage.stage-stability .artConnector{
+ animation:chargingArtStill 3.5s ease-in-out infinite;
+}
+.chargeTest .chargePane .chargeAction{
+ margin:7px 0 4px;color:#1c537a;
+ font-size:15px;font-weight:860;line-height:1.34;
+}
+.chargeTest .chargePane.expectedPane{
+ background:linear-gradient(160deg,#edfaff,#d3edff 70%,#c3e5ff);
+}
+.chargeTest .expectedIcon{
+ background:linear-gradient(155deg,#ffffff,#c0ecff);
+ color:#1379b0;border:1px solid #fff;
+ font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+ box-shadow:inset 0 1px 2px #fff,0 2px 12px #2c99d13d;
+}
+.chargeTest .chargeCaution{margin-top:7px;padding:10px 12px;}
+#home .chargingHero .heroPowerPlug{
+ animation:chargingHeroFeed 3.2s ease-in-out infinite;
+ transform-box:fill-box;transform-origin:center;
+}
+#home .chargingHero .chargingBattery{
+ filter:drop-shadow(0 0 8px #a4ffffaa);
+}
+#home .chargingHeroSvg{
+ filter:drop-shadow(0 0 8px #67fbff7a);
+}
+@keyframes chargingHeroFeed{
+ 0%,100%{opacity:.65}
+ 50%{opacity:1}
+}
+@keyframes chargingArtFlip{
+ 0%,18%,82%,100%{opacity:.74}
+ 42%,60%{opacity:1}
+}
+@keyframes chargingArtBolt{
+ 0%,100%{opacity:.65;transform:scale(.96)}
+ 50%{opacity:1;transform:scale(1.08)}
+}
+@keyframes chargingArtStill{
+ 0%,100%{opacity:.83}
+ 50%{opacity:1}
+}
+@keyframes chargingArtWireless{
+ 0%{opacity:.78;transform:scale(.87)}
+ 70%,100%{opacity:.08;transform:scale(1.22)}
+}
+@media(max-width:370px){
+ .chargeTest .chargeGuideArtV2{height:164px;min-height:164px}
+ .chargeTest .chargeSceneSvg{max-height:164px}
+}
+@media(min-width:620px){
+ .chargeTest .chargeGuideArtV2{height:200px;min-height:200px}
+ .chargeTest .chargeSceneSvg{max-height:200px}
+}
+@media(prefers-reduced-motion:reduce){
+ .chargeTest .chargeSceneSvg .artConnector,
+ .chargeTest .chargeSceneSvg .artPowerBolt,
+ .chargeTest .chargeSceneSvg .artWirelessRing,
+ #home .chargingHero .heroPowerPlug{animation:none!important}
+}
