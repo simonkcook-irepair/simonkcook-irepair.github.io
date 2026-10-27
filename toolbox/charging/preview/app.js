@@ -1,8 +1,8 @@
-/* iRepair Charging Diagnostics v1 — guided customer observations only. */
+/* iRepair Charging Diagnostics v2 — guided customer observations only. */
 (function(){"use strict";
 const $=id=>document.getElementById(id),
- core=window.IRepairChargingCore,cat=window.IRepairDeviceCatalogue;
-if(!core||!cat)throw Error("iRepair Charging modules are missing");
+ core=window.IRepairChargingCore,cat=window.IRepairDeviceCatalogue,artwork=window.IRepairChargingArt;
+if(!core||!cat||!artwork)throw Error("iRepair Charging modules are missing");
 let plan=core.makePlan("",cat),index=0,answers={},symptoms={},reportText="";
 const set=(id,v)=>{$(id).textContent=String(v)};
 const step=()=>plan.steps[index];
@@ -34,12 +34,14 @@ function progress(){
  el.setAttribute("aria-label","Check "+(index+1)+" of "+plan.steps.length);
 }
 const perStage={
- safety:{icon:"✓",art:"!",heading:"No visible danger",outcome:"The cable, plug and phone look safe and dry.",action:"Check for damage first",caution:"If anything is wet, swollen, damaged or unusually hot, stop. Do not connect the charger."},
- wired:{icon:"⚡",art:"⚡",heading:"Charging appears",outcome:"Look for the charging indicator on your iPhone.",action:"Connect a wall charger",caution:"Do not force the plug. If a liquid alert appears, disconnect it and stop."},
- swap:{icon:"↺",art:"↺",heading:"Alternative works",outcome:"Notice whether the other cable and plug are recognised.",action:"Swap the cable and plug",caution:"Only use undamaged, suitable accessories that are known to work."},
- port:{icon:"◉",art:"⌕",heading:"Normal connector fit",outcome:"The plug should seat normally without excessive force or looseness.",action:"Look at the port gently",caution:"Do not push metal tools, cotton buds or liquid into the port."},
- wireless:{icon:"◎",art:"◎",heading:"Wireless power appears",outcome:"Look for the usual wireless charging indication.",action:"Place on the charging pad",caution:"You can choose Unable to Test if you don't have a compatible Qi charger."},
- behaviour:{icon:"⚡",art:"⚡",heading:"No unexplained warning",outcome:"Charging behaves normally, or a charge limit explains a pause.",action:"Check Battery settings",caution:"Optimised charging, charge limits and temperature can pause or slow charging."}
+ safety:{icon:"!",heading:"Everything looks safe",outcome:"Check for damage, liquid, swelling or unusual heat.",action:"Inspect before plugging in",caution:"STOP if your phone, connector or lead is wet, hot or damaged. Do not connect power."},
+ wired:{icon:"✓",heading:"Charging recognised",outcome:"Look for the normal charging indicator.",action:"Connect normally",caution:"If a liquid alert appears, disconnect immediately and stop."},
+ stability:{icon:"✓",heading:"Connection stays steady",outcome:"Charging shouldn't require holding the lead at an angle or applying pressure.",action:"Watch an ordinary connection",caution:"Do not deliberately wiggle, bend, rock or force the connector to test it."},
+ flip:{icon:"↻",heading:"Both sides behave alike",outcome:"Compare whether the phone recognises the plug in each orientation.",action:"Disconnect, turn 180°, reconnect",caution:"Turn the unplugged connector only. Never twist or turn it inside the port."},
+ swap:{icon:"✓",heading:"The other charger works",outcome:"A known-good replacement cable or adapter should be recognised.",action:"Try another known-good lead",caution:"Use only clean, undamaged, compatible cables and power adapters."},
+ port:{icon:"⌕",heading:"Contacts look intact",outcome:"Check both faces of the cable tip, and the port opening, for dirt or damage.",action:"Inspect disconnected contacts",caution:"Disconnect first. Do not insert tools, cotton buds or liquid into the port."},
+ wireless:{icon:"◎",heading:"Wireless charging starts",outcome:"The iPhone displays its normal charging indication on a compatible pad.",action:"Use a compatible Qi pad",caution:"Without a compatible charger, choose Unable to Test."},
+ behaviour:{icon:"✓",heading:"A normal charging pattern",outcome:"A charge limit or warmth may explain a pause in charging.",action:"Review battery settings",caution:"Stop charging if the phone is unusually hot, damaged or shows a liquid alert."}
 };
 function render(){
  const s=step();if(!s){results();return}
@@ -50,7 +52,8 @@ function render(){
  set("testQuestion",s.question);
  const art=perStage[s.id],stage=$("chargingStage");
  stage.className="chargeStage stage-"+s.id;
- set("artIcon",art.art);set("actionLabel",art.action);
+ $("guideArtwork").innerHTML=artwork.render(s.id,plan.connector);
+ set("actionLabel",art.action);
  set("expectedIcon",art.icon);set("expectedTitle",art.heading);
  set("expectedDetail",art.outcome);
  set("chargeCaution",art.caution);
@@ -67,6 +70,10 @@ function advance(){
 function mark(answer){
  const s=step();if(!s)return;
  answers=core.addAnswer(answers,s.id,answer);
+ if(s.id==="safety"&&answer!=="PASS"){
+  // A previously safe session cannot retain powered results after safety is revoked.
+  for(const other of plan.steps.slice(1)){delete answers[other.id];delete symptoms[other.id]}
+ }
  if(answer==="FAIL"){
   const group=$("symptomOptions");group.replaceChildren();
   for(const entry of core.symptomChoices[s.id]){
@@ -104,7 +111,7 @@ function results(){
   if(node)node.textContent=answers.safety==="FAIL"?"Stop using the charger for now":"Check safety before charging";
  }
  $("resultRows").replaceChildren();plan.steps.forEach(row);
- const hints=core.interpretations(answers),area=$("triageHints"),list=$("triageRows");
+ const hints=core.interpretations(answers,symptoms),area=$("triageHints"),list=$("triageRows");
  list.replaceChildren();area.hidden=hints.length===0;
  for(const h of hints){
   const item=document.createElement("div"),heading=document.createElement("strong"),detail=document.createElement("span");
