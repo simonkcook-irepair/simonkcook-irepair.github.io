@@ -1,0 +1,1451 @@
+
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--ink:#16395f;--muted:#5d7893;--blue:#0b78e7;--cyan:#52e5ff;--mint:#24c8a1;--green:#20b37d;--red:#d84d6d}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--ink)}
+body{background:radial-gradient(circle at 10% 4%,#fff 0,transparent 36%),radial-gradient(circle at 92% 18%,#89caff8d 0,transparent 42%),radial-gradient(circle at 12% 86%,#d7f7ff 0,transparent 48%),linear-gradient(160deg,#f5fbff 0%,#d8edff 52%,#f6fbff 100%);min-height:100svh;overflow-x:hidden}
+.shell{width:min(100%,500px);min-height:100svh;margin:auto;padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column}
+.glass{border:1px solid #fff;background:linear-gradient(160deg,#ffffffef,#e6f5ffcc 68%,#d6edffce);box-shadow:inset 0 2px 1px #fff,inset 0 -4px 12px #6da7db1a,0 10px 30px #4381b42b;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
+.header{border-radius:24px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}.logo{width:46px;height:46px;border-radius:16px;background:#f5fbff url("https://simonkcook-irepair.github.io/icon-192.png") center/cover no-repeat;border:1px solid #fff;box-shadow:inset 0 1px 1px #fff,0 0 0 1px #fff,0 0 16px #66baff5e,0 8px 18px #3c84b738}
+.brand b{display:block;font-size:17px;letter-spacing:-.5px;color:#16395f}.brand span{display:block;font-size:10px;font-weight:850;letter-spacing:2.1px;color:#3574a8;margin-top:2px}.badge{font-size:10px;font-weight:850;letter-spacing:1px;color:#2a6594;border:1px solid #fff;border-radius:999px;padding:10px 13px;background:linear-gradient(145deg,#fff,#e7f5ffd8);box-shadow:inset 0 1px #fff,0 4px 12px #498ac426;white-space:nowrap}
+.card{margin-top:16px;border-radius:34px;padding:31px 30px 22px;display:flex;flex-direction:column;min-height:calc(100svh - 118px)}
+.eyebrow{text-align:center;color:#0d79c8;font-size:11px;font-weight:900;letter-spacing:2.2px;text-transform:uppercase}
+h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-align:center;margin:18px 0;color:#17395f;text-shadow:0 1px #fff9}.lead{text-align:center;color:#5d7892;font-size:17px;line-height:1.55;margin:0 auto;max-width:390px}
+.phoneStage{margin:26px 0 20px;border:1px solid #fff;border-radius:31px;min-height:520px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#ffffffee,transparent 64%),linear-gradient(145deg,#ffffffb7,#dff2ffd0 58%,#fbfdffbf);box-shadow:inset 0 2px 2px #fff,inset 0 -8px 26px #9cc8e527,0 15px 38px #3c81b231}
+.phoneGlow{position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#75c8ff70 0,transparent 68%);filter:blur(26px)}
+.phoneArt{position:relative;width:min(66vw,258px);aspect-ratio:.475;border-radius:46px;padding:8px;background:linear-gradient(145deg,#f2fbff 0%,#a3bfd2 5%,#53728c 10%,#203b55 24%,#0e2338 72%,#071725 100%);box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff;overflow:visible}
+.phoneArt:before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:linear-gradient(126deg,#ffffffba 0,transparent 13%,transparent 78%,#4bc3ff30 100%);mix-blend-mode:screen}
+.phoneArt:after{content:"";position:absolute;left:7%;right:7%;bottom:-10px;height:18px;border-radius:50%;background:#19375355;filter:blur(8px)}
+.side{position:absolute;background:linear-gradient(#9fb6c8,#294763);border-radius:4px;box-shadow:inset 0 1px #fff8}.side.s1{left:-5px;top:22%;width:5px;height:46px}.side.s2{left:-5px;top:34%;width:5px;height:76px}.side.s3{right:-5px;top:31%;width:5px;height:96px}
+.phoneScreen{position:absolute;inset:8px;border-radius:39px;overflow:hidden;background:radial-gradient(circle at 31% 16%,#e6fbff 0,transparent 31%),radial-gradient(circle at 62% 28%,#a7e5ff4a 0,transparent 27%),linear-gradient(158deg,#91ddff 0%,#58afe9 33%,#347fca 68%,#2550a2 100%);box-shadow:inset 0 0 28px #1e5d9c35}
+.dynamicIsland{position:absolute;top:17px;left:50%;transform:translateX(-50%);width:76px;height:24px;border-radius:999px;background:#081726;z-index:8;box-shadow:inset 0 -1px #ffffff14}.dynamicIsland:after{content:"";position:absolute;right:9px;top:9px;width:5px;height:5px;border-radius:50%;background:#123959}
+.screenGlow{position:absolute;inset:-30% -65%;transform:translateX(-72%) rotate(13deg);background:linear-gradient(90deg,transparent 35%,#ffffff06 41%,#ffffffdd 48%,#e6f9ffc2 52%,#ffffff18 57%,transparent 62%);filter:blur(1.4px);animation:sweep 4.5s cubic-bezier(.45,0,.55,1) infinite}.screenGlow2{position:absolute;inset:-20% -50%;transform:translateX(-90%) rotate(13deg);background:linear-gradient(90deg,transparent 41%,#95ecff15 45%,#ffffff7c 50%,transparent 58%);animation:sweep2 4.5s .45s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes sweep{0%,15%{transform:translateX(-72%) rotate(13deg);opacity:.24}48%{opacity:1}79%,100%{transform:translateX(72%) rotate(13deg);opacity:.24}}@keyframes sweep2{0%,20%{transform:translateX(-90%) rotate(13deg);opacity:.14}55%{opacity:.72}83%,100%{transform:translateX(90%) rotate(13deg);opacity:.08}}
+.infoBox{border:1px solid #fff;border-radius:26px;padding:22px 23px;background:linear-gradient(145deg,#fffffff0,#e9f6ffe0);box-shadow:inset 0 2px 2px #fff,0 8px 24px #4182b425;color:#456783;font-size:15px;line-height:1.7}.infoBox b{color:#2e5477}.actions{margin-top:22px}
+.btn{position:relative;overflow:hidden;isolation:isolate;width:100%;min-height:61px;border-radius:21px;border:1px solid #d0eaff;background:linear-gradient(180deg,#fff 0%,#eaf6ff 42%,#bddfff 100%);color:#185b94;font-weight:850;font-size:17px;box-shadow:inset 0 2px 1px #ffffffed,inset 0 -6px 12px #6399c53b,0 0 0 1px #c5e7ff73,0 0 10px #75caff50,0 6px 16px #4484b64d;transition:transform .15s ease}.btn:before{content:"";position:absolute;z-index:-1;left:1px;right:1px;top:1px;height:45%;border-radius:19px 19px 46% 46%;background:linear-gradient(145deg,#ffffffc4,#ffffff54 52%,#ffffff0c 82%)}.btn.main{border-color:#5ee7ff;background:radial-gradient(circle at 50% 0,#7be5ff,transparent 50%),linear-gradient(180deg,#2eaaff 0%,#0874e9 56%,#064eb2 100%);color:#fff;text-shadow:0 1px 3px #073a80a8;box-shadow:inset 0 2px 1px #fff,inset 0 -7px 13px #003b9863,0 0 0 1px #6de9ff,0 0 14px #3bdcffbe,0 0 27px #198cff75,0 8px 20px #1675d16e}.btn.pass{border-color:#92f1c7;background:radial-gradient(circle at 50% 0,#e9fff3,transparent 65%),linear-gradient(180deg,#c8f8df 0%,#4dca93 55%,#159465 100%);color:#064d34}.btn.fail{border-color:#ffacc1;background:radial-gradient(circle at 50% 0,#fff0f4,transparent 65%),linear-gradient(180deg,#ffe1e9 0%,#f27c9b 55%,#ca355b 100%);color:#76213a}.btn.unable{background:linear-gradient(180deg,#fff,#edf2fa 45%,#cbdbea);color:#496782;border-color:#fff}.btn:active{transform:scale(.97)}
+.smallNote{text-align:center;color:#67829a;font-size:11px;line-height:1.5;margin:12px 0 0}.view{display:none}.view.active{display:flex;flex-direction:column;flex:1}
+.testLayer{position:fixed;inset:0;z-index:100;display:none;background:radial-gradient(circle at 50% 42%,#fff,#e6f4ff 76%);touch-action:none;overflow:hidden}.testLayer.active{display:block}.testTop{position:absolute;z-index:130;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 12px) 15px 11px;display:flex;align-items:center;justify-content:space-between;background:#f6fbffed;border-bottom:1px solid #fff;backdrop-filter:blur(20px);color:#17466e}.testTop .btn{width:auto;min-height:42px;padding:8px 15px;font-size:13px}.testSurface{position:absolute;inset:0;touch-action:none}.centerInstruction{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(84vw,370px);padding:27px 24px;border-radius:28px;text-align:center;border:1px solid #fff;background:linear-gradient(145deg,#fffffff6,#e5f4ffe8);box-shadow:inset 0 2px 2px #fff,0 18px 44px #397daf34;backdrop-filter:blur(22px);color:#244f73}.centerInstruction h2{margin:0 0 10px;font-size:28px;letter-spacing:-.6px;color:#173b60}.centerInstruction p{margin:0;color:#5b7690;line-height:1.55}.centerInstruction .btn{margin-top:18px}.testBottom{position:absolute;z-index:130;bottom:0;left:0;right:0;padding:10px 16px calc(env(safe-area-inset-bottom) + 11px);background:#f6fbffed;border-top:1px solid #fff;backdrop-filter:blur(20px)}.testBottom p{margin:0 0 7px;text-align:center;color:#56728c;font-size:12px}
+.touchCluster{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;grid-template-columns:repeat(3,58px);gap:14px;padding:16px;border:1px solid #fff;border-radius:28px;background:linear-gradient(145deg,#fffffff2,#e2f3ffda);box-shadow:inset 0 2px 2px #fff,0 16px 38px #397eb233;backdrop-filter:blur(20px)}.touchDot{width:58px;height:58px;border-radius:50%;border:1px solid #8ee8ff;color:#fff;font-size:19px;font-weight:900;background:radial-gradient(circle at 50% 0,#8cecff,transparent 58%),linear-gradient(#2ca9ff,#0874e9 60%,#0750b4);box-shadow:inset 0 2px #fff,0 0 0 5px #42cfff1c,0 0 14px #40d9ff88,0 7px 14px #347db747}.touchDot.hit{background:radial-gradient(circle at 50% 0,#ecfff7,transparent 60%),linear-gradient(#80e1ba,#20ad7f);box-shadow:inset 0 2px #fff,0 0 0 5px #4bddaa24,0 0 15px #39ddaa7e}.touchCounter{position:absolute;top:18%;left:0;right:0;text-align:center;color:#2c6c99;font-size:13px;font-weight:850}.touchSafe{position:absolute;z-index:30;transform:translate(-50%,-50%);width:76px;height:76px;min-height:76px;border-radius:50%;padding:0;font-size:10px;line-height:1.05;display:none}.touchSafe.show{display:block}
+.edgeStage{position:absolute;inset:calc(env(safe-area-inset-top) + 67px) 0 calc(env(safe-area-inset-bottom) + 5px);display:grid;place-items:center;touch-action:none}.edgePhone{position:relative;height:min(79svh,720px);aspect-ratio:100/214;max-width:90vw;border-radius:10.5%/5%;padding:7px;background:linear-gradient(145deg,#f1f9ff 0,#829bb3 7%,#29435c 20%,#11283c 58%,#071928 100%);box-shadow:0 34px 70px #1f578653,0 0 0 1px #fff9,inset 0 2px 2px #fff;filter:drop-shadow(0 0 20px #55c6ff24);isolation:isolate;touch-action:none}.edgePhone:before{content:"";position:absolute;inset:2px;border-radius:inherit;background:linear-gradient(122deg,#ffffffa3 0,transparent 14%,transparent 80%,#4bc4ff29);z-index:10;pointer-events:none}.edgeScreen{position:absolute;inset:8px;border-radius:9.3%/4.5%;overflow:hidden;background:radial-gradient(circle at 50% 43%,#fff 0,#f4fbff 42%,#e0f0ff 75%,#c7e4fb 100%);box-shadow:inset 0 0 28px #4c8dbb2e;touch-action:none}.edgeIsland{position:absolute;z-index:12;top:2.2%;left:50%;transform:translateX(-50%);width:31%;height:3.4%;border-radius:999px;background:#091827;pointer-events:none}.edgeSvg{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}.rail{fill:none;stroke:#67a7d04c;stroke-width:5.2;stroke-linecap:round}.railHi{fill:none;stroke:#ffffffb5;stroke-width:1.05;stroke-linecap:round}.cobHalo{fill:none;stroke:url(#cob);stroke-width:8.2;stroke-linecap:round;opacity:.64;filter:url(#glow)}.cobStrip{fill:none;stroke:url(#cob);stroke-width:3.45;stroke-linecap:round;pathLength:100;stroke-dasharray:.7 .32;filter:url(#glow)}.runner{fill:#fff;stroke:#43e5ff;stroke-width:1.2;filter:url(#runnerGlow)}.runnerRing{fill:none;stroke:#8ef5ff;stroke-width:.85;filter:url(#runnerGlow);transform-box:fill-box;transform-origin:center;animation:ring 1.25s ease-in-out infinite}@keyframes ring{50%{transform:scale(1.8);opacity:.18}}.edgeMsg{position:absolute;top:5.1%;left:50%;transform:translateX(-50%);z-index:30;width:min(84vw,345px);padding:9px 13px;border:1px solid #fff;border-radius:999px;background:linear-gradient(145deg,#fffffff4,#e4f4ffe4);color:#236391;font-size:11px;font-weight:850;text-align:center;box-shadow:inset 0 1px #fff,0 7px 19px #3c7eae2b;backdrop-filter:blur(15px);pointer-events:none}.edgePct{position:absolute;bottom:4.7%;left:50%;transform:translateX(-50%);z-index:30;color:#32698f;font-size:11px;font-weight:850;pointer-events:none}.edgeFailSafe{position:absolute;z-index:35;left:50%;top:4.85%;transform:translate(-50%,-50%);width:66px;height:66px;min-height:66px;border-radius:50%;padding:0;font-size:19px;display:none;box-shadow:inset 0 2px 1px #fff,inset 0 -7px 13px #003b9863,0 0 0 1px #6de9ff,0 0 16px #3bdcffd4,0 0 30px #198cff85,0 8px 20px #1675d16e}.edgeFailSafe.show{display:block}.core{position:absolute;left:50%;top:50.5%;width:88px;height:88px;transform:translate(-50%,-50%) scale(.72);opacity:.1;z-index:15;pointer-events:none;transition:.5s cubic-bezier(.22,1,.36,1)}.core.ready{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}.coreHalo{position:absolute;inset:-16px;border-radius:50%;border:2px solid #6defff58;box-shadow:0 0 20px #32cfff7c;animation:pulse 1.8s ease-out infinite}.coreCog{position:absolute;inset:-8px;border-radius:50%;background:repeating-conic-gradient(#32d8ff 0 6deg,transparent 6deg 14deg);-webkit-mask:radial-gradient(circle,transparent 0 58%,#000 60% 70%,transparent 72%);mask:radial-gradient(circle,transparent 0 58%,#000 60% 70%,transparent 72%);filter:drop-shadow(0 0 7px #32cfff)}.core.ready .coreCog{animation:spin 9s linear infinite}.coreLogo{position:absolute;inset:13px;border-radius:16px;background:#fff url("https://simonkcook-irepair.github.io/icon-192.png") center/cover no-repeat;box-shadow:0 0 0 1px #fff,0 6px 18px #337fb14b}@keyframes pulse{from{transform:scale(.76);opacity:.82}to{transform:scale(1.2);opacity:0}}@keyframes spin{to{transform:rotate(360deg)}}.results .eyebrow{margin-top:6px}.reportRow{display:flex;justify-content:space-between;gap:12px;padding:14px 15px;margin:8px 0;border:1px solid #fff;border-radius:16px;background:linear-gradient(145deg,#fffffff0,#e8f5ffe0);box-shadow:inset 0 1px 2px #fff,0 5px 15px #5389b522}.good{color:#16835f}.bad{color:#b83a57}.neutral{color:#936d28}@media(max-width:430px){.card{padding:28px 26px 21px}.phoneStage{min-height:500px}.infoBox{font-size:14px}.phoneArt{width:min(66vw,245px)}}@media(max-height:750px){.card{padding-top:22px}.phoneStage{min-height:410px}.phoneArt{width:min(54vw,220px)}.edgePhone{height:72svh}}@media(prefers-reduced-motion:reduce){.screenGlow,.screenGlow2,.runnerRing,.coreHalo,.core.ready .coreCog{animation:none}}
+
+/* APPROVED CHANGES 2026-10-24 — scoped overrides; original styling retained */
+
+/* 01: Fit the complete approved opening design within portrait height. */
+#home .phoneStage{margin:9px 0 10px;min-height:clamp(220px,25svh,270px)}
+#home .phoneArt{width:min(35vw,12svh,125px)}
+@media(max-height:750px){
+  #home .phoneStage{min-height:190px;margin:7px 0}
+  #home .phoneArt{width:min(32vw,12svh,100px)}
+}
+
+/* Compact spacing only where necessary to prevent portrait scrolling. */
+#home.card{padding-top:20px;padding-bottom:15px}
+#home h1{font-size:clamp(36px,9vw,48px);margin:12px 0}
+#home .lead{font-size:16px;line-height:1.4}
+#home .infoBox{padding:14px 17px;font-size:13px;line-height:1.48}
+#home .actions{margin-top:13px}
+#home .smallNote{margin-top:7px}
+/* Portrait compactness for shorter iPhones; no change to approved styling on larger screens. */
+@media(max-height:720px){
+  .header{padding:9px 12px}
+  .header .logo{width:40px;height:40px}
+  .header .brand{gap:8px}
+  .header .brand b{font-size:15px}
+  .header .brand span{font-size:8px;letter-spacing:1.55px}
+  #home.card{margin-top:9px;padding:12px 16px 10px;border-radius:27px}
+  #home h1{font-size:clamp(30px,8.4vw,36px);line-height:1.02;margin:7px 0}
+  #home .lead{font-size:13px;line-height:1.3}
+  #home .phoneStage{min-height:162px;margin:7px 0}
+  #home .phoneArt{width:min(31vw,10.5svh,78px)}
+  #home .infoBox{padding:10px 12px;font-size:12px;line-height:1.28;border-radius:19px}
+  #home .actions{margin-top:8px}
+  #home .actions .btn{min-height:52px}
+  #home .smallNote{font-size:10px;line-height:1.25;margin-top:5px}
+}
+/* 03–04: Centre display-test instructions without altering test backgrounds. */
+.displayInstruction{
+  position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);
+  z-index:8;width:min(82vw,335px);padding:20px 18px;
+  text-align:center;color:#244f73;font-size:16px;font-weight:750;line-height:1.55;
+  border:1px solid #fff;border-radius:24px;
+  background:linear-gradient(145deg,#fffffff6,#e5f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 16px 40px #397daf34;
+  backdrop-filter:blur(18px)
+}
+/* 05: Only the display assessment card becomes slightly more compact. */
+.centerInstruction.displayAssessBox{width:min(78vw,325px);padding:20px 19px}
+.displayAssessBox h2{font-size:24px}
+.displayAssessBox .btn{min-height:51px}
+
+/* 07–09: Keep all nine touch targets independently accessible. */
+.touchCluster{grid-template-columns:repeat(3,66px);gap:15px}
+.touchDot{width:66px;height:66px}
+.touchGuidance{
+  position:absolute;top:calc(50% - 205px);left:50%;transform:translateX(-50%);
+  width:min(86vw,330px);padding:12px 16px;border:1px solid #fff;
+  border-radius:20px;text-align:center;color:#386e97;
+  background:linear-gradient(145deg,#fffffff6,#e5f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 10px 26px #397daf27;
+  z-index:12;line-height:1.35
+}
+.touchGuidance strong{display:block;font-size:15px;color:#235c84}
+.touchGuidance span{display:block;font-size:12px;margin-top:4px}
+.touchSafe{
+  display:block;left:50%;top:calc(50% + 196px);
+  transform:translateX(-50%);width:min(80vw,300px);height:auto;
+  min-height:52px;padding:10px 15px;border-radius:18px;
+  font-size:13px;line-height:1.35;white-space:normal
+}
+@media(max-height:720px){
+  .touchCluster{grid-template-columns:repeat(3,60px);gap:12px;padding:12px}
+  .touchDot{width:60px;height:60px}
+  .touchGuidance{top:calc(50% - 172px)}
+  .touchSafe{top:calc(50% + 162px)}
+}
+
+/* 11–12: Use the approved landing handset design, without shine animation. */
+.edgeStage{inset:calc(env(safe-area-inset-top) + 69px) 0 calc(env(safe-area-inset-bottom) + 5px)}
+.edgePhone.phoneArt{
+  width:auto;height:min(83svh,760px);aspect-ratio:.475;
+  max-width:calc(100vw - 30px);border-radius:46px;padding:8px;
+  background:linear-gradient(145deg,#f2fbff 0%,#a3bfd2 5%,#53728c 10%,#203b55 24%,#0e2338 72%,#071725 100%);
+  box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff
+}
+.edgePhone.phoneArt:before{
+  inset:-1px;background:linear-gradient(126deg,#ffffffba 0,transparent 13%,transparent 78%,#4bc3ff30 100%);
+  mix-blend-mode:screen;z-index:10
+}
+.edgeScreen.phoneScreen{
+  inset:8px;border-radius:39px;
+  background:radial-gradient(circle at 31% 16%,#e6fbff 0,transparent 31%),
+    radial-gradient(circle at 62% 28%,#a7e5ff4a 0,transparent 27%),
+    linear-gradient(158deg,#91ddff 0%,#58afe9 33%,#347fca 68%,#2550a2 100%);
+  box-shadow:inset 0 0 28px #1e5d9c35
+}
+.edgeIsland.dynamicIsland{
+  top:2.7%;height:3.5%;width:28%;z-index:12
+}
+/* The illuminated runner is always in FRONT of the Dynamic Island. */
+.edgeSvg{z-index:24}
+.edgeMsg{
+  top:31%;width:78%;max-width:310px;padding:13px 15px;
+  border-radius:22px;font-size:13px;line-height:1.38;font-weight:800;
+  background:linear-gradient(145deg,#fffffff7,#e4f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 12px 30px #397daf30
+}
+.core{width:102px;height:102px;opacity:.6;z-index:25}
+.core.ready{opacity:1}
+.edgeFailSafe{top:76%;z-index:35}
+.edgePct{bottom:4%;font-size:12px;color:#fff;text-shadow:0 1px 4px #124875}
+@media(max-height:750px){.edgePhone.phoneArt{height:min(79svh,665px)}}
+
+
+/* CR-13: Retain the EXACT approved iPhone artwork at its native geometry.
+   Scale the ENTIRE rendered handset, not just its width, so its radius,
+   Dynamic Island, side buttons and screen all keep their original proportions. */
+#home .phoneStage{min-height:286px;margin:6px 0 8px}
+#home .phoneArt{
+  position:absolute;
+  left:50%;top:50%;
+  width:258px;
+  transform:translate(-50%,-50%) scale(.51);
+  transform-origin:center center;
+}
+/* Constrained iPhone in-app browsers: preserve handset identity and fit. */
+@media(max-height:750px){
+  #home .phoneStage{min-height:208px;margin:3px 0}
+  #home .phoneArt{width:258px;transform:translate(-50%,-50%) scale(.38)}
+  #home.card{margin-top:6px;padding-top:8px;padding-bottom:7px}
+  #home h1{margin:5px 0}
+  #home .infoBox{padding:7px 11px}
+  #home .actions{margin-top:5px}
+  #home .smallNote{margin-top:3px}
+}
+@media(max-height:630px){
+  #home .phoneStage{min-height:188px}
+  #home .phoneArt{transform:translate(-50%,-50%) scale(.344)}
+}
+
+
+/* Keep the full premium handset visible on taller phones without introducing scrolling. */
+@media(min-height:751px){
+  #home .phoneStage{min-height:282px;margin:4px 0 6px}
+  #home.card{padding-top:17px}
+  #home h1{margin:9px 0}
+  #home .infoBox{padding-top:11px;padding-bottom:11px}
+  #home .actions{margin-top:9px}
+  #home .smallNote{margin-top:4px}
+}
+
+
+
+
+/* BATTERY DIAGNOSTICS only; shared approved Toolbox visuals above remain unchanged */
+.fieldGroup[hidden],.guideBox[hidden]{display:none!important}
+.phoneBattery{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:5;width:118px;height:58px;border-radius:16px;border:5px solid #edffff;box-shadow:0 0 18px #6bffffbd,inset 0 0 15px #57e1ff9c,0 10px 20px #136ec074;background:linear-gradient(90deg,#16e7c6,#73eaf9 62%,#e5ffff)}
+.phoneBattery:before{content:"";position:absolute;top:15px;right:-17px;width:11px;height:20px;border-radius:0 5px 5px 0;background:#e6ffff;box-shadow:0 0 9px #69e8ff}
+.phoneBattery:after{content:"⚡";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:42px;font-weight:900;text-shadow:0 0 10px #1389e9,0 1px 2px #166197}
+.phoneBatteryGlow{position:absolute;left:6%;right:6%;top:35%;height:35%;border-radius:50%;background:#51dbff90;filter:blur(24px)}
+.card.diagnostic{gap:0}
+/* Explicitly respect hidden panels even where flex layout rules apply. */
+[hidden]{display:none!important}
+.card.diagnostic h1{font-size:clamp(32px,8.3vw,43px);margin:12px 0 7px}
+.card.diagnostic .lead{font-size:15px;line-height:1.43}
+.progressTrack{height:8px;border-radius:100px;background:#bbdfff;border:1px solid #fff;box-shadow:inset 0 1px 2px #549dd681;margin:16px 0 18px;overflow:hidden}
+.progressFill{height:100%;width:33.33%;background:linear-gradient(90deg,#68e9ff,#097ae9);border-radius:inherit;box-shadow:0 0 14px #57c8ff9c;transition:width .2s ease}
+.stepPanel{display:none;flex-direction:column;gap:12px;padding:0 0 10px}
+.stepPanel.active{display:flex}
+.fieldGroup{display:flex;flex-direction:column;gap:6px}
+.fieldGroup label,.fieldGroup .fieldLabel{color:#28587c;font-size:14px;font-weight:850;line-height:1.3}
+.fieldHint{font-size:12px;color:#607f99;line-height:1.4;margin:0}
+.fieldInput,.fieldSelect,.fieldTextarea{border:1px solid #fff;border-radius:17px;width:100%;font:600 16px -apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;color:#214f74;background:linear-gradient(150deg,#fff,#eaf6ffed);padding:13px 14px;min-height:50px;box-shadow:inset 0 1px 3px #b2d8f74f,0 6px 12px #4b91c01e;outline-offset:2px}
+.fieldInput:focus,.fieldSelect:focus,.fieldTextarea:focus{outline:2px solid #1599ef}
+.fieldInput::placeholder,.fieldTextarea::placeholder{color:#7898b0}
+.fieldTextarea{resize:vertical;min-height:74px;line-height:1.4}
+.guideBox{border:1px solid #fff;border-radius:21px;padding:14px 16px;background:linear-gradient(145deg,#ffffffed,#e4f3ffed);color:#406888;font-size:13px;line-height:1.48;box-shadow:inset 0 2px 2px #fff,0 9px 21px #5490b729}
+.guideBox b{display:block;color:#185a8b;font-size:14px;margin-bottom:5px}
+.guideBox strong{color:#185a8b}
+.guideBox.warning{background:linear-gradient(145deg,#fff9e7,#ffeed9);color:#855d3c;border-color:#fff3cc}
+.guideBox.warning b,.guideBox.warning strong{color:#906019}
+.wizardNav{margin-top:auto;display:grid;grid-template-columns:minmax(95px,1fr) 2fr;gap:11px;padding-top:12px}
+.wizardNav .btn{font-size:15px;min-height:57px}
+.statusPills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.choice{min-height:53px;border:1px solid #fff;border-radius:15px;padding:7px 5px;background:linear-gradient(150deg,#fff,#d7edff);box-shadow:inset 0 2px 2px #fff,0 6px 12px #387db625;color:#315f81;font-size:12px;font-weight:850;line-height:1.2}
+.choice[aria-pressed=true]{border-color:#47d9ff;background:linear-gradient(180deg,#58c9ff,#0780e8);color:#fff;text-shadow:0 1px 3px #164e86;box-shadow:inset 0 1px #fff9,0 0 13px #59bfff91}
+.choice:focus-visible{outline:3px solid #0a88ea;outline-offset:1px}
+.sectionLine{height:1px;background:#fff;border:0;margin:2px 0}
+#results .reportRow{font-size:13px;align-items:flex-start}
+#results .reportRow span{max-width:60%}
+#results .reportRow b{text-align:right;font-size:13px}
+#results h1{font-size:clamp(30px,8vw,45px)}
+.assessmentNote{border-radius:18px;background:linear-gradient(145deg,#fffffff1,#e6f5ff);border:1px solid #fff;padding:14px;color:#416b89;font-size:12px;line-height:1.45;margin-top:12px}
+.inlineTags{display:flex;align-items:center;flex-wrap:wrap;gap:7px;justify-content:center;padding-top:10px}
+.inlineTag{font-weight:800;font-size:10px;padding:7px 10px;border-radius:999px;background:linear-gradient(145deg,#ffffffef,#e6f3ff);border:1px solid #fff;color:#3977a3}
+#home .phoneScreen .screenGlow,#home .phoneScreen .screenGlow2{z-index:7;pointer-events:none}
+#home .phoneBattery{z-index:3}
+@media(max-width:380px){
+ .card.diagnostic{padding:17px 18px}
+ .card.diagnostic .fieldHint{font-size:11px}
+ .statusPills{gap:5px}
+ .choice{font-size:11px}
+ .wizardNav{grid-template-columns:1fr 1.6fr}
+ .fieldInput,.fieldSelect{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.progressFill{transition:none}}
+
+
+/* ENGINE-PARITY REVIEW: new guided diagnostic modules only. All original
+   glass styling, the opening phone illustration and shimmer stay unchanged. */
+.observationGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.timerBar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.timerBar .btn{min-height:52px;font-size:12px;padding:7px}
+.timerBar .btn:disabled{opacity:.44;filter:grayscale(.2)}
+#analyticsFile{padding:12px 11px;font-size:13px}
+#analyticsFile::file-selector-button{margin-right:9px;background:linear-gradient(155deg,#fff,#d9edff);border:1px solid #fff;border-radius:9px;padding:8px 9px;color:#175a90;font-weight:800}
+#logSummary{overflow-wrap:anywhere}
+#useLogValues{font-size:13px;min-height:53px}
+.assessmentMeta{margin-top:6px;color:#536e87;font-size:12px;line-height:1.6}
+.fieldGroup[hidden],.guideBox[hidden],button[hidden]{display:none!important}
+.fieldInput:disabled{color:#738da0}
+
+
+/* Live-looking presentation without mislabelling manually entered data as a measurement. */
+.batteryReadout{border:1px solid #fff;border-radius:22px;padding:15px 17px;background:linear-gradient(140deg,#fffffff3,#e7f5ffea);box-shadow:inset 0 2px 1px #fff,0 10px 25px #4182b42b}
+.batteryReadoutHead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;color:#47759a}
+.batteryReadoutHead strong{font-size:27px;color:#1469aa;letter-spacing:-.6px}
+.batteryReadoutHead span{font-size:11px;font-weight:750;text-align:right}
+.batteryReadoutRail{height:16px;margin-top:9px;border-radius:100px;overflow:hidden;background:linear-gradient(180deg,#d8ecff,#c4deef);border:1px solid #fff;box-shadow:inset 0 2px 3px #276aa73d}
+.batteryReadoutFill{height:100%;width:0%;border-radius:100px;background:linear-gradient(95deg,#20d7bf,#55dcee,#0988eb);box-shadow:0 0 11px #22cced88,inset 0 1px #ffffffaa;transition:width .25s ease}
+.batteryReadout small{display:block;font-size:10px;color:#65839a;line-height:1.35;margin-top:9px}
+@media(prefers-reduced-motion:reduce){.batteryReadoutFill{transition:none}}
+
+
+
+/* Battery Analytics — customer-first flow. New screens only; locked visual master intact. */
+.card.quick{gap:13px;min-height:calc(100svh - 118px);padding-top:23px}
+.card.quick h1{font-size:clamp(30px,8vw,40px);line-height:1.04;margin:10px 0}
+.card.quick .lead{font-size:15px;line-height:1.45;margin:0 auto 7px}
+.uploadSurface{position:relative;border:1px solid #fff;border-radius:27px;background:radial-gradient(circle at 50% 0,#ffffffef,transparent 75%),linear-gradient(150deg,#fefefe,#d9efffee);padding:21px 17px 18px;box-shadow:inset 0 2px 2px #fff,0 9px 25px #468abc29;text-align:center}
+.uploadIcon{display:grid;place-items:center;width:72px;height:72px;margin:0 auto 12px;border:1px solid #fff;border-radius:24px;background:linear-gradient(145deg,#dff5ff,#64c8ff);box-shadow:inset 0 3px #fff,0 0 17px #4de2ff8f;color:#1766a6;font-size:36px}
+.uploadSurface h2{font-size:20px;letter-spacing:-.5px;margin:5px 0;color:#194f7a}
+.uploadSurface p{font-size:13px;line-height:1.5;color:#5c7893;margin:4px 0 17px}
+.uploadButton{display:flex;align-items:center;justify-content:center;min-height:65px;padding:12px 9px;font-size:17px;cursor:pointer;text-align:center}
+.uploadButton:focus-within{outline:2px solid #098fe8;outline-offset:3px}
+.fileControl{position:absolute;inset:0;z-index:5;width:100%;height:100%;opacity:.005;cursor:pointer;touch-action:manipulation;font-size:0;appearance:none;-webkit-appearance:none}
+.fileControl:focus-visible{outline:3px solid #0e8dff;outline-offset:3px}
+.uploadButton{position:relative;overflow:hidden}
+.uploadStatus{min-height:0;margin:10px 0 0;color:#386c92;font-size:13px;line-height:1.45}
+.uploadStatus:empty{display:none}
+.simplePrivacy{display:flex;gap:6px;align-items:center;justify-content:center;margin:11px 0 0;font-size:11px;color:#6487a1}
+.simpleGuide{border:1px solid #fff;border-radius:19px;padding:0;background:linear-gradient(145deg,#fffffff1,#e8f5ffe9);box-shadow:inset 0 1px #fff,0 6px 16px #448bc421}
+.simpleGuide summary{list-style:none;cursor:pointer;padding:15px 17px;font-size:14px;color:#215b86;font-weight:850}
+.simpleGuide summary::-webkit-details-marker{display:none}
+.simpleGuide summary:after{content:"＋";float:right}
+.simpleGuide[open] summary:after{content:"−"}
+.simpleGuide .detailBody{padding:0 17px 16px;font-size:12px;line-height:1.55;color:#52728d}
+.simpleGuide ol{margin:5px 0 0;padding-left:21px}
+.simpleGuide li{padding-bottom:5px}
+.simpleGuide .fieldTextarea{width:100%;min-height:105px;margin:8px 0;font-size:12px;line-height:1.35}
+.quickActions{display:flex;flex-direction:column;gap:9px;margin-top:auto}
+.quickActions .btn{min-height:55px;font-size:15px}
+.dividerWords{display:flex;gap:10px;align-items:center;justify-content:center;color:#7e9aaf;font-size:12px;font-weight:800}
+.dividerWords:before,.dividerWords:after{content:"";height:1px;background:#fff;flex:1}
+.singleChoice{display:flex;flex-direction:column;gap:11px}
+.singleChoice button{min-height:61px}
+.singleChoice button:focus-visible{outline:3px solid #037cdb;outline-offset:3px}
+.choiceNote{text-align:center;margin:2px 0;color:#65829b;font-size:12px;line-height:1.55}
+.resultHeading{text-align:center;font-size:12px;color:#3679a9;font-weight:850;letter-spacing:1.3px;text-transform:uppercase}
+.resultSummary{margin:7px 0 3px;border:1px solid #fff;border-radius:23px;padding:19px 14px;text-align:center;background:linear-gradient(150deg,#ffffffed,#e1f2fff0);box-shadow:inset 0 2px #fff,0 9px 25px #4189ad30}
+.resultSummary h2{color:#1e527b;font-size:24px;line-height:1.18;letter-spacing:-.6px;margin:3px 0 8px}
+.resultSummary p{color:#5c7a94;font-size:13px;line-height:1.5;margin:0}
+.resultSummary.attention{background:linear-gradient(150deg,#fff7e8,#f9e9d0);border-color:#fff4cf}
+.resultSummary.attention h2{color:#986628}
+.resultSummary.safety{background:linear-gradient(150deg,#fff5f5,#ffe6eb)}
+.resultSummary.safety h2{color:#ab4358}
+.resultDetails{display:flex;flex-direction:column;gap:7px;margin:3px 0 0}
+.resultDetails .reportRow{padding:13px 14px;margin:0;align-items:center}
+.resultDetails .reportRow b{text-align:right;font-size:14px}
+.resultDisclosure{margin-top:7px;font-size:11px;line-height:1.5;color:#617f97}
+.resultGuide{border:1px solid #fff;border-radius:18px;padding:14px;background:linear-gradient(145deg,#fffffff1,#e6f4ffed);font-size:12px;line-height:1.48;color:#547590}
+.resultGuide b{color:#235f8f}
+.simpleGuide button.btn{font-size:13px;min-height:48px}
+.card.quick .smallNote{margin-top:8px}
+@media(max-width:370px){.card.quick{padding:18px 16px}.uploadSurface{padding:16px 12px}.simpleGuide summary{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.uploadButton{transition:none}}
+
+/* Keep the customer upload decision within the first phone viewport. */
+#upload.card.quick{gap:8px;padding:17px 19px 12px}
+#upload h1{font-size:clamp(29px,7.6vw,37px);margin:4px 0}
+#upload .lead{font-size:13px;line-height:1.37;margin:0 auto 1px}
+#upload .uploadSurface{padding:13px 14px 10px;border-radius:23px}
+#upload .uploadIcon{height:52px;width:52px;border-radius:18px;margin:0 auto 5px}
+#upload .uploadIcon svg{height:30px;width:30px;filter:drop-shadow(0 1px 2px #fff)}
+#upload .uploadSurface h2{font-size:17px;margin:2px 0}
+#upload .uploadSurface p{font-size:12px;line-height:1.35;margin:2px 0 9px}
+#upload .uploadButton{min-height:53px;font-size:16px}
+#upload .simplePrivacy{margin-top:6px;font-size:10px}
+#upload .simpleGuide summary{padding:11px 13px;font-size:13px}
+#upload .simpleGuide .detailBody{padding:0 13px 13px}
+#upload .quickActions{gap:5px;margin-top:2px}
+#upload .quickActions .btn{min-height:46px;font-size:14px}
+#upload .quickActions .dividerWords{line-height:1.1}
+#upload .smallNote{font-size:10px;line-height:1.4;margin-top:2px}
+.pasteAlt{border-top:1px solid #fff;padding-top:11px;margin-top:8px}
+.pasteAlt strong,.pasteAlt label{display:block;color:#215b86}
+.pasteAlt label{font-size:12px}
+@media(max-height:720px){
+ #upload.card.quick{gap:5px;padding-top:12px}
+ #upload .uploadIcon{height:44px;width:44px}
+ #upload .uploadSurface{padding:9px 10px}
+ #upload .uploadSurface p{margin:1px 0 6px}
+ #upload .quickActions .btn{min-height:43px}
+ #upload .uploadButton{min-height:48px}
+ #upload .simpleGuide summary{padding:8px 12px}
+ #upload h1{font-size:29px}
+ #upload .smallNote{margin-top:0}
+}
+
+/* Additional findings stay collapsed until the customer asks for them. */
+#technicalDetails .detailBody{padding-top:1px}
+#technicalReadings{display:flex;flex-direction:column;gap:7px;margin:5px 0 12px}
+#technicalReadings .technicalMetric{display:flex;align-items:start;justify-content:space-between;gap:9px;padding:8px 11px;border:1px solid #fff;border-radius:13px;background:#ffffffa6;color:#52758f;font-size:12px;line-height:1.35}
+#technicalReadings .technicalMetric span{min-width:0;overflow-wrap:anywhere}
+#technicalReadings .technicalMetric b{text-align:right;white-space:nowrap;color:#245d87}
+#technicalDetails .fieldHint{font-size:11px;color:#6786a0;line-height:1.45}
+#technicalDetails .btn{margin:8px 0;min-height:50px;font-size:13px}
+#results.card.quick{padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 32px))}
+
+
+/* Battery Native-Ready Review: scoped screens only, protected landing unchanged. */
+.card.batteryQuick{gap:11px;padding:22px 22px 20px;min-height:calc(100svh - 118px)}
+.batteryQuick h1{font-size:clamp(32px,8.2vw,42px);line-height:1.05;margin:9px 0 5px}
+.batteryQuick .lead{font-size:14px;line-height:1.4;margin:0 auto 6px}
+.batteryQuick .uploadSurface{padding:15px 14px 12px;border-radius:23px}
+.batteryQuick .uploadIcon{width:58px;height:58px;border-radius:19px;margin-bottom:6px}
+.batteryQuick .uploadIcon svg{height:33px;width:33px}
+.batteryQuick .uploadSurface h2{font-size:19px;margin:2px 0 5px}
+.batteryQuick .uploadSurface p{font-size:12px;line-height:1.4;margin:5px 0 10px}
+.batteryQuick .uploadButton{min-height:58px;font-size:16px}
+.batteryQuick .fileControl{cursor:pointer}
+.batteryQuick .quickActions{gap:8px;margin-top:auto}
+.batteryQuick .quickActions .btn{min-height:55px;font-size:15px}
+.batteryQuick .dividerWords{font-size:10px}
+.batteryQuick .simpleGuide summary{padding:12px 15px;font-size:13px}
+.batteryQuick .smallNote{font-size:11px;line-height:1.4;margin-top:5px}
+.inlineMeta{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;font-size:10px;color:#376d92}
+.inlineMeta span{padding:7px 11px;border-radius:999px;border:1px solid #fff;background:linear-gradient(130deg,#ffffffdc,#e5f5ff);box-shadow:0 4px 10px #8ec8ea42}
+.stepHint{border:1px solid #fff;border-radius:17px;padding:13px 14px;background:linear-gradient(145deg,#fff,#e6f4fff0);color:#486b88;line-height:1.45;font-size:13px;box-shadow:inset 0 2px #fff,0 7px 13px #528dc527}
+.stepHint b{color:#216093}
+.guideField{border:1px solid #fff;border-radius:22px;padding:15px;background:linear-gradient(147deg,#fffffff2,#e9f6fff0);box-shadow:inset 0 2px #fff,0 7px 18px #5087ae29;display:flex;flex-direction:column;gap:8px}
+.guideField label,.guideField .fieldLabel{font-size:15px;font-weight:850;color:#245d85}
+.guideField .fieldHint{font-size:11px;line-height:1.4}
+.healthInputWrap{display:flex;align-items:center;gap:9px}
+.healthInputWrap input{flex:1;min-width:0;text-align:center;font-size:30px;font-weight:850;max-width:100%;min-height:67px;background:linear-gradient(150deg,#fff,#e0f2ff);border:1px solid #fff;border-radius:20px;color:#1b679a;outline-offset:3px;box-shadow:inset 0 1px 3px #8bc6ed44}
+.healthInputWrap span{font-weight:900;font-size:25px;color:#327fae}
+.statusSelection{display:grid;grid-template-columns:1fr;gap:8px}
+.statusSelection button{font-size:14px;min-height:52px;text-align:left;padding-left:19px}
+.statusSelection button[aria-pressed=true]{background:linear-gradient(150deg,#67e0fc,#0788eb 70%,#0560c3);color:#fff;text-shadow:0 1px #0b5993;box-shadow:0 0 15px #47cbffc0,inset 0 2px #fff9}
+.guideMessage{min-height:0;font-size:12px;color:#6a7c93}
+.customerReportMeta{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.customerReportMeta span{border:1px solid #fff;background:#fffffff0;padding:7px 10px;border-radius:100px;color:#367399;font-size:11px;font-weight:800}
+.compactNote{font-size:12px;line-height:1.48;color:#65849e}
+.resultDetails{gap:6px}
+.resultDetails .reportRow{margin:0;padding:11px 14px}
+.resultDetails .reportRow b{max-width:53%;font-size:12px;overflow-wrap:anywhere}
+.batteryQuick .resultSummary{padding:18px 14px}
+.batteryQuick .resultSummary h2{font-size:23px}
+.batteryQuick .resultSummary p{font-size:12px}
+.resultGuide{font-size:12px;line-height:1.48;padding:13px 14px}
+.reportTwoCols{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.reportTwoCols .btn{font-size:13px;min-height:48px}
+#missingDataCTA{margin:0 0 4px}
+#technicalDetails[hidden]{display:none!important}
+#technicalDetails .detailBody{padding-top:2px}
+#technicalReadings{display:flex;flex-direction:column;gap:6px}
+#technicalReadings .technicalMetric{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:14px;background:#ffffffce;color:#52758f;font-size:12px;line-height:1.3}
+#technicalReadings .technicalMetric b{color:#1d608e}
+#results.card.batteryQuick{padding-bottom:max(70px,calc(env(safe-area-inset-bottom) + 45px))}
+@media(max-height:730px){
+ .batteryQuick.card{padding:14px 17px;gap:7px}
+ .batteryQuick h1{font-size:31px;margin:4px 0}
+ .batteryQuick .uploadSurface{padding:10px 11px}
+ .batteryQuick .uploadIcon{width:47px;height:47px;margin-bottom:3px}
+ .batteryQuick .quickActions .btn{min-height:46px}
+ .batteryQuick .simpleGuide summary{padding:9px 12px}
+}
+
+/* A4 printable results, from native iOS share or browser Print → Save as PDF. */
+@media print{
+ @page{size:A4 portrait;margin:17mm 15mm}
+ html,body{height:auto!important;min-height:0!important;background:#fff!important;color:#173653!important}
+ body:before,body:after,.header,.shell>.view:not(#results),#results .quickActions,
+ #results .simpleGuide,#results .smallNote{display:none!important}
+ .shell{display:block!important;max-width:none!important;padding:0!important;margin:0!important}
+ #results{display:flex!important;min-height:0!important;margin:0!important;padding:0!important;
+   background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+ #results:before{content:"iREPAIR TOOLBOX  |  BATTERY DIAGNOSTICS";display:block;text-align:center;
+    color:#146fa9;font-size:11pt;font-weight:900;letter-spacing:1.4pt;margin:0 0 13mm}
+ .eyebrow{letter-spacing:1.1pt}
+ #resultBox{background:#f0f8ff!important;border:1px solid #cfe4f7!important;box-shadow:none!important}
+ #reportRows .reportRow{box-shadow:none!important;background:#f7fbff!important;border:1px solid #dfebf4!important;
+  page-break-inside:avoid;break-inside:avoid}
+ #resultExplanation{box-shadow:none!important;background:#f3f9ff!important}
+ #results:after{content:"Guided assessment; no independent battery-health/current/temperature measurement.  •  iRepair Toolbox";
+ display:block;text-align:center;margin-top:14mm;font-size:9pt;color:#72879d}
+}
+
+#editModel[hidden]{display:none!important}
+#editModel{font-size:13px;min-height:49px;margin:0}
+/* Panic Diagnostics: new screens only, retain approved family visual geometry. */
+.phonePanicGlow{position:absolute;inset:28%;border-radius:50%;background:radial-gradient(circle,#80fcffbb,transparent 72%);filter:blur(23px);animation:panicPulse 2.8s ease-in-out infinite}
+.phonePanicSymbol{position:absolute;top:50%;left:50%;z-index:4;width:112px;height:112px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px #78ffffaa)}
+@keyframes panicPulse{0%,100%{opacity:.52;transform:scale(.87)}50%{opacity:1;transform:scale(1.2)}}
+.panicCard{gap:10px;padding:21px 22px 24px;min-height:calc(100svh - 118px)}
+.panicCard h1{font-size:clamp(30px,8.5vw,40px);line-height:1.07;letter-spacing:-1.4px;margin:11px 0 5px}
+.panicCard .lead{font-size:14px;line-height:1.43}
+.panicCard .eyebrow{margin-top:4px}
+.panicCard .uploadSurface{padding:15px 15px 13px}
+.panicCard .uploadSurface h2{font-size:18px;color:#24577f;margin:7px 0 4px}
+.panicCard .uploadSurface p{font-size:12px;color:#5d7d95;line-height:1.48;margin:5px 0 11px}
+.panicCard .uploadIcon{width:60px;height:60px;margin:0 auto 5px}
+.panicCard .uploadIcon svg{width:35px;height:35px}
+.panicCard .uploadButton{position:relative;overflow:hidden;min-height:59px;font-size:16px;cursor:pointer}
+.panicCard input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:.005;cursor:pointer;appearance:none;-webkit-appearance:none;z-index:5;font-size:0}
+.panicCard input[type=file]:focus-visible{outline:3px solid #0967d0;outline-offset:3px}
+.panicCard .fileInfo{font-size:11px;color:#6c879e;line-height:1.45;margin-top:9px;overflow-wrap:anywhere}
+.panicCard select{display:block;width:100%;padding:12px 14px;min-height:54px;background:linear-gradient(145deg,#fff,#e8f5ff);border:1px solid #fff;color:#245a81;font-size:15px;font-weight:750;border-radius:16px;box-shadow:inset 0 1px 2px #8bc8f746}
+.panicCard label{color:#28618d;font-weight:800;font-size:13px}
+.panicCard select:focus-visible,.panicCard textarea:focus-visible{outline:3px solid #1384e9;outline-offset:2px}
+.panicCard textarea{display:block;width:100%;min-height:150px;max-height:350px;resize:vertical;font:12px/1.5 ui-monospace,SFMono-Regular,monospace;color:#214d73;padding:12px;background:#fff;border:1px solid #d1e7f8;border-radius:14px}
+.panicCard .simpleGuide{border:1px solid #fff;background:linear-gradient(150deg,#fffffff0,#e8f5ffec);box-shadow:inset 0 2px #fff,0 6px 18px #4684ad27}
+.panicCard .simpleGuide summary{padding:13px 15px;color:#2a6893;font-size:13px;font-weight:850;cursor:pointer}
+.panicCard .detailBody{padding:2px 15px 15px}
+.panicCard .detailBody p,.panicCard .detailBody li{font-size:12px;color:#597890;line-height:1.52}
+.panicCard .detailBody ol{padding-left:18px}
+.panicCard .detailBody label{display:block;margin:11px 0 6px}
+.panicCard .optionalLabel{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 0 7px}
+.panicCard .optionalLabel span{font-size:10px;color:#6a889f;font-weight:700}
+.panicCard .stepHint{padding:11px 13px;font-size:12px}
+.panicCard .btn{min-height:54px}
+.panicCard .btn.unable{min-height:44px;font-size:13px}
+.panicCard .bottomOptions{display:grid;gap:8px;margin-top:5px}
+.panicCard .textStatus{min-height:17px;font-size:11px;line-height:1.45;color:#427597;overflow-wrap:anywhere}
+.panicCard .hints{font-size:11px;line-height:1.48;color:#63859d}
+.panicCard .dividerWords{line-height:1.1;font-size:10px}
+#results .resultSummary{padding:17px 15px;border-radius:23px}
+#results .resultSummary h2{font-size:23px;line-height:1.15}
+#results .resultSummary p{font-size:13px;line-height:1.45}
+#resultTags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+#resultTags span{font-size:10px;background:linear-gradient(145deg,#fff,#e7f5ff);border:1px solid #fff;border-radius:100px;color:#307199;font-weight:800;padding:6px 9px}
+#evidenceList{display:grid;gap:7px}
+.evidenceRow{background:linear-gradient(145deg,#ffffffef,#e8f5ffdc);border-radius:16px;padding:11px 13px;border:1px solid #fff;box-shadow:inset 0 1px #fff,0 4px 12px #487eaa25}
+.evidenceRow b{font-size:12px;color:#24577a;display:block}
+.evidenceRow p{font-size:12px;color:#5d7c94;line-height:1.5;margin:5px 0 0;overflow-wrap:anywhere}
+#results .quickActions{gap:9px}
+#results .quickActions .btn{min-height:51px;font-size:14px}
+#results .reportTwoCols{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+#results .reportTwoCols .btn{font-size:12px;min-height:47px}
+#results .tinyDisclaimer{font-size:11px;line-height:1.45;color:#6a829b}
+#results .simpleGuide summary{font-size:13px}
+#results .detailBody{padding:4px 13px 14px}
+#results .detailBody pre{white-space:pre-wrap;word-break:break-word;max-height:170px;overflow-y:auto;font-size:11px;line-height:1.5;color:#536d82}
+#results .resultGuide{font-size:12px;line-height:1.5;padding:14px}
+#results .quickActions{margin-top:11px}
+#results.card{padding-bottom:max(64px,calc(env(safe-area-inset-bottom) + 37px))}
+#home .infoBox{line-height:1.7}
+@media(max-width:500px){
+ .panicCard{padding:18px 19px 18px;gap:8px}
+ .panicCard .uploadSurface{padding:11px 12px 10px}
+ .panicCard .uploadIcon{height:51px;width:51px}
+ .panicCard .lead{font-size:13px}
+ .panicCard h1{font-size:34px}
+ .panicCard .simpleGuide summary{padding:10px 13px}
+ .panicCard .uploadButton{min-height:54px}
+}
+@media(prefers-reduced-motion:reduce){.phonePanicGlow{animation:none}}
+@media print{
+ @page{size:A4 portrait;margin:16mm}
+ html,body{background:#fff!important;color:#173653!important;height:auto!important}
+ .shell{padding:0!important;max-width:none!important}
+ .header,#home,#import,#results .quickActions,#results details,#results .tinyDisclaimer{display:none!important}
+ #results{display:flex!important;min-height:0!important;box-shadow:none!important;background:#fff!important;border:0!important;padding:0!important;gap:13px}
+ #results:before{content:"iREPAIR TOOLBOX | PANIC DIAGNOSTICS";display:block;text-align:center;font-size:13pt;font-weight:900;letter-spacing:1pt;color:#286c9a;margin-bottom:8mm}
+ #results .resultSummary,#results .evidenceRow,#results .resultGuide{break-inside:avoid;box-shadow:none!important;border:1px solid #d9e4ed!important}
+ #resultTags span{border:1px solid #c6dae9!important}
+ #results:after{content:"Diagnostic interpretation is preliminary; panic signatures do not independently prove component or logic-board failure.";display:block;text-align:center;font-size:9pt;color:#7890a1;margin-top:11mm}
+}
+
+
+/* CAMERA DIAGNOSTICS REVIEW — scoped design additions only.
+ The glass skin, phone, header, typographic scale and main button come from
+ the user-approved Screen/Battery/Audio/Panic visual family above. */
+#home .phoneCameraAura{position:absolute;inset:24%;border-radius:50%;
+ background:radial-gradient(circle,#6afaffae,transparent 72%);filter:blur(18px);
+ animation:cameraAura 3.5s ease-in-out infinite}
+#home .phoneCameraIcon{position:absolute;top:50%;left:50%;width:126px;height:126px;
+ transform:translate(-50%,-50%);z-index:4;filter:drop-shadow(0 0 12px #7cfeffb5)}
+@keyframes cameraAura{50%{opacity:.45;transform:scale(1.3)}}
+@media(prefers-reduced-motion:reduce){#home .phoneCameraAura{animation:none}}
+.cameraCard{padding:22px 20px 25px;gap:9px}
+.cameraCard h1{font-size:clamp(31px,8.5vw,40px);line-height:1.09;letter-spacing:-1.4px;
+ margin:8px 0 6px}
+.cameraCard .lead{font-size:14px;line-height:1.43;max-width:440px}
+.cameraCard .eyebrow{margin:1px 0}
+.cameraCard label{color:#2c618d;font-size:12px;font-weight:800}
+.cameraCard .glassy{border:1px solid white;background:linear-gradient(145deg,#fffffff5,#e3f2ffea);
+ box-shadow:inset 0 2px #fff,0 7px 16px #4f8ebf27;border-radius:20px;padding:14px 15px}
+.cameraCard select{width:100%;min-height:55px;background:linear-gradient(145deg,#fff,#ddf0ff);
+ color:#1d547f;border:1px solid white;box-shadow:inset 0 1px #fff,0 5px 10px #5397c024;
+ border-radius:15px;padding:9px 13px;font:800 14px -apple-system,BlinkMacSystemFont,system-ui}
+.cameraCard select:focus-visible,.cameraCard button:focus-visible{
+ outline:3px solid #5bcaff;outline-offset:3px}
+.smallExplanation{font-size:11px;color:#64829a;line-height:1.45;margin:5px 2px}
+.planPreview{border:1px solid #fff;border-radius:20px;background:linear-gradient(145deg,#fff,#dff1ff);
+ padding:15px 16px;box-shadow:inset 0 2px #fff,0 8px 18px #579ab32c}
+.planPreview strong{display:block;font-size:14px;color:#285b82;margin-bottom:7px}
+.planPreview p{font-size:12px;color:#54768c;line-height:1.5;margin:0}
+.setupBottom{display:grid;gap:9px;margin-top:10px}
+.setupBottom .btn.unable{min-height:48px;font-size:13px}
+.stepHead{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ color:#356b96;font-weight:850;font-size:12px;margin:0 0 6px}
+.stepHead button{width:auto;min-height:40px;font-size:12px;padding:8px 15px}
+.track{display:flex;gap:5px}
+.track i{height:7px;background:#c7e7ff;border:1px solid white;border-radius:20px;flex:1}
+.track i.on{background:linear-gradient(90deg,#5bdafa,#0a84e6);box-shadow:0 0 7px #7dddff}
+#stepTitle{font-size:clamp(30px,8vw,37px);margin:7px 0 6px}
+#stepInstruction{font-size:13px;line-height:1.48;color:#5f7b94;margin:0}
+.cameraStage{width:100%;position:relative;min-height:275px;height:min(42svh,345px);
+ border:1px solid #fff;border-radius:24px;overflow:hidden;
+ background:radial-gradient(circle at 50% 40%,#fff,#d8ebf9 74%,#a7cfe9);
+ box-shadow:inset 0 2px 2px #fff,0 8px 21px #5d99bb2e;
+ display:flex;align-items:center;justify-content:center;isolation:isolate}
+.cameraStage video{width:100%;height:100%;object-fit:cover;display:none;background:#0a2136}
+.cameraStage video.visible{display:block}
+.cameraStage video.selfie{transform:scaleX(-1)}
+.cameraStage .cameraFallback{position:absolute;inset:0;display:flex;
+ flex-direction:column;align-items:center;justify-content:center;text-align:center;
+ padding:24px;color:#527996;font-size:13px;line-height:1.5;z-index:2}
+.cameraStage .cameraFallback[hidden]{display:none!important}
+.cameraStage .cameraFallback svg{width:75px;height:75px;margin-bottom:7px;
+ filter:drop-shadow(0 0 11px #8bdfff8a)}
+.cameraStage .cameraFallback strong{color:#245e8b;font-size:15px}
+.cameraStage .previewOverlay{position:absolute;z-index:3;top:12px;left:12px;
+ font-size:10px;font-weight:900;color:#fff;background:#153b63ba;
+ border:1px solid #ffffff6b;padding:7px 10px;border-radius:999px;
+ backdrop-filter:blur(8px)}
+.cameraStage .previewOverlay[hidden]{display:none!important}
+.cameraStage .focusReticle{position:absolute;top:50%;left:50%;width:105px;height:105px;
+ transform:translate(-50%,-50%);z-index:3;pointer-events:none;opacity:.78;
+ border:1px solid #c2f6ffab;border-radius:22px;box-shadow:inset 0 0 18px #67f4ff19}
+.cameraStage .focusReticle:before,.cameraStage .focusReticle:after{content:"";position:absolute;
+ background:#e7ffffb0}.cameraStage .focusReticle:before{width:1px;height:25px;left:50%;top:40px}
+.cameraStage .focusReticle:after{height:1px;width:25px;left:40px;top:50%}
+.cameraStage .focusReticle[hidden]{display:none!important}
+.cameraStage #modelDiagram[hidden]{display:none!important}
+.cameraStage svg.modelDevice{display:block;width:162px;height:280px;overflow:visible;
+ filter:drop-shadow(0 10px 14px #3b799a58)}
+.previewStatus{font-size:11px;line-height:1.4;color:#537891;min-height:16px;margin:2px 0 0}
+.previewControls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.previewControls .btn{flex:1 1 135px;width:auto;min-height:42px;border-radius:16px;font-size:12px;padding:8px}
+.previewControls button[hidden]{display:none!important}
+.previewControls .btn.unable{background:linear-gradient(145deg,#fff,#d6ecff)}
+.testQuestion{background:linear-gradient(145deg,#ffffffee,#e5f4ffee);border:1px solid #fff;
+ border-radius:17px;padding:12px 14px;color:#285d85;font-size:13px;font-weight:800;
+ box-shadow:inset 0 1px #fff,0 5px 13px #5695c12b}
+.testActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:2px}
+.testActions .btn{padding:8px 4px;min-height:55px;font-size:13px;border-radius:18px;line-height:1.2}
+.testActions .btn.unable{font-size:11px}
+.testFoot{font-size:11px;line-height:1.4;color:#617f98;text-align:center}
+.testBottomControls{display:flex;gap:9px;justify-content:space-between}
+.testBottomControls .btn{width:auto;flex:1 1 50%;min-height:43px;padding:7px;font-size:12px}
+.cameraCard details{border:1px solid #fff;border-radius:18px;background:linear-gradient(145deg,#ffffffd5,#e3f2ffee);
+ box-shadow:inset 0 1px #fff,0 5px 14px #589cc327}
+.cameraCard details summary{padding:12px 15px;font-size:12px;font-weight:850;color:#2a6693;cursor:pointer}
+.cameraCard details .detailBody{padding:3px 13px 14px;color:#648096;font-size:12px;line-height:1.5}
+.cameraCard #photoPanel .btn{min-height:45px;font-size:12px}
+.cameraCard #photoPanel img{max-width:100%;max-height:220px;border:1px solid #fff;border-radius:16px;margin-top:8px;object-fit:contain}
+.cameraCard #photoPanel img[hidden],.cameraCard #photoPanel button[hidden]{display:none!important}
+.status-note{font-size:11px;line-height:1.44;color:#64839d}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:9px 0}
+.stats > div{border:1px solid #fff;border-radius:17px;padding:15px 9px;text-align:center;
+ background:linear-gradient(145deg,#fff,#e3f3ff);box-shadow:inset 0 1px #fff,0 6px 14px #5598c325}
+.stats strong{font-size:27px;font-weight:900;color:#19659a;display:block}
+.stats span{font-size:11px;color:#64829b;font-weight:800}
+.resultRows{display:grid;gap:8px}
+.resultRow{background:linear-gradient(145deg,#ffffffef,#e5f4ffeb);border:1px solid #fff;
+ border-radius:16px;padding:12px 14px;box-shadow:inset 0 2px #fff,0 5px 14px #5c9bc322}
+.resultRow strong{color:#205d8b;display:block;font-size:14px}
+.resultRow span{color:#587b95;font-size:12px;line-height:1.42;display:block;margin-top:6px}
+.good{color:#1e966e!important}.bad{color:#b64863!important}.neutral{color:#98743a!important}
+.resultActions{display:grid;gap:8px;margin-top:10px}
+.resultActions .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.resultActions .pair button{min-height:51px;font-size:13px}
+#results .smallNote{font-size:11px;line-height:1.45}
+@media(max-width:500px){
+ .cameraCard{padding:19px 18px 22px}
+ .cameraStage{height:min(38svh,310px);min-height:230px}
+ #stepInstruction{font-size:12px}
+ .cameraCard .cameraStage:has(video.visible){background:#11293d}
+}
+@media(max-height:730px){.cameraStage{height:235px;min-height:215px}}
+@media print{
+ @page{size:A4 portrait;margin:16mm}
+ html,body{background:white!important;color:#173653!important}
+ .header,#home,#setup,#test,.resultActions,#results .smallNote{display:none!important}
+ .shell{display:block;max-width:none;padding:0!important}
+ #results{display:flex!important;border:0!important;min-height:0!important;
+ padding:0!important;background:#fff!important;box-shadow:none!important}
+ #results:before{content:"iREPAIR TOOLBOX | CAMERA DIAGNOSTICS";text-align:center;
+ font-size:12pt;font-weight:900;letter-spacing:1pt;color:#1a6296;margin-bottom:10mm}
+ #results .stats>div,#results .resultRow{break-inside:avoid;border:1px solid #bfd3e5!important;
+ box-shadow:none!important}
+ #results .resultRow{padding:9px 12px}
+ #results #resultIntro{display:block!important}
+}
+
+/* Camera-only report footer: prevent inherited Panic/Battery print copy. */
+@media print{
+ #results:after{
+  content:"Customer-guided visual camera observations. Browser preview does not independently prove individual physical lens, flash, autofocus or TrueDepth/Face ID operation.  •  iRepair Toolbox"!important;
+  display:block!important;text-align:center;margin-top:12mm;font-size:9pt;color:#697f95
+ }
+}
+
+
+/* Model-specific camera findings: cautious, compact, visually consistent. */
+.cameraCard #triageHints[hidden]{display:none!important}
+.cameraCard .triageHints{border:1px solid #fff;background:linear-gradient(145deg,#ffffffeb,#e5f4ffed);
+ border-radius:20px;padding:14px 15px;box-shadow:inset 0 1px #fff,0 7px 17px #5c99c12a}
+.cameraCard .triageHeading{font-size:13px;color:#285b84;font-weight:850;display:block;margin-bottom:10px}
+.cameraCard #triageRows{display:grid;gap:9px}
+.cameraCard .triageRow{border:1px solid #fff;border-radius:15px;padding:11px 12px;
+ background:linear-gradient(145deg,#fff,#eff8ff);box-shadow:0 3px 9px #4689b321}
+.cameraCard .triageRow strong{font-size:12px;color:#2e6287;line-height:1.4;display:block}
+.cameraCard .triageRow span{font-size:11px;color:#547691;line-height:1.55;display:block;margin-top:5px}
+@media print{
+ .cameraCard .triageHints:not([hidden]){display:block!important;break-inside:avoid}
+ .cameraCard .triageRow{box-shadow:none!important;break-inside:avoid}
+}
+
+/* Camera diagnostic symptom follow-up — scoped, optional and touch accessible. */
+.cameraCard .symptomPanel[hidden],.cameraCard .nativeFace[hidden]{display:none!important}
+.cameraCard .symptomPanel,.cameraCard .nativeFace{
+ border:1px solid #fff;border-radius:19px;padding:14px;
+ background:linear-gradient(145deg,#ffffffed,#e2f2ffef);
+ box-shadow:inset 0 1px #fff,0 6px 14px #5b9ac52b;
+ display:grid;gap:9px}
+.cameraCard .symptomPanel>strong{font-size:14px;color:#265c85}
+.cameraCard .symptomPanel>p,.cameraCard .nativeFace p{font-size:12px;line-height:1.45;color:#527792;margin:0}
+.cameraCard .symptomOptions{display:grid;gap:8px}
+.cameraCard .symptomOption{
+ display:flex;gap:11px;align-items:center;border:1px solid #fff;
+ background:linear-gradient(145deg,#fff,#e6f4ff);border-radius:14px;
+ min-height:46px;padding:9px 12px;color:#285d86;
+ font-size:12px;font-weight:750;line-height:1.35;cursor:pointer}
+.cameraCard .symptomOption input{width:21px;height:21px;flex:none;accent-color:#238cd2}
+.cameraCard .symptomPanel>.btn,.cameraCard .nativeFace>.btn{min-height:48px}
+@media print{.cameraCard .symptomPanel,.cameraCard .nativeFace{display:none!important}}
+
+/* Camera-only illuminated lens guide; preserves all approved glass/phone visuals. */
+.cameraCard .cameraLensGuide{
+ display:flex;align-items:center;gap:10px;padding:9px 12px;
+ border:1px solid #ffffffea;border-radius:17px;
+ background:linear-gradient(145deg,#ffffffef,#e3f4ffec);
+ box-shadow:inset 0 1px #fff,0 5px 15px #5299c025;min-height:98px}
+.cameraLensGuide svg{flex:none;width:72px;height:108px;
+ filter:drop-shadow(0 4px 8px #4b9cce3b)}
+.cameraCard .cameraLensDescription{display:grid;gap:5px;min-width:0}
+.cameraLensDescription strong{font-size:13px;font-weight:850;color:#23628d;line-height:1.3}
+.cameraLensDescription span{font-size:11px;color:#426f90;line-height:1.43}
+.cameraLensDescription small{font-size:10px;color:#6686a1;line-height:1.35}
+.cameraLensGuide.compact{min-height:0;padding:9px 13px}
+.cameraLensGuide svg[hidden]{display:none!important}
+.cameraGuideHalo .cameraGuideAura{
+ transform-box:fill-box;transform-origin:center;
+ animation:cameraLensBreathe 2.15s ease-in-out infinite}
+.cameraGuideHalo .cameraGuideRing{
+ transform-box:fill-box;transform-origin:center;
+ animation:cameraLensPulse 2.15s ease-in-out infinite;
+ filter:drop-shadow(0 0 5px #30dfff)}
+@keyframes cameraLensBreathe{0%,100%{opacity:.52;transform:scale(.9)}
+ 50%{opacity:1;transform:scale(1.12)}}
+@keyframes cameraLensPulse{0%,100%{opacity:.75;transform:scale(.98)}
+ 50%{opacity:1;transform:scale(1.09)}}
+@media(max-width:500px){.cameraLensGuide svg{width:66px;height:91px}}
+@media(prefers-reduced-motion:reduce){
+ .cameraGuideHalo .cameraGuideAura,.cameraGuideHalo .cameraGuideRing{animation:none!important}}
+@media print{#test .cameraLensGuide{display:none!important}}
+
+
+/* Motion & Haptics original stage treatments, derived from the approved icy-blue glass family.
+   The locked camera CSS was copied (not linked/mutated), so prototypes remain independent. */
+.motionHero{perspective:850px;min-height:485px;isolation:isolate;overflow:hidden}
+.motionHero .phoneArt{z-index:3;transform:rotate(-6deg) rotateY(-11deg);animation:motionHeroFloat 8s ease-in-out infinite}
+.motionHero .phoneScreen{isolation:isolate}
+.motionHero .gyroOrbit{position:absolute;width:330px;height:170px;border-radius:50%;pointer-events:none;
+ border:2px solid #8beefac9;box-shadow:0 0 15px #58e7ff5e,0 0 37px #55beff26,inset 0 0 13px #67eaff7a;
+ z-index:1;transform:rotate(-26deg);animation:motionOrbit 10s linear infinite}
+.motionHero .orbitTwo{width:240px;height:395px;border-color:#ffffffd9;box-shadow:0 0 28px #51bdff5e;transform:rotate(46deg);animation-duration:13s;animation-direction:reverse}
+.gyroScreenGlow{position:absolute;inset:0;background:
+ radial-gradient(ellipse at 50% 47%,#4adaff84,transparent 37%),
+ radial-gradient(ellipse at 72% 76%,#0044a86b,transparent 55%);mix-blend-mode:screen}
+.motionSymbol{position:absolute;width:74%;top:50%;left:50%;transform:translate(-50%,-50%);
+ filter:drop-shadow(0 0 11px #69ebffb3) drop-shadow(0 0 28px #41a9ff9c);
+ animation:motionSymbolDrift 7s ease-in-out infinite}
+.gyroAxis{position:absolute;font-weight:950;color:#d6ffff;font-size:17px;text-shadow:0 0 9px #65efff,0 0 19px #2daaff}
+.gyroAxis.axX{left:13%;top:31%}.gyroAxis.axY{right:13%;top:39%}.gyroAxis.axZ{left:51%;bottom:17%}
+@keyframes motionHeroFloat{0%,100%{transform:rotate(-6deg) rotateY(-11deg) translateY(3px)}50%{transform:rotate(2deg) rotateY(9deg) translateY(-8px)}}
+@keyframes motionOrbit{0%{filter:brightness(.7);transform:rotate(-27deg) rotateX(20deg)}
+50%{filter:brightness(1.5);transform:rotate(153deg) rotateX(-19deg)}
+100%{filter:brightness(.7);transform:rotate(333deg) rotateX(20deg)}}
+@keyframes motionSymbolDrift{0%,100%{transform:translate(-50%,-50%) rotate(-9deg)}50%{transform:translate(-50%,-50%) rotate(16deg)}}
+.setupMotion{margin-top:22px}.setupMotion label{display:block;color:#346587;font-size:13px;font-weight:850;margin-bottom:9px}
+.setupMotion select{width:100%;height:53px;border:1px solid #c5e6ff;background:#fff;color:#184b71;padding:0 12px;border-radius:15px;font-size:15px}
+.privacyNotice{margin:17px 0;border:1px solid #d7edfd;border-radius:19px;padding:17px;
+ background:linear-gradient(140deg,#fff,#e9f6ff);color:#37637e}
+.privacyNotice strong{font-size:14px;color:#1d5e88}.privacyNotice p{font-size:13px;line-height:1.58;margin:7px 0 0}
+.motionTest h1{font-size:clamp(34px,9vw,48px);margin-top:14px}
+.motionTest .lead{font-size:15px;margin:0 auto 12px}
+.motionTest .stepHead .mini{min-height:39px;padding:7px 13px;width:auto;font-size:12px;border-radius:13px}
+.motionStage{position:relative;width:100%;height:min(37svh,355px);min-height:275px;border-radius:27px;border:1px solid #fff;
+ background:radial-gradient(ellipse at 48% 45%,#fff,#c4e7ff 76%,#a8d3ed);
+ box-shadow:inset 0 2px 3px #fff,0 9px 28px #4e9fcd36;
+ display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate;
+ perspective:750px;margin:13px 0}
+.motionGlow{position:absolute;width:63%;aspect-ratio:1;filter:blur(18px);
+ background:radial-gradient(circle,#4ebaff72,transparent 68%)}
+.motionRing{position:absolute;width:235px;height:84px;border:2px solid #80f3ffe2;border-radius:50%;
+ transform:rotate(-35deg);box-shadow:0 0 14px #72e7ff95,inset 0 0 9px #a3f7ffa3;
+ opacity:.8;pointer-events:none}
+.motionRing.ringB{transform:rotate(52deg);height:180px;width:92px;border-color:#fff}
+.motionRing.ringC{width:180px;height:177px;border-color:#a9dfff88;border-width:1px}
+.demoDevice{--rx:0deg;--ry:0deg;position:relative;z-index:2;width:128px;height:257px;
+ border:5px solid #7c9eb9;border-radius:28px;background:linear-gradient(140deg,#071d36,#103c66 48%,#06152f);
+ box-shadow:inset 0 0 0 2px #d1e9f4,0 21px 24px #416d994a,0 0 18px #53bbff80;
+ transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .16s ease-out}
+.demoDevice:before{content:"";position:absolute;inset:2px;border-radius:21px;
+ background:linear-gradient(140deg,#4c8eb144,transparent 32%,#89e4ff20 75%,transparent);pointer-events:none;z-index:2}
+.demoGlass{position:absolute;inset:4px;border-radius:20px;overflow:hidden;
+ background:radial-gradient(circle at 50% 49%,#0983b5a3,#0c375b 45%,#071628 82%);
+ display:grid;place-items:center}
+.demoIsland{position:absolute;top:11px;left:calc(50% - 24px);width:48px;height:11px;border-radius:12px;background:#020d1b;z-index:3}
+.demoCore{width:93%;filter:drop-shadow(0 0 10px #66ddff);animation:motionSymbolDrift 7s ease-in-out infinite}
+.motionAxis{position:absolute;z-index:2;font-weight:900;font-size:13px;letter-spacing:1px;
+ color:#337aa7;text-shadow:0 1px #fff}
+.motionAxis.axisX{left:13%;top:44%}.motionAxis.axisY{right:12%;top:25%}.motionAxis.axisZ{right:16%;bottom:18%}
+.stageLabel{position:absolute;z-index:5;top:12px;left:12px;border:1px solid #ffffffac;
+ border-radius:99px;background:#104975d8;color:#fff;letter-spacing:.8px;font-size:9px;font-weight:900;padding:8px 11px;
+ backdrop-filter:blur(9px)}
+.readings{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.reading{min-width:0;text-align:center;border:1px solid #fff;border-radius:17px;
+ background:linear-gradient(150deg,#fff,#e5f4ff);padding:12px 6px;
+ box-shadow:inset 0 1px #fff,0 5px 14px #468eb92e}
+.reading span{display:block;font-size:10px;font-weight:850;letter-spacing:.7px;color:#6284a0}
+.reading strong{display:block;font-size:clamp(15px,4.9vw,24px);letter-spacing:-.6px;color:#145990;
+ font-variant-numeric:tabular-nums;margin-top:5px}
+.liveStatus{color:#547b98;font-size:12px;line-height:1.5;text-align:center;
+ min-height:28px;margin:11px 0 6px}
+.permitBtn{font-size:13px!important;min-height:49px!important;margin-bottom:6px;border-radius:16px!important}
+.permitBtn[hidden]{display:none!important}
+.methodNote{font-size:11px;line-height:1.5;text-align:center;color:#6c879a;margin:9px 0 15px}
+.motionTest .testQuestion{margin-top:8px;font-size:15px}
+.motionTest .testActions{margin-top:12px}
+.motionTest .testActions .btn{min-height:54px}
+.motionTest .testBottomControls{margin-top:14px}
+.motionTest .symptomPanel{margin-top:14px}
+.motionStage.guided .demoDevice{transform:none!important;animation:motionGuided 4.5s ease-in-out infinite}
+.motionStage.guided .stageLabel{background:#3270a5da}
+.motionStage.proximityStage .demoIsland{box-shadow:0 0 12px 6px #3ee3ff,0 0 35px 10px #69bdff}
+.motionStage.hapticStage .demoCore{animation:hapticEcho 1.7s ease-in-out infinite}
+.motionStage.hapticStage .motionRing{animation:hapticEcho 2s ease-in-out infinite}
+@keyframes motionGuided{0%,100%{transform:rotate(-8deg) rotateY(-6deg)}50%{transform:rotate(7deg) rotateY(8deg)}}
+@keyframes hapticEcho{0%,100%{opacity:.58;filter:drop-shadow(0 0 6px #50b8ff)}50%{opacity:1;filter:drop-shadow(0 0 14px #57edff)}}
+.resultMotion .resultRows{margin-top:17px}
+@media(max-width:370px){.motionStage{min-height:245px}.readings{gap:5px}.reading{padding:9px 3px}}
+@media(prefers-reduced-motion:reduce){
+ .motionHero .phoneArt,.gyroOrbit,.motionSymbol,.demoCore,.motionStage.guided .demoDevice,
+ .motionStage.hapticStage .demoCore,.motionStage.hapticStage .motionRing{animation:none!important;transition:none!important}}
+@media print{
+ .motionHero,.motionStage,.readings,.permitBtn,.testBottomControls,#test,#home,#setup,
+ .header,.resultActions{display:none!important}
+ .view#results{display:block!important}
+ body{background:#fff!important}
+ .card{min-height:0!important;border:0!important;box-shadow:none!important}
+}
+
+/* Preserve native hidden behaviour over generic layout rules. */
+[hidden]{display:none!important}
+
+/* Motion & Haptics v2 — familiar signature glass, one guided action per screen. */
+.motionHero{min-height:490px;perspective:none}
+.motionHero .phoneArt{transform:none!important;animation:none!important;z-index:2}
+.motionHero .phoneScreen .motionSymbol{width:73%;animation:motionSymbolDrift 8s ease-in-out infinite}
+.motionHero .phoneScreen .gyroScreenGlow{opacity:.83}
+.motionTest .lead{font-size:16px!important;line-height:1.46;max-width:340px}
+.motionTest h1{margin-top:12px;margin-bottom:12px}
+.motionTest .eyebrow{letter-spacing:1.45px}
+.motionStage{height:min(34svh,300px);min-height:250px;transition:background .45s ease;overflow:hidden}
+.motionStage .demoDevice{width:117px;height:232px;--tx:0px;--ty:0px;--rz:0deg}
+.motionStage .motionRing{opacity:0;transition:opacity .3s ease}
+.motionStage .motionAxis{display:none}
+.motionStage .stageLabel{font-size:9px;letter-spacing:1px}
+.directionArrows{position:absolute;inset:0;pointer-events:none;z-index:2}
+.motionArrow{position:absolute;font-size:32px;font-weight:900;color:#319bd5;text-shadow:0 0 12px #8af1ff,0 2px #fff;opacity:0}
+.motionArrow.left{left:9%;top:44%}.motionArrow.right{right:9%;top:44%}
+.motionArrow.up{left:48%;top:7%}.motionArrow.down{left:48%;bottom:7%}
+.motionStage.stage-accel .motionArrow{opacity:1}
+.motionStage.stage-accel .motionArrow.left,.motionStage.stage-accel .motionArrow.right{animation:motionArrowHorizontal 2.1s ease-in-out infinite}
+.motionStage.stage-accel .motionArrow.up,.motionStage.stage-accel .motionArrow.down{animation:motionArrowVertical 2.1s ease-in-out infinite}
+.motionStage.stage-accel .demoDevice{transform:translate(var(--tx),var(--ty))!important}
+.motionStage.stage-gyro .motionRing{opacity:.85}
+.motionStage.stage-gyro .ringA{animation:motionRingTurn 5s linear infinite}
+.motionStage.stage-gyro .ringB{animation:motionRingTurnB 6s linear infinite}
+.motionStage.stage-gyro .demoDevice{transform:rotateZ(var(--rz))!important}
+.motionStage.stage-tilt .ringC{opacity:.5}
+.motionStage.stage-tilt .demoDevice{transform:rotateX(var(--rx)) rotateY(var(--ry))!important}
+.motionStage.stage-tilt .motionGlow{background:radial-gradient(circle,#6fc4ff9c,transparent 68%)}
+.motionStage.stage-compass .demoDevice{transform:translateX(-30px) rotate(-6deg)!important;animation:none!important}
+.compassArt{display:none;position:absolute;right:5%;top:22%;z-index:3;width:126px;height:126px;
+ border:3px solid #8cd8f8;border-radius:50%;background:radial-gradient(circle,#fff,#d6f1ff);
+ box-shadow:0 0 22px #51bfff4d,inset 0 0 17px #fff}
+.motionStage.stage-compass .compassArt{display:block}
+.compassArt span:not(.compassNeedle){position:absolute;color:#2f80b1;font-size:12px;font-weight:950}
+.compassArt .north{top:5px;left:calc(50% - 5px)}.compassArt .south{bottom:5px;left:calc(50% - 4px)}
+.compassArt .west{left:10px;top:calc(50% - 7px)}.compassArt .east{right:10px;top:calc(50% - 7px)}
+.compassNeedle{position:absolute;inset:15px 48px;border-radius:100% 100% 100% 100%;
+ transform:rotate(31deg);background:linear-gradient(#109ad4 0 47%,#b8daea 48% 100%);
+ clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+ animation:compassIllustrate 3.2s ease-in-out infinite}
+.motionStage.stage-haptics .demoDevice{animation:none!important;transform:none!important}
+.hapticWaves{position:absolute;inset:0;display:none;z-index:1;pointer-events:none;place-items:center}
+.motionStage.stage-haptics .hapticWaves{display:grid}
+.hapticWaves span{grid-area:1/1;width:165px;height:165px;border:3px solid #74eaff;border-radius:50%;
+ box-shadow:0 0 15px #65bfff90;animation:hapticRadiate 2.4s ease-out infinite}
+.hapticWaves span:nth-child(2){animation-delay:.8s}.hapticWaves span:nth-child(3){animation-delay:1.6s}
+.motionStage.stage-haptics .demoCore{animation:none!important}
+.motionStage.stage-haptics .motionRing{animation:none!important;opacity:0}
+.motionStage.stage-proximity .demoDevice{transform:translateX(-27px)!important;animation:nearEar 3.5s ease-in-out infinite!important}
+.proximityArt{display:none;position:absolute;right:6%;top:24%;width:100px;height:158px;z-index:2}
+.motionStage.stage-proximity .proximityArt{display:block}
+.proximityArt svg{width:100%;height:100%;filter:drop-shadow(0 5px 12px #3ab3ef7a)}
+.nearBeam{position:absolute;left:-35px;top:27%;height:53px;width:67px;border-radius:50%;
+ background:radial-gradient(ellipse,#79f0ff9c,transparent 66%);filter:blur(6px);animation:nearGlow 3.5s ease-in-out infinite}
+.detectionPanel{display:flex;align-items:center;gap:14px;min-height:80px;padding:12px 15px;
+ background:linear-gradient(150deg,#fff,#e5f4ff);border-radius:21px;border:1px solid #fff;
+ box-shadow:inset 0 1px #fff,0 7px 19px #4f91bb2d}
+.detectionPanel .detectionIcon{display:grid;place-items:center;flex:none;width:48px;height:48px;
+ border-radius:16px;background:linear-gradient(145deg,#f2faff,#b8def9);font-weight:900;font-size:25px;
+ color:#3c85b6;box-shadow:inset 0 1px #fff,0 4px 12px #53a1ce3a}
+.detectionPanel[data-state="detected"] .detectionIcon{background:linear-gradient(#d9fff0,#57d9ab);
+ color:#086245;box-shadow:inset 0 1px #fff,0 0 12px #5ce5b87f}
+.detectionCopy{display:grid;gap:4px;min-width:0}
+.detectionCopy strong{font-size:15px;color:#20567e;line-height:1.18}
+.detectionPanel[data-state="detected"] strong{color:#0d865e}
+.detectionCopy span{font-size:12px;line-height:1.45;color:#557c99}
+.checkpoints{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.checkItem{display:flex;align-items:center;justify-content:center;text-align:center;
+ padding:10px 6px;min-height:45px;border:1px solid #fff;border-radius:15px;
+ background:#edf6ff;color:#6685a0;font-weight:800;font-size:11px;line-height:1.35}
+.checkItem.done{color:#096747;background:linear-gradient(#e5fff1,#bef3d9);
+ border-color:#a9efcb}
+.technicalPanel{margin:9px 0 1px;border:1px solid #daeefa;border-radius:15px;padding:0 10px;
+ background:#f6fbffe0}
+.technicalPanel summary{cursor:pointer;padding:10px 2px;font-size:11px;font-weight:800;color:#477da3;
+ display:flex;justify-content:space-between}
+.technicalPanel .readings{margin:5px 0 9px}
+.technicalPanel p{font-size:10px;color:#6b879c;margin:4px 0 10px}
+.liveStatus{font-size:11px;min-height:0;margin:8px 0 5px;line-height:1.5}
+.motionTest .testQuestion{font-size:15px!important;font-weight:850;color:#315a77;margin:16px 0 2px}
+.motionTest .testActions .btn{min-height:53px}
+.motionTest .testActions .btn.pass:disabled{opacity:.44;filter:grayscale(.35);box-shadow:none}
+.motionTest .methodNote{font-size:10px;line-height:1.4;margin:6px 0 8px}
+.motionTest .testBottomControls{margin-top:15px}
+@keyframes motionArrowHorizontal{0%,100%{transform:translateX(0);opacity:.35}50%{transform:translateX(7px);opacity:1}}
+@keyframes motionArrowVertical{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(7px);opacity:1}}
+@keyframes motionRingTurn{from{transform:rotate(-35deg)}to{transform:rotate(325deg)}}
+@keyframes motionRingTurnB{from{transform:rotate(53deg)}to{transform:rotate(-307deg)}}
+@keyframes compassIllustrate{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(28deg)}}
+@keyframes hapticRadiate{0%{transform:scale(.7);opacity:.85}100%{transform:scale(1.65);opacity:0}}
+@keyframes nearEar{0%,100%{transform:translateX(-27px)}50%{transform:translateX(-12px)}}
+@keyframes nearGlow{0%,100%{opacity:.26}50%{opacity:1}}
+@media(max-width:370px){.checkpoints{grid-template-columns:1fr}.motionStage{min-height:225px}}
+@media(prefers-reduced-motion:reduce){
+ .motionHero .phoneScreen .motionSymbol,.motionArrow,.motionStage .motionRing,.compassNeedle,
+ .hapticWaves span,.motionStage.stage-proximity .demoDevice,.nearBeam{animation:none!important}}
+
+
+/* Motion & Haptics v3 — beautifully simple, dedicated demonstration above real response.
+   The five approved apps are never imported or changed. */
+.motionTest .lead[hidden]{display:none!important}
+.motionTest .motionStage{
+ display:flex!important;flex-direction:column;gap:9px;align-items:stretch;justify-content:start;
+ height:auto!important;min-height:0!important;overflow:visible!important;padding:10px!important;
+ background:linear-gradient(160deg,#f1faff,#d4edff 65%,#eaf8ff)!important;
+ box-shadow:inset 0 1px 2px #fff,0 12px 29px #4c92c537!important;
+ perspective:none!important;margin:14px 0 10px!important;
+}
+.motionStage .instructionPane,.motionStage .responsePane{
+ position:relative;width:100%;border:1px solid #fff;border-radius:22px;
+ background:linear-gradient(155deg,#ffffffeb,#e4f4ffd8);
+ box-shadow:inset 0 1px #fff,0 3px 12px #4f9dcc21;
+ padding:9px 11px 10px;overflow:hidden;min-width:0
+}
+.motionStage .responsePane{background:linear-gradient(155deg,#e8f7ffeb,#c7e5fce8);}
+.stageSectionLabel{display:flex;align-items:center;gap:7px;
+ color:#276fa2;letter-spacing:1.5px;font-size:9px;font-weight:900}
+.stageStepNumber{display:grid;place-items:center;width:19px;height:19px;border-radius:7px;
+ color:#fff;background:linear-gradient(150deg,#48baff,#1269b9);font-size:10px;letter-spacing:0;
+ box-shadow:0 0 7px #2fa8fa6e}
+.liveStepNumber{background:linear-gradient(150deg,#3eb3d5,#166fa8)}
+.motionStage .instructionContents{display:flex;align-items:center;justify-content:center;gap:16px;
+ min-height:103px}
+.guideActionLabel{display:block;flex:1;max-width:205px;
+ font-size:clamp(16px,4.6vw,20px);line-height:1.18;font-weight:900;letter-spacing:-.4px;color:#194b72}
+.guideGraphic{position:relative;flex:none;width:120px;height:102px;
+ display:flex;align-items:center;justify-content:center;isolation:isolate}
+.guidePhone{width:47px;height:88px;border:3px solid #9fbcd2;border-radius:12px;
+ background:radial-gradient(ellipse at 50% 58%,#168ac4,#092d51 62%,#06192d);
+ box-shadow:inset 0 0 0 1px #daf3ff,0 7px 13px #3283be53,0 0 9px #54d8ff77;
+ display:flex;align-items:center;justify-content:center;position:relative;z-index:3;
+ transform-origin:50% 50%}
+.guidePhone .guideIsland{position:absolute;top:5px;left:50%;transform:translateX(-50%);
+ width:21px;height:5px;border-radius:6px;background:#041b2b}
+.guidePhone svg{width:90%;filter:drop-shadow(0 0 5px #8cecff)}
+.guideSides,.guideDepth,.guideSpin{display:none;position:absolute;
+ color:#2599cd;font-weight:950;text-shadow:0 0 12px #70d8ff,0 1px #fff;pointer-events:none}
+.guideSides{font-size:26px;top:37%}.guideLeft{left:2px}.guideRight{right:2px}
+.guideDepth{font-size:32px}.guideDepth.near{top:0;right:0}.guideDepth.far{bottom:0;left:0}
+.guideSpin{font-size:91px;inset:-3px 0 0;text-align:center;line-height:98px;color:#66bbeb99}
+.motionStage.stage-accel[data-phase="first"] .guideSides{display:block}
+.motionStage.stage-accel[data-phase="first"] .guidePhone{animation:guideHorizontal 2.1s ease-in-out infinite}
+.motionStage.stage-accel[data-phase="second"] .guideDepth{display:block}
+.motionStage.stage-accel[data-phase="second"] .guidePhone{animation:guideNearFar 2.5s ease-in-out infinite}
+.motionStage.stage-gyro .guideSpin{display:block;animation:guideSpiral 3.5s linear infinite}
+.motionStage.stage-gyro .guidePhone{animation:guideRotate 3.5s ease-in-out infinite}
+.motionStage.stage-tilt[data-phase="first"] .guidePhone{animation:guidePitch 2.4s ease-in-out infinite}
+.motionStage.stage-tilt[data-phase="second"] .guidePhone{animation:guideRoll 2.4s ease-in-out infinite}
+.motionStage.stage-tilt[data-phase="second"] .guideSides{display:block}
+.guideCompass{display:none;position:absolute;inset:3px 11px;border:2px solid #8bdcf8;
+ border-radius:50%;background:radial-gradient(circle,#fff,#bfe8ff);z-index:4;
+ box-shadow:0 0 14px #75c3eb60}
+.guideCompass b,.guideCompass small{position:absolute;left:50%;transform:translateX(-50%);
+ font-size:12px;color:#2e77a9}.guideCompass b{top:2px}.guideCompass small{bottom:2px}
+.guideCompass i{position:absolute;left:calc(50% - 6px);top:17%;height:66%;width:12px;
+ background:linear-gradient(#109cd7 0 50%,#b7d8ea 50%);
+ clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+ animation:compassIllustrate 3.4s ease-in-out infinite}
+.motionStage.stage-compass .guidePhone{display:none}
+.motionStage.stage-compass .guideCompass{display:block}
+.guideRipples{display:none;position:absolute;inset:0;place-items:center}
+.guideRipples i{grid-area:1/1;width:62px;height:62px;border:3px solid #5bd4f8;
+ border-radius:50%;animation:hapticRadiate 2.4s ease-out infinite;box-shadow:0 0 10px #74e9ffad}
+.guideRipples i:nth-child(2){animation-delay:.8s}.guideRipples i:nth-child(3){animation-delay:1.6s}
+.motionStage.stage-haptics .guideRipples{display:grid}
+.guideEar{display:none;position:absolute;right:0;top:7px;width:63px;height:92px;z-index:4}
+.guideEar svg{width:100%;height:100%;filter:drop-shadow(0 3px 7px #7fbce95d)}
+.motionStage.stage-proximity .guideEar{display:block}
+.motionStage.stage-proximity .guidePhone{animation:nearEar 3.1s ease-in-out infinite;transform:translateX(-16px)}
+.motionStage .responseContents{display:flex;align-items:center;justify-content:start;
+ gap:16px;padding:8px 4px 1px;min-height:97px}
+.motionStage .responsePane .demoDevice{position:relative;display:block;flex:none;z-index:2;
+ width:45px!important;height:89px!important;border:3px solid #85aaca!important;
+ border-radius:12px!important;box-shadow:inset 0 0 0 1px #d9f2ff,0 5px 11px #4c8dc267!important;
+ background:#0b2945;transform-origin:center;animation:none!important;
+ transition:transform .1s linear!important}
+.motionStage .responsePane .demoGlass{inset:2px!important;border-radius:7px!important}
+.motionStage .responsePane .demoIsland{top:3px!important;left:calc(50% - 11px)!important;
+ width:22px!important;height:5px!important}
+.motionStage .responsePane .demoCore{animation:none!important;filter:drop-shadow(0 0 4px #53e3f9)!important}
+.motionStage .responsePane .detectionPanel{border:0;box-shadow:none;
+ padding:0;min-height:0;background:transparent;gap:7px;flex:1;min-width:0}
+.motionStage .responsePane .detectionIcon{width:32px;height:32px;flex:none;border-radius:11px;
+ font-size:17px}
+.motionStage .responsePane .detectionCopy strong{font-size:clamp(13px,3.9vw,15px);line-height:1.28}
+.motionStage .responsePane .detectionCopy span{font-size:11px;line-height:1.42}
+.motionStage .responsePane .guidedOutcome{display:grid;place-items:center;flex:none;
+ width:54px;height:62px;font-size:35px;font-weight:950;color:#217ba8;
+ text-shadow:0 0 13px #71e5ff}
+.motionStage .responsePane .guidedOutcome[hidden]{display:none!important}
+.motionStage.guided .responsePane .demoDevice{display:none!important}
+.motionStage.guided .responsePane .detectionPanel{flex:1}
+.motionStage .motionGlow,.motionStage>.motionRing,.motionStage>.stageLabel,
+.motionStage>.compassArt,.motionStage>.directionArrows,.motionStage>.proximityArt,
+.motionStage>.hapticWaves{display:none!important}
+.motionTest .checkpoints{margin-top:3px}
+.motionTest .checkItem{font-size:11px;min-height:42px}
+.motionTest .technicalPanel{margin:7px 0 1px}
+.motionTest #permissionButton{margin-top:10px}
+.motionTest .methodNote{margin-top:5px}
+.motionTest .testQuestion{margin-top:14px!important}
+.motionTest .testActions{margin-top:9px}
+.motionTest .testActions .btn{font-size:14px;min-height:52px}
+@keyframes guideHorizontal{0%,100%{transform:translateX(-8px)}50%{transform:translateX(9px)}}
+@keyframes guideNearFar{0%,100%{transform:scale(.86)}50%{transform:scale(1.17)}}
+@keyframes guideSpiral{to{transform:rotate(360deg)}}
+@keyframes guideRotate{0%,100%{transform:rotate(-19deg)}50%{transform:rotate(19deg)}}
+@keyframes guidePitch{0%,100%{transform:perspective(220px) rotateX(-24deg)}50%{transform:perspective(220px) rotateX(24deg)}}
+@keyframes guideRoll{0%,100%{transform:perspective(220px) rotateY(-30deg)}50%{transform:perspective(220px) rotateY(30deg)}}
+@media(max-width:355px){.motionStage .instructionContents{gap:8px}
+ .guideGraphic{width:104px}.guideActionLabel{font-size:15px}
+ .motionStage .responseContents{gap:8px}}
+@media(prefers-reduced-motion:reduce){
+ .motionStage .guidePhone,.motionStage .guideSpin,.motionStage .guideCompass i,
+ .motionStage .guideRipples i{animation:none!important}}
+
+/* Only live values drive the small phone; the demo above may animate independently. */
+.motionStage.stage-accel[data-phase="first"] .responsePane .demoDevice{
+ transform:translateX(var(--tx,0px))!important}
+.motionStage.stage-accel[data-phase="second"] .responsePane .demoDevice{
+ transform:scale(var(--live-scale,1))!important}
+@media(max-width:380px){
+ .motionStage .instructionContents{gap:8px}
+ .motionStage .guideGraphic{width:103px}
+ .motionStage .guideActionLabel{font-size:15px}
+ .motionStage .responseContents{gap:9px}
+}
+
+
+/* Connectivity standalone visual system — inherits a copied, frozen glass foundation
+   and adds a distinctive, customer-first connection animation. */
+.connectHero{min-height:480px;isolation:isolate}
+.connectHero .phoneArt{animation:none!important;transform:none!important}
+.connectHero .connectSymbol{position:absolute;inset:28% 15%;width:70%;height:44%;
+ filter:drop-shadow(0 0 14px #45eaff) drop-shadow(0 0 33px #0aaeff);
+ animation:connectBreathe 3.5s ease-in-out infinite;z-index:3}
+.connectHero .connectRipple{position:absolute;left:50%;top:53%;border-radius:50%;
+ border:2px solid #53dfff99;box-shadow:0 0 10px #33d7ff;
+ width:130px;height:130px;margin-left:-65px;margin-top:-65px;
+ animation:connectPulse 4.1s ease-out infinite}
+.connectHero .connectRipple.r2{animation-delay:2s}
+.connectHero .screenGlow{opacity:.64}
+.tinyIcon{display:inline-flex;width:28px;justify-content:center;color:#118ec5;font-weight:900}
+.connectivityTest h1{font-size:clamp(33px,9vw,47px);margin:12px 0 13px;line-height:1.02}
+.connectivityTest .lead.instructionBrief{font-size:15px;line-height:1.5;margin:0 auto 9px;max-width:385px}
+.connectivityTest .stepHead .mini{min-height:40px;width:auto;font-size:12px;padding:5px 12px;border-radius:14px}
+.connectStage{display:grid;grid-template-columns:1fr;gap:10px;border-radius:25px;padding:10px;
+ background:linear-gradient(152deg,#fff,#d6efff);border:1px solid white;
+ box-shadow:0 10px 26px #4b8dc82d;margin:15px 0 9px}
+.connectStage .stagePanel{min-width:0;padding:11px 13px 13px;border-radius:22px;
+ background:linear-gradient(152deg,#fff,#eaf8ff 89%);border:1px solid #fff;
+ box-shadow:inset 0 1px 2px white,0 4px 12px #448fbb21}
+.connectStage .responsePane{background:linear-gradient(135deg,#eaf8ff,#d0ebff 90%)}
+.connectStage .stageSectionLabel{display:flex;align-items:center;gap:8px;
+ font-weight:900;font-size:10px;letter-spacing:1.4px;color:#277aa6}
+.connectStage .stageSectionLabel span:first-child{display:grid;place-items:center;flex:none;
+ width:23px;height:23px;border-radius:8px;background:linear-gradient(#37b7fa,#1068b7);
+ box-shadow:0 2px 8px #21a9ef60;color:white;font-size:11px}
+.connectStage .stageSectionLabel span:nth-child(2){min-width:0}
+.connectArt{position:relative;width:100%;height:130px;display:grid;place-items:center;
+ overflow:hidden;isolation:isolate}
+.connectArtPhone{position:relative;z-index:2;width:59px;height:115px;border:4px solid #8cb3d1;
+ border-radius:17px;background:radial-gradient(circle at 50% 56%,#1d94ca,#052e56 64%,#061b34);
+ box-shadow:inset 0 0 0 1px #dbf4ff,0 8px 18px #1f80c74b,0 0 14px #72eaff78;
+ display:grid;place-items:center}
+.connectArtPhone .smallIsland{position:absolute;top:7px;left:calc(50% - 13px);width:26px;
+ height:6px;border-radius:6px;background:#03172e}
+.innerSymbol{display:none;width:71%;aspect-ratio:1;color:#d9ffff;text-shadow:0 0 12px #7cecff;
+ font-size:46px;font-weight:700;place-items:center;filter:drop-shadow(0 0 8px #55eaff)}
+.innerSymbol svg{width:100%;height:100%}
+.connectStage.stage-internet .signalInternet,
+.connectStage.stage-wifi .signalWifi,
+.connectStage.stage-cellular .signalMobile,
+.connectStage.stage-bluetooth .signalBluetooth,
+.connectStage.stage-location .signalLocation,
+.connectStage.stage-airdrop .signalAirdrop{display:grid}
+.connectStage.stage-bluetooth .signalBluetooth{font-size:56px}
+.connectStage.stage-airdrop .signalAirdrop{font-size:54px}
+.connectStage.stage-internet .connectArtPhone{animation:connectPhoneBreathe 3s ease-in-out infinite}
+.connectStage.stage-wifi .connectArtPhone{animation:connectPhoneBreathe 3.1s ease-in-out infinite}
+.connectStage.stage-cellular .connectArtPhone{animation:connectPhoneBreathe 2.8s ease-in-out infinite}
+.connectStage.stage-bluetooth .connectArtPhone{animation:connectSlowTurn 4s ease-in-out infinite}
+.connectStage.stage-location .connectArtPhone{animation:connectLocator 3.4s ease-in-out infinite}
+.connectStage.stage-airdrop .connectArtPhone{animation:connectSlowTurn 4.8s ease-in-out infinite}
+.connectWaves{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.connectWaves span{grid-area:1/1;width:92px;height:92px;border:2px solid #4bcffdba;border-radius:50%;
+ box-shadow:0 0 12px #3abfff4a;animation:connectPulse 3.8s ease-out infinite}
+.connectWaves span:nth-child(2){animation-delay:1.2s}
+.connectWaves span:nth-child(3){animation-delay:2.4s}
+.stageActionText{display:block;text-align:center;color:#1d557d;
+ font-weight:850;font-size:15px;line-height:1.3;margin-top:1px}
+.responseDisplay{display:flex;align-items:center;gap:13px;min-height:69px;padding:12px 0 3px}
+.liveBadge{display:grid;place-items:center;flex:none;width:57px;height:57px;border-radius:20px;
+ color:#2c89bf;background:linear-gradient(135deg,#fff,#c0e7ff);border:1px solid white;
+ box-shadow:inset 0 1px white,0 5px 14px #2a96cb39;font-size:32px;font-weight:850}
+.responsePane[data-state="reached"] .liveBadge{color:#087a5e;background:linear-gradient(#e6fff6,#65ddb3)}
+.responsePane[data-state="failed"] .liveBadge{color:#be395a;background:linear-gradient(#fff4f7,#ffd4df)}
+.responseCopy{display:grid;gap:5px;flex:1;min-width:0}
+.responseCopy strong{font-size:15px;color:#245778;line-height:1.25}
+.responseCopy span{font-size:12px;line-height:1.4;color:#537991}
+.connectivityTest .stageTestActions{display:grid;gap:8px;margin-top:12px}
+.connectivityTest .stageTestActions .btn{min-height:51px;border-radius:18px;font-size:15px}
+.selectionPrompt{background:#f7fcffe9;border:1px solid #d1e9fa;border-radius:15px;padding:12px}
+.modeConfirm{display:flex;align-items:center;gap:12px;color:#245b80;font-size:13px;
+ font-weight:750;line-height:1.45}
+.modeConfirm input{appearance:auto;width:21px;height:21px;accent-color:#078bd1;flex:none}
+.measurementCaution{font-size:11px;line-height:1.48;text-align:center;color:#68859b;max-width:385px;margin:auto}
+.connectivityTest .testQuestion{font-size:15px!important;margin:13px 0 3px;font-weight:850}
+.connectivityTest .testActions{margin-top:12px}
+.connectivityTest .testActions .btn{min-height:53px;font-size:14px}
+.connectivityTest .testActions .btn.pass:disabled{opacity:.5;filter:grayscale(.25);box-shadow:none}
+.connectivityTest .testBottomControls{margin-top:15px}
+.connectivityTest .smallNote{font-size:10px;line-height:1.52}
+.connectivityTest .technicalPanel{margin:9px 0 0}
+.connectivityTest .technicalPanel summary{font-size:11px}
+.techText{font-size:12px;line-height:1.6;padding:7px;color:#346382;overflow-wrap:anywhere}
+.connectivityResults .resultRows{margin-top:18px}
+@media(min-width:630px){
+ .connectStage{grid-template-columns:1fr 1fr}
+ .connectArt{height:175px}
+ .responseDisplay{min-height:171px}
+}
+@media(max-width:365px){
+ .connectStage{padding:7px}.connectStage .stagePanel{padding:9px 10px}
+ .connectArt{height:112px}.connectArtPhone{transform:scale(.9)}}
+@keyframes connectPulse{0%{transform:scale(.35);opacity:.65}100%{transform:scale(2.5);opacity:0}}
+@keyframes connectBreathe{0%,100%{transform:scale(.95);opacity:.82}50%{transform:scale(1.05);opacity:1}}
+@keyframes connectPhoneBreathe{0%,100%{transform:scale(.97)}50%{transform:scale(1.035)}}
+@keyframes connectSlowTurn{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes connectLocator{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(prefers-reduced-motion:reduce){
+ .connectHero .connectSymbol,.connectHero .connectRipple,.connectStage .connectArtPhone,
+ .connectStage .connectWaves span{animation:none!important}}
+@media print{
+ #home,#setup,#test,.header,.connectStage,.resultActions{display:none!important}
+ #results{display:block!important}body{background:white!important}
+ .card{border:0!important;box-shadow:none!important;min-height:0!important}
+}
+[hidden]{display:none!important}
+
+/* Connectivity review v2: approved-style diagonal screen shine with a
+   purpose-built five-connection constellation. Scoped to landing hero only. */
+#home .connectHero .phoneScreen{
+ background:
+  radial-gradient(ellipse at 48% 50%,#79dfff7f,transparent 42%),
+  radial-gradient(circle at 30% 13%,#cefaffc7,transparent 32%),
+  radial-gradient(ellipse at 76% 83%,#218bdc9c,transparent 46%),
+  linear-gradient(155deg,#5eb6ee 0%,#2c90d2 27%,#155cac 65%,#0d377d 100%);
+ box-shadow:inset 0 0 35px #0a468a7a,inset 0 2px 5px #f0ffff6b;
+}
+#home .connectHero .connectHubArtwork{
+ position:absolute;inset:0;width:100%;height:100%;z-index:3;display:block;
+ overflow:visible;filter:drop-shadow(0 0 10px #3beaff72);
+ pointer-events:none;
+}
+#home .connectHero .screenGlow{
+ z-index:5;opacity:.79;mix-blend-mode:screen;
+}
+#home .connectHero .screenGlow2{
+ z-index:6;opacity:.61;mix-blend-mode:screen;
+}
+#home .connectHero .dynamicIsland{z-index:8}
+#home .connectHero .hubOrbitPaths{
+ transform-box:view-box;transform-origin:center;
+ animation:connectOrbitDrift 38s linear infinite;
+}
+#home .connectHero .hubCoreHalo{
+ transform-origin:120px 247px;transform-box:view-box;
+ animation:connectCoreHeartbeat 4.4s ease-in-out infinite;
+}
+#home .connectHero .hubNodeAura{
+ animation:connectNodeHalo 4.6s ease-in-out infinite;
+}
+#home .connectHero .hubNodeCell .hubNodeAura{animation-delay:-1.6s}
+#home .connectHero .hubNodeBluetooth .hubNodeAura{animation-delay:-3.2s}
+#home .connectHero .hubNodeLocation .hubNodeAura{animation-delay:-1s}
+#home .connectHero .hubNodeTransfer .hubNodeAura{animation-delay:-2.5s}
+#home .connectHero .hubSpokeLights circle{
+ animation:connectSpokeGlint 4.1s ease-in-out infinite;
+}
+#home .connectHero .hubSpokeLights circle:nth-child(2){animation-delay:-1.2s}
+#home .connectHero .hubSpokeLights circle:nth-child(3){animation-delay:-2.4s}
+#home .connectHero .hubSpokeLights circle:nth-child(4){animation-delay:-.6s}
+#home .connectHero .hubSpokeLights circle:nth-child(5){animation-delay:-3s}
+@keyframes connectOrbitDrift{to{transform:rotate(360deg)}}
+@keyframes connectCoreHeartbeat{
+ 0%,100%{opacity:.47;transform:scale(.99)}
+ 50%{opacity:1;transform:scale(1.07)}
+}
+@keyframes connectNodeHalo{
+ 0%,100%{opacity:.22}
+ 45%{opacity:.72}
+}
+@keyframes connectSpokeGlint{
+ 0%,100%{opacity:.26}
+ 40%{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+ #home .connectHero .hubOrbitPaths,
+ #home .connectHero .hubCoreHalo,
+ #home .connectHero .hubNodeAura,
+ #home .connectHero .hubSpokeLights circle{
+  animation:none!important;
+ }
+}
+
+/* Connectivity v3 — Safari recording revealed a real positioning regression:
+   copied #home .phoneArt positions at left/top 50%, but the Connectivity
+   override erroneously set transform:none, removing the centring transform.
+   Keep the full handset and network artwork visible INSIDE its own panel. */
+#home .phoneStage.connectHero{
+ position:relative!important;
+ min-height:352px!important;
+ height:352px!important;
+ margin:9px 0 13px!important;
+ display:block!important;
+ overflow:hidden!important;
+ isolation:isolate!important;
+}
+#home .phoneStage.connectHero .phoneArt{
+ position:absolute!important;
+ left:50%!important;
+ top:50%!important;
+ width:258px!important;
+ height:auto!important;
+ margin:0!important;
+ transform:translate(-50%,-50%) scale(.58)!important;
+ transform-origin:center center!important;
+ z-index:2!important;
+ animation:none!important;
+}
+#home .phoneStage.connectHero .phoneScreen{
+ position:absolute!important;
+ overflow:hidden!important;
+ isolation:isolate;
+}
+#home .phoneStage.connectHero .phoneGlow{
+ position:absolute;
+ top:50%;left:50%;
+ transform:translate(-50%,-50%);
+ width:70%;max-width:270px;
+ opacity:.66;
+ pointer-events:none;
+}
+#home .connectHero .connectHubArtwork{
+ overflow:hidden!important;
+ opacity:1!important;
+}
+#home .connectHero .screenGlow,
+#home .connectHero .screenGlow2{
+ clip-path:inset(0);
+ pointer-events:none;
+}
+@media(max-height:700px){
+ #home .phoneStage.connectHero{height:309px!important;min-height:309px!important}
+ #home .phoneStage.connectHero .phoneArt{
+  transform:translate(-50%,-50%) scale(.52)!important;
+ }
+}
+@media(max-width:340px){
+ #home .phoneStage.connectHero{height:318px!important;min-height:318px!important}
+ #home .phoneStage.connectHero .phoneArt{
+  transform:translate(-50%,-50%) scale(.53)!important;
+ }
+}
+
+
+/* CHARGING STANDALONE v1: scoped glass finish, recognisable power/charger artwork.
+   Existing six frozen prototypes, including Motion & Haptics, remain unmodified. */
+#home .phoneStage.chargingHero{
+ display:block!important;position:relative!important;isolation:isolate;
+ height:352px!important;min-height:352px!important;
+ margin:9px 0 13px!important;overflow:hidden!important;
+}
+#home .phoneStage.chargingHero .phoneArt{
+ position:absolute!important;left:50%!important;top:50%!important;
+ width:258px!important;height:auto!important;margin:0!important;
+ transform:translate(-50%,-50%) scale(.58)!important;
+ transform-origin:center!important;z-index:2!important;
+ animation:none!important;
+}
+#home .phoneStage.chargingHero .phoneGlow{
+ position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:70%;max-width:300px;pointer-events:none;opacity:.72;
+}
+#home .chargingHero .phoneScreen{
+ position:absolute!important;overflow:hidden!important;isolation:isolate;
+ background:
+ radial-gradient(ellipse at 50% 40%,#80faff7b,transparent 49%),
+ radial-gradient(circle at 30% 12%,#dfffffc7,transparent 32%),
+ linear-gradient(155deg,#70c9f4 0%,#3296d6 32%,#1669b1 68%,#0c3a84 100%);
+ box-shadow:inset 0 0 38px #0d4c9f64,inset 0 2px 4px #ebffff6f;
+}
+#home .chargingHeroSvg{
+ position:absolute;inset:0;width:100%;height:100%;z-index:3;
+ overflow:hidden;pointer-events:none;
+ filter:drop-shadow(0 0 9px #52eaff9e);
+}
+#home .chargingHero .dynamicIsland{z-index:8}
+#home .chargingHero .screenGlow{
+ z-index:5;mix-blend-mode:screen;opacity:.82;pointer-events:none;
+}
+#home .chargingHero .screenGlow2{
+ z-index:6;mix-blend-mode:screen;opacity:.55;pointer-events:none;
+}
+#home .chargingHero .chargingOrbit{
+ transform-box:view-box;transform-origin:50% 44%;
+ animation:chargingOrbitDrift 35s linear infinite;
+}
+#home .chargingHero .chargingBattery{transform-origin:120px 210px;animation:chargingBatteryGlow 4.2s ease-in-out infinite}
+#home .chargingHero .chargingBolt{
+ animation:chargingBoltPulse 2.9s ease-in-out infinite;transform-origin:120px 212px;
+}
+#home .chargingHero .chargingFlux circle{
+ animation:chargingFluxRise 3.1s ease-in-out infinite;
+}
+#home .chargingHero .chargingFlux circle:nth-child(2){animation-delay:-.6s}
+#home .chargingHero .chargingFlux circle:nth-child(3){animation-delay:-1.2s}
+#home .chargingHero .chargingFlux circle:nth-child(4){animation-delay:-1.7s}
+#home .chargingHero .chargingFlux circle:nth-child(5){animation-delay:-2.3s}
+@keyframes chargingOrbitDrift{to{transform:rotate(360deg)}}
+@keyframes chargingBatteryGlow{0%,100%{opacity:.83}50%{opacity:1}}
+@keyframes chargingBoltPulse{0%,100%{opacity:.75;transform:scale(.97)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes chargingFluxRise{0%,100%{opacity:.25;transform:translateY(10px)}45%{opacity:1}85%{opacity:.4;transform:translateY(-12px)}}
+.chargeTest h1{font-size:clamp(32px,8.6vw,45px);line-height:1.06;margin:12px 0 10px}
+.chargeTest .lead.chargeInstruction{font-size:15px;line-height:1.45;margin:3px auto 12px;max-width:400px}
+.chargeStage{display:grid;grid-template-columns:1fr;gap:9px;
+ background:linear-gradient(140deg,#fbffff,#d7f1ff);border:1px solid white;
+ border-radius:25px;padding:9px;margin:10px 0;
+ box-shadow:inset 0 1px 1px #fff,0 10px 28px #3b8ab834}
+.chargePane{border-radius:20px;min-width:0;overflow:hidden;
+ background:linear-gradient(145deg,#ffffffef,#eaf7ffeb);
+ box-shadow:inset 0 1px #fff,0 4px 14px #478cb11c;
+ border:1px solid white;padding:10px 12px}
+.chargePane.expectedPane{background:linear-gradient(150deg,#eaf8ff,#cfeaff)}
+.chargePaneLabel{display:flex;align-items:center;gap:7px;
+ color:#287da9;letter-spacing:1.35px;font-size:10px;font-weight:900}
+.chargePaneLabel span{width:22px;height:22px;display:grid;place-items:center;
+ border-radius:8px;color:#fff;letter-spacing:0;
+ background:linear-gradient(150deg,#37baf7,#146cbd);
+ box-shadow:0 1px 7px #3facf773}
+.chargeGuideArt{position:relative;display:grid;place-items:center;
+ margin:1px auto;width:100%;height:140px;isolation:isolate}
+.guideHandset{z-index:3;position:absolute;top:8px;left:calc(50% - 29px);
+ width:58px;height:120px;border:4px solid #9dbacf;border-radius:16px;
+ box-shadow:inset 0 0 0 1px #dcffff,0 7px 16px #367fbd70,0 0 15px #60eaff9b;
+ background:radial-gradient(ellipse at 50% 55%,#238ecc,#052b54 69%,#092039);
+ display:grid;place-items:center;overflow:hidden}
+.miniIsland{position:absolute;top:5px;left:50%;transform:translateX(-50%);
+ width:24px;height:6px;border-radius:5px;background:#031a2e}
+.guideScreenIcon{font-size:37px;color:#e6ffff;text-shadow:0 0 9px #bfffff,0 0 17px #50cfff}
+.miniBattery{display:none;width:31px;height:51px;border:3px solid #dcffff;
+ border-radius:8px;position:relative;box-shadow:0 0 11px #80fff9}
+.miniBattery:before{content:"";position:absolute;top:-8px;left:9px;width:9px;height:5px;border-radius:3px 3px 0 0;background:#edffff}
+.miniBattery span{position:absolute;inset:15% 4px 4px;background:linear-gradient(#75ffe2,#1cba9d);border-radius:3px}
+.guideLead{position:absolute;left:50%;top:108px;z-index:4;
+ width:110px;height:34px;transform:translateX(-50%);pointer-events:none}
+.guideCable{position:absolute;left:54px;top:13px;width:4px;height:29px;
+ background:linear-gradient(90deg,#7aa3bd,#e5ffff,#5e91b4);border-radius:3px;
+ animation:chargeCableFlow 3s ease-in-out infinite}
+.guidePlug{position:absolute;left:47px;top:0;width:18px;height:16px;
+ background:linear-gradient(150deg,#e6ffff,#769dbb);border:1px solid white;
+ border-radius:3px 3px 5px 5px;box-shadow:0 0 10px #69eaffb2}
+.guidePulse{position:absolute;left:42px;top:-5px;width:27px;height:27px;
+ border:2px solid #d7ffff;border-radius:50%;box-shadow:0 0 8px #a1ffff;
+ animation:chargingGuidePulse 2.4s ease-out infinite}
+.guideQi{display:none;position:absolute;inset:0;z-index:5;pointer-events:none}
+.qiDisk{position:absolute;width:83px;height:24px;top:101px;left:calc(50% - 41px);
+ border-radius:50%;border:3px solid #e5ffff;box-shadow:0 0 12px #66dfff;
+ background:radial-gradient(circle,#82f9ff,#288fc4)}
+.qiPulse{position:absolute;width:96px;height:96px;border:2px solid #9dfaff;
+ border-radius:50%;left:calc(50% - 48px);top:29px;
+ animation:chargingGuidePulse 2.5s ease-out infinite}
+.chargeAction{display:block;font-size:15px;line-height:1.35;
+ color:#1d567f;text-align:center;margin:0 0 4px;font-weight:850}
+.expectedDisplay{display:flex;align-items:center;gap:13px;min-height:80px;padding:8px 0 2px}
+.expectedIcon{display:grid;place-items:center;flex:none;
+ width:60px;height:61px;font-size:29px;color:#157cb0;
+ border:1px solid white;border-radius:19px;
+ background:linear-gradient(145deg,#fff,#c2e8ff);
+ box-shadow:0 4px 13px #4c9ecc44}
+.expectedCopy{flex:1;min-width:0;display:grid;gap:5px}
+.expectedCopy strong{color:#245879;font-size:15px;line-height:1.25}
+.expectedCopy span{font-size:12px;line-height:1.43;color:#56788f}
+.chargeCaution{padding:9px 11px;border-radius:13px;
+ background:linear-gradient(145deg,#f9fcff,#eaf7ff);
+ border:1px solid #dbeefb;font-size:11px;line-height:1.45;
+ color:#527890;text-align:center}
+.chargeStage.stage-wireless .guideLead{display:none}
+.chargeStage.stage-wireless .guideQi{display:block}
+.chargeStage.stage-wireless .guideHandset{top:2px;animation:wirelessFloat 2.8s ease-in-out infinite}
+.chargeStage.stage-safety .guidePlug,
+.chargeStage.stage-safety .guideCable{opacity:.83}
+.chargeStage.stage-port .guideHandset{animation:chargingPortFloat 3s ease-in-out infinite}
+.chargeStage.stage-behaviour .guideScreenIcon{display:none}
+.chargeStage.stage-behaviour .miniBattery{display:block}
+.chargeStage.stage-behaviour .guideLead{display:none}
+.chargeStage.stage-behaviour .guideHandset{animation:chargingPortFloat 3s ease-in-out infinite}
+.chargeStage.stage-swap .guideLead{animation:chargeSwapSlide 3.1s ease-in-out infinite}
+.chargeStage.stage-wired .guideLead{animation:chargingPortFloat 2.7s ease-in-out infinite}
+.chargeTech{font-size:12px;line-height:1.55;color:#3e6b8d;padding:7px 3px}
+.chargeTest .technicalPanel{margin-top:7px}
+.chargeTest .testQuestion{font-size:16px!important;margin:12px 0 3px!important}
+.chargeTest .testActions{margin-top:10px}
+.chargeTest .testActions .btn{min-height:54px;font-size:14px}
+.chargeTest .testBottomControls{margin-top:15px}
+.chargeResults .resultRows{margin-top:14px}
+.safetySummary{padding:16px 15px;margin-top:13px;
+ background:linear-gradient(145deg,#fff8f5,#ffe6e9);
+ border:1px solid #ffd0db;border-radius:20px;
+ color:#a43050;display:grid;gap:5px}
+.safetySummary strong{font-size:16px}.safetySummary span{font-size:13px;line-height:1.5}
+.safetySummary[hidden]{display:none!important}
+@keyframes chargeCableFlow{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes chargingGuidePulse{0%{transform:scale(.62);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+@keyframes wirelessFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes chargingPortFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes chargeSwapSlide{0%,100%{transform:translate(-50%,3px)}50%{transform:translate(-50%,-5px)}}
+@media(min-width:630px){.chargeStage{grid-template-columns:1fr 1fr}
+ .chargeGuideArt{height:190px}.expectedDisplay{min-height:194px}}
+@media(max-height:700px){#home .phoneStage.chargingHero{height:309px!important;min-height:309px!important}
+ #home .phoneStage.chargingHero .phoneArt{transform:translate(-50%,-50%) scale(.52)!important}}
+@media(max-width:340px){#home .phoneStage.chargingHero{height:318px!important;min-height:318px!important}
+ #home .phoneStage.chargingHero .phoneArt{transform:translate(-50%,-50%) scale(.53)!important}}
+@media(prefers-reduced-motion:reduce){
+ #home .chargingHero .chargingOrbit,#home .chargingHero .chargingBattery,
+ #home .chargingHero .chargingBolt,#home .chargingHero .chargingFlux circle,
+ .chargeStage .guideLead,.chargeStage .guideHandset,.guidePulse,.qiPulse{animation:none!important}}
+@media print{#home,#setup,#test,.header{display:none!important}
+ #results{display:block!important}body{background:white!important}
+ .card{border:0!important;box-shadow:none!important;min-height:0!important}
+ .resultActions{display:none!important}}
