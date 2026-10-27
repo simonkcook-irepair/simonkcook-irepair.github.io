@@ -32,3 +32,34 @@ interruption/background transitions, hardware permission and varying accessibili
 Do not sign off a native health verdict without calibrated external instrumentation where necessary.
 
 Primary reference: https://developer.apple.com/documentation/uikit/uidevice/batterystate
+
+
+## v2 charging-contact workflow (27 October 2026)
+Preserve the 8-stage model introduced after technician review. The native app
+may use public `UIDevice` notifications to show a *true* charge-state transition
+during the customer-driven plugin/unplug/flip/alternate-lead sequence, but must
+not infer a precise charging power, active source type (USB-C vs Qi), cable
+oxidation, exact connector pin or port flex health from `batteryState`.
+
+New stage evidence policy:
+- **Connection stability:** ask if charging already requires a certain angle,
+  or show if charging state drops under normal stationary use; do **not**
+  intentionally command wiggling, leverage or pressure to induce the problem.
+- **Reverse connector:** user disconnects first, then rotates plug 180 degrees.
+  Observe `batteryState` only after natural reattachment. This is an
+  orientation-dependent behavioural comparison, NOT an individual contact test.
+- **Known-good accessory cross-check:** source conditions must be
+  customer-confirmed; the native API cannot uniquely identify which cable was
+  inserted or diagnose its contacts.
+- **Inspect both cable faces:** customer can see discoloration, residue or
+  wear. No image classifier may state a precise damaged pin without verified
+  physical evidence. USB-C has multiple VBUS contacts and its pinout is
+  different from Lightning.
+- **Safety check must remain first and cannot be skipped** if swelling,
+  water, liquid alert, hot cable or other hazard is suspected.
+
+For the visual experience, preserve the exact premium iPhone landing framing
+and separate animated illustration (instruction) from any live `UIDevice`
+evidence. Add local-only report entries for charging recognition, stability,
+plug orientation and alternate lead before drawing an accessory/port triage
+hypothesis. App Store hardware assertions require physical-device validation.
