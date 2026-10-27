@@ -1,35 +1,84 @@
-# iRepair Toolbox — Charging Diagnostics
+# iRepair Toolbox — Charging Diagnostics (Browser Review v2)
 
-**Status:** Unapproved browser-review prototype · 27 October 2026. Do not mark completed or locked before user approval.
-**Standalone GitHub branch:** `toolbox/charging-glass-preview-2026-10-27`
-**App folder:** `toolbox/charging/preview/`
-**Dedicated Vercel project:** `irepair-charging-review` (`prj_pVGZL3zZn1s4gmmYGnbY9OEzHt7l`)
-**Safety:** Do not alter any of the six completed, locked prototypes: Screen, Battery, Audio, Panic, Camera, Motion & Haptics. Connectivity remains a separate unfinished review, its approved landing hero must stay unchanged. iRepair Core functionality must not be modified.
+**Status:** Unapproved browser review prototype. **Not signed off or locked.**
+**Branch:** `toolbox/charging-glass-preview-2026-10-27`
+**Directory:** `toolbox/charging/preview/`
+**Dedicated Vercel project:** `irepair-charging-review` (`prj_pVGZL3zZn1s4gmmYGnbY9OEzHt7l`).
 
-## Customer experience
-Premium, icy-blue glass styling; a charging-specific shining iPhone hero with luminous battery, electrical bolt and controlled energy pulses **within the handset display**. The hero is explicitly centred with the `translate(-50%,-50%) scale(...)` transform to avoid the Connectivity v2 regression. Guided stages share the approved DO THIS → WHAT TO LOOK FOR visual pattern. No claim of live charging readout from Safari.
+## Strict preservation
+Six approved prototypes (Screen, Battery, Audio, Panic, Camera, Motion & Haptics)
+are locked. The separately reviewed Connectivity application has an
+**approved landing page only**. Do not modify any of these assets or iRepair
+Core without express permission. Charging v1 is preserved in git history
+(commit `48692653af7852171643bda2e9aa7777ae12675e`).
 
-The six customer-observed stages:
-1. Safety inspection (no moisture, swelling, unusually hot devices or damaged leads).
-2. Wired charging symbol observation using a suitable wall plug.
-3. Alternative known-good cable / power adapter cross-check.
-4. Port visual condition / normal connector fit, *without* inserting tools or force.
-5. Qi wireless charger observation, optional if accessory unavailable.
-6. Charge pauses, battery limit / temperature/optimised charging education.
+## Design standard
+Professional icy-blue glass design with signature **fully centred, shiny iPhone**.
+The landing handset includes a battery, power bolt, and illuminated approaching
+connector inside the phone display. Each diagnostic check has its own deliberately
+composed scalable SVG illustration, not repeating emoji/clipart, implemented in
+`art.js`: real-looking handset and connector, **two plug sides with a 180°
+arrow**, close-up of cable-tip/port contacts, alternative accessories, wireless
+pad and charging-settings scene. Lightning/USB-C connector rendering depends
+on the customer-selected model. The art is an **instruction**, never real
+electrical feedback. Maintain separate **DO THIS** and **WHAT TO LOOK FOR**
+sections throughout.
 
-Each stage has Pass, Fail, Unable, optional symptoms, cautious triage, one-tap-copy report, sharing and printable PDF. On **Failed or Unable** safety inspection, the remaining powered tests do not run. Do not encourage unsafe charging of damaged or liquid-affected devices.
+### Eight guided checks, in order
+1. **Safety:** inspect phone, cable, plug for swelling, damage, moisture or
+temperature. Failure OR inability to confirm safety immediately ends powered
+testing; don't reuse old powered results if safety status changes.
+2. **Wired charging:** normal plug-in observation, genuine customer confirmation.
+3. **Connection stability:** ask if charging already drops out or requires a
+particular angle or external pressure. **Never direct deliberate wiggling,
+forcing or levering**.
+4. **Reversible connector:** unplug first, rotate Lightning / USB-C cable end
+180°, reconnect gently, compare recognition. Mark whether both sides work
+reliably and capture symptoms if not.
+5. **Alternate known-good cable/adapter:** helps distinguish a worn accessory
+from port or phone issues.
+6. **Cable contacts and port:** examine **both cable faces** for darkened,
+stained or worn contacts, inspect port entrance for fluff or damage. No
+scraping or inserted tools. Only a disconnected external cable plug may be
+wiped with a soft dry lint-free cloth as Apple recommends.
+7. **Wireless charging:** compatible Qi setup if available.
+8. **Charging behaviour:** pause / charge limits / temperature.
 
-The browser deliberately does **not** expose or invent battery current, charge state, voltage, negotiated USB-C power, internal connector pin readings or Qi electrical coupling. All Pass/Fail/Unable are customer observations, never electrical component certifications. The user-selected model adds the expected Lightning or USB-C connector (iPhone 15 series and later: USB-C; legacy models Lightning), without treating browser device identification as certain.
+Each step offers customer-selected Pass / Fail / Unable, optional symptom
+selection, and cautious report interpretation. In particular, position-dependent
+charging, differences between the two sides of a plug, and success with another
+lead are separate **triage clues**, not automatically confirmed faults.
 
-## Model note
-The imported catalogue covers iPhone 8 onwards and includes SE 2020/2022; all supported catalogue models have Qi charging available in a compatible setup, but the customer may not own a Qi charger. The model connection family is an aid, not a proof of actual fitted or repaired hardware.
+### Electrical accuracy
+Do NOT claim a single generic centre pin carries high voltage. Lightning and
+USB-C contact maps differ; USB-C power is carried by multiple VBUS contacts
+alongside configuration and data signals. Visual darkening does not prove
+which exact circuit is faulty; some discoloration is normal with use. A
+customer may need a new lead OR professional port service depending on
+known-good cross-checks and inspection.
 
-## Native iOS implementation
-See `ios/NATIVE_ROADMAP.md`. Public `UIDevice.isBatteryMonitoringEnabled`, `.batteryLevel`, `.batteryState` support genuine charge state changes (charging/full/unplugged/unknown) and percentage. They do NOT provide unrestricted current, voltage, charging-port state or wired-versus-Qi source details; such claims must not be included. Native app can substantially automate **recognition of charge-state transitions**, but not certify the individual charging port or adapter. Test native flows and interruptions on physical iPhones.
+### Limits and privacy
+iPhone Safari cannot independently read `UIDevice.batteryState`, the current
+power source, charging current, port contact resistance or USB-C negotiation.
+The customer chooses the result. The report is generated locally and has
+Copy, Share, Print/PDF and technician symptom interpretations. Do not claim
+an automated hardware test in the browser.
 
-Apple support reference: https://support.apple.com/en-gb/108805
-Apple public API reference: https://developer.apple.com/documentation/uikit/uidevice/isbatterymonitoringenabled
-Web Battery API compatibility: https://caniuse.com/mdn-api_navigator_getbattery
+### Native iOS roadmap
+Public `UIDevice` Battery Monitoring can observe actual charge-state changes,
+but cannot diagnose individual connector pins, charging current, PD contract,
+port flex or wireless coil. Make native source-of-evidence explicit and validate
+on Lightning and USB-C physical iPhones before commercial release. See
+`ios/NATIVE_ROADMAP.md`.
 
-## Verification
-Run `node toolbox/charging/preview/tests/core-tests.js` (pure deterministic suite). Before review handover, also smoke-test six stages including safety-short-circuit, verify all static assets on live Vercel preview and compare committed changes against `main`. No ZIP file is needed for iPhone browser inspection.
+### Authoritative source guidance
+- https://support.apple.com/en-gb/102643
+- https://support.apple.com/en-gb/guide/iphone/iphbbe12ba1/ios
+- https://developer.apple.com/documentation/uikit/uidevice/batterystate
+- https://developerhelp.microchip.com/xwiki/bin/view/applications/usb/typec-features/cable-connector/
+
+### Validation
+Run `node toolbox/charging/preview/tests/core-tests.js`, smoke-test
+Safety FAIL / UNABLE plus normal eight-step journey, inspect live iPhone Safari
+artwork and verify all deployed assets match the GitHub commit. This
+prototype remains **unapproved until user review**.
