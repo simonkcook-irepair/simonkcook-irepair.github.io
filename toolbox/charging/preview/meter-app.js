@@ -20,6 +20,7 @@ function updateChoice(){
  const selected=catalogue.getModel($("phoneModel").value);
  const port=selected&&selected.year<2023?"lightning":"usb-c";
  $("chooseCharge").dataset.port=port;
+ $("chooseCharge").dataset.front=selected?.front||"island";
  $("wiredChoiceStatus").textContent=methodSessions.wired?"Demo observations saved":"Ready to test";
  $("wirelessChoiceStatus").textContent=wirelessSkipped?"Skipped — not assessed":methodSessions.wireless?"Demo observations saved":"Ready to test";
  $("chooseWired").dataset.done=methodSessions.wired?"true":"false";
