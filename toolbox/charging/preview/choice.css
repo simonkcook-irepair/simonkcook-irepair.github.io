@@ -171,3 +171,23 @@
  .choiceConnectBloom{opacity:.5}
  .choiceWirelessBloom{opacity:.5}
 }
+
+
+/* Respect the selected iPhone family's front silhouette; this is appearance
+   guidance only, not a claim of engineering-grade component positioning. */
+.chargingChoiceScreen[data-front="notch"] .choicePhone .dynamicIsland{
+ top:0!important;width:48px!important;height:12px!important;border-radius:0 0 8px 8px!important;
+}
+.chargingChoiceScreen[data-front="home"] .choicePhone .dynamicIsland{
+ display:none!important;
+}
+.chargingChoiceScreen[data-front="home"] .choicePhone .phoneScreen{
+ bottom:19px!important;border-radius:14px 14px 3px 3px!important;
+}
+.chargingChoiceScreen[data-front="home"] .choicePhone .choicePhoneArt::after{
+ content:"";position:absolute;z-index:9;
+ width:12px;height:12px;left:50%;bottom:3px;transform:translateX(-50%);
+ border-radius:50%;border:1px solid #f1ffff;
+ background:radial-gradient(circle at 48% 35%,#7b9eb3,#193a58 70%);
+ box-shadow:0 0 4px #c8e5ef,inset 0 1px #ffffffa1;
+}
