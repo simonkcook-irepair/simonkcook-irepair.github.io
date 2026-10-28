@@ -362,3 +362,141 @@
  }
  .meterCobTrack::after{animation:none!important;opacity:0!important}
 }
+
+/* CHARGING ENERGY HANDOVER — preserve approved spectrum and blue glass.
+ * 5.7s colour rise → 1.15s full-strip whoosh → clockwise battery-ring surge.
+ * These visual cues are NOT amps, voltage, or wattage measurements. */
+
+/* One bright, soft-edged band traverses the ALREADY COMPLETED colour strip. */
+.meterCobTrack::before{
+ content:"";position:absolute;z-index:6;pointer-events:none;
+ top:1px;bottom:1px;left:-44%;width:44%;border-radius:18px;
+ background:linear-gradient(90deg,transparent 0%,#fff0ad17 18%,#ffffd7ad 38%,#f5fff7fa 56%,#baffcfbf 72%,transparent 100%);
+ box-shadow:0 0 19px #f1fff48c;filter:blur(4px);
+ mix-blend-mode:screen;opacity:0;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobTrack::before,
+.meterConnectionPanel[data-power="full"] .meterCobTrack::before{
+ animation:miEnergyWhoosh 1.13s cubic-bezier(.17,.04,.22,1) 5.83s both;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobTrack,
+.meterConnectionPanel[data-power="full"] .meterCobTrack{
+ animation:miWholeLineSurge 1.35s ease-out 5.81s both;
+}
+@keyframes miEnergyWhoosh{
+ 0%{left:-44%;opacity:0;filter:blur(9px)}
+ 15%{opacity:.8;filter:blur(5px)}
+ 44%{opacity:1;filter:blur(3px)}
+ 84%{opacity:1;filter:blur(4px)}
+ 100%{left:100%;opacity:0;filter:blur(10px)}
+}
+@keyframes miWholeLineSurge{
+ 0%,12%{filter:brightness(1);box-shadow:inset 0 3px 6px #6388ad56,0 4px 11px #2d82ac24}
+ 49%{filter:brightness(1.35);box-shadow:inset 0 2px 3px #ffffffa3,0 0 15px #caffc5,0 0 29px #4aff99aa}
+ 100%{filter:brightness(1);box-shadow:inset 0 3px 6px #6388ad56,0 4px 11px #2d82ac24}
+}
+
+/* Bridge is zero-height; it cannot shift the approved card layout. */
+.meterEnergyBridge{position:relative;z-index:10;height:0;pointer-events:none}
+.meterEnergyBridge::before{
+ content:"";position:absolute;z-index:10;left:50%;top:-17px;
+ width:9px;height:29px;border-radius:999px;
+ transform:translate(-50%,19px) scaleY(.2);
+ background:linear-gradient(0deg,#77ffb900,#faffed 48%,#47ff99 82%,#ffffff);
+ box-shadow:0 0 15px #9affbe,0 0 26px #50ffad8c;
+ filter:blur(2px);opacity:0;
+}
+#instrument[data-power="charging"] .meterEnergyBridge::before,
+#instrument[data-power="full"] .meterEnergyBridge::before{
+ animation:miEnergyHandUp .66s ease-in-out 6.64s both;
+}
+@keyframes miEnergyHandUp{
+ 0%{opacity:0;transform:translate(-50%,19px) scaleY(.25)}
+ 25%{opacity:.95;transform:translate(-50%,9px) scaleY(1.1)}
+ 68%{opacity:1;transform:translate(-50%,-5px) scaleY(1.15)}
+ 100%{opacity:0;transform:translate(-50%,-22px) scaleY(.35)}
+}
+
+/* The actual numeric percentage always remains visible. Only the luminous
+   ring animation waits for the power meter finale to send its energy. */
+.meterEnergySweep{
+ fill:none;stroke:url(#meterEnergyGradient);stroke-width:12;
+ stroke-linecap:round;stroke-dasharray:80 498.053;
+ transform:rotate(-90deg);transform-origin:130px 130px;opacity:0;
+ filter:drop-shadow(0 0 5px #f6fff5) drop-shadow(0 0 11px #42ff9c) drop-shadow(0 0 16px #1aff83);
+ pointer-events:none;
+}
+.meterEnergyHalo{
+ fill:none;stroke:#87ffb0;stroke-width:10;opacity:0;
+ filter:drop-shadow(0 0 10px #76ffa3) drop-shadow(0 0 21px #2fff85);
+ pointer-events:none;
+}
+.meterBatteryPanel[data-power="charging"] .meterEnergySweep,
+.meterBatteryPanel[data-power="full"] .meterEnergySweep{
+ animation:miBatteryCircleWhoosh 1.66s cubic-bezier(.18,.4,.2,.98) 6.93s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterEnergyHalo,
+.meterBatteryPanel[data-power="full"] .meterEnergyHalo{
+ animation:miRingHaloFinish 1.4s ease-out 7.35s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterDialProgress,
+.meterBatteryPanel[data-power="full"] .meterDialProgress{
+ animation:miBatteryRingPowerUp 1.8s ease-out 6.93s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterDialNumber,
+.meterBatteryPanel[data-power="full"] .meterDialNumber{
+ animation:miBatteryNumberPowerUp 1.65s ease-out 7.05s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterDialGlow,
+.meterBatteryPanel[data-power="full"] .meterDialGlow{
+ animation:miBatteryOuterPowerUp 1.75s ease-out 6.93s both;
+}
+@keyframes miBatteryCircleWhoosh{
+ 0%{transform:rotate(-90deg);opacity:0;stroke-width:9}
+ 9%{opacity:.96}
+ 43%{opacity:1;stroke-width:15}
+ 84%{opacity:1;stroke-width:13}
+ 100%{transform:rotate(270deg);opacity:0;stroke-width:10}
+}
+@keyframes miRingHaloFinish{
+ 0%{opacity:0;stroke-width:5}
+ 40%{opacity:.7;stroke-width:13}
+ 76%{opacity:.9;stroke-width:13}
+ 100%{opacity:.23;stroke-width:8}
+}
+@keyframes miBatteryRingPowerUp{
+ 0%{opacity:.82;filter:drop-shadow(0 0 2px #c9ffdc) drop-shadow(0 0 6px #32ec81)}
+ 42%{opacity:1;filter:drop-shadow(0 0 7px #f1fff4) drop-shadow(0 0 16px #4cff93) drop-shadow(0 0 23px #24ff79)}
+ 100%{opacity:1;filter:drop-shadow(0 0 6px #effff1) drop-shadow(0 0 12px #2cff81) drop-shadow(0 0 18px #20ee78)}
+}
+@keyframes miBatteryNumberPowerUp{
+ 0%{text-shadow:0 2px #ffffff,0 0 8px #85ffaa6b}
+ 55%{text-shadow:0 2px #ffffff,0 0 20px #b6ffd7,0 0 34px #1cff82}
+ 100%{text-shadow:0 2px #ffffff,0 0 12px #c3ffdb,0 0 25px #43ff93a8}
+}
+@keyframes miBatteryOuterPowerUp{
+ 0%{opacity:.53;stroke:#56e99b}
+ 56%{opacity:1;stroke:#97ffc0}
+ 100%{opacity:.9;stroke:#41ff8a}
+}
+#instrument[data-power="unplugged"] .meterEnergyBridge::before,
+#instrument[data-power="unknown"] .meterEnergyBridge::before{
+ animation:none;opacity:0;
+}
+@media(prefers-reduced-motion:reduce){
+ .meterConnectionPanel[data-power="charging"] .meterCobTrack,
+ .meterConnectionPanel[data-power="full"] .meterCobTrack,
+ .meterConnectionPanel[data-power="charging"] .meterCobTrack::before,
+ .meterConnectionPanel[data-power="full"] .meterCobTrack::before,
+ #instrument .meterEnergyBridge::before,
+ .meterBatteryPanel .meterEnergySweep,
+ .meterBatteryPanel .meterEnergyHalo,
+ .meterBatteryPanel .meterDialProgress,
+ .meterBatteryPanel .meterDialGlow,
+ .meterBatteryPanel .meterDialNumber{animation:none!important}
+ .meterCobTrack::before,.meterEnergyBridge::before,.meterEnergySweep{opacity:0!important}
+ .meterBatteryPanel[data-power="charging"] .meterDialGlow,
+ .meterBatteryPanel[data-power="full"] .meterDialGlow{opacity:.9;stroke:#41ff8a}
+ .meterBatteryPanel[data-power="charging"] .meterEnergyHalo,
+ .meterBatteryPanel[data-power="full"] .meterEnergyHalo{opacity:.2}
+}
