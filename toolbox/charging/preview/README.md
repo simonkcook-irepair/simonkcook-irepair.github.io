@@ -43,3 +43,15 @@ User specifically approved green neon active indicators. Preserve the app's orig
 
 ## Charging connection meter — smooth spectral COB animation
 Review-requested visual refinement: preserve the fully approved icy-blue glass UI, the neon-green battery percentage indicator, and the exact landing iPhone. Replace only the charging connection bar's static green pulsing pattern with a theatrical, one-time left-to-right, empty-to-full progression on reported power connection. The 24 LED positions show continuous interpolated hue stops red → orange → amber → yellow → lime → green, each smoothly lighting in sequence over approximately 5.7 seconds. A softened moving highlight travels along the leading edge. At full illumination it remains steady and colorful while charging remains connected; disconnecting immediately resets to neutral grey. Accessibility prefers-reduced-motion fills immediately, without movement. This is an aesthetic charging-recognition animation, not a current/charging-rate/wattage measurement.
+
+
+## Coordinated power-to-battery animation (review refinement, 28 Oct 2026)
+
+Preserve exactly the approved icy-blue Toolbox styling, iPhone landing, green percentage meter, and 5.7-second red-to-green COB colour progression. Only add a connected-state celebration:
+1. After the last green COB light activates (~5.7s), a soft, bright moving white/green flare travels left-to-right over the fully lit bar, accompanied by a brief whole-strip bloom.
+2. A small upward energy bridge travels between the two meter cards (~6.6s).
+3. A luminous green-white trail circles clockwise once around the upper battery percentage ring (~6.9s), ending with a brighter steady neon ring and clearer numeric glow.
+4. The battery percent itself never changes because of animation. It changes only when the data engine receives a battery-level event. The animated timeline is decorative and is NOT a charge-current, power, or charging-speed readout.
+5. Unplug immediately clears the connected-only energy effect while retaining evidence of an earlier measured charge rise. Reconnection triggers the sequence again. Reduced motion omits all whooshes and shows the final illuminated state without animation.
+
+Actual Safari readings remain explicitly simulated. iOS native charging and battery level remain the eventual data source. Review pending user visual approval.
