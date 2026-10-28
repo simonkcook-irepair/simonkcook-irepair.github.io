@@ -1,4 +1,4 @@
-# iRepair Toolbox — Charging Diagnostics (Browser Review v3)
+# iRepair Toolbox — Charging Diagnostics (Browser Review v4)
 
 **Status:** Unapproved browser review prototype. **Not signed off or locked.**
 **Branch:** `toolbox/charging-glass-preview-2026-10-27`
@@ -12,28 +12,46 @@ are locked. The separately reviewed Connectivity application has an
 Core without express permission. Charging v1 is preserved in git history
 (commit `48692653af7852171643bda2e9aa7777ae12675e`).
 
-## Design standard — v3 visual reset
-The technician rejected the v2 illustration language as cluttered, generic and
-hard to understand. This version replaces **every illustration** with a single,
-large, realistic-looking subject and one obvious action. No diagrammatic rings,
-lens magnifiers, small floating tech objects, or dense connector schematics.
+## Design standard — v4: approved landing page is authoritative
 
-- Landing: approved-quality premium iPhone shell, centred at full visible
-  geometry. A single glowing charging battery and lightning symbol fill the
-  display; only the glass display receives the signature diagonal shine.
-- Stage artwork: eight clear, distinct visual compositions in `art.js`,
-  all within the same icy-blue glass instructional panel. Large portrait
-  handset, recognisable cable connector and charging pad, clean 180° reversal
-  arrow, or direct visual comparison. The subject and instruction are
-  deliberately prominent.
-- Separate **DO THIS** and **WHAT TO LOOK FOR** panes, with large Pass,
-  Fail, Unable options. Drawings are instructional only, never live sensors.
-- User approval is **not yet granted**. Do not treat the visual reset as locked
-  merely because tests pass. Preserve v1 and v2 in Git history.
+User rejected the v2 and v3 stage art and the subsequent unrelated dark
+multi-screen design mockup. **Do not introduce new palettes, phone silhouettes,
+dark backgrounds, cartoon connectors or abstract technical line art.**
 
-### Historical reference
-- v1: `48692653af7852171643bda2e9aa7777ae12675e`
-- v2 approved logic before design rejection: `b0a492af60417e181ef9f51c71f4f4638cdc4c3f`
+**APPROVED/LOCKED AS REFERENCE:** Charging v3 landing screen with the exact
+shining premium iPhone, central illuminated battery symbol and diagonal
+screen shine; user praised it in the video at 00:02–00:13. The v4 build
+**does not modify the landing HTML/CSS**.
+
+At runtime, `art.js` clones the actual `#home .chargingHero .phoneArt`
+markup, including frame, side controls, screen, Dynamic Island,
+`chargingHeroV3` battery image and diagonal shine. The cloned SVG IDs
+are namespaced to avoid conflicts. The surrounding stage panels use
+the approved icy-blue glass palette; any accessory imagery should be
+illustrative yet realistic-looking, focused on one action. No fake live
+hardware measurements.
+
+Stages involving phone: Safety, Wired, Connection Stability, Wireless
+Charging, Charging Behaviour. All reuse the same landing-page handset.
+The three focused accessory demonstrations: the unplugged connector turning
+180° (true Y-axis 3D rotation, not upside-down in the port), old lead being
+set aside in favour of another, and enlarged charging-port/cable-contact
+inspection using a circular zoom.
+
+Video-reviewed requirements to preserve:
+- 00:20–00:54: replace cartoon phone/charging lead with approved phone design
+- 00:55–01:15: make a SINGLE reversible lead head visibly turn 180°
+- 01:20–01:34: avoid two leads with a generic cross/tick
+- 01:36–02:06: highlight port and connector contacts with zoom
+- 02:08–02:34: wireless and charging-behaviour visuals must be immediately clear
+
+**Review status: Pending user acceptance.** Do not mark visual design locked
+on test results alone. The previously liked landing page is preserved.
+
+### Reference commits
+- Charging v1: `48692653af7852171643bda2e9aa7777ae12675e`
+- Charging v2 logic and first stage art: `b0a492af60417e181ef9f51c71f4f4638cdc4c3f`
+- Charging v3 approved landing image and rejected stages: `33317ac3e9bfbb40e779c4b086d867dbc8148530`
 
 ### Eight guided checks, in order
 1. **Safety:** inspect phone, cable, plug for swelling, damage, moisture or
