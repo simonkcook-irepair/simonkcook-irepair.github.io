@@ -191,3 +191,6 @@
  background:radial-gradient(circle at 48% 35%,#7b9eb3,#193a58 70%);
  box-shadow:0 0 4px #c8e5ef,inset 0 1px #ffffffa1;
 }
+
+/* Native and Safari: skip exists only within the optional wireless session. */
+.meterFootActions [hidden]{display:none!important}
