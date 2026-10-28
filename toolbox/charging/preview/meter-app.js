@@ -252,7 +252,7 @@ function renderReport(){
   "No actual current, watts, battery health, port integrity or charger technology measured.",
   "Wireless SKIPPED is never a Pass or a Fail.",
   "No user observations uploaded by this browser demonstration."
- ].join("\\n");
+ ].join("\n");
  show("report");
 }
 async function copy(str){
