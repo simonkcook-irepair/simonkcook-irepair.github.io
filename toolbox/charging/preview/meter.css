@@ -1,0 +1,159 @@
+/* iRepair Toolbox — Charging v5 instrument-specific styles
+ * All visuals deliberately inherit the approved icy-blue glass design.
+ * The original full iPhone landing hero is unchanged.
+ * Browser preview meters are SIMULATED, not electrical measurements.
+ */
+:root{--mi-ink:#113a63;--mi-blue:#137fc9;--mi-cyan:#5de8fc;--mi-pale:#eaf9ff}
+.meterView{padding:22px 16px 23px!important;overflow:hidden;position:relative}
+.meterView::before{content:"";position:absolute;left:-35%;top:-13%;width:120%;height:330px;pointer-events:none;background:radial-gradient(ellipse,#a2e8ff44,transparent 65%);filter:blur(20px)}
+.meterView > *{position:relative}
+.meterEyebrow{color:#247cb1;font:850 10px/1.25 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:2.2px}
+.meterHeading{font:850 clamp(29px,7.9vw,42px)/1.06 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:-1.5px!important;margin:11px 0 10px!important;color:#113b63!important;text-align:left!important}
+.meterHeading span{color:#1d83c4}
+.meterLead{font:460 14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#5c7e97;margin:0 0 15px}
+.meterSetupVisual{position:relative;height:178px;margin:9px 0 17px;overflow:hidden;display:grid;place-items:center;
+ background:radial-gradient(ellipse at 50% 60%,#78dffa50,transparent 67%),linear-gradient(145deg,#f8feff,#daf2ff);
+ border:1px solid #fff;border-radius:25px;box-shadow:inset 0 2px #fff,0 7px 23px #478eb01d}
+.meterSetupCharge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:100px;height:130px;filter:drop-shadow(0 0 12px #54e5ffb3)}
+.meterSetupCharge svg{width:100%;height:100%}
+.meterSetupConnection{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;align-items:center}
+.meterSetupConnection span{width:7px;height:4px;background:#73d9fa;border-radius:3px;box-shadow:0 0 7px #60dfff;animation:miLamp 2.6s infinite}
+.meterSetupConnection span:nth-child(2n){animation-delay:-.3s}
+.meterSetupConnection span:nth-child(3n){animation-delay:-.7s}
+.meterField{padding:16px;border:1px solid white;border-radius:20px;background:linear-gradient(150deg,#ffffffed,#e8f7fff0);box-shadow:0 5px 12px #2b83b020}
+.meterField label{display:block;font-size:13px;color:#245b7f;font-weight:800;margin:0 0 10px}
+.meterField label span{font-size:11px;font-weight:500;color:#6e93aa}
+.meterField select{width:100%;height:49px;font:650 14px/1.1 inherit;color:#2a618a;border:1px solid #b9def5;border-radius:13px;background:#fff;padding:0 13px}
+.meterField p{font-size:11px;line-height:1.45;color:#6b899e;margin:9px 1px 0}
+.meterDisclosure{margin:13px 0;padding:14px 15px;border:1px solid #b8ddf4;border-radius:20px;background:linear-gradient(135deg,#e3f4ff,#f6fcff)}
+.meterDisclosure icon{display:none}
+.meterDisclosure strong{display:block;font-size:13px;color:#176a9b}
+.meterDisclosure p{margin:6px 0 0;font-size:12px;line-height:1.53;color:#517c96}
+.meterButtonGroup{display:grid;gap:9px;margin-top:14px}
+.meterButtonGroup .btn{width:100%;min-height:51px}
+.meterInstrument{padding-top:18px!important}
+.meterTopline{display:flex;justify-content:space-between;align-items:flex-start;gap:5px}
+.meterTopline .meterHeading{font-size:clamp(27px,7.5vw,36px)!important;margin:8px 0 14px!important}
+.meterExit{flex:none;width:38px;height:38px;border:1px solid #fff;border-radius:12px;color:#397ea8;font-size:25px;line-height:1;background:linear-gradient(#fff,#e3f3ff);box-shadow:0 3px 10px #4583a528}
+.meterDemoBanner{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:10px 11px;margin:2px 0 13px;border-radius:14px;background:linear-gradient(135deg,#e8f4ff,#d5eafa);border:1px solid #c1e1f5}
+.meterDemoDot{width:7px;height:7px;flex:none;border-radius:50%;background:#289bdb;box-shadow:0 0 10px #3dc9fa}
+.meterDemoBanner strong{color:#156c9a;font-size:10px;letter-spacing:.7px}
+.meterDemoBanner span:last-child{font-size:10px;color:#56809c}
+.meterFrost{position:relative;isolation:isolate;overflow:hidden;
+ border-radius:27px;border:1px solid #fff;
+ background:linear-gradient(150deg,#fffffff0 0%,#ecf9ffed 39%,#d9f0ffea 100%);
+ box-shadow:inset 0 2px 2px #fff,0 9px 25px #3d81b82a,0 0 0 1px #b4e5ff58;
+ margin:0 0 13px;padding:17px 14px 15px}
+.meterFrost::before{content:"";position:absolute;inset:-20% -80% 50%;pointer-events:none;
+ transform:rotate(-17deg);background:linear-gradient(90deg,transparent 34%,#ffffffab 50%,transparent 65%);opacity:.55}
+.meterPanelTop{position:relative;display:flex;align-items:center;justify-content:space-between;gap:7px}
+.meterPanelLabel{display:flex;align-items:center;gap:9px;min-width:0}
+.meterPanelLabel>div{min-width:0;display:grid;gap:3px}
+.meterPanelLabel strong{font-size:14px;color:#1f5579;line-height:1.2}
+.meterPanelLabel small{font-size:10px;color:#7294a8}
+.meterPanelIcon{flex:none;display:grid;place-items:center;width:36px;height:36px;
+ color:#1484bb;font-size:23px;border:1px solid #fff;border-radius:13px;
+ background:linear-gradient(145deg,#ffffff,#c8eaff);box-shadow:0 3px 11px #409ac62d}
+.meterPanelIcon.meterZap{font-weight:800;font-size:28px}
+.meterPanelTag{font-size:9px;color:#5889a6;letter-spacing:.6px;font-weight:800;border:1px solid #ffffff;border-radius:999px;background:#ffffffbd;padding:5px 7px;white-space:nowrap}
+.meterBatteryContent{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 4px}
+.meterDial{position:relative;aspect-ratio:1;width:min(70vw,258px);max-width:258px;
+ display:grid;place-items:center;margin:2px 0 -8px;
+ filter:drop-shadow(0 8px 16px #277eac23)}
+.meterDial::after{content:"";position:absolute;inset:8%;border-radius:50%;pointer-events:none;
+ box-shadow:inset 0 5px 14px #ffffff7d,0 0 35px #62d8ff45}
+.meterDialSvg{width:100%;height:100%}
+.meterOuterFine{stroke:#fff;stroke-width:1.5;fill:none;opacity:.9}
+.meterDialTrack{stroke:#b3d9ee;stroke-width:18;fill:none;opacity:.7}
+.meterDialGlow{stroke:#57dcff;stroke-width:22;fill:none;opacity:.43;filter:url(#meterRingGlow);
+ stroke-linecap:round;transform:rotate(-90deg);transform-origin:130px 130px;transition:stroke-dashoffset 1s ease}
+.meterDialProgress{stroke:url(#meterRingGradient);stroke-width:15;fill:none;stroke-linecap:round;
+ transform:rotate(-90deg);transform-origin:130px 130px;
+ filter:drop-shadow(0 0 3px #86edff);transition:stroke-dashoffset .8s ease}
+.meterInnerCircle{fill:#d9f3ff;fill-opacity:.31;stroke:#fff;stroke-opacity:.86;stroke-width:1.5}
+.meterInnerGlint{fill:none;stroke:#fff;stroke-width:3;opacity:.6;stroke-linecap:round}
+.meterDialLabel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.meterDialTiny{font-size:10px;letter-spacing:3px;color:#5795b6;font-weight:900;margin-bottom:4px}
+.meterDialNumber{font:780 clamp(51px,17vw,72px)/1 -apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-3px;color:#176eaa;text-shadow:0 2px #ffffffcc,0 0 17px #6ac7f277}
+.meterDialNumber em{font-style:normal;font-size:.39em;vertical-align:middle;letter-spacing:-1px;margin-left:3px;color:#3799c6}
+.meterDialDescription{margin-top:7px;font-size:11px;color:#648aa3;font-weight:650}
+.meterBatteryStats{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0}
+.meterStatTile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:73px;padding:10px 3px;
+ background:linear-gradient(150deg,#fff,#e6f6ffcf);border:1px solid #fff;border-radius:16px;box-shadow:0 3px 9px #377cb917}
+.meterStatTile span{color:#6488a2;text-align:center;font-size:10px;line-height:1.2}
+.meterStatTile strong{font-size:clamp(12px,3.4vw,16px);line-height:1.1;color:#286fa3;text-align:center}
+.meterStatTile strong.positive{color:#168e83}
+.meterLevelRail{height:12px;position:relative;overflow:visible;margin:2px 2px 1px;border-radius:999px;background:linear-gradient(#b9d8ed,#d3eeff);border:1px solid #fff;box-shadow:inset 0 2px 4px #5f9dc344}
+.meterLevelFill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;
+ background:linear-gradient(90deg,#187bd0,#27ade2,#67eeec);box-shadow:0 0 11px #50e6ffbf,inset 0 1px #dbffff;transition:width .7s ease}
+.meterLevelGlow{position:absolute;top:50%;height:19px;width:19px;z-index:2;border-radius:50%;
+ transform:translate(-50%,-50%);background:#dbffff;border:4px solid #78dfff;
+ box-shadow:0 0 13px #60eaff,0 0 25px #38b8f88f;transition:left .7s ease}
+.meterConnectionPanel{padding-bottom:17px}
+.meterConnectionCore{position:relative;isolation:isolate;margin-top:14px;padding:22px 11px 15px;border:1px solid #fff;border-radius:22px;
+ background:linear-gradient(144deg,#e5f7ff,#cdeaff 60%,#bde2fc);box-shadow:inset 0 2px 3px white,0 3px 13px #4d95b02d;overflow:hidden}
+.meterConnectionGlow{position:absolute;left:50%;top:22%;transform:translate(-50%,-50%);width:83%;height:155px;border-radius:50%;
+ background:radial-gradient(circle,#50d7ff6b,transparent 67%);filter:blur(16px);opacity:.18;transition:opacity .35s}
+.meterConnectionPanel[data-power="charging"] .meterConnectionGlow,.meterConnectionPanel[data-power="full"] .meterConnectionGlow{opacity:1}
+.meterConnectionStatus{position:relative;display:flex;align-items:center;justify-content:center;gap:9px}
+.meterConnectionStatus strong{font-size:clamp(18px,5.5vw,23px);color:#205f86;letter-spacing:-.55px}
+.meterConnectionIndicator{width:17px;height:17px;border-radius:50%;background:#a3bed0;
+ border:3px solid #e7faff;box-shadow:inset 0 1px 2px #5a8ca3,0 0 0 1px #fff;transition:background .3s}
+.meterConnectionIndicator.on{background:#16caa5;border-color:#c9fff6;box-shadow:0 0 11px #38ebd0,0 0 25px #57caff,inset 0 2px 3px #78ffe4;
+ animation:miGlowBreathe 2.4s ease-in-out infinite}
+.meterConnectionCore p{position:relative;text-align:center;font-size:12px;line-height:1.46;color:#537d99;margin:9px auto 13px;max-width:280px}
+.meterCobTrack{position:relative;display:flex;gap:3px;align-items:center;padding:10px 7px;width:100%;height:48px;overflow:hidden;
+ border:1px solid #e9ffff;border-radius:15px;
+ background:linear-gradient(180deg,#bad5e9 0%,#e8f7ff 43%,#a6cde6 100%);
+ box-shadow:inset 0 3px 6px #6388ad56,0 4px 11px #2d82ac24}
+.meterCobSegment{display:block;flex:1;min-width:0;height:22px;border-radius:5px;
+ background:linear-gradient(180deg,#d8e5f0,#9ebed0);box-shadow:inset 0 2px 3px #8ca7bf;transition:background .3s,box-shadow .3s,transform .3s}
+.meterConnectionPanel[data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-power="full"] .meterCobSegment{
+ background:linear-gradient(180deg,#eaffff,#85f4fa 22%,#2cc4e6 68%,#1289c5 100%);
+ box-shadow:inset 0 1px #fff,0 0 6px #54dfff9e,0 0 12px #83f7ff73;
+ animation:miCobMove 2.8s ease-in-out infinite;
+ animation-delay:calc(var(--index) * -95ms)}
+.meterConnectionMetrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
+.meterConnectionMetrics>div{border:1px solid #fff;background:linear-gradient(145deg,#ffffffcc,#e8f6ffb3);padding:10px 9px;border-radius:12px;display:grid;gap:4px;text-align:center}
+.meterConnectionMetrics span{font-size:10px;color:#7494ab}
+.meterConnectionMetrics strong{font-size:13px;color:#286c9b}
+.meterAssessment{display:flex;gap:12px;align-items:center;border:1px solid #c5e4f6;border-radius:20px;
+ background:linear-gradient(140deg,#f4fbff,#dfedff);padding:15px 12px;margin:12px 0 13px}
+.meterAssessmentIcon{display:grid;place-items:center;flex:none;width:46px;height:46px;border:1px solid white;border-radius:15px;
+ font-size:25px;color:#247fa9;background:linear-gradient(#fff,#d1edff);box-shadow:0 3px 10px #3285b321}
+.meterAssessment.passed .meterAssessmentIcon{color:#138c84;background:linear-gradient(#eefff9,#baf6e7)}
+.meterAssessment.observed .meterAssessmentIcon{color:#bd7d36;background:linear-gradient(#fff7ed,#f9e7cc)}
+.meterAssessment strong{font-size:14px;color:#265d83}
+.meterAssessment p{font-size:11px;line-height:1.5;color:#68889e;margin:4px 0 0}
+.meterSimulator{padding:14px;border-radius:21px;border:1px solid #fff;background:linear-gradient(145deg,#ffffffdb,#eaf6ffdf);box-shadow:0 4px 18px #328abc1a}
+.meterSimulatorHeading{display:flex;justify-content:space-between;align-items:center;gap:5px}
+.meterSimulatorHeading strong{font-size:13px;color:#2e6d96}
+.meterSimulatorHeading span{font-size:9px;color:#6096b4;letter-spacing:.65px;font-weight:800}
+.meterSimulator p{font-size:11px;color:#6d8da6;line-height:1.45;margin:5px 0 12px}
+.meterSimulatorButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.meterSimulatorButtons button{min-height:46px;border:1px solid #fff;border-radius:14px;background:linear-gradient(155deg,#fff,#dcefff);color:#286b98;
+ font:760 11px/1.25 -apple-system,BlinkMacSystemFont,Arial,sans-serif;box-shadow:0 3px 10px #4988b01c;padding:7px 5px}
+.meterSimulatorButtons .meterSimulatorPrimary{grid-column:span 3;min-height:51px;background:linear-gradient(115deg,#318ce4,#0f66c9);color:#fff;border-color:#94dfff;font-size:13px;box-shadow:0 5px 16px #2578c944}
+.meterSimulatorButtons .meterSimulatorPrimary span{display:inline;font-size:21px;vertical-align:middle;margin-right:5px}
+.meterSimulatorButtons button:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
+.meterFootActions{display:grid;gap:8px;margin-top:13px}
+.meterFootActions button{min-height:49px}
+.meterLegal{text-align:center;font-size:10px;line-height:1.55;color:#6b91ab;margin:13px 5px 2px}
+.meterReportHero{display:flex;align-items:center;gap:13px;margin:18px 0 13px;border-radius:20px;background:linear-gradient(145deg,#e6f6ff,#d0eaff);border:1px solid #fff;padding:14px 12px}
+.meterReportIcon{width:55px;height:55px;flex:none;display:grid;place-items:center;border-radius:18px;background:linear-gradient(140deg,#71eaff,#0b89c8);color:#fff;font-size:42px;box-shadow:0 4px 15px #5ad8ff80}
+.meterReportHero strong{color:#22638f;font-size:16px}.meterReportHero p{font-size:11px;line-height:1.5;color:#6188a1;margin:5px 0 0}
+.meterReportRows{border-radius:20px;overflow:hidden;background:#fff8;border:1px solid white;margin-bottom:15px}
+.meterReportRow{display:flex;align-items:flex-start;justify-content:space-between;gap:13px;padding:12px 13px;border-bottom:1px solid #c7e4f46f}
+.meterReportRow:last-child{border-bottom:0}.meterReportRow span{font-size:12px;color:#608199}
+.meterReportRow strong{font-size:12px;text-align:right;color:#255a82;max-width:60%;line-height:1.4;overflow-wrap:anywhere}
+.meterReportNote{font-size:12px;color:#527c96;line-height:1.55;background:linear-gradient(145deg,#f4fbff,#e3f3ff);border:1px solid #fff;padding:12px;border-radius:15px}
+@keyframes miGlowBreathe{0%,100%{box-shadow:0 0 10px #3de7d0,0 0 18px #4ecbff}50%{box-shadow:0 0 19px #1fe6d9,0 0 35px #61e3ff}}
+@keyframes miCobMove{0%,100%{opacity:.74;transform:scaleY(.81)}50%{opacity:1;transform:scaleY(1.05)}}
+@keyframes miLamp{0%,100%{opacity:.32}50%{opacity:1}}
+@media(min-width:600px){.meterView{max-width:720px;margin-left:auto;margin-right:auto}.meterBatteryContent{flex-direction:row;gap:12px}.meterBatteryStats{grid-template-columns:1fr;width:170px}.meterStatTile{min-height:55px}.meterDial{width:248px}}
+@media(max-width:350px){.meterView{padding:15px 10px 17px!important}.meterDial{width:min(67vw,224px)}.meterPanelLabel strong{font-size:12px}.meterFrost{padding:13px 10px}.meterStatTile span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.meterView *, .meterView *::before,.meterView *::after{animation:none!important;transition:none!important}}
+@media print{.header,#home,#setup,#instrument,.meterReport .meterButtonGroup{display:none!important}
+ #report{display:block!important;box-shadow:none!important;border:0!important;background:white!important;color:#111!important}
+ .meterDemoBanner,.meterReportHero,.meterReportRows{print-color-adjust:exact}}
