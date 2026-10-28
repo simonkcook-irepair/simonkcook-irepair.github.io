@@ -4,7 +4,8 @@
 <title>iRepair Toolbox | Charging Diagnostics</title>
 <link rel="stylesheet" href="./visual.css?v=charge-review-4"><link rel="stylesheet" href="./meter.css?v=charge-review-5-handover">
 <link rel="stylesheet" href="./energy.css?v=charge-review-6-living">
-</head><body data-build="charging-glass-review-6-living"><main class="shell">
+<link rel="stylesheet" href="./choice.css?v=charge-review-7-animated">
+</head><body data-build="charging-glass-review-7-animated"><main class="shell">
 <header class="header glass"><div class="brand"><div class="logo" aria-hidden="true"></div>
 <div><b>iRepair Toolbox</b><span>CHARGING DIAGNOSTICS</span></div></div>
 <span class="badge">GUIDED TEST</span></header>
@@ -67,13 +68,67 @@
  </div>
  <div class="meterDisclosure"><icon name="info"></icon><strong>Browser demonstration</strong><p>All meters in this Safari preview use simulated values. Native iOS will read charging state and battery percentage from the phone itself. No voltage, watts or current are measured.</p></div>
  <div class="meterButtonGroup">
- <button id="start" class="btn main" type="button">View the Charging Meters <span aria-hidden="true">→</span></button>
+ <button id="start" class="btn main" type="button">Choose Charging Tests <span aria-hidden="true">→</span></button>
  <button id="setupBack" class="btn unable" type="button">Back to landing screen</button>
  </div>
 </section>
+
+<section id="chooseCharge" class="card glass view meterView chargingChoiceScreen" aria-label="Choose wired or wireless charging">
+ <div class="meterEyebrow">CHARGING DIAGNOSTICS · STEP 2</div>
+ <h1 class="meterHeading chargeChoiceHeading">How would you<br><span>like to charge?</span></h1>
+ <p class="meterLead chargeChoiceLead">Follow the motion to prepare each test. You can test both methods, or skip wireless if you don't have a charger.</p>
+ <div class="chargeChoiceGrid" role="group" aria-label="Charging methods">
+  <button class="chargeChoiceCard" id="chooseWired" type="button" aria-label="Begin charging lead test">
+   <div class="chargeChoiceArt cableArt" aria-hidden="true">
+    <div class="choiceStageAura"></div>
+    <div class="choicePhone choicePhoneWired">
+     <div class="phoneArt choicePhoneArt"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span>
+      <div class="phoneScreen"><span class="dynamicIsland"></span><div class="choiceScreenOrb"></div><span class="choiceBolt">ϟ</span><div class="screenGlow"></div><div class="screenGlow2"></div></div>
+      <div class="choicePhonePort"><span class="choicePortHole"></span></div>
+     </div>
+    </div>
+    <div class="choicePlugGroup">
+     <div class="choicePlugTip"><span></span></div><div class="choicePlugCollar"></div>
+     <div class="choicePlugGrip"></div><div class="choiceCableLine"></div>
+    </div>
+    <div class="choiceConnectBloom"></div><div class="choiceEnergyRay"></div>
+   </div>
+   <span class="choiceStepLabel">01 · REQUIRED</span>
+   <strong class="chargeChoiceTitle">Charging lead</strong>
+   <span class="chargeChoiceSub">Connect a cable to the charging port.</span>
+   <span class="choiceSelectIcon" aria-hidden="true">→</span>
+   <span class="choiceStatus" id="wiredChoiceStatus">Ready to test</span>
+  </button>
+  <button class="chargeChoiceCard" id="chooseWireless" type="button" aria-label="Begin wireless charging test">
+   <div class="chargeChoiceArt wirelessArt" aria-hidden="true">
+    <div class="choiceStageAura"></div>
+    <div class="choicePhone choicePhoneWireless">
+     <div class="phoneArt choicePhoneArt"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span>
+      <div class="phoneScreen"><span class="dynamicIsland"></span><div class="choiceScreenOrb"></div><span class="choiceBolt">ϟ</span><div class="screenGlow"></div><div class="screenGlow2"></div></div>
+     </div>
+    </div>
+    <div class="choiceChargingPad"><span class="choicePadInner"></span><span class="choicePadRing"></span><span class="choicePadGlimmer"></span><span class="choicePadCable"></span></div>
+    <div class="choiceWirelessBloom"></div>
+   </div>
+   <span class="choiceStepLabel">02 · OPTIONAL</span>
+   <strong class="chargeChoiceTitle">Wireless charging</strong>
+   <span class="chargeChoiceSub">Lower your iPhone onto a compatible pad.</span>
+   <span class="choiceSelectIcon" aria-hidden="true">→</span>
+   <span class="choiceStatus" id="wirelessChoiceStatus">Ready to test</span>
+  </button>
+ </div>
+ <div class="choiceActions">
+  <button class="btn main" id="beginWired" type="button">Begin Charging Lead Test →</button>
+  <button class="btn unable" id="skipWireless" type="button">Skip wireless charging</button>
+  <button class="btn unable" id="choiceReport" type="button" hidden>View charging report</button>
+  <button class="choiceBack" id="chooseBack" type="button">← Back to model selection</button>
+ </div>
+ <p class="choiceHonesty">Animations illustrate where to position your charger. Safari cannot independently identify cable versus wireless input; the selected method is customer-declared and all readings here are simulated.</p>
+</section>
 <section id="instrument" class="card glass view meterView meterInstrument" aria-label="Charging diagnostic meters">
- <div class="meterTopline"><div><div class="meterEyebrow">CHARGING DIAGNOSTICS</div><h1 class="meterHeading">Power, <span>beautifully clear.</span></h1></div>
+ <div class="meterTopline"><div><div class="meterEyebrow" id="activeTestEyebrow">CHARGING LEAD TEST</div><h1 class="meterHeading">Power, <span>beautifully clear.</span></h1></div>
  <button id="instrumentBack" class="meterExit" type="button" aria-label="Back to setup">×</button></div>
+ <div class="activeTestDescription" id="activeTestDescription">Connect your charging lead to your iPhone, then watch the charging meters.</div>
  <div class="meterDemoBanner"><span class="meterDemoDot"></span><strong>INTERACTIVE PREVIEW</strong><span>Simulated readings · not from your iPhone</span></div>
  <div class="meterBatteryPanel meterFrost" id="meterBatteryPanel">
   <div class="meterPanelTop"><div class="meterPanelLabel"><span class="meterPanelIcon">◉</span><div><strong>Battery charge level</strong><small>iPhone battery percentage</small></div></div><span class="meterPanelTag">SIMULATED</span></div>
@@ -129,7 +184,7 @@
    <button id="simReset" type="button">Reset</button>
   </div>
  </div>
- <div class="meterFootActions"><button id="viewReport" class="btn main" type="button">View Preview Report →</button><button id="restartMeter" class="btn unable" type="button">Start Again</button></div>
+ <div class="meterFootActions"><button id="completeMethod" class="btn main" type="button">Finish Charging Lead Test →</button><button id="viewReport" class="btn main" type="button">View Preview Report →</button><button id="restartMeter" class="btn unable" type="button">Start Again</button></div>
  <p class="meterLegal">The connection animation represents charging-state reports, not measured amps, volts or watts. No timed waiting or forced failure is used.</p>
 </section>
 <section id="report" class="card glass view meterView meterReport" aria-label="Charging report preview">
@@ -143,5 +198,5 @@
 </section></main>
 <script src="./models.js?v=charge-review-4"></script>
 <script src="./meter-core.js?v=charge-review-5-neon"></script>
-<script src="./meter-app.js?v=charge-review-6-living"></script>
+<script src="./meter-app.js?v=charge-review-7-animated"></script>
 </body></html>
