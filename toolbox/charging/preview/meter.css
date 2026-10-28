@@ -277,3 +277,88 @@
  .meterConnectionPanel .meterCobSegment,
  .meterConnectionPanel .meterConnectionIndicator.on{animation:none!important}
 }
+
+/* Charging instrument refinement — SPECTRUM COB SWEEP.
+   Connected = one slow left-to-right reveal, RED → AMBER → YELLOW → LIME → GREEN.
+   The sweep is a purely visual sign of RECOGNISED POWER, NEVER current/wattage.
+   Leave the Battery Charge Level instrument and all blue glass surfaces untouched. */
+.meterCobTrack{
+ gap:2px;
+ isolation:isolate;
+}
+.meterCobTrack .meterCobSegment{
+ position:relative;
+ border-radius:4px;
+ overflow:visible;
+}
+/* Override legacy full-green pulsing segments — first show the unlit COB rail. */
+.meterConnectionPanel[data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-power="full"] .meterCobSegment,
+.meterConnectionPanel[data-progress="confirmed"][data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-progress="confirmed"][data-power="full"] .meterCobSegment{
+ animation:none;
+ background:linear-gradient(180deg,#e1edf3 0%,#b1c9d6 44%,#a0bccb 100%);
+ box-shadow:inset 0 2px 3px #87a8b953,0 1px 1px #ffffffb7;
+ filter:none;
+}
+/* Each diode is individually gradient-blended into its neighbour's hue. */
+.meterCobSegment::before{
+ content:"";
+ position:absolute;inset:0;
+ border-radius:inherit;
+ pointer-events:none;
+ opacity:0;
+ background:
+  linear-gradient(180deg,#ffffffbc 0%,#ffffff54 17%,transparent 40%,#0a37523a 100%),
+  linear-gradient(90deg,
+   hsl(var(--lamp-hue) 100% 56%) 0%,
+   hsl(calc(var(--lamp-hue) + 5.5) 100% 53%) 100%);
+ box-shadow:inset 0 1px 1px #ffffff,
+   0 0 7px hsl(var(--lamp-hue) 100% 59% / .98),
+   0 0 14px hsl(var(--lamp-hue) 100% 55% / .7);
+}
+.meterConnectionPanel[data-power="charging"] .meterCobSegment::before,
+.meterConnectionPanel[data-power="full"] .meterCobSegment::before{
+ animation:miSpectrumIgnite .33s cubic-bezier(.12,.68,.17,1) both;
+ animation-delay:calc(var(--index) * .235s);
+}
+/* A softly focused bright leading edge travels across the 24 COB LEDs once. */
+.meterCobTrack::after{
+ content:"";position:absolute;top:7px;left:0;
+ width:32px;height:33px;z-index:4;
+ pointer-events:none;
+ border-radius:50%;
+ background:radial-gradient(ellipse at center,#ffffffd1 0%,#fffbd2ac 22%,#fefff66c 38%,transparent 72%);
+ filter:blur(6px);
+ opacity:0;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobTrack::after,
+.meterConnectionPanel[data-power="full"] .meterCobTrack::after{
+ animation:miSpectrumTravel 5.75s linear both;
+}
+/* The spectrum reaches green at the far right, remains gently lit and steady.
+   There is no fabricated current strength or charging-speed position. */
+@keyframes miSpectrumIgnite{
+ 0%{opacity:0;transform:scaleY(.92);filter:brightness(.55)}
+ 45%{opacity:.95;transform:scaleY(1.08);filter:brightness(1.28)}
+ 100%{opacity:1;transform:scaleY(1);filter:brightness(1)}
+}
+@keyframes miSpectrumTravel{
+ 0%{left:0;opacity:0}
+ 8%{opacity:.72}
+ 90%{opacity:.72}
+ 100%{left:calc(100% - 32px);opacity:.22}
+}
+/* When the cable disconnects the animated spectrum vanishes immediately.
+   Previously confirmed progress is preserved separately, not shown as power. */
+.meterConnectionPanel:not([data-power="charging"]):not([data-power="full"]) .meterCobSegment::before,
+.meterConnectionPanel:not([data-power="charging"]):not([data-power="full"]) .meterCobTrack::after{
+ opacity:0;animation:none;
+}
+@media(prefers-reduced-motion:reduce){
+ .meterConnectionPanel[data-power="charging"] .meterCobSegment::before,
+ .meterConnectionPanel[data-power="full"] .meterCobSegment::before{
+  animation:none!important;opacity:1!important;transform:none!important;
+ }
+ .meterCobTrack::after{animation:none!important;opacity:0!important}
+}
