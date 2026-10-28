@@ -1,4 +1,4 @@
-/* iRepair Toolbox Charging v2 — customer-first, symptom-aware regression checks.
+/* iRepair Toolbox Charging v3 — customer-first, symptom-aware regression checks.
    Run: node toolbox/charging/preview/tests/core-tests.js */
 const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
 const dir=path.resolve(__dirname,".."),root={};
@@ -61,7 +61,7 @@ const html=fs.readFileSync(path.join(dir,"index.html"),"utf8"),
  css=fs.readFileSync(path.join(dir,"visual.css"),"utf8"),
  app=fs.readFileSync(path.join(dir,"app.js"),"utf8");
 check("Hero retains real shining iPhone shell",html.includes('class="phoneArt"')&&html.includes("chargingHeroSvg")&&html.includes("screenGlow2"));
-check("Hero includes styled plug approaching battery",html.includes('class="heroPowerPlug"'));
+check("Hero has one large illuminated battery instead of multiple diagram elements",html.includes('class="chargingHeroSvg chargingHeroV3"')&&html.includes('class="chargeLevelV3"')&&!html.includes("heroPowerPlug"));
 check("Whole handset remains centered within hero",css.includes('#home .phoneStage.chargingHero .phoneArt')&&css.includes('translate(-50%,-50%) scale(.58)!important'));
 check("Visual stage has distinct DO THIS and WHAT TO LOOK FOR",html.includes("DO THIS")&&html.includes("WHAT TO LOOK FOR"));
 check("New SVG art has an insertion canvas",html.includes('id="guideArtwork"'));
@@ -74,10 +74,10 @@ check("Safety revoked clears already-filled later answers",app.includes('delete 
 check("No false live sensor readouts or browser charger APIs",!app.includes("getBattery(")&&!app.includes("batteryStateDidChangeNotification"));
 check("Three customer outcome choices remain",["PASS","FAIL","UNABLE"].every(x=>html.includes('data-answer="'+x+'"')));
 check("Printing and one-tap copy still available",html.includes('id="copyReport"')&&html.includes('id="printReport"'));
-check("Every SVG illustration has full vector frame",stages.every(id=>art.render(id,plan.connector).includes('viewBox="0 0 320 185"')));
-check("Flip artwork contains two distinct connector tips",(art.render("flip","USB-C").match(/class="artConnector"/g)||[]).length===2);
-check("Port artwork has magnifying-glass visual",art.render("port","Lightning").includes('stroke="#e8ffff"'));
-check("Wireless artwork has charging coil motif",art.render("wireless","USB-C").includes('artWirelessRing'));
-check("Alternative-charger artwork shows two connectors",(art.render("swap","Lightning").match(/class="artConnector"/g)||[]).length===2);
-check("Both Lightning and USB-C vector tips supported",art.render("wired","USB-C").includes('width="26"')&&art.render("wired","Lightning").includes('width="2"'));
-console.log("ALL",passed,"CHARGING V2 CHECKS PASSED");
+check("Every visual stage has one clear full-width vector canvas",stages.every(id=>art.render(id,plan.connector).includes('viewBox="0 0 340 215"')));
+check("Flip artwork contains exactly two upright connector faces",(art.render("flip","USB-C").match(/class="caConnector"/g)||[]).length===2&&!art.render("flip","USB-C").includes("rotate(180)"));
+check("Port artwork has large explicit port and cable-tip labels",art.render("port","Lightning").includes("PHONE PORT")&&art.render("port","Lightning").includes("CABLE TIP"));
+check("Wireless artwork shows a recognisable charging pad under the phone",art.render("wireless","USB-C").includes("CHARGING PAD")&&art.render("wireless","USB-C").includes("caPhone"));
+check("Alternate cable visual uses two large separated connectors",(art.render("swap","Lightning").match(/class="caConnector"/g)||[]).length===2);
+check("Lightning and USB-C have distinct metal tip shapes",art.render("wired","USB-C").includes('rx="8" fill="url(#caMetal)"')&&art.render("wired","Lightning").includes('fill="#d3b07a"'));
+console.log("ALL",passed,"CHARGING V3 CHECKS PASSED");
