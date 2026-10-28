@@ -1,0 +1,71 @@
+/* iRepair Charging Diagnostics v5 — self-contained unit/regression tests.
+ * node toolbox/charging/preview/tests/meter-tests.js */
+"use strict";
+const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
+const dir=path.resolve(__dirname,".."),scope={};
+vm.runInNewContext(fs.readFileSync(path.join(dir,"meter-core.js"),"utf8"),{window:scope,Date});
+const m=scope.IRepairChargingMeters,html=fs.readFileSync(path.join(dir,"index.html"),"utf8"),
+ css=fs.readFileSync(path.join(dir,"meter.css"),"utf8"),
+ app=fs.readFileSync(path.join(dir,"meter-app.js"),"utf8"),
+ swift=fs.readFileSync(path.join(dir,"ios/ChargingDeviceMonitor.swift"),"utf8");
+let pass=0;function ok(text,predicate){assert.ok(predicate,text);pass++}
+const a=m.initial({source:"simulated",percent:61});
+ok("Simulated evidence recorded",a.source==="simulated");
+ok("Correct initial level",a.currentPercent===61);
+ok("No charging recognised until event",!a.chargeRecognised);
+ok("Progress pending on startup",m.summary(a).progress==="PENDING");
+ok("Source is not asserted native",!m.summary(a).canAssert);
+const loose=m.record(a,{type:"level",percent:62,at:1});
+ok("Disconnected rise is not a charging pass",m.summary(loose).progress==="PENDING");
+const connected=m.record(a,{type:"power",powerState:"charging",at:10});
+ok("Connection is recognised on charging-state event",m.summary(connected).recognition==="PASS");
+ok("Charging alone does not claim progress",m.summary(connected).progress==="PENDING");
+ok("Baseline stored when charge source connected",connected.baselinePercent===61);
+const success=m.record(connected,{type:"level",percent:62,at:11});
+ok("True reported rise marks progress Pass",m.summary(success).progress==="PASS");
+ok("Rise recorded as +1%",m.summary(success).gainSinceStart===1);
+ok("Simulated Pass cannot become native hardware result",!m.summary(success).canAssert);
+const off=m.record(success,{type:"power",powerState:"unplugged",at:12});
+ok("Loss of charging is counted",off.interruptions===1);
+ok("Previously confirmed progress retained across interruption",off.progressConfirmed);
+ok("Stability is distinct from progress",m.summary(off).stability==="INTERRUPTION_OBSERVED");
+const back=m.record(off,{type:"power",powerState:"charging",at:13});
+ok("Reconnected state captured",back.powerState==="charging");
+ok("New baseline after reattachment",back.baselinePercent===62);
+const noPassAfterDisconnect=m.record(m.record(a,{type:"power",powerState:"charging",at:1}),{type:"power",powerState:"unplugged",at:2});
+const changedWhileAway=m.record(noPassAfterDisconnect,{type:"level",percent:63,at:3});
+ok("Battery level increase after unplug does not count",!changedWhileAway.progressConfirmed);
+ok("Full battery does not automatically fail",m.summary(m.record(m.initial({percent:100}),{type:"power",powerState:"full",at:5})).progress==="NOT_APPLICABLE");
+ok("Unsupported battery percent throws",(()=>{try{m.initial({percent:101});return false}catch{return true}})());
+ok("Non-numeric percent throws",(()=>{try{m.record(a,{type:"level",percent:NaN});return false}catch{return true}})());
+ok("Unsupported power state throws",(()=>{try{m.record(a,{type:"power",powerState:"fast-25W"});return false}catch{return true}})());
+ok("Long observation does not impose timeout",!fs.readFileSync(path.join(dir,"meter-core.js"),"utf8").includes("setTimeout("));
+ok("Report credits actual data only when native",m.report(success).includes("NOT A REAL HARDWARE TEST"));
+ok("Simulated report never prints Charging Progress PASS",!m.report(success).includes("Charging progress: PASS"));
+const nat=m.record(m.record(m.initial({source:"native",percent:61}),{type:"power",powerState:"charging",at:1}),{type:"level",percent:62,at:2});
+ok("Native evidence returns Pass after real increase",m.summary(nat).progress==="PASS"&&m.summary(nat).canAssert);
+ok("Native report documents genuine pass",m.report(nat).includes("Charging progress: PASS"));
+ok("Report does not claim battery health",m.report(nat).includes("Battery Health: not measured"));
+ok("Report disclaims amperage/watts",m.report(nat).includes("Electrical input current and watts: unavailable"));
+ok("Original premium hero retained",html.includes('class="chargingHeroSvg chargingHeroV3"'));
+ok("Both meters present",html.includes('id="meterDial"')&&html.includes('id="meterCobTrack"'));
+ok("Battery level visibly labelled rather than battery health",html.includes("Battery charge level"));
+ok("No false browser readings shown",html.includes("Simulated readings")&&html.includes("No real diagnostic result"));
+ok("All demo controls available",["simConnect","simIncrease","simInterrupt","simReset"].every(id=>html.includes('id="'+id+'"')));
+ok("Preview report distinguished from device result",html.includes("Preview only — not assessed"));
+ok("Metres have glossy visual treatment",css.includes(".meterDialGlow")&&css.includes(".meterCobSegment"));
+ok("Reduced motion accessible",css.includes("prefers-reduced-motion"));
+ok("Native source subscribes to battery-state notifications",swift.includes("UIDevice.batteryStateDidChangeNotification"));
+ok("Native source subscribes to battery-level notifications",swift.includes("UIDevice.batteryLevelDidChangeNotification"));
+ok("Native source uses public battery monitoring",swift.includes("isBatteryMonitoringEnabled = true"));
+ok("Native source increments progress only during charging",swift.includes("if state == .charging"));
+ok("No invented voltage/current API",!swift.includes("batteryCurrent")&&!swift.includes("chargingWatts"));
+ok("Demo JS never creates native source",!app.includes('source:"native"'));
+ok("Instrument UI uses strict simulated source",app.includes('source:"simulated"'));
+const ids=[...app.matchAll(/\$\("([A-Za-z0-9]+)"\)/g)].map(x=>x[1]);
+const missing=[...new Set(ids)].filter(id=>!html.includes('id="'+id+'"'));
+ok("All referenced DOM controls exist",missing.length===0);
+new Function(app);ok("Controller syntax compiles",true);
+const count=(html.match(/<section id="(?:home|setup|instrument|report)"/g)||[]).length;
+ok("Correct four-screen flow",count===4);
+console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
