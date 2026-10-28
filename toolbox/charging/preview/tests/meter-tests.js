@@ -7,6 +7,7 @@ vm.runInNewContext(fs.readFileSync(path.join(dir,"meter-core.js"),"utf8"),{windo
 const m=scope.IRepairChargingMeters,html=fs.readFileSync(path.join(dir,"index.html"),"utf8"),
  css=fs.readFileSync(path.join(dir,"meter.css"),"utf8"),
  energy=fs.readFileSync(path.join(dir,"energy.css"),"utf8"),
+ choice=fs.readFileSync(path.join(dir,"choice.css"),"utf8"),
  app=fs.readFileSync(path.join(dir,"meter-app.js"),"utf8"),
  swift=fs.readFileSync(path.join(dir,"ios/ChargingDeviceMonitor.swift"),"utf8");
 let pass=0;function ok(text,predicate){assert.ok(predicate,text);pass++}
@@ -109,7 +110,7 @@ ok("Battery ring becomes noticeably brighter after visual transfer",css.includes
 ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
 ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
 ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
-ok("Living energy review version appears",html.includes("charging-glass-review-6-living")&&html.includes("charge-review-6-living"));
+ok("Animated charging methods review version appears",html.includes("charging-glass-review-7-animated")&&html.includes("charge-review-7-animated"));
 
 ok("New energy stylesheet loaded after approved prior meter visuals",html.indexOf('meter.css?v=charge-review-5-handover')<html.indexOf('energy.css?v=charge-review-6-living'));
 ok("Power connects to ongoing lighting state",app.includes('stage.dataset.energy="connected"'));
@@ -130,4 +131,27 @@ ok("Early unplug samples actual illuminated LEDs",app.includes('getStyle(lamp,":
 ok("UI does not mutate battery percentage during lighting",!energy.includes("batteryPercent.innerHTML")&&!energy.includes("percent="));
 ok("Reduced-motion fallback disables endless and reverse effects",energy.includes("@media(prefers-reduced-motion:reduce)")&&energy.includes("animation:none!important"));
 ok("Original battery meter CSS is independently retained",css.includes(".meterBatteryPanel .meterDialProgress{")&&css.includes("#48ff8d"));
+
+ok("Two animated method choice cards exist",html.includes('id="chooseWired"')&&html.includes('id="chooseWireless"'));
+ok("Animated choice screen is after model selection and before meters",html.indexOf('<section id="setup"')<html.indexOf('<section id="chooseCharge"')&&html.indexOf('<section id="chooseCharge"')<html.indexOf('<section id="instrument"'));
+ok("Wired illustration uses approved premium frame",html.includes('class="phoneArt choicePhoneArt"')&&choice.includes(".choicePhone .choicePhoneArt"));
+ok("Wired illustration animates cable insertion",choice.includes("@keyframes choiceCableInsert")&&choice.includes(".choicePlugGroup"));
+ok("Wired choice includes real separate plug elements",html.includes('class="choicePlugTip"')&&html.includes('class="choicePlugGrip"')&&html.includes('class="choiceCableLine"'));
+ok("Model selection changes Lightning vs USB-C guide",app.includes('selected&&selected.year<2023?"lightning":"usb-c"')&&choice.includes('[data-port="lightning"]'));
+ok("Wireless illustration lowers phone onto pad",choice.includes("@keyframes choiceWirelessLower")&&html.includes('class="choiceChargingPad"'));
+ok("Wireless charging pad has illuminated rim",choice.includes(".choicePadRing")&&choice.includes("@keyframes choicePadPulse"));
+ok("Both animated choices fit side-by-side",choice.includes("grid-template-columns:minmax(0,1fr) minmax(0,1fr)"));
+ok("User can explicitly skip wireless charging",html.includes('id="skipWireless"')&&app.includes("skipWirelessMethod"));
+ok("Skipped wireless cannot silently become a Pass",app.includes('SKIPPED — NOT ASSESSED')&&app.includes('SKIPPED — no charger available'));
+ok("Individual wired and wireless sessions retained",app.includes("methodSessions={wired:null,wireless:null}")&&app.includes("methodSessions[mode]=current"));
+ok("Simulation-only claim preserved for both methods",html.includes("Safari cannot independently identify cable versus wireless input"));
+ok("Method name shown in unchanged charging instrument",app.includes('"CHARGING LEAD TEST"')&&app.includes('"WIRELESS CHARGING TEST"'));
+ok("Charging lead flow asks optional wireless rather than unconditionally completing",app.includes('activeMode==="wired"&&!methodSessions.wireless&&!wirelessSkipped'));
+ok("Wireless first cannot bypass wired assessment",app.includes('activeMode==="wireless"&&!methodSessions.wired'));
+ok("Report distinguishes method progress and interruption counts",app.includes('label+" — interruption count"')&&app.includes('label+" — charge progress"'));
+ok("Report is exportable with real line breaks",app.includes('.join("\\n")'));
+ok("Power meter animation CSS preserved unchanged as separate file",energy.includes("miLivingStrip 5.6s linear 8.85s infinite"));
+ok("Phone user preferences for reduced motion applied to new instructions",choice.includes("@media(prefers-reduced-motion:reduce)"));
+ok("Approved colour palette remains icy-blue glass",choice.includes("linear-gradient(145deg,#ffffffed 0%,#e8f8ffef 37%,#cae9fff0 100%)"));
+ok("Neither animation injects fictitious battery data",!choice.includes("batteryCurrent")&&!choice.includes("chargingWatts"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
