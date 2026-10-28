@@ -110,7 +110,7 @@ ok("Battery ring becomes noticeably brighter after visual transfer",css.includes
 ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
 ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
 ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
-ok("Animated charging methods review version appears",html.includes("charging-glass-review-7-animated")&&html.includes("charge-review-7-animated"));
+ok("Animated charging methods review version appears",html.includes("charging-glass-review-8-hardware-docking")&&html.includes("charge-review-7-animated"));
 
 ok("New energy stylesheet loaded after approved prior meter visuals",html.indexOf('meter.css?v=charge-review-5-handover')<html.indexOf('energy.css?v=charge-review-6-living'));
 ok("Power connects to ongoing lighting state",app.includes('stage.dataset.energy="connected"'));
