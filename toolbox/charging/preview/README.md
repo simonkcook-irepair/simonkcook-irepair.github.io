@@ -55,3 +55,18 @@ Preserve exactly the approved icy-blue Toolbox styling, iPhone landing, green pe
 5. Unplug immediately clears the connected-only energy effect while retaining evidence of an earlier measured charge rise. Reconnection triggers the sequence again. Reduced motion omits all whooshes and shows the final illuminated state without animation.
 
 Actual Safari readings remain explicitly simulated. iOS native charging and battery level remain the eventual data source. Review pending user visual approval.
+
+
+## Charging v6 — continuous energy loop and graceful reverse power-down
+
+User approved the existing vivid red-to-green COB spectrum, initial full-bar whoosh, and battery-ring handover. The ONLY design change in v6 is the motion behaviour after that first cycle:
+
+- On reported charging connection, the existing spectrum fills first (unchanged).
+- After the initial energy transfer, a 5.6-second coordinated loop persists for the full connected session: repeated white/green energy wave over the entire colourful bar, luminous bridge between the two meters, then clockwise green energy orbit around the battery ring. The genuine percentage number is never animated/fabricated.
+- On disconnect, the recurring sequence stops; the ring briefly releases its glow in reverse, the bridge falls back toward the charging bar, and the colored COB LEDs extinguish RIGHT-to-LEFT in sequence. The reverse lasts about 4 seconds and then returns to idle.
+- Early disconnect samples the current display opacity of each lamp, so previously dark lamps do not light erroneously during reverse.
+- Reconnecting immediately cancels the shutdown timer and restarts the initial spectrum and handover. Start/Reset cleanly restore idle.
+- Reduced Motion disables every whoosh / loop / reverse motion, but maintains clear connected and unplugged states.
+- The entire visual remains a decorative representation of charging recognition. Browser preview values are SIMULATED and remain clearly labelled. Native iOS monitor/reports, original approved home handset and report evidence logic remain untouched.
+
+Implementation isolated to new `energy.css`, minor controller phase hooks in `meter-app.js`, and `index.html` versioned stylesheet import. Existing approved `meter.css` and iRepair Core main branch are not altered.
