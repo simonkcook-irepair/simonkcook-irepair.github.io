@@ -77,7 +77,7 @@ check("Printing and one-tap copy still available",html.includes('id="copyReport"
 check("Stage artist reuses exact approved landing handset in real browser",art.render.toString().length>0&&fs.readFileSync(path.join(dir,"art.js"),"utf8").includes('document.querySelector("#home .chargingHero .phoneArt")'));
 check("Every visual stage has a consistent branded glass composition",stages.every(id=>art.render(id,plan.connector).includes('class="chargeStagePhoto photo-'+id+'"')));
 check("Battery hero frame and animated shine available to every test",stages.filter(id=>!["flip","swap","port"].includes(id)).every(id=>art.render(id,plan.connector).includes("chargeApprovedDevice")));
-check("Flip shows a single rotating cable end and 180 degree prompt",art.render("flip","USB-C").includes("flipCable")&&art.render("flip","USB-C").includes("TURN 180°")&&!art.render("flip","USB-C").includes("chargeApprovedDevice")));
+check("Flip shows a single rotating cable end and 180 degree prompt",art.render("flip","USB-C").includes("flipCable")&&art.render("flip","USB-C").includes("TURN 180°")&&!art.render("flip","USB-C").includes("chargeApprovedDevice"));
 check("Plug is rotated around Y axis, not turned upside down in the socket",css.includes("chargingTurnOver")&&css.includes("rotateY(180deg)")&&!app.includes('rotate(180deg)'));
 check("Port inspection has independent magnifier and cable contacts",art.render("port","Lightning").includes("portMagnifier")&&art.render("port","Lightning").includes("realLeadContacts"));
 check("Wireless pad and approved handset appear together",art.render("wireless","USB-C").includes("chargeWirelessPad")&&art.render("wireless","USB-C").includes("chargeApprovedDevice"));
