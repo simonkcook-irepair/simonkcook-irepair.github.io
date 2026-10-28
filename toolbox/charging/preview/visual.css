@@ -1964,3 +1964,273 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  .chargeStagePhoto .chargePadLight,.chargeStagePhoto .chargeStageIndication{
  animation:none!important}
 }
+
+/* ============================================================
+ CHARGING v4 — RESET TO APPROVED IREPAIR TOOLBOX ART LANGUAGE
+ Uses the EXACT premium phoneArt/phoneScreen/Dynamic Island/shines
+ from the praised landing-screen handset, NOT the rejected cartoon art.
+ These are demonstrations, never measurements or electrical readings.
+ ============================================================ */
+.chargeTest .chargeGuideArtV2 {
+ height:224px!important;min-height:224px!important;
+ padding:0!important;border-radius:23px!important;
+ position:relative;overflow:hidden!important;
+ background:
+  radial-gradient(ellipse at 47% 51%,#8cdcff56,transparent 59%),
+  linear-gradient(146deg,#f7fcff 0%,#eaf7ff 48%,#d7edff 100%)!important;
+ box-shadow:inset 0 2px 3px white,0 6px 20px #3287bb19!important;
+}
+.chargeTest .svVisual{
+ position:relative;isolation:isolate;overflow:hidden;
+ width:100%;height:100%;min-width:0;
+ background:radial-gradient(circle at 48% 40%,#ffffff8c 0%,transparent 60%);
+}
+.chargeTest .svVisual::before{
+ content:"";position:absolute;width:260px;height:180px;
+ top:50%;left:50%;transform:translate(-50%,-50%);
+ border-radius:50%;background:radial-gradient(circle,#74d8ff5c,transparent 69%);
+ filter:blur(16px);pointer-events:none;
+}
+.chargeTest .svPhone{
+ position:absolute;left:50%;top:48%;
+ width:258px;height:543px;z-index:3;
+ transform-origin:center center;
+ transform:translate(-50%,-50%) scale(.32);
+ pointer-events:none;
+ filter:drop-shadow(0 10px 20px #2064924b);
+}
+.chargeTest .svPhone .phoneArt{
+ position:relative!important;
+ left:auto!important;top:auto!important;
+ width:258px!important;height:543px!important;
+ aspect-ratio:auto!important;
+ transform:none!important;
+ margin:0!important;animation:none!important;
+}
+.chargeTest .svPhone .phoneScreen{
+ position:absolute;inset:8px!important;
+ border-radius:39px!important;overflow:hidden!important;
+ isolation:isolate;
+ background:
+ radial-gradient(circle at 40% 36%,#a4faff77,transparent 44%),
+ radial-gradient(circle at 78% 85%,#1b66bd9a,transparent 48%),
+ linear-gradient(154deg,#6bc8f5 0%,#329ad9 32%,#155da7 73%,#0c397d 100%)!important;
+}
+.chargeTest .svPhone .dynamicIsland{z-index:8}
+.chargeTest .svPhone .screenGlow{z-index:6;opacity:.72}
+.chargeTest .svPhone .screenGlow2{z-index:7;opacity:.44}
+.chargeTest .svChargeBattery{
+ position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:115px;height:178px;border:7px solid #e7ffff;
+ border-radius:29px;overflow:hidden;
+ box-shadow:0 0 0 2px #83f6ff55,0 0 30px #80ffffaf,inset 0 0 13px #c1ffff77;
+ z-index:3;background:#065a94b5;
+}
+.chargeTest .svChargeBattery:before{
+ content:"";position:absolute;top:0;left:26%;
+ right:26%;height:10px;border-radius:0 0 7px 7px;background:#efffff;opacity:.84
+}
+.chargeTest .svBatteryFill{
+ position:absolute;left:6px;right:6px;bottom:6px;height:75%;
+ border-radius:13px;
+ background:linear-gradient(180deg,#b6fff2,#50e6d6 45%,#0db8b7);
+ box-shadow:0 -12px 25px #9cfff0a0;
+ animation:svBatteryPower 4s ease-in-out infinite
+}
+.chargeTest .svBolt{
+ position:absolute;top:50%;left:50%;
+ transform:translate(-50%,-50%);
+ z-index:4;color:#f4ffff;font:900 104px/1 system-ui,sans-serif;
+ text-shadow:0 0 18px #e7ffffb0;
+}
+.chargeTest .svCable{
+ position:absolute;z-index:5;
+ width:76px;height:176px;
+ transform-origin:center 30px;filter:drop-shadow(0 9px 9px #40799952)
+}
+.chargeTest .svCableTail{
+ position:absolute;top:75px;left:34px;width:9px;height:108px;
+ border-radius:5px;background:linear-gradient(90deg,#5d86a4,#f9ffff 38%,#c5dfe9 70%,#5f819a);
+ box-shadow:inset -2px 0 3px #32608554
+}
+.chargeTest .svCableBody{
+ position:absolute;top:26px;left:12px;width:53px;height:69px;
+ border-radius:16px 16px 13px 13px;
+ background:linear-gradient(100deg,#a6c2d8 0%,#faffff 17%,#fff 47%,#c7e0ee 79%,#7195b0 100%);
+ border:1px solid #f8ffff;
+ box-shadow:inset 0 4px 4px #ffffffcc,inset -4px 0 6px #4e7b9561,0 2px 7px #265e822e;
+}
+.chargeTest .svCableSeam{
+ position:absolute;top:18px;left:6px;right:6px;height:2px;
+ border-radius:2px;background:#92b1c4a1;
+}
+.chargeTest .svMetal{
+ position:absolute;top:-13px;left:23px;width:31px;height:47px;
+ border:2px solid #faffff;
+ background:linear-gradient(90deg,#587990 0%,#edffff 16%,#c0dce9 50%,#688ba2 85%,#f2ffff);
+ box-shadow:0 0 0 1px #7c9cb2,0 0 9px #66b7d44e;
+ overflow:hidden;
+}
+.chargeTest .svMetal.usb{
+ width:37px;height:32px;left:20px;top:-5px;border-radius:10px 10px 7px 7px
+}
+.chargeTest .svMetal.lightning{border-radius:4px 4px 2px 2px;}
+.chargeTest .svContact.usb{
+ position:absolute;left:3px;right:3px;top:3px;height:10px;
+ border-radius:6px;background:linear-gradient(#031829,#22425b 65%,#0a273e);
+ box-shadow:inset 0 1px 1px #b0e7f0
+}
+.chargeTest .svContact.lightning{
+ position:absolute;top:4px;left:2px;right:2px;height:15px;
+ background:repeating-linear-gradient(90deg,transparent 0 3px,#d4ab5e 3px 5px,#edd3a7 5px 6px,transparent 6px 8px)
+}
+.chargeTest .svCaption{
+ position:absolute;z-index:9;
+ display:block;max-width:94%;left:50%;transform:translateX(-50%);
+ text-align:center;white-space:nowrap;
+ font:750 11px/1.25 -apple-system,BlinkMacSystemFont,Arial,sans-serif;
+ letter-spacing:.03em;color:#245f83;
+ background:linear-gradient(135deg,#ffffffdf,#dff4ffd6);
+ border:1px solid #fff;border-radius:999px;
+ padding:6px 11px;
+ box-shadow:0 3px 9px #4187b01d;
+}
+.chargeTest .svNote{bottom:6px}
+.chargeTest .svInstruction{bottom:7px}
+.chargeTest .svQuestion{left:70%;top:39%;width:42%;white-space:normal;max-width:130px}
+.chargeTest .sv-safety .svPhone{left:34%;top:49%;transform:translate(-50%,-50%) scale(.32) rotate(-6deg)}
+.chargeTest .sv-safety .svCableSide{left:73%;top:28%;transform:translate(-50%,-20%) rotate(21deg) scale(1)}
+.chargeTest .sv-wired .svPhone{left:39%;top:48%;transform:translate(-50%,-50%) scale(.32) rotate(-4deg)}
+.chargeTest .sv-wired .svCablePlugIn{
+ left:69%;top:36%;transform:translate(-50%,-15%) rotate(-22deg) scale(.87);
+ animation:svApproach 4.5s ease-in-out infinite;
+}
+.chargeTest .sv-stability .svPhone{left:37%;top:50%;transform:translate(-50%,-50%) scale(.31) rotate(-3deg)}
+.chargeTest .sv-stability .svCableStable{left:65%;top:44%;transform:translate(-50%,-20%) rotate(-14deg) scale(.85);animation:none}
+.chargeTest .sv-flip .svFlipFocus{
+ position:absolute;top:37%;left:44%;
+ width:115px;height:134px;transform:translate(-50%,-50%);
+ perspective:700px;z-index:5;
+}
+.chargeTest .sv-flip .svFlipAura{
+ position:absolute;inset:-25px;border-radius:50%;
+ background:radial-gradient(circle,#5ee8ff66,transparent 75%);
+ filter:blur(8px)
+}
+.chargeTest .sv-flip .svCableFlip{
+ left:51%;top:35%;transform:translate(-50%,-30%) scale(1.23);
+ animation:svTurnOver 5.8s ease-in-out infinite;
+ transform-style:preserve-3d;
+}
+.chargeTest .sv-flip .svArrow{position:absolute;top:12%;right:15%;width:95px;height:68px;z-index:8}
+.chargeTest .sv-flip .svDegrees{
+ top:55%;left:72%;font-size:16px;background:none;border:0;box-shadow:none;color:#167eb2
+}
+.chargeTest .sv-swap .svCableOld{
+ left:29%;top:31%;transform:translate(-50%,-20%) rotate(-28deg) scale(.8);
+ filter:grayscale(.8) drop-shadow(0 4px 6px #6c7e8f5b);
+ opacity:.62;animation:svDiscardOld 7s ease-in-out infinite
+}
+.chargeTest .sv-swap .svCableNew{
+ left:72%;top:25%;transform:translate(-50%,-20%) rotate(13deg) scale(1.2);
+ animation:svFreshCable 7s ease-in-out infinite
+}
+.chargeTest .svBin{position:absolute;left:22%;bottom:36px;width:63px;height:70px;z-index:2}
+.chargeTest .svBinLid{position:absolute;top:7px;left:1px;width:62px;height:9px;border-radius:5px;background:linear-gradient(#e4f6ff,#699bc1)}
+.chargeTest .svBinBase{position:absolute;top:16px;left:8px;width:47px;height:47px;
+ border:2px solid #eaffff;border-radius:5px 5px 13px 13px;
+ background:linear-gradient(95deg,#7baed0,#d6f1ff 45%,#6a9aba);
+ transform:perspective(100px) rotateX(-5deg)}
+.chargeTest .svEdge{
+ position:absolute;top:12%;left:50%;transform:translateX(-50%) perspective(400px) rotateX(-18deg);
+ width:86%;height:76px;z-index:2;
+ border-radius:20px 20px 32px 32px;
+ background:linear-gradient(165deg,#f6ffff 0%,#a7c7dd 25%,#4e7394 48%,#15375a 72%,#4e7798);
+ box-shadow:0 12px 16px #2c679a60,inset 0 3px 3px #fff;
+ border:2px solid #deeff9;
+}
+.chargeTest .svEdgePort{
+ position:absolute;left:50%;top:28px;transform:translateX(-50%);
+ width:67px;height:21px;border:3px solid #99c3db;
+ background:linear-gradient(#092841,#071527);
+ box-shadow:inset 0 3px 5px #000a,inset 0 -2px 3px #a7e5ff77;
+ border-radius:13px
+}
+.chargeTest .svEdgePort.lightning{width:52px;height:16px;top:29px;border-radius:6px}
+.chargeTest .svSpeaker{position:absolute;top:31px;width:48px;height:15px;
+ background:radial-gradient(circle,#0b2340 1.5px,transparent 2px) 0 0/12px 12px}
+.chargeTest .svSpeaker.a{left:24px}
+.chargeTest .svSpeaker.b{right:24px}
+.chargeTest .svLens{
+ position:absolute;top:6%;right:3%;width:112px;height:112px;z-index:7;
+ border-radius:50%;border:6px solid #f5ffff;
+ background:linear-gradient(135deg,#c1eaff,#4c91bf 36%,#0c426c 85%);
+ box-shadow:0 3px 0 #78a7c7,0 11px 25px #265a8073,inset 0 0 10px #7ad6ff88;
+ overflow:hidden;animation:svZoom 4.6s ease-in-out infinite
+}
+.chargeTest .svLensPort{
+ position:absolute;top:39px;left:13px;right:13px;height:25px;
+ border:3px solid #b7d9e9;border-radius:19px;background:#061f35;
+ box-shadow:inset 0 2px 9px #000e;
+}
+.chargeTest .svLensPort.lightning{left:22px;right:22px;height:20px;border-radius:8px}
+.chargeTest .svLensContact{
+ position:absolute;left:32px;right:32px;top:47px;height:8px;
+ border-radius:4px;background:repeating-linear-gradient(90deg,#bb9d5b 0 4px,#2e4153 4px 8px)
+}
+.chargeTest .sv-port .svCableInspect{
+ left:45%;top:60%;transform:translate(-50%,0) rotate(-8deg) scale(.76);z-index:5
+}
+.chargeTest .sv-wireless .svPhone{
+ left:50%;top:39%;transform:translate(-50%,-50%) scale(.26) rotate(-7deg);
+ animation:svFloat 4.2s ease-in-out infinite
+}
+.chargeTest .svPad{
+ position:absolute;z-index:2;left:50%;top:65%;width:190px;height:58px;transform:translateX(-50%);
+ border-radius:50%;
+ background:radial-gradient(ellipse at 50% 24%,#c6ffffbb,#3994cb88 42%,#113c68 76%,#06264f);
+ border:3px solid #caffff;
+ box-shadow:0 15px 22px #2c76ac5d,0 0 0 6px #8bdeff33,0 0 20px #5cdeff8f,inset 0 2px 4px #fff6
+}
+.chargeTest .svPadRing{
+ position:absolute;inset:8px 20px;border-radius:50%;border:2px solid #d4ffff78
+}
+.chargeTest .svPadLight{
+ position:absolute;inset:-10px;z-index:-1;border-radius:50%;
+ background:#54eafa55;filter:blur(15px);animation:svPulse 4s infinite
+}
+.chargeTest .sv-behaviour .svPhone{left:50%;top:49%;transform:translate(-50%,-50%) scale(.34)}
+.chargeTest .svSettings{
+ position:absolute;left:20px;right:20px;top:79px;bottom:52px;z-index:3;
+ border-radius:20px;background:linear-gradient(#ffffffea,#e7f6ffde);
+ padding:26px 14px;color:#154d79;font-weight:700;
+ box-shadow:0 6px 24px #063f8680;
+}
+.chargeTest .svSettingsTitle{font-size:31px;text-align:center;margin-bottom:29px}
+.chargeTest .svSettingsBar{height:46px;border-radius:12px;background:#b7d9ed;overflow:hidden}
+.chargeTest .svSettingsBar span{display:block;height:100%;width:75%;background:#29c77b}
+.chargeTest .svSettingsLine{height:10px;margin-top:18px;border-radius:6px;background:#98c4db}
+.chargeTest .svSettingsLine.short{width:57%}
+.chargeTest .svSettingsLimit{margin-top:20px;font-size:22px}
+@keyframes svBatteryPower{0%,100%{height:70%}50%{height:79%}}
+@keyframes svApproach{0%,100%{transform:translate(-50%,0) rotate(-22deg) scale(.87)}
+ 50%{transform:translate(-58%,-8px) rotate(-22deg) scale(.87)}}
+@keyframes svTurnOver{0%,22%{transform:translate(-50%,-30%) scale(1.23) rotateY(0)}
+ 48%,72%{transform:translate(-50%,-30%) scale(1.23) rotateY(180deg)}
+ 100%{transform:translate(-50%,-30%) scale(1.23) rotateY(360deg)}}
+@keyframes svDiscardOld{0%,30%{opacity:.7}58%,82%{opacity:.1;transform:translate(-50%,12px) rotate(-40deg) scale(.6)}100%{opacity:.7}}
+@keyframes svFreshCable{0%,30%{opacity:.32}55%,85%{opacity:1}100%{opacity:.32}}
+@keyframes svZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes svFloat{0%,100%{transform:translate(-50%,-50%) scale(.26) rotate(-7deg)}
+ 50%{transform:translate(-50%,-54%) scale(.26) rotate(-7deg)}}
+@keyframes svPulse{0%,100%{opacity:.46}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+ .chargeTest .svVisual *, .chargeTest .svVisual *:before, .chargeTest .svVisual *:after{
+ animation:none!important;transition:none!important
+ }
+}
+@media(max-width:360px){
+ .chargeTest .chargeGuideArtV2{height:204px!important;min-height:204px!important}
+ .chargeTest .sv-safety .svPhone{transform:translate(-50%,-50%) scale(.29) rotate(-6deg)}
+ .chargeTest .svCaption{font-size:10px}
+}
