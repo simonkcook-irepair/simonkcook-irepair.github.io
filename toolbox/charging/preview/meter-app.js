@@ -54,9 +54,10 @@ function update(){
  set("progressStatus",current.progressConfirmed?"Confirmed ✓":current.powerState==="full"&&percent===100?"Full battery":"Waiting for rise");
  set("batteryCaption",current.progressConfirmed?"Progress confirmed": "Current level");
  const power=current.powerState;
+ $("meterBatteryPanel").dataset.progress=current.progressConfirmed?"confirmed":power==="charging"?"charging":"idle";
  const connected=summary.isConnected;
  const panel=$("connectionPanel");
- panel.dataset.power=power;panel.dataset.interruptions=String(current.interruptions);
+ panel.dataset.power=power;panel.dataset.progress=current.progressConfirmed?"confirmed":"pending";panel.dataset.interruptions=String(current.interruptions);
  if(power==="charging"){
   set("connectionTitle","Charging recognised");
   set("connectionSubtitle",current.progressConfirmed?"iOS-style charging state and battery progress simulated.":"Connection detected. Watching for a genuine battery percentage rise.");
