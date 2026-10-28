@@ -93,7 +93,7 @@ ok("Disconnected segment fill explicitly resets",css.includes(':not([data-power=
 ok("Reduced-motion shows immediately completed spectrum",css.includes("animation:none!important;opacity:1!important;transform:none!important"));
 ok("Accessibility clarifies gradient is visual not electrical measurement",app.includes("Decorative red-to-green charging connection sweep")&&app.includes("not measured as amps or watts"));
 ok("Battery percentage dial remains vivid green",css.includes(".meterBatteryPanel .meterDialNumber{")&&html.includes('stop-color="#12e56b"'));
-ok("Revised assets have cache busting",html.includes("charge-review-5-spectrum"));
+ok("Revised assets have cache busting",html.includes("charge-review-5-handover"));
 
 ok("Synchronized battery dial contains an energy-sweep arc",html.includes('class="meterEnergySweep"')&&html.includes('class="meterEnergyHalo"'));
 ok("Inter-panel energy bridge has zero layout height",html.includes('class="meterEnergyBridge"')&&css.includes(".meterEnergyBridge{position:relative;z-index:10;height:0;"));
