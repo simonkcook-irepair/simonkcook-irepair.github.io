@@ -69,8 +69,8 @@
 /* ONE slow, continuous descent and a permanently docked finish.
  * No upward motion or repeat cycle; revisiting Step 2 replays the landing. */
 @keyframes fullPhoneSingleDescent{
-  from{transform:translateX(-50%) translateY(0)}
-  to{transform:translateX(-50%) translateY(var(--landing-distance))}
+  from{translate:0 0}
+  to{translate:0 var(--landing-distance)}
 }
 .chargingChoiceScreen .photoWirelessHalo{
   position:absolute!important;left:50%!important;bottom:34px!important;
@@ -118,7 +118,7 @@
  .chargingChoiceScreen .photoWirelessHalo,
  .chargingChoiceScreen .photoDockShadow{animation:none!important}
  .chargingChoiceScreen .photoDeviceWireless{
-   transform:translateX(-50%) translateY(var(--landing-distance))!important;
+   translate:0 var(--landing-distance)!important;
  }
  .chargingChoiceScreen .photoLead,
  .chargingChoiceScreen .photoLightningCap{
