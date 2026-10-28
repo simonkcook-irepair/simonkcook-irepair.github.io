@@ -110,7 +110,7 @@ ok("Battery ring becomes noticeably brighter after visual transfer",css.includes
 ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
 ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
 ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
-ok("Animated charging methods review version appears",html.includes("charging-glass-review-10-physical-docking")&&html.includes("charge-review-7-animated"));
+ok("Animated charging methods review version appears",html.includes("charging-glass-review-11-full-handset-single-landing")&&html.includes("charge-review-7-animated"));
 
 ok("New energy stylesheet loaded after approved prior meter visuals",html.indexOf('meter.css?v=charge-review-5-handover')<html.indexOf('energy.css?v=charge-review-6-living'));
 ok("Power connects to ongoing lighting state",app.includes('stage.dataset.energy="connected"'));
@@ -167,7 +167,7 @@ ok("Newest choice assets are cache busted",html.includes("charge-review-7-animat
  * scope of this visual refinement. Real movement is validated in a browser. */
 const docking=fs.readFileSync(path.join(dir,"docking.css"),"utf8");
 ok("Hardware docking stylesheet added after approved v7 choices",html.indexOf("choice.css?v=")<html.indexOf("docking.css?v="));
-ok("New illustration-only build marker is used",html.includes('charging-glass-review-10-physical-docking'));
+ok("New illustration-only build marker is used",html.includes('charging-glass-review-11-full-handset-single-landing'));
 ok("Physical port has speaker grilles and machined bottom edge",html.includes('class="choicePhoneBase"')&&html.includes('class="choiceAcousticGrille left"')&&html.includes('class="choiceAcousticGrille right"'));
 ok("Metal charging connector retains distinct USB-C and Lightning tips",docking.includes(".choicePlugTip{")&&docking.includes('[data-port="lightning"] .choicePlugTip'));
 ok("Cable tip visibly docks below the hardware port",docking.includes("@keyframes choiceCableDock")&&docking.includes("translateY(-7px)"));
@@ -199,11 +199,32 @@ ok("Charging pad image file exists",fs.existsSync(path.join(dir,"assets/wireless
 
 const precision=fs.readFileSync(path.join(dir,"precision.css"),"utf8");
 ok("Precision docking follows shared photoreal layer",html.indexOf("photoreal.css?v=")<html.indexOf("precision.css?v="));
-ok("Correct v10 build marker",html.includes('charging-glass-review-10-physical-docking'));
+ok("Current v11 build marker",html.includes('charging-glass-review-11-full-handset-single-landing'));
 ok("Plug physically inserts behind phone rather than stopping underneath",precision.includes("translateY(var(--plug-depth))")&&precision.includes(".photoDeviceWired {z-index:6}"));
 ok("Wireless lands with viewport-specific contact travel",precision.includes("--dock-travel:103px")&&precision.includes("--dock-travel:108px")&&precision.includes("--plug-depth:-92px"));
 ok("Same phone preserved for both tests", html.split('src="./assets/iphone-identical.webp"').length===3);
 ok("Shared handset is clipped naturally at scene edge",precision.includes(".photoDevice{top:-6px}"));
 ok("Contact animations remain illustrative, no invented readings",!precision.includes("batteryCurrent")&&!precision.includes("chargingWatts"));
 ok("v10 respects reduced motion",precision.includes("@media(prefers-reduced-motion:reduce)"));
+
+/* Approved 54-second narrated review — 28 Oct 2026.
+ * The artwork must show whole phones, more wired lead, a centred cordless
+ * pad and ONE graceful descent with no reverse/bounce animation.
+ */
+const full=fs.readFileSync(path.join(dir,"full-body.css"),"utf8");
+ok("Full-body art override loads after all older styles",html.indexOf("precision.css?v=")<html.indexOf("full-body.css?v="));
+ok("Whole handset displayed inside both art panels",full.includes("width:min(92%,140px)")&&full.includes("top:12px!important"));
+ok("Identical photographic source still appears twice",html.split('src="./assets/iphone-identical.webp"').length===3);
+ok("Pad has no trailing lead visual",full.includes(".photoPad")&&full.includes("translateX(-50%)"));
+ok("Cable is long and centred onto physical port",full.includes("@keyframes fullCableInsert")&&full.includes("top:149px!important")&&full.includes("translateX(-50%)"));
+ok("Wireless animation descends once and keeps its final position",full.includes("@keyframes fullPhoneSingleDescent")&&full.includes("7.6s")&&full.includes("1 both!important"));
+ok("No repeated up-and-down movement in v11 landing",!full.includes("infinite")&&!full.includes("alternate")&&!full.includes("reverse"));
+ok("Matching centred geometry is retained on narrow screens",full.includes("@media(max-width:365px)")&&full.includes("--landing-distance:83px"));
+ok("Both methods retain reduced-motion support",full.includes("@media(prefers-reduced-motion:reduce)"));
+ok("Full-body art styles do not touch approved meters",!full.includes(".meterBatteryPanel")&&!full.includes(".meterCobTrack"));
+const sharedImage=fs.readFileSync(path.join(dir,"assets/iphone-identical.webp"));
+ok("Handset image is full body not cropped lower third",sharedImage.toString("ascii",12,16)==="VP8X"&&sharedImage.readUIntLE(27,3)+1>270);
+const cableImage=fs.readFileSync(path.join(dir,"assets/apple-style-usbc.webp"));
+ok("Longer braided cable graphic retains more visible lead",cableImage.toString("ascii",12,16)==="VP8X"&&cableImage.readUIntLE(27,3)+1>225);
+
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
