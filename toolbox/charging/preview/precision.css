@@ -87,7 +87,7 @@
   }
 }
 @media(max-width:365px) {
-  .chargingChoiceScreen .wirelessArt {--dock-travel:123px;--plug-depth:-83px}
+  .chargingChoiceScreen .wirelessArt {--dock-travel:103px;--plug-depth:-83px}
   .chargingChoiceScreen .photoLead {top:137px;width:40px}
   .chargingChoiceScreen .photoLightningCap {top:137px}
   .chargingChoiceScreen .photoPortHalo {top:59px}
