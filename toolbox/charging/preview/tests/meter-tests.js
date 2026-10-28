@@ -202,7 +202,7 @@ ok("Precision docking follows shared photoreal layer",html.indexOf("photoreal.cs
 ok("Correct v10 build marker",html.includes('charging-glass-review-10-physical-docking'));
 ok("Plug physically inserts behind phone rather than stopping underneath",precision.includes("translateY(-62px)")&&precision.includes(".photoDeviceWired {z-index:6}"));
 ok("Wireless lands with viewport-specific contact travel",precision.includes("--dock-travel:100px")&&precision.includes("--dock-travel:88px")&&precision.includes("--dock-travel:84px"));
-ok("Same phone preserved for both tests", (html.match(/src="\\.\\/assets\\/iphone-identical\\.webp"/g)||[]).length===2);
+ok("Same phone preserved for both tests", html.split('src="./assets/iphone-identical.webp"').length===3);
 ok("Contact animations remain illustrative, no invented readings",!precision.includes("batteryCurrent")&&!precision.includes("chargingWatts"));
 ok("v10 respects reduced motion",precision.includes("@media(prefers-reduced-motion:reduce)"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
