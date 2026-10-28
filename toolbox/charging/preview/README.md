@@ -84,3 +84,9 @@ Review direction: after the approved landing and model selector, offer two anima
 - Browser modes are explicit **Safari simulations** and the selected power input is user-declared: public iOS battery APIs do not automatically distinguish Lightning/USB-C from Qi/MagSafe charging. Native app should instruct the customer to use only the selected charger while reading actual battery state; no false route identification or electrical measurements.
 - New separate `choice.css` preserves `visual.css`, `meter.css` and `energy.css` byte-for-byte. Existing praise/locked landing hero and all other Toolbox tools are untouched.
 - Touch-friendly side-by-side choice cards, interactive skip action and reduced-motion still views. Review pending iPhone visual approval.
+
+
+### v7 follow-up details
+The guide now also adapts the handset silhouette for selected notch/home-button iPhone families, as well as using Lightning versus USB-C for the bottom plug guide. Wireless can be skipped from either the method-choice screen **or from within the wireless meter itself**. An in-test skip explicitly discards that wireless session so it cannot produce a spurious result or be unintentionally reused. Re-entering wireless test after a skip creates a fresh optional session.
+
+The charging method is user-selected even in the future native app; iOS can observe battery state but the standard public UIDevice battery API does not prove whether the input was Qi/MagSafe or USB/Lightning. All browser results remain simulated. Verified code-level interactive navigation and regression tests; visual iPhone approval remains outstanding.
