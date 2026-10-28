@@ -2,8 +2,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eaf6ff"><meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Charging Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=charge-review-4"><link rel="stylesheet" href="./meter.css?v=charge-review-5-spectrum">
-</head><body data-build="charging-glass-review-5-spectrum"><main class="shell">
+<link rel="stylesheet" href="./visual.css?v=charge-review-4"><link rel="stylesheet" href="./meter.css?v=charge-review-5-handover">
+</head><body data-build="charging-glass-review-5-handover"><main class="shell">
 <header class="header glass"><div class="brand"><div class="logo" aria-hidden="true"></div>
 <div><b>iRepair Toolbox</b><span>CHARGING DIAGNOSTICS</span></div></div>
 <span class="badge">GUIDED TEST</span></header>
@@ -82,12 +82,15 @@
      <defs>
       <linearGradient id="meterRingGradient" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#059d51"/><stop offset=".43" stop-color="#12e56b"/><stop offset=".77" stop-color="#6bff9a"/><stop offset="1" stop-color="#e1ffe7"/></linearGradient>
       <filter id="meterRingGlow"><feGaussianBlur stdDeviation="6"/></filter>
+      <linearGradient id="meterEnergyGradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#aaffcb"/><stop offset=".38" stop-color="#effff4"/><stop offset=".72" stop-color="#66ff9d"/><stop offset="1" stop-color="#0bd961"/></linearGradient>
      </defs>
      <circle cx="130" cy="130" r="104" fill="#ffffff" opacity=".11"/>
      <circle cx="130" cy="130" r="100" class="meterOuterFine"/>
      <circle cx="130" cy="130" r="92" class="meterDialTrack"/>
      <circle cx="130" cy="130" r="92" class="meterDialGlow" id="meterDialGlow"/>
      <circle cx="130" cy="130" r="92" class="meterDialProgress" id="meterDialProgress"/>
+     <circle cx="130" cy="130" r="92" class="meterEnergyHalo"/>
+     <circle cx="130" cy="130" r="92" class="meterEnergySweep"/>
      <circle cx="130" cy="130" r="77" class="meterInnerCircle"/>
      <path d="M77 83q54-53 111 0" class="meterInnerGlint"/>
     </svg>
@@ -101,6 +104,7 @@
   </div>
   <div class="meterLevelRail" aria-hidden="true"><div class="meterLevelGlow" id="meterLevelGlow"></div><div class="meterLevelFill" id="meterLevelFill" style="width:61%"></div></div>
  </div>
+ <div class="meterEnergyBridge" aria-hidden="true"></div>
  <div class="meterConnectionPanel meterFrost" id="connectionPanel">
    <div class="meterPanelTop"><div class="meterPanelLabel"><span class="meterPanelIcon meterZap">ϟ</span><div><strong>Charging connection</strong><small>Reported power-state continuity</small></div></div><span class="meterPanelTag">SIMULATED</span></div>
    <div class="meterConnectionCore"><div class="meterConnectionGlow" aria-hidden="true"></div>
@@ -138,5 +142,5 @@
 </section></main>
 <script src="./models.js?v=charge-review-4"></script>
 <script src="./meter-core.js?v=charge-review-5-neon"></script>
-<script src="./meter-app.js?v=charge-review-5-spectrum"></script>
+<script src="./meter-app.js?v=charge-review-5-handover"></script>
 </body></html>
