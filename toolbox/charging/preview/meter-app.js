@@ -54,6 +54,8 @@ function update(){
  set("progressStatus",current.progressConfirmed?"Confirmed ✓":current.powerState==="full"&&percent===100?"Full battery":"Waiting for rise");
  set("batteryCaption",current.progressConfirmed?"Progress confirmed": "Current level");
  const power=current.powerState;
+ $("meterBatteryPanel").dataset.power=power;
+ $("instrument").dataset.power=power;
  $("meterBatteryPanel").dataset.progress=current.progressConfirmed?"confirmed":power==="charging"?"charging":"idle";
  const connected=summary.isConnected;
  const panel=$("connectionPanel");
