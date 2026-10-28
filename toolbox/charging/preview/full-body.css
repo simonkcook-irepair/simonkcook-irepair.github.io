@@ -61,7 +61,7 @@
   animation:none!important;
 }
 .chargingChoiceScreen .photoDeviceWireless{
-  --landing-distance:75px;
+  --landing-distance:81px;
   transform:translateX(-50%) translateY(0)!important;
   animation:fullPhoneSingleDescent 7.6s cubic-bezier(.41,.04,.13,1) .65s 1 both!important;
   will-change:transform;
@@ -95,10 +95,13 @@
  .chargingChoiceScreen .chargeChoiceArt{height:263px}
  .chargingChoiceScreen .photoDevice{width:min(92%,116px)!important;top:12px!important}
  .chargingChoiceScreen .photoPad{width:min(94%,125px)!important;bottom:15px!important}
- .chargingChoiceScreen .photoDeviceWireless{--landing-distance:83px}
+ .chargingChoiceScreen .photoDeviceWireless{--landing-distance:90px}
  .chargingChoiceScreen .photoLead{top:124px!important;width:37px!important}
  .chargingChoiceScreen .photoLightningCap{top:124px!important}
  .chargingChoiceScreen .photoPortHalo{top:113px!important}
+}
+@media(min-width:420px) and (max-width:479px){
+ .chargingChoiceScreen .photoDeviceWireless{--landing-distance:65px}
 }
 @media(min-width:480px){
  .chargingChoiceScreen .chargeChoiceArt{height:322px}
