@@ -68,4 +68,17 @@ ok("All referenced DOM controls exist",missing.length===0);
 new Function(app);ok("Controller syntax compiles",true);
 const count=(html.match(/<section id="(?:home|setup|instrument|report)"/g)||[]).length;
 ok("Correct four-screen flow",count===4);
+
+ok("Battery dial gradient has green neon palette",html.includes('stop-color="#12e56b"')&&html.includes('stop-color="#6bff9a"'));
+ok("Battery percentage uses luminous green",css.includes(".meterBatteryPanel .meterDialNumber{")&&css.includes("color:#079f57"));
+ok("Circular charge ring has green glow",css.includes(".meterBatteryPanel .meterDialProgress{")&&css.includes("drop-shadow(0 0 10px #0ee96a)"));
+ok("Battery level rail has luminous green filling",css.includes(".meterBatteryPanel .meterLevelFill{")&&css.includes("#48ff8d"));
+ok("Charging connection segments light neon green",css.includes(".meterConnectionPanel[data-power=\"charging\"] .meterCobSegment")&&css.includes("#47ff8c"));
+ok("Power disconnected is muted and neutral",css.includes(".meterConnectionPanel .meterCobSegment{")&&css.includes("#b4c7d1"));
+ok("Confirmed power glow is scoped to power actually connected",css.includes('[data-progress=\"confirmed\"][data-power=\"charging\"] .meterCobSegment'));
+ok("Confirmed state does not keep disconnected lights lit",!css.includes('.meterConnectionPanel[data-progress=\"confirmed\"] .meterCobSegment{'));
+ok("Charged state indicator is steadier green",css.includes('[data-progress=\"confirmed\"] .meterConnectionIndicator.on{')&&css.includes("animation:none;"));
+ok("Controller supplies battery status to styling",app.includes('dataset.progress=current.progressConfirmed?'));
+ok("Reduced-motion choice supported for neon pulse",css.includes("neonPowerChase")&&css.includes("@media(prefers-reduced-motion:reduce)"));
+ok("Overall blue glass untouched",css.includes("linear-gradient(150deg,#fffffff0 0%,#ecf9ffed 39%,#d9f0ffea 100%)"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
