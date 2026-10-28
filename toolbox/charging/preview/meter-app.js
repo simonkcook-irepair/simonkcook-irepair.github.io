@@ -41,6 +41,7 @@ function chooseMode(mode){
  $("activeTestEyebrow").textContent=mode==="wired"?"CHARGING LEAD TEST":"WIRELESS CHARGING TEST";
  $("activeTestDescription").textContent=mode==="wired"?"Connect your charging lead to the bottom of the iPhone. The Safari preview will demonstrate charging recognition.":"Position the iPhone on a compatible wireless charging pad. Safari cannot verify the charging method, so the selection is customer-declared.";
  $("completeMethod").textContent=mode==="wired"?"Finish Lead Test →":"Finish Wireless Test →";
+ $("skipWirelessInTest").hidden=mode!=="wireless";
  show("instrument");update();
 }
 function completeMethod(){
@@ -209,7 +210,7 @@ function addRow(label,value){
  row.append(key,val);$("reportRows").append(row);
 }
 function renderReport(){
- if(activeMode==="wired"||activeMode==="wireless")methodSessions[activeMode]=current;
+ if((activeMode==="wired"||activeMode==="wireless")&&!(activeMode==="wireless"&&wirelessSkipped))methodSessions[activeMode]=current;
  const summary=engine.summary(current);
  const name=catalogue.getModel($("phoneModel").value)?.name||"iPhone not selected";
  $("reportRows").replaceChildren();
@@ -275,6 +276,7 @@ $("chooseWireless").addEventListener("click",()=>chooseMode("wireless"));
 $("skipWireless").addEventListener("click",skipWirelessMethod);
 $("choiceReport").addEventListener("click",renderReport);
 $("completeMethod").addEventListener("click",completeMethod);
+$("skipWirelessInTest").addEventListener("click",skipWirelessMethod);
 $("instrumentBack").addEventListener("click",()=>{methodSessions[activeMode]=current;updateChoice();show("chooseCharge")});
 $("simConnect").addEventListener("click",()=>transition("power",{powerState:"charging"}));
 $("simIncrease").addEventListener("click",()=>{if(current.powerState==="charging"&&current.currentPercent<100)transition("level",{percent:current.currentPercent+1})});
