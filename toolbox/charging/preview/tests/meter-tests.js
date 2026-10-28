@@ -81,4 +81,17 @@ ok("Charged state indicator is steadier green",css.includes('[data-progress=\"co
 ok("Controller supplies battery status to styling",app.includes('dataset.progress=current.progressConfirmed?'));
 ok("Reduced-motion choice supported for neon pulse",css.includes("neonPowerChase")&&css.includes("@media(prefers-reduced-motion:reduce)"));
 ok("Overall blue glass untouched",css.includes("linear-gradient(150deg,#fffffff0 0%,#ecf9ffed 39%,#d9f0ffea 100%)"));
+
+ok("COB lamps receive hue stops from zero to green",app.includes('String(Math.round(i*126/23))'));
+ok("COB has 24 sequenced lights",app.includes('for(let i=0;i<24;i++)'));
+ok("New power animation is a slow sequential spectrum reveal",css.includes("miSpectrumIgnite .33s")&&css.includes("animation-delay:calc(var(--index) * .235s)"));
+ok("Spectrum changes smoothly from red through yellow to green",css.includes("hsl(var(--lamp-hue) 100% 56%)")&&css.includes("hsl(calc(var(--lamp-hue) + 5.5) 100% 53%)"));
+ok("COB has travelling bright leading edge",css.includes("@keyframes miSpectrumTravel")&&css.includes("5.75s linear both"));
+ok("Charging spectrum remains fully illuminated after sweep",css.includes("100%{opacity:1;transform:scaleY(1);filter:brightness(1)}"));
+ok("Charging bar is not merely green pulse",css.includes("animation:none;\n background:linear-gradient(180deg,#e1edf3")&&css.includes("miSpectrumIgnite"));
+ok("Disconnected segment fill explicitly resets",css.includes(':not([data-power="charging"]):not([data-power="full"]) .meterCobSegment::before'));
+ok("Reduced-motion shows immediately completed spectrum",css.includes("animation:none!important;opacity:1!important;transform:none!important"));
+ok("Accessibility clarifies gradient is visual not electrical measurement",app.includes("Decorative red-to-green charging connection sweep")&&app.includes("not measured as amps or watts"));
+ok("Battery percentage dial remains vivid green",css.includes(".meterBatteryPanel .meterDialNumber{")&&html.includes('stop-color="#12e56b"'));
+ok("Revised assets have cache busting",html.includes("charge-review-5-spectrum"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
