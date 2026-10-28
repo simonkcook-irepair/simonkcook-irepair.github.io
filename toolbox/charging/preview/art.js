@@ -1,94 +1,61 @@
-/* Charging v4: test-stage illustrations are built from the EXACT approved
-   Charging landing-page iPhone HTML, not a separate cartoon drawing.
-   Static instructional visuals only — never a simulated hardware measurement. */
+/* Charging Diagnostics v4 — premium Toolbox handset reused from the approved landing artwork.
+   No separate cartoon phone. All scenes are illustrative, not hardware readouts. */
 (function(root){"use strict";
-const stages=["safety","wired","stability","flip","swap","port","wireless","behaviour"];
-const labels={
- safety:"Safety inspection: iPhone and unplugged charging lead",
- wired:"Wired charging: cable gently approaching iPhone charging port",
- stability:"Connection stability: connected cable at natural rest",
- flip:"Turn an unplugged connector 180 degrees to try its other face",
- swap:"Try a replacement lead: put the old cable aside",
- port:"Inspect a charging port and both faces of a disconnected connector",
- wireless:"iPhone resting on a wireless charging pad",
- behaviour:"Charging limits and battery settings on iPhone"
-};
-function escape(s){return String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-function approvedPhone(){
- let markup="";
- // Directly reuse, including side buttons, metal frame, Dynamic Island,
- // exact approved battery artwork and screen shine.
- if(typeof document!=="undefined"&&typeof document.querySelector==="function"){
-  const home=document.querySelector("#home .chargingHero .phoneArt");
-  if(home&&home.outerHTML){
-   markup=home.outerHTML;
-   // The home and test panels coexist: namespace cloned SVG gradient IDs
-   // so Safari always resolves the stage artwork's own gradients.
-   for(const id of ["chargeOuter","chargeFill","chargeBloom","chargeDiffuse"]){
-    markup=markup.replaceAll('id="'+id+'"','id="'+id+'Stage"')
-                 .replaceAll('url(#'+id+')','url(#'+id+'Stage)');
-   }
-  }
- }
- // Offline test-only fallback; real Safari always clones the approved hero.
- if(!markup)markup='<div class="phoneArt" aria-hidden="true"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><span class="dynamicIsland"></span><div class="chargingHeroSvg chargingHeroV3"></div><div class="screenGlow"></div><div class="screenGlow2"></div></div></div>';
- return '<div class="chargeApprovedDevice">'+markup+'</div>';
+const arrow='<svg class="svArrow" viewBox="0 0 100 70" aria-hidden="true"><path d="M16 48C18 10 78 5 83 45" fill="none" stroke="#158fd0" stroke-width="4.5" stroke-linecap="round"/><path d="m72 37 12 10 10-12" fill="none" stroke="#158fd0" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+function phone(which){
+ const contents=which==="settings"?
+ '<div class="svSettings"><div class="svSettingsTitle">Battery</div><div class="svSettingsBar"><span></span></div><div class="svSettingsLine"></div><div class="svSettingsLine short"></div><div class="svSettingsLimit">Charge limit</div></div>':
+ '<div class="svChargeBattery"><div class="svBatteryFill"></div><div class="svBolt">ϟ</div></div>';
+ return '<div class="svPhone" aria-hidden="true"><div class="phoneArt"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><span class="dynamicIsland"></span>'+contents+'<div class="screenGlow"></div><div class="screenGlow2"></div></div></div></div>';
 }
 function cable(kind,extra=""){
  const type=kind==="USB-C"?"usb":"lightning";
- const contacts=Array.from({length:8},()=>'<i></i>').join("");
- return '<div class="realLead '+type+' '+extra+'" aria-hidden="true">'+
- '<div class="realLeadCord"></div><div class="realLeadCollar"></div>'+
- '<div class="realLeadGrip"><div class="realLeadSeam"></div></div>'+
- '<div class="realLeadMetal"><div class="realLeadSlot"></div>'+
- '<div class="realLeadContacts">'+contacts+'</div>'+
- '</div></div>';
+ return '<div class="svCable '+extra+'" aria-hidden="true"><div class="svCableTail"></div><div class="svCableBody"><div class="svCableSeam"></div></div><div class="svMetal '+type+'"><div class="svContact '+type+'"></div></div></div>';
 }
-function port(kind){
- const type=kind==="USB-C"?"usb":"lightning";
- return '<div class="macroPhoneEdge '+type+'" aria-hidden="true">'+
- '<span class="macroEdgeRim"></span><span class="macroSoundGrille left"></span>'+
- '<span class="macroConnectorPort"><i></i></span><span class="macroSoundGrille right"></span>'+
- '</div>';
-}
-function pad(){
- return '<div class="chargeWirelessPad"><div class="chargePadTop"></div><div class="chargePadLight"></div></div>';
-}
-function stageContent(stage,kind){
- switch(stage){
- case "safety":return approvedPhone()+cable(kind,"safetyCable")+
-  '<span class="chargeVisualLabel one">PHONE</span><span class="chargeVisualLabel two">CHECK THE LEAD</span>';
- case "wired":return approvedPhone()+cable(kind,"connectCable")+
-  '<span class="chargeStageIndication" aria-hidden="true"></span>';
- case "stability":return approvedPhone()+cable(kind,"restingCable")+
-  '<span class="chargeVisualLabel one">SHOULD STAY CONNECTED</span>';
- case "flip":return '<div class="realFlipPresentation">'+cable(kind,"flipCable")+
-   '<div class="flipArc" aria-hidden="true"></div>'+
-   '<span class="chargeVisualLabel flipTitle">TURN 180°</span>'+
-   '<span class="chargeVisualLabel flipCaption">DISCONNECT FIRST</span></div>';
- case "swap":return '<div class="oldCableGroup">'+cable(kind,"oldCable")+
-   '<div class="realWasteBin"><span></span></div>'+
-   '<span class="chargeVisualLabel oldCaption">SET OLD LEAD ASIDE</span></div>'+
-   '<div class="newCableGroup">'+cable(kind,"newCable")+
-   '<span class="chargeVisualLabel newCaption">TRY ANOTHER</span></div>';
- case "port":return '<div class="portInspection">'+port(kind)+
-   '<div class="portMagnifier" aria-hidden="true">'+port(kind)+'</div>'+
-   '<span class="chargeVisualLabel portCaption">INSPECT THE PORT</span>'+
-   '<div class="inspectionCable">'+cable(kind,"macroCable")+'</div>'+
-   '<span class="chargeVisualLabel contactsCaption">CHECK BOTH PLUG FACES</span></div>';
- case "wireless":return pad()+approvedPhone();
- case "behaviour":return approvedPhone()+'<div class="chargeSettingGlass">'+
-   '<span>BATTERY</span><strong>Charging limit</strong>'+
-   '<div class="settingsProgress"><i></i></div><small>Review charging settings</small>'+
-   '</div>';
- default:return approvedPhone();
- }
+function label(content,extra=""){return '<span class="svCaption '+extra+'">'+content+'</span>';}
+function frame(stage,content,description){
+ return '<div class="svVisual sv-'+stage+'" role="img" aria-label="'+description+'">'+content+'</div>';
 }
 function render(stage,kind){
- const id=stages.includes(stage)?stage:"safety";
  const type=kind==="USB-C"?"USB-C":"Lightning";
- return '<div class="chargeStagePhoto photo-'+id+'" data-connector="'+escape(type)+'" role="img" aria-label="'+escape(labels[id])+'">'+
- stageContent(id,type)+'</div>';
+ const p=phone(stage==="behaviour"?"settings":"charge");
+ let inside;
+ switch(stage){
+ case "safety":
+  inside=p+cable(type,"svCableSide")+label("Check the unplugged cable and phone","svNote");break;
+ case "wired":
+  inside=p+cable(type,"svCablePlugIn")+label("Connect gently","svNote");break;
+ case "stability":
+  inside=p+cable(type,"svCableStable")+label("Does it need a particular angle?","svQuestion");break;
+ case "flip":
+  inside='<div class="svFlipFocus"><div class="svFlipAura"></div>'+cable(type,"svCableFlip")+'</div>'+
+   arrow+label("180°","svDegrees")+label("Unplug · turn · reconnect","svInstruction");break;
+ case "swap":
+  inside='<div class="svBin"><span class="svBinLid"></span><span class="svBinBase"></span></div>'+
+   cable(type,"svCableOld")+cable(type,"svCableNew")+
+   label("Try a known-good replacement cable","svInstruction");break;
+ case "port":
+  inside='<div class="svEdge"><span class="svEdgePort '+(type==="USB-C"?"usb":"lightning")+'"></span><i class="svSpeaker a"></i><i class="svSpeaker b"></i></div>'+
+  '<div class="svLens"><span class="svLensPort '+(type==="USB-C"?"usb":"lightning")+'"></span><span class="svLensContact"></span></div>'+
+  cable(type,"svCableInspect")+label("Inspect the port and BOTH faces of the plug","svInstruction");break;
+ case "wireless":
+  inside='<div class="svPad"><div class="svPadRing"></div><div class="svPadLight"></div></div>'+
+  p+label("Use a compatible charging pad","svInstruction");break;
+ case "behaviour":
+  inside=p+label("Review Battery settings and charge limits","svInstruction");break;
+ default:inside=p;
+ }
+ const descriptions={
+ safety:"Inspect a realistic iPhone and disconnected charging cable for damage",
+ wired:"Connect a charging lead gently to a premium iPhone",
+ stability:"Observe whether the charging cable must be held at a particular angle; do not deliberately wiggle it",
+ flip:"One reversible cable connector turns 180 degrees while disconnected",
+ swap:"Replace the old charging lead with a known-good cable",
+ port:"A realistic phone charging port magnified to inspect connector contacts",
+ wireless:"A premium iPhone above a wireless charging pad",
+ behaviour:"iPhone showing its battery settings and charging limits"
+ };
+ return frame(stage,inside,descriptions[stage]||"iPhone charging test");
 }
-root.IRepairChargingArt=Object.freeze({render,stages:Object.freeze(stages)});
+root.IRepairChargingArt=Object.freeze({render});
 })(window);
