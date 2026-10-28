@@ -1630,3 +1630,337 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  #home .chargingHero .chargeBoltV3,
  .chargeTest .chargeSceneSvg.v3 .caWirelessGlow {animation:none!important}
 }
+
+
+/* Charging v4 visual system — strict derivative of the approved landing artwork.
+   SAME metallic #phoneArt shell, same Dynamic Island, same central glowing battery
+   and diagonal screen shine. NO separate cartoon iPhone drawings. */
+.chargeTest .chargeGuideArtV2 {
+ position:relative;display:block;height:224px;min-height:224px;
+ margin:4px 0 8px;padding:0;overflow:hidden;border-radius:23px;
+ background:radial-gradient(ellipse at 45% 48%,#ffffffea,transparent 65%),
+ linear-gradient(150deg,#fff,#e4f4ff 65%,#d1eaff);
+ box-shadow:inset 0 2px 2px white,0 6px 16px #277fac21;
+}
+.chargeTest .chargeStagePhoto {
+ position:absolute;inset:0;width:100%;height:100%;
+ isolation:isolate;overflow:hidden;
+ font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+ color:#28698f;
+}
+.chargeTest .chargeStagePhoto::before {
+ content:"";position:absolute;inset:7% 12%;border-radius:50%;
+ background:radial-gradient(ellipse,#7edaff42,transparent 70%);
+ filter:blur(7px);z-index:0;pointer-events:none;
+}
+.chargeStagePhoto .chargeApprovedDevice {
+ position:absolute;inset:0;z-index:3;pointer-events:none;
+}
+.chargeStagePhoto .chargeApprovedDevice .phoneArt {
+ position:absolute!important;left:49%;top:50%;
+ width:258px!important;max-width:none!important;height:auto!important;
+ transform:translate(-50%,-50%) scale(.32)!important;
+ transform-origin:center center!important;
+ animation:none!important;z-index:3;
+}
+.chargeStagePhoto .phoneScreen {
+ position:absolute!important;overflow:hidden!important;isolation:isolate;
+ background:radial-gradient(ellipse at 50% 40%,#80faff7b,transparent 49%),
+ radial-gradient(circle at 30% 12%,#dfffffc7,transparent 32%),
+ linear-gradient(155deg,#70c9f4,#3296d6 32%,#1669b1 68%,#0c3a84);
+ box-shadow:inset 0 0 38px #0d4c9f64,inset 0 2px 4px #ebffff6f;
+}
+.chargeStagePhoto .chargingHeroSvg {
+ position:absolute;inset:0;width:100%;height:100%;z-index:3;
+ filter:drop-shadow(0 0 9px #79fff38c);pointer-events:none;
+}
+.chargeStagePhoto .dynamicIsland {z-index:8;}
+.chargeStagePhoto .screenGlow,.chargeStagePhoto .screenGlow2 {
+ position:absolute;mix-blend-mode:screen;pointer-events:none;
+ z-index:6;
+}
+.chargeStagePhoto .screenGlow2 {z-index:7}
+.chargeStagePhoto .chargeLevelV3 {
+ animation:chargingV3Breathe 4.3s ease-in-out infinite;
+}
+.chargeStagePhoto .chargeBoltV3 {
+ animation:chargingV3Bolt 4.3s ease-in-out infinite;
+}
+.chargeStagePhoto .realLead {
+ --lead-scale:1;
+ position:absolute;z-index:5;width:64px;height:168px;
+ left:70%;top:51%;
+ transform:translate(-50%,-50%) scale(var(--lead-scale));
+ transform-origin:center 45%;
+ filter:drop-shadow(0 8px 8px #37698e52);
+ pointer-events:none;
+}
+.chargeStagePhoto .realLeadCord {
+ position:absolute;left:calc(50% - 5px);top:101px;width:10px;height:90px;
+ border-radius:6px;
+ background:linear-gradient(90deg,#789bb2,#f8ffff 33%,#c9dfed 58%,#638ea6 98%);
+ box-shadow:inset -1px 0 2px #45728d73;
+}
+.chargeStagePhoto .realLeadCollar {
+ position:absolute;z-index:4;left:calc(50% - 16px);top:88px;width:32px;height:20px;
+ border-radius:6px 6px 11px 11px;border:1px solid #d2eefc;
+ background:linear-gradient(90deg,#b1cedf,#fff 23%,#e8f9ff 57%,#91b4cb);
+}
+.chargeStagePhoto .realLeadGrip {
+ position:absolute;z-index:5;left:calc(50% - 24px);top:47px;width:48px;height:48px;
+ border-radius:10px 10px 12px 12px;border:1.5px solid #edfaff;
+ background:linear-gradient(100deg,#a7c2d3 0%,#effbff 13%,#fff 29%,#d4eaf8 62%,#8eafc7 100%);
+ box-shadow:inset 0 2px 2px #ffffffc9,0 2px 5px #266a9f31;
+}
+.chargeStagePhoto .realLeadSeam {
+ position:absolute;left:4px;right:4px;top:9px;height:1px;background:#c4d5e15e;
+}
+.chargeStagePhoto .realLeadMetal {
+ position:absolute;z-index:6;left:calc(50% - 18px);top:3px;
+ width:36px;height:51px;border-radius:5px;
+ border:2px solid #f3ffff;
+ background:linear-gradient(90deg,#658dab,#edf9ff 12%,#fcffff 35%,#aec6d9 74%,#5d8199 98%);
+ box-shadow:inset -2px 0 3px #42678250,0 0 0 1px #6b98b467,0 2px 4px #40749832;
+}
+.chargeStagePhoto .realLeadContacts {
+ position:absolute;left:3px;right:3px;top:7px;display:grid;
+ grid-template-columns:repeat(8,1fr);gap:1.7px;
+ height:17px;
+}
+.chargeStagePhoto .realLeadContacts i{
+ background:linear-gradient(100deg,#8d6c38,#eccb88 53%,#8d683c);
+ border-radius:1px;box-shadow:0 0 1px #4a392a5c;
+}
+.chargeStagePhoto .realLeadSlot {display:none}
+.chargeStagePhoto .realLead.usb .realLeadMetal {
+ width:44px;height:31px;left:calc(50% - 22px);top:21px;
+ border-radius:15px;border:3px solid #e3f7ff;
+ background:linear-gradient(120deg,#a9c7db,#fff,#789dbb);
+}
+.chargeStagePhoto .realLead.usb .realLeadSlot {
+ display:block;position:absolute;inset:7px 6px 7px;
+ border-radius:9px;background:#12344d;
+ border:1.5px solid #78a6c2;
+}
+.chargeStagePhoto .realLead.usb .realLeadContacts {display:none}
+.chargeStagePhoto .chargeVisualLabel {
+ position:absolute;z-index:7;font-size:9px;
+ letter-spacing:1px;font-weight:900;line-height:1.25;
+ color:#236691;text-align:center;white-space:nowrap;
+ text-shadow:0 1px white;
+}
+.chargeStagePhoto.photo-safety .chargeApprovedDevice .phoneArt {
+ left:34%!important;transform:translate(-50%,-50%) scale(.32)!important;
+}
+.chargeStagePhoto.photo-safety .safetyCable {
+ left:72%;top:50%;--lead-scale:.91;
+}
+.chargeStagePhoto.photo-safety .chargeVisualLabel.one {left:23%;top:89%;}
+.chargeStagePhoto.photo-safety .chargeVisualLabel.two {right:7%;top:89%;}
+.chargeStagePhoto.photo-wired .chargeApprovedDevice .phoneArt,
+.chargeStagePhoto.photo-stability .chargeApprovedDevice .phoneArt {
+ left:50%;top:40%;transform:translate(-50%,-50%) scale(.275)!important;
+}
+.chargeStagePhoto.photo-wired .connectCable,
+.chargeStagePhoto.photo-stability .restingCable {
+ left:50%;top:89%;--lead-scale:.77;
+ animation:chargingApproach 3.8s ease-in-out infinite;
+}
+.chargeStagePhoto.photo-stability .restingCable {
+ animation:none;top:87%;
+}
+.chargeStagePhoto .chargeStageIndication {
+ position:absolute;z-index:8;top:39%;right:15%;
+ width:11px;height:11px;border-radius:50%;
+ background:#e6fff9;box-shadow:0 0 0 5px #c0ffff9e,0 0 19px 10px #54dfff85;
+ animation:chargingIndicator 3.3s ease-in-out infinite;
+}
+.chargeStagePhoto.photo-stability .chargeVisualLabel.one {
+ right:5%;top:43%;white-space:normal;max-width:96px;text-align:left;
+}
+.chargeStagePhoto.photo-flip .realFlipPresentation {
+ position:absolute;inset:0;isolation:isolate;
+}
+.chargeStagePhoto.photo-flip .flipCable {
+ left:50%;top:52%;--lead-scale:1.28;
+ animation:chargingTurnOver 6.2s ease-in-out infinite;
+ backface-visibility:visible;transform-style:preserve-3d;
+}
+.chargeStagePhoto.photo-flip .flipArc {
+ position:absolute;z-index:6;left:calc(50% - 90px);top:21px;
+ width:180px;height:85px;border-radius:52% 52% 0 0;
+ border:3px solid #168bd0;border-bottom:0;
+ box-shadow:0 -1px 3px #e9ffffb3;
+}
+.chargeStagePhoto.photo-flip .flipArc::after {
+ content:"";position:absolute;right:-8px;bottom:-2px;
+ width:0;height:0;border-top:10px solid #168bd0;
+ border-left:7px solid transparent;border-right:7px solid transparent;
+ transform:rotate(-19deg);
+}
+.chargeStagePhoto.photo-flip .flipTitle {
+ left:50%;top:8%;transform:translateX(-50%);font-size:15px;letter-spacing:.5px;
+}
+.chargeStagePhoto.photo-flip .flipCaption {
+ left:50%;bottom:5%;transform:translateX(-50%);
+}
+.chargeStagePhoto.photo-swap .oldCableGroup,
+.chargeStagePhoto.photo-swap .newCableGroup {
+ position:absolute;top:0;bottom:0;width:50%;z-index:3;
+}
+.chargeStagePhoto.photo-swap .oldCableGroup{left:0}
+.chargeStagePhoto.photo-swap .newCableGroup{right:0}
+.chargeStagePhoto.photo-swap .oldCable,.chargeStagePhoto.photo-swap .newCable {
+ left:50%;top:46%;--lead-scale:.76;
+}
+.chargeStagePhoto.photo-swap .oldCable{transform:translate(-50%,-50%) rotate(-22deg) scale(.76);opacity:.67}
+.chargeStagePhoto.photo-swap .newCable{transform:translate(-50%,-50%) rotate(8deg) scale(.85)}
+.chargeStagePhoto.photo-swap .realWasteBin {
+ position:absolute;z-index:2;left:calc(50% - 40px);bottom:7%;width:80px;height:48px;
+ border:1px solid #c4dbe9;border-radius:5px 5px 15px 15px;
+ background:linear-gradient(100deg,#b0cbdc,#eaf9ff 35%,#a2c4d5);
+ box-shadow:0 5px 8px #337ea623;
+}
+.chargeStagePhoto.photo-swap .realWasteBin::before {
+ content:"";position:absolute;top:-4px;left:-5px;right:-5px;height:9px;
+ background:linear-gradient(#eefaff,#8fb0c5);
+ border:1px solid #d1eaf5;border-radius:10px;
+}
+.chargeStagePhoto.photo-swap .realWasteBin span {
+ position:absolute;left:23px;top:8px;height:29px;width:3px;
+ box-shadow:15px 0 #7dacc466,30px 0 #7dacc466;background:#7dacc466;
+}
+.chargeStagePhoto.photo-swap .oldCaption,
+.chargeStagePhoto.photo-swap .newCaption {
+ bottom:4%;left:50%;transform:translateX(-50%);white-space:normal;width:124px;
+}
+.chargeStagePhoto.photo-swap .oldCaption{bottom:1%}
+.chargeStagePhoto.photo-port .portInspection {position:absolute;inset:0;}
+.chargeStagePhoto .macroPhoneEdge {
+ position:absolute;z-index:2;left:50%;top:23%;transform:translateX(-50%);
+ width:76%;max-width:235px;height:75px;border-radius:25px 25px 18px 18px;
+ background:linear-gradient(150deg,#f4ffff,#9ebdd0 20%,#385e7a 60%,#233c56 81%,#a3c6dc);
+ border:2px solid #e9f8ff;
+ box-shadow:0 10px 15px #37617b4d,inset 0 3px 2px #f8ffff9c;
+}
+.chargeStagePhoto .macroEdgeRim{
+ position:absolute;top:4px;left:7px;right:7px;height:4px;
+ background:#edffff9e;border-radius:9px;
+}
+.chargeStagePhoto .macroConnectorPort {
+ position:absolute;left:50%;bottom:17px;transform:translateX(-50%);
+ width:55px;height:18px;border:2px solid #a7c9dc;border-radius:10px;
+ background:#072c4b;box-shadow:inset 0 2px 3px #03152d;
+}
+.chargeStagePhoto .macroConnectorPort i{
+ position:absolute;left:8px;right:8px;top:6px;height:3px;
+ background:#527e99;border-radius:3px;
+}
+.chargeStagePhoto .macroPhoneEdge.lightning .macroConnectorPort {
+ width:48px;height:13px;border-radius:6px;
+}
+.chargeStagePhoto .macroSoundGrille{
+ position:absolute;bottom:22px;width:52px;height:5px;
+ background:radial-gradient(circle,#092d4c 2px,transparent 2.7px) 0 0/10px 5px repeat-x;
+}
+.chargeStagePhoto .macroSoundGrille.left{left:18px}
+.chargeStagePhoto .macroSoundGrille.right{right:18px}
+.chargeStagePhoto .portMagnifier {
+ position:absolute;z-index:5;right:7%;top:26%;width:90px;height:90px;
+ overflow:hidden;border-radius:50%;border:5px solid #fff;
+ background:linear-gradient(145deg,#edfaff,#c4e2f4);
+ box-shadow:0 0 0 1px #6db8d5,0 7px 17px #1c639a5c;
+}
+.chargeStagePhoto .portMagnifier .macroPhoneEdge{
+ top:20px;left:50%;max-width:none;width:225px;
+ transform:translateX(-50%) scale(1.45);
+ transform-origin:center center;
+}
+.chargeStagePhoto .portMagnifier::after{
+ content:"";position:absolute;right:-4px;bottom:-4px;width:20px;height:5px;
+ transform:rotate(45deg);background:#9ab8c9;border-radius:5px;
+}
+.chargeStagePhoto.photo-port .portCaption{
+ left:18%;top:5%;transform:translateX(-15%);
+}
+.chargeStagePhoto.photo-port .inspectionCable{
+ position:absolute;z-index:6;left:33%;top:48%;
+ transform:rotate(-50deg);
+}
+.chargeStagePhoto.photo-port .macroCable{
+ left:50%;top:55%;--lead-scale:.76;
+}
+.chargeStagePhoto.photo-port .contactsCaption{
+ right:4%;bottom:4%;
+}
+.chargeStagePhoto.photo-wireless .chargeApprovedDevice .phoneArt {
+ left:50%;top:38%;
+ transform:translate(-50%,-50%) scale(.27) rotate(-7deg)!important;
+}
+.chargeStagePhoto .chargeWirelessPad{
+ position:absolute;z-index:2;left:50%;top:72%;transform:translate(-50%,-50%);
+ width:190px;height:65px;border-radius:50%;
+ background:linear-gradient(145deg,#d5f3ff,#7eacc8 50%,#284f72);
+ border:3px solid #e4ffff;box-shadow:0 10px 18px #265f864d;
+}
+.chargeStagePhoto .chargePadTop {
+ position:absolute;inset:3px;border-radius:50%;
+ border:2px solid #a8d4e4;background:linear-gradient(145deg,#f2ffff,#9bd5e9);
+}
+.chargeStagePhoto .chargePadLight{
+ position:absolute;inset:-8px;border-radius:50%;
+ box-shadow:0 0 16px #6befff9e;animation:chargingIndicator 3.5s ease-in-out infinite;
+}
+.chargeStagePhoto.photo-behaviour .chargeApprovedDevice .phoneArt {
+ left:33%;transform:translate(-50%,-50%) scale(.30)!important;
+}
+.chargeStagePhoto .chargeSettingGlass{
+ position:absolute;z-index:5;right:5%;top:24%;
+ width:46%;padding:11px 8px;border-radius:15px;
+ border:1px solid #f8ffff;background:linear-gradient(145deg,#fffc,#d8eefff3);
+ box-shadow:0 8px 21px #1b76af33, inset 0 1px 2px #fff;
+ font-size:11px;color:#225c7f;display:flex;flex-direction:column;gap:8px;
+}
+.chargeStagePhoto .chargeSettingGlass span {
+ font-size:9px;letter-spacing:1px;font-weight:900;color:#3288af;
+}
+.chargeStagePhoto .chargeSettingGlass strong{
+ font-size:12px;line-height:1.2;
+}
+.chargeStagePhoto .chargeSettingGlass small{
+ line-height:1.3;font-size:10px;color:#517991;
+}
+.chargeStagePhoto .settingsProgress{
+ height:14px;background:#b3d9ee;border-radius:8px;overflow:hidden;
+}
+.chargeStagePhoto .settingsProgress i{
+ display:block;width:80%;height:100%;background:linear-gradient(90deg,#0ab0bc,#91fbe1);
+ border-radius:8px;
+}
+@keyframes chargingApproach{
+ 0%,20%,100%{transform:translate(-50%,-50%) translateY(10px) scale(.77)}
+ 55%,75%{transform:translate(-50%,-50%) translateY(-3px) scale(.77)}
+}
+@keyframes chargingTurnOver{
+ 0%,15%{transform:translate(-50%,-50%) scale(1.28) rotateY(0deg)}
+ 45%,70%{transform:translate(-50%,-50%) scale(1.28) rotateY(180deg)}
+ 90%,100%{transform:translate(-50%,-50%) scale(1.28) rotateY(360deg)}
+}
+@keyframes chargingIndicator{
+ 0%,100%{opacity:.38}
+ 50%{opacity:1}
+}
+@media(max-width:355px){
+ .chargeTest .chargeGuideArtV2{height:202px;min-height:202px}
+ .chargeStagePhoto .chargeVisualLabel{font-size:8px}
+ .chargeStagePhoto.photo-port .portMagnifier{right:3%;width:78px;height:78px}
+}
+@media(min-width:620px){
+ .chargeTest .chargeGuideArtV2{height:235px;min-height:235px}
+}
+@media(prefers-reduced-motion:reduce){
+ .chargeStagePhoto .chargeLevelV3,.chargeStagePhoto .chargeBoltV3,
+ .chargeStagePhoto .connectCable,.chargeStagePhoto .flipCable,
+ .chargeStagePhoto .chargePadLight,.chargeStagePhoto .chargeStageIndication{
+ animation:none!important}
+}
