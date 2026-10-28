@@ -1,0 +1,264 @@
+/*
+ * iRepair Charging Diagnostics v8 — precision hardware docking treatments.
+ * Visual-only refinement of the two v7 instruction cards.
+ * No charging data, test controller, report, or approved meter is changed.
+ * The existing .phoneArt is still the handset source of truth.
+ */
+.chargeChoiceArt{perspective:600px;transform-style:preserve-3d}
+.cableArt,.wirelessArt{
+ background:
+ radial-gradient(ellipse at 50% 85%,#6eadd06b 0%,transparent 43%),
+ radial-gradient(ellipse at 40% 18%,#fff 0%,#e5f7ff 34%,#b4dcf1 100%);
+}
+.choiceStageAura{opacity:.46;filter:blur(18px);background:radial-gradient(ellipse,#9cefff70,transparent 69%)}
+/* The original handset artwork remains in place; finer metal bevels and subtle
+   lock-screen treatments make these phone instructions read as actual devices. */
+.choicePhone .choicePhoneArt{
+ border:1px solid #f2ffffc7!important;
+ background:linear-gradient(104deg,#effaff 0%,#7eabbe 2.5%,#24465e 5%,#0d2336 10%,#233f56 86%,#a9c5d3 97%,#e2f8ff 100%)!important;
+ box-shadow:0 14px 22px #143c6280,0 0 0 1px #214964,inset 2px 0 2px #d9fcff8c,inset -2px 0 2px #c5e6ff72!important;
+}
+.choicePhone .choicePhoneArt::before{
+ border-radius:inherit;background:linear-gradient(110deg,#ffffffbd 0%,#ffffff09 16%,transparent 56%,#73d4ff54 96%);
+ mix-blend-mode:screen;z-index:6;pointer-events:none;
+}
+.choicePhone .phoneScreen{
+ background:
+ radial-gradient(ellipse at 83% 67%,#91ddf8d1 0%,transparent 29%),
+ radial-gradient(ellipse at 16% 19%,#e9ffffd8 0%,transparent 42%),
+ conic-gradient(from 205deg at 50% 58%,#123e83,#3679bb,#8ad2ef,#256cab,#174c8c,#123e83)!important;
+ box-shadow:inset 0 0 8px #0b325c93,inset 0 2px 2px #f4ffffab!important;
+}
+.choicePhone .choiceScreenOrb{top:37%;width:60%;left:20%;opacity:.48;filter:blur(4px)}
+.choicePhone .choiceBolt{display:none}
+/* Actual-looking charge indication in place of the cartoon bolt. */
+.choiceDeviceCharge{
+ position:absolute;z-index:5;left:50%;top:44%;width:27px;height:13px;
+ transform:translate(-50%,-50%);
+ border:1.7px solid #eafff5;border-radius:4px;
+ background:linear-gradient(90deg,#4fe4ad 0%,#96ffd2 76%,#eefef8 84%,#80b5ba 86%,transparent 87%);
+ box-shadow:0 0 13px #63ffd5b3,inset 0 0 3px #ffffffab;
+}
+.choiceDeviceCharge::after{
+ content:"";position:absolute;left:100%;top:3px;width:3px;height:5px;
+ background:#ecfff8;border-radius:0 2px 2px 0;
+}
+.choiceDeviceTime{
+ position:absolute;top:19%;left:0;right:0;z-index:5;
+ text-align:center;color:#e9f9ff;font:500 15px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ letter-spacing:-.7px;text-shadow:0 1px 6px #092b63b0;
+}
+/* MACHINED IPHONE BASE — separate titanium chin, opening and paired grille. */
+.choicePhoneWired{z-index:6;top:6px;animation:none}
+.choicePhoneBase{
+ position:absolute;bottom:-4px;left:7%;right:7%;height:10px;z-index:7;
+ transform:perspective(90px) rotateX(-54deg);
+ border-radius:0 0 12px 12px;
+ background:linear-gradient(180deg,#c2dbe5 0%,#7999a8 26%,#183248 54%,#87afc1 84%,#e7fbff 100%);
+ border:1px solid #b9dcecc4;
+ box-shadow:0 3px 4px #12344c78,0 1px 0 #fff8;
+}
+.choicePhoneWired .choicePhonePort{
+ width:27px;height:9px;bottom:-3px;z-index:10;
+ background:linear-gradient(#8aaab9,#17364c 48%,#9fc3d4 88%,#e1ffff);
+ border:1px solid #cfeaff;border-radius:0 0 6px 6px;
+ box-shadow:inset 0 1px 3px #081c35,0 1px 2px #d3ffffa5;
+}
+.choicePhoneWired .choicePortHole{
+ width:16px;height:5px;border:1px solid #2b526b;border-radius:5px;
+ background:linear-gradient(180deg,#041321,#0b2e45 62%,#284b60);
+ box-shadow:inset 0 1px 2px #000b,inset 0 -1px #91b3ca80;
+}
+.choicePhoneWired .choiceAcousticGrille{
+ position:absolute;z-index:10;bottom:-1px;width:21px;height:6px;opacity:.9;
+ background:radial-gradient(ellipse at center,#092437 0 1.3px,transparent 1.5px) left center/6px 5px repeat-x;
+ filter:drop-shadow(0 1px 1px #d5f5ff92);
+}
+.choicePhoneWired .choiceAcousticGrille.left{left:7px}
+.choicePhoneWired .choiceAcousticGrille.right{right:7px}
+/* The tip is separate from the bevelled nylon housing; the connector extends
+   into the socket, then its top is masked by the overlying phone bottom rim. */
+.choicePlugGroup{
+ top:178px;z-index:4;width:42px;will-change:transform;
+ transform:translateX(-50%) translateY(33px);
+ animation:choiceCableDock 5.6s cubic-bezier(.26,.05,.16,1) infinite!important;
+ filter:drop-shadow(1px 7px 7px #1a46697d);
+}
+@keyframes choiceCableDock{
+ 0%,11%{transform:translateX(-50%) translateY(35px)}
+ 37%,66%{transform:translateX(-50%) translateY(-7px)}
+ 87%,100%{transform:translateX(-50%) translateY(35px)}
+}
+.choicePlugTip{
+ width:15px;height:17px;flex:none;border-radius:4px 4px 2px 2px;
+ border:1px solid #d8edf4;
+ background:linear-gradient(90deg,#3e647c 0%,#a8cfda 12%,#f4ffff 26%,#9ab8c9 49%,#e6faff 67%,#557c90 100%);
+ box-shadow:inset 0 1px #fff,0 0 1px #08354b,0 3px 3px #13304a7d;
+}
+.choicePlugTip span{
+ top:3px;bottom:4px;left:2px;right:2px;
+ background:linear-gradient(90deg,#18394c,#6f9bac 28%,#183a4f 75%,#3d7589);
+ border-radius:3px;border:1px solid #537b88;box-shadow:inset 0 0 1px #fff9;
+}
+.choicePlugCollar{
+ width:22px;height:5px;flex:none;border:1px solid #f2ffff;border-radius:2px 2px 3px 3px;
+ background:linear-gradient(90deg,#8bb4c9,#fff,#a2cce1 70%,#6e9bb7);
+ box-shadow:0 2px 1px #102d4088;
+}
+.choicePlugGrip{
+ position:relative;flex:none;width:29px;height:34px;border-radius:5px 5px 10px 10px;
+ border:1px solid #e6f5ff;
+ background:linear-gradient(91deg,#90aabf 0%,#f5fcff 18%,#fbffff 49%,#d5e5ee 81%,#8ca7bd 100%);
+ box-shadow:inset 0 3px 2px #ffffff,0 4px 9px #0e446a7f;
+}
+.choicePlugGrip::before{
+ content:"";position:absolute;left:4px;right:4px;top:5px;height:2px;
+ border-radius:2px;background:#ffffff;opacity:.7
+}
+.choicePlugGrip::after{
+ content:"";position:absolute;bottom:2px;left:4px;right:4px;height:4px;
+ border-radius:0 0 8px 8px;border-bottom:1px solid #8bafc0;opacity:.75;
+}
+.choiceCableLine{
+ width:10px;height:83px;border:1px solid #cedce5;border-top:0;
+ background:linear-gradient(90deg,#819db1,#eaf6fb 22%,#fff 51%,#b3d3e4 77%,#789bb2);
+ box-shadow:2px 1px 6px #1c466165,inset 0 0 2px #ffffffaa;
+}
+.chargingChoiceScreen[data-port="lightning"] .choicePlugTip{
+ width:12px;height:15px;border-radius:2px 2px 1px 1px;
+ background:linear-gradient(90deg,#7e9aab,#f5fbff 18%,#e7f9ff 60%,#92b5ce 100%);
+}
+.chargingChoiceScreen[data-port="lightning"] .choicePlugTip span{
+ left:2px;right:2px;top:2px;bottom:5px;background:linear-gradient(#c69a53,#efd39a,#aa7d47);
+ border-radius:1px;border:0;
+}
+.chargingChoiceScreen[data-port="lightning"] .choicePhoneWired .choicePortHole{width:15px;height:4px;border-radius:3px}
+.choiceConnectBloom{top:174px;height:19px;width:56px;animation:choiceCableSpark 5.6s ease-in-out infinite}
+.choiceEnergyRay{top:144px;height:45px;animation:choiceCableSpark 5.6s ease-in-out infinite}
+@keyframes choiceCableSpark{
+ 0%,29%,77%,100%{opacity:0}
+ 40%,65%{opacity:1}
+}
+.cableArt::after{
+ content:"";position:absolute;left:50%;bottom:0;width:92px;height:34px;transform:translateX(-50%);
+ background:radial-gradient(ellipse,#2679a53a,transparent 70%);filter:blur(9px);pointer-events:none;
+}
+/* WIRELESS — a handset hovering in foreshortened perspective above a physical
+   charging puck, then descending in depth with stabilisation and a docking pause. */
+.wirelessArt{perspective:480px}
+.choicePhoneWireless{
+ z-index:6;top:auto;bottom:70px;
+ transform:translateX(-50%) translateY(-29px);
+ animation:choiceWirelessDock 7.2s cubic-bezier(.34,.01,.17,1) infinite!important;
+ will-change:transform;
+}
+@keyframes choiceWirelessDock{
+ 0%,10%{transform:translateX(-50%) translateY(-30px) scale(.92);filter:drop-shadow(0 15px 13px #27577e54)}
+ 34%{transform:translateX(-50%) translateY(14px) scale(.97);filter:drop-shadow(0 9px 8px #22587777)}
+ 51%,70%{transform:translateX(-50%) translateY(55px) scale(1);filter:drop-shadow(0 3px 3px #163d67c1)}
+ 88%,100%{transform:translateX(-50%) translateY(-30px) scale(.92);filter:drop-shadow(0 15px 13px #27577e54)}
+}
+.choicePhoneWireless .choicePhoneArt{
+ width:91px!important;
+ transform:perspective(490px) rotateX(67deg) rotateZ(-9deg)!important;
+ transform-origin:50% 97%;backface-visibility:hidden;
+ box-shadow:0 4px 10px #1343699e,0 0 0 1px #f7ffffc2,inset 0 2px 3px #fff8!important;
+}
+.choicePhoneWireless .choicePhoneArt::after{
+ content:"";position:absolute;left:8%;right:8%;bottom:-7px;height:7px;
+ background:linear-gradient(#bfdce6,#173f58);border-radius:2px 2px 7px 7px;
+ box-shadow:0 2px 3px #26587966;filter:none;z-index:5;
+}
+.choiceChargingPad{
+ z-index:4;bottom:12px;width:132px;height:61px;
+ transform:translateX(-50%) perspective(350px) rotateX(56deg);
+ border:3px solid #d7eaf2;border-radius:50%;
+ background:
+ radial-gradient(ellipse at 50% 30%,#d1ecf3 0%,#9fbcca 23%,#3a6079 52%,#14283a 71%,#b3d2e1 91%,#f2ffff 98%);
+ box-shadow:0 15px 8px #1844665a,0 2px 0 #29485f,0 5px 13px #347c976b,inset 0 3px 4px #fbffff;
+}
+.choiceChargingPad::before{
+ content:"";position:absolute;z-index:-1;inset:-1px;border-radius:50%;
+ transform:translateY(8px);background:linear-gradient(90deg,#7f9ba9,#233e52,#a2ced8);
+ border:1px solid #547e93;box-shadow:0 6px 8px #1b415970;
+}
+.choicePadInner{
+ inset:7px;border-radius:50%;border:2px solid #8bc7d4;
+ background:radial-gradient(ellipse at 45% 22%,#6e98a6,#274b62 51%,#10283e 79%,#5f9dba);
+ box-shadow:inset 0 3px 6px #0e2239,inset 0 -2px 5px #b5e0e8a6;
+}
+.choicePadRing{
+ inset:3px;border:2px solid #90e5e0;
+ box-shadow:0 0 4px #7ef8e988,0 0 12px #50e7ec6b;
+ animation:choicePadDockRing 7.2s ease-in-out infinite!important;
+}
+@keyframes choicePadDockRing{
+ 0%,23%,86%,100%{opacity:.2;box-shadow:0 0 3px #62f9ea36}
+ 46%,71%{opacity:1;box-shadow:0 0 12px #e3ffff,0 0 22px #6affea,0 0 35px #57edff}
+}
+.choicePadGlimmer{
+ inset:2px;border-top:3px solid #f6ffffcf;border-left:1px solid #f2ffffaa;
+ filter:blur(.5px);
+}
+.choicePadCable{
+ width:64px;height:7px;left:92%;top:54%;
+ background:linear-gradient(#8bafc2,#e5f4fb 41%,#9eb6c8);
+ box-shadow:0 3px 4px #234a6e77;
+}
+.choiceWirelessBloom{
+ bottom:13px;width:141px;height:83px;z-index:2;
+ background:radial-gradient(ellipse,#b6fff7cf 0%,#4ce3ef67 35%,transparent 70%);
+ animation:choiceWirelessDockGlow 7.2s ease-in-out infinite!important;
+}
+@keyframes choiceWirelessDockGlow{
+ 0%,22%,86%,100%{opacity:.08;transform:translateX(-50%) scale(.65)}
+ 50%,71%{opacity:.87;transform:translateX(-50%) scale(1.15)}
+}
+.choiceDockShadow{
+ position:absolute;left:50%;bottom:20px;z-index:3;width:102px;height:42px;
+ border-radius:50%;transform:translateX(-50%) scale(.57);
+ background:#0e406769;filter:blur(10px);
+ animation:choiceDockShadow 7.2s ease-in-out infinite;
+}
+@keyframes choiceDockShadow{
+ 0%,10%,90%,100%{opacity:.22;transform:translateX(-50%) scale(.5)}
+ 51%,71%{opacity:.9;transform:translateX(-50%) scale(1.04)}
+}
+.choiceDockGuide{
+ position:absolute;left:50%;bottom:37px;z-index:5;
+ width:104px;height:46px;border:1px dashed #c5ffffb2;
+ border-radius:50%;transform:translateX(-50%) perspective(300px) rotateX(55deg);
+ box-shadow:0 0 8px #4ffcff54;
+ opacity:0;animation:choiceGuideFade 7.2s ease-in-out infinite;
+}
+@keyframes choiceGuideFade{0%,18%,78%,100%{opacity:0}30%,47%{opacity:.7}52%,70%{opacity:0}}
+/* Fine tuning on narrow iPhone screens — dock is calculated from bottom so
+   handset/pad alignment remains intact at either screen size. */
+@media(max-width:365px){
+ .choicePlugGroup{top:162px}
+ .choicePhone .choicePhoneArt{width:81px!important}
+ .choicePhoneWireless .choicePhoneArt{width:83px!important}
+ .choicePhoneWireless{bottom:70px}
+ .choicePlugTip{height:15px}
+ .choiceConnectBloom{top:159px}
+ .choicePhoneWired .choiceAcousticGrille{width:16px}
+ .choicePhoneWired .choiceAcousticGrille.left{left:5px}
+ .choicePhoneWired .choiceAcousticGrille.right{right:5px}
+ .choiceChargingPad{width:122px;height:57px}
+}
+@media(min-width:480px){
+ .choicePlugGroup{top:210px}
+ .choiceConnectBloom{top:208px}
+ .choicePhoneWireless{bottom:74px}
+ .choiceChargingPad{width:145px}
+}
+/* The art must remain meaningful for users who reduce motion. */
+@media(prefers-reduced-motion:reduce){
+ .choicePhoneWired,.choicePhoneWireless,.choicePlugGroup,.choicePadRing,
+ .choiceWirelessBloom,.choiceDockShadow,.choiceDockGuide{animation:none!important}
+ .choicePlugGroup{transform:translateX(-50%) translateY(-7px)!important}
+ .choicePhoneWireless{transform:translateX(-50%) translateY(55px)!important}
+ .choicePadRing{opacity:.8!important}
+ .choiceWirelessBloom{opacity:.7!important;transform:translateX(-50%) scale(1)!important}
+ .choiceDockShadow{opacity:.7!important;transform:translateX(-50%) scale(1)!important}
+}
