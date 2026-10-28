@@ -200,9 +200,10 @@ ok("Charging pad image file exists",fs.existsSync(path.join(dir,"assets/wireless
 const precision=fs.readFileSync(path.join(dir,"precision.css"),"utf8");
 ok("Precision docking follows shared photoreal layer",html.indexOf("photoreal.css?v=")<html.indexOf("precision.css?v="));
 ok("Correct v10 build marker",html.includes('charging-glass-review-10-physical-docking'));
-ok("Plug physically inserts behind phone rather than stopping underneath",precision.includes("translateY(-62px)")&&precision.includes(".photoDeviceWired {z-index:6}"));
-ok("Wireless lands with viewport-specific contact travel",precision.includes("--dock-travel:100px")&&precision.includes("--dock-travel:88px")&&precision.includes("--dock-travel:84px"));
+ok("Plug physically inserts behind phone rather than stopping underneath",precision.includes("translateY(var(--plug-depth))")&&precision.includes(".photoDeviceWired {z-index:6}"));
+ok("Wireless lands with viewport-specific contact travel",precision.includes("--dock-travel:123px")&&precision.includes("--dock-travel:108px")&&precision.includes("--plug-depth:-92px"));
 ok("Same phone preserved for both tests", html.split('src="./assets/iphone-identical.webp"').length===3);
+ok("Shared handset is clipped naturally at scene edge",precision.includes(".photoDevice{top:-6px}"));
 ok("Contact animations remain illustrative, no invented readings",!precision.includes("batteryCurrent")&&!precision.includes("chargingWatts"));
 ok("v10 respects reduced motion",precision.includes("@media(prefers-reduced-motion:reduce)"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
