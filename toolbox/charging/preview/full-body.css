@@ -1,0 +1,129 @@
+/*
+ * iRepair Toolbox Charging v11 — narrated-review corrections.
+ * Scope: step-two choice artwork only. No meter, battery-engine, reporting,
+ * model catalogue or approved landing-page changes.
+ * Both cards deliberately reuse the IDENTICAL full-body phone photograph.
+ */
+.chargingChoiceScreen .chargeChoiceArt{
+  height:286px;position:relative;overflow:hidden;isolation:isolate;
+  background:radial-gradient(ellipse at 50% 40%,#fff 0%,#eaf9ff 35%,#d0edfc 84%,#c2e7f9 100%);
+}
+.chargingChoiceScreen .photoDevice{
+  position:absolute!important;top:12px!important;left:50%!important;
+  width:min(92%,140px)!important;max-width:none!important;
+  z-index:7!important;
+  transform:translateX(-50%)!important;
+  filter:drop-shadow(0 9px 7px #24688b51)!important;
+}
+.chargingChoiceScreen .photoHandset{
+  display:block;width:100%;height:auto;object-fit:contain;
+  -webkit-user-drag:none;user-select:none;pointer-events:none;
+}
+.chargingChoiceScreen .photoDeviceWired{
+  animation:none!important;transform:translateX(-50%)!important;
+}
+/* The cable's separate photo includes a long braided tail and the correct
+ * physical connector. It travels straight towards the centre of the port. */
+.chargingChoiceScreen .photoLead{
+  position:absolute!important;z-index:5!important;
+  left:50%!important;top:149px!important;width:40px!important;
+  height:auto!important;max-width:none;transform-origin:top center;
+  animation:fullCableInsert 5.8s cubic-bezier(.31,.04,.18,1) .2s 1 both!important;
+  filter:drop-shadow(0 3px 4px #34678645)!important;
+}
+@keyframes fullCableInsert{
+  0%,10%{transform:translateX(-50%) translateY(13px)}
+  75%,100%{transform:translateX(-50%) translateY(-24px)}
+}
+.chargingChoiceScreen .photoPortHalo{
+  left:50%!important;top:131px!important;width:34px!important;height:13px!important;
+  opacity:0;z-index:4!important;
+  animation:fullPortContact 5.8s ease-in-out .2s 1 forwards!important;
+}
+@keyframes fullPortContact{0%,58%{opacity:0}77%,100%{opacity:.6}}
+/* Older iPhones retain the separately declared Lightning visual.
+ * This is a customer-selected plug illustration, not hardware detection. */
+.chargingChoiceScreen .photoLightningCap{
+  z-index:6!important;top:149px!important;
+  animation:fullCableInsert 5.8s cubic-bezier(.31,.04,.18,1) .2s 1 both!important;
+}
+.chargingChoiceScreen[data-port="lightning"] .photoLead{
+  clip-path:inset(14px 0 0 0);
+}
+/* A genuine-looking pad, WITHOUT the trailing power cable, directly beneath
+ * the identical handset. No side offset, skew, orbit or perspective change. */
+.chargingChoiceScreen .photoPad{
+  position:absolute!important;left:50%!important;
+  bottom:17px!important;width:min(95%,150px)!important;
+  max-width:none!important;height:auto!important;
+  transform:translateX(-50%)!important;z-index:4!important;
+  filter:drop-shadow(0 7px 7px #2b6c9444)!important;
+  animation:none!important;
+}
+.chargingChoiceScreen .photoDeviceWireless{
+  --landing-distance:75px;
+  transform:translateX(-50%) translateY(0)!important;
+  animation:fullPhoneSingleDescent 7.6s cubic-bezier(.41,.04,.13,1) .65s 1 both!important;
+  will-change:transform;
+}
+/* ONE slow, continuous descent and a permanently docked finish.
+ * No upward motion or repeat cycle; revisiting Step 2 replays the landing. */
+@keyframes fullPhoneSingleDescent{
+  from{transform:translateX(-50%) translateY(0)}
+  to{transform:translateX(-50%) translateY(var(--landing-distance))}
+}
+.chargingChoiceScreen .photoWirelessHalo{
+  position:absolute!important;left:50%!important;bottom:34px!important;
+  width:140px!important;height:50px!important;
+  transform:translateX(-50%) scale(.77)!important;z-index:3!important;
+  animation:fullDockLight 7.6s ease-out .65s 1 both!important;
+}
+@keyframes fullDockLight{
+  0%,50%{opacity:.06}
+  100%{opacity:.65}
+}
+.chargingChoiceScreen .photoDockShadow{
+  left:50%!important;bottom:37px!important;width:125px!important;
+  animation:fullDockShadow 7.6s ease-out .65s 1 forwards!important;
+}
+@keyframes fullDockShadow{
+  from{opacity:.1;transform:translateX(-50%) scale(.6)}
+  to{opacity:.32;transform:translateX(-50%) scale(1)}
+}
+/* The photographic handset and pad are equally centred in each card. */
+@media(max-width:365px){
+ .chargingChoiceScreen .chargeChoiceArt{height:263px}
+ .chargingChoiceScreen .photoDevice{width:min(92%,116px)!important;top:12px!important}
+ .chargingChoiceScreen .photoPad{width:min(94%,125px)!important;bottom:15px!important}
+ .chargingChoiceScreen .photoDeviceWireless{--landing-distance:83px}
+ .chargingChoiceScreen .photoLead{top:124px!important;width:37px!important}
+ .chargingChoiceScreen .photoLightningCap{top:124px!important}
+ .chargingChoiceScreen .photoPortHalo{top:113px!important}
+}
+@media(min-width:480px){
+ .chargingChoiceScreen .chargeChoiceArt{height:322px}
+ .chargingChoiceScreen .photoDevice{width:min(90%,161px)!important;top:11px!important}
+ .chargingChoiceScreen .photoPad{width:min(93%,174px)!important;bottom:21px!important}
+ .chargingChoiceScreen .photoDeviceWireless{--landing-distance:73px}
+ .chargingChoiceScreen .photoLead{top:173px!important;width:46px!important}
+ .chargingChoiceScreen .photoLightningCap{top:173px!important}
+ .chargingChoiceScreen .photoPortHalo{top:155px!important}
+}
+/* Respect accessibility preferences without falsely showing an animation. */
+@media(prefers-reduced-motion:reduce){
+ .chargingChoiceScreen .photoDeviceWireless,
+ .chargingChoiceScreen .photoLead,
+ .chargingChoiceScreen .photoLightningCap,
+ .chargingChoiceScreen .photoPortHalo,
+ .chargingChoiceScreen .photoWirelessHalo,
+ .chargingChoiceScreen .photoDockShadow{animation:none!important}
+ .chargingChoiceScreen .photoDeviceWireless{
+   transform:translateX(-50%) translateY(var(--landing-distance))!important;
+ }
+ .chargingChoiceScreen .photoLead,
+ .chargingChoiceScreen .photoLightningCap{
+   transform:translateX(-50%) translateY(-24px)!important;
+ }
+ .chargingChoiceScreen .photoWirelessHalo{opacity:.65!important}
+ .chargingChoiceScreen .photoPortHalo{opacity:.6!important}
+}
