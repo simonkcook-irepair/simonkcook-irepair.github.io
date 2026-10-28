@@ -110,7 +110,7 @@ ok("Battery ring becomes noticeably brighter after visual transfer",css.includes
 ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
 ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
 ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
-ok("Animated charging methods review version appears",html.includes("charging-glass-review-8-hardware-docking")&&html.includes("charge-review-7-animated"));
+ok("Animated charging methods review version appears",html.includes("charging-glass-review-9-shared-handset")&&html.includes("charge-review-7-animated"));
 
 ok("New energy stylesheet loaded after approved prior meter visuals",html.indexOf('meter.css?v=charge-review-5-handover')<html.indexOf('energy.css?v=charge-review-6-living'));
 ok("Power connects to ongoing lighting state",app.includes('stage.dataset.energy="connected"'));
@@ -176,5 +176,24 @@ ok("Wireless landing has slow contact and release phases",docking.includes("7.2s
 ok("Wireless charger landing shadow and alignment guide are present",html.includes('class="choiceDockShadow"')&&html.includes('class="choiceDockGuide"'));
 ok("Docking animation observes reduced motion preferences",docking.includes("@media(prefers-reduced-motion:reduce)"));
 ok("Neither art-only stylesheet nor choice screen claims current readings",!docking.includes("chargingWatts")&&!docking.includes("batteryCurrent"));
+
+
+const photo=fs.readFileSync(path.join(dir,"photoreal.css"),"utf8");
+ok("Both methods use exactly the same source image", (html.match(/src="\.\/assets\/iphone-identical\.webp"/g)||[]).length===2);
+ok("Single phone source is backed by a shared asset",html.includes('class="photoDevice photoDeviceWired"')&&html.includes('class="photoDevice photoDeviceWireless"'));
+ok("Real image of Apple-style white lead used",html.includes('class="photoLead" src="./assets/apple-style-usbc.webp"'));
+ok("Realistic wireless charging pad image used",html.includes('class="photoPad" src="./assets/wireless-pad.webp"'));
+ok("Both hardware photos are independently animated",photo.includes("@keyframes photoLeadInsertion")&&photo.includes("@keyframes photoPhoneLanding"));
+ok("Wireless iPhone has long deliberate landing hold",photo.includes("53%,73%")&&photo.includes("8s"));
+ok("Both photographs are centred on same axis",photo.includes(".photoDevice {")&&photo.includes("left:50%")&&photo.includes("translateX(-50%)"));
+ok("Approved previously functional meter CSS remains loaded",html.includes('meter.css?v=charge-review-5-handover')&&html.includes('energy.css?v=charge-review-6-living'));
+ok("New imagery loaded after earlier choice and docking layers",html.indexOf("docking.css?v=")<html.indexOf("photoreal.css?v="));
+ok("Photo styles leave earlier meter untouched",!photo.includes(".meterBatteryPanel")&&!photo.includes(".meterCobTrack")&&!photo.includes(".meterDial"));
+ok("Photographic instructions support Reduce Motion",photo.includes("@media(prefers-reduced-motion:reduce)"));
+ok("Both photos use the same parent art template",html.includes('class="chargeChoiceArt cableArt"')&&html.includes('class="chargeChoiceArt wirelessArt"'));
+ok("Legacy port selection still represented",photo.includes('[data-port="lightning"] .photoLightningCap'));
+ok("Shared image file exists",fs.existsSync(path.join(dir,"assets/iphone-identical.webp")));
+ok("Apple-style lead image file exists",fs.existsSync(path.join(dir,"assets/apple-style-usbc.webp")));
+ok("Charging pad image file exists",fs.existsSync(path.join(dir,"assets/wireless-pad.webp")));
 
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
