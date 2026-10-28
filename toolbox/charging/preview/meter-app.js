@@ -8,6 +8,63 @@ const engine=window.IRepairChargingMeters;
 const catalogue=window.IRepairDeviceCatalogue;
 if(!engine||!catalogue)throw new Error("Charging instruments were not loaded");
 let current=engine.initial({percent:61,source:"simulated"}),reportString="";
+let activeMode="wired";
+let methodSessions={wired:null,wireless:null};
+let wirelessSkipped=false;
+function sessionFor(mode){
+ const other=mode==="wireless"?"wired":"wireless";
+ const prior=methodSessions[other];
+ return methodSessions[mode]||engine.initial({percent:prior?.currentPercent??61,source:"simulated"});
+}
+function updateChoice(){
+ const selected=catalogue.getModel($("phoneModel").value);
+ const port=selected&&selected.year<2023?"lightning":"usb-c";
+ $("chooseCharge").dataset.port=port;
+ $("wiredChoiceStatus").textContent=methodSessions.wired?"Demo observations saved":"Ready to test";
+ $("wirelessChoiceStatus").textContent=wirelessSkipped?"Skipped — not assessed":methodSessions.wireless?"Demo observations saved":"Ready to test";
+ $("chooseWired").dataset.done=methodSessions.wired?"true":"false";
+ $("chooseWireless").dataset.done=methodSessions.wireless?"true":"false";
+ $("chooseWireless").dataset.skipped=wirelessSkipped?"true":"false";
+ $("choiceReport").hidden=!methodSessions.wired&&!methodSessions.wireless;
+ $("skipWireless").textContent=wirelessSkipped?"Wireless already skipped":"Skip wireless charging";
+ $("skipWireless").disabled=wirelessSkipped;
+ $("beginWired").textContent=methodSessions.wired?"Review Charging Lead Test →":"Begin Charging Lead Test →";
+}
+function chooseMode(mode){
+ if(mode!=="wired"&&mode!=="wireless")throw new Error("Unsupported charging method");
+ activeMode=mode;
+ if(mode==="wireless")wirelessSkipped=false;
+ current=sessionFor(mode);
+ methodSessions[mode]=current;
+ resetEnergy();
+ $("activeTestEyebrow").textContent=mode==="wired"?"CHARGING LEAD TEST":"WIRELESS CHARGING TEST";
+ $("activeTestDescription").textContent=mode==="wired"?"Connect your charging lead to the bottom of the iPhone. The Safari preview will demonstrate charging recognition.":"Position the iPhone on a compatible wireless charging pad. Safari cannot verify the charging method, so the selection is customer-declared.";
+ $("completeMethod").textContent=mode==="wired"?"Finish Lead Test →":"Finish Wireless Test →";
+ show("instrument");update();
+}
+function completeMethod(){
+ methodSessions[activeMode]=current;
+ updateChoice();
+ if(activeMode==="wired"&&!methodSessions.wireless&&!wirelessSkipped){
+  show("chooseCharge");return;
+ }
+ if(activeMode==="wireless"&&!methodSessions.wired){
+  show("chooseCharge");return;
+ }
+ renderReport();
+}
+function skipWirelessMethod(){
+ wirelessSkipped=true;methodSessions.wireless=null;updateChoice();
+ if(methodSessions.wired){renderReport();return;}
+ show("chooseCharge");
+}
+function resetWorkflow(){
+ methodSessions={wired:null,wireless:null};
+ wirelessSkipped=false;activeMode="wired";
+ current=engine.initial({percent:61,source:"simulated"});
+ resetEnergy();updateChoice();
+}
+
 let energyWasConnected=false;
 let energyOffTimer=null;
 function stopEnergyShutdown(){
@@ -117,7 +174,7 @@ function update(){
  $("simConnect").disabled=connected;
  $("simIncrease").disabled=!connected||percent>=100;
  $("simInterrupt").disabled=!connected;
- set("simConnect",connected?"Power connected":"Simulate power connection");
+ set("simConnect",connected?"Power connected":activeMode==="wireless"?"Simulate wireless power":"Simulate cable connection");
  const assess=$("meterAssessment");assess.classList.remove("passed","observed","waiting");
  if(current.progressConfirmed){
   assess.classList.add("passed");
@@ -151,20 +208,51 @@ function addRow(label,value){
  row.append(key,val);$("reportRows").append(row);
 }
 function renderReport(){
+ if(activeMode==="wired"||activeMode==="wireless")methodSessions[activeMode]=current;
  const summary=engine.summary(current);
  const name=catalogue.getModel($("phoneModel").value)?.name||"iPhone not selected";
  $("reportRows").replaceChildren();
  addRow("iPhone model",name);
- addRow("Initial charge level",current.startedPercent+"% (simulated)");
- addRow("Final charge level",current.currentPercent+"% (simulated)");
- addRow("Reported charging",current.chargeRecognised?"Detected in demo":"Not detected in demo");
- addRow("Charge increase",current.progressConfirmed?"Simulated +"+summary.gainSinceStart+"%":"Not confirmed");
- addRow("Connection interruptions",current.interruptions+" (simulated)");
- addRow("Evidence type","Simulation — no hardware reading");
+ for(const mode of ["wired","wireless"]){
+  const label=mode==="wired"?"Charging lead":"Wireless charging";
+  const session=methodSessions[mode];
+  if(mode==="wireless"&&wirelessSkipped){
+   addRow(label,"SKIPPED — no charger available");
+   continue;
+  }
+  if(!session){
+   addRow(label,"NOT TESTED");
+   continue;
+  }
+  const reading=engine.summary(session);
+  addRow(label+" — recognition",session.chargeRecognised?"Simulated recognition":"Not yet confirmed");
+  addRow(label+" — charge progress",session.progressConfirmed?"Demonstrated +"+reading.gainSinceConnection+"%":"Pending / not confirmed");
+  addRow(label+" — interruption count",session.interruptions+" (simulated)");
+ }
+ addRow("Evidence type","Safari simulation — not real device evidence");
  set("reportHeading","Preview only — not a device Pass");
  set("reportSubheading",current.progressConfirmed?"The demo shows how a native automatic Pass would look. No real iPhone was measured.":"Charging progress has not been demonstrated yet. No real iPhone was measured.");
  set("copyMeterReport","Copy Preview Report");
- reportString=engine.report(current,{modelName:name});
+ reportString=[
+  "iREPAIR TOOLBOX — TWO-METHOD CHARGING REVIEW",
+  "SAFARI SIMULATION ONLY — NO REAL HARDWARE RESULTS",
+  "Model: "+name,
+  ...["wired","wireless"].flatMap(mode=>{
+   const label=mode==="wired"?"CHARGING LEAD":"WIRELESS CHARGING";
+   const sample=methodSessions[mode];
+   if(mode==="wireless"&&wirelessSkipped)return [label+": SKIPPED — NOT ASSESSED"];
+   if(!sample)return [label+": NOT TESTED"];
+   const reading=engine.summary(sample);
+   return [label+": SIMULATED RECOGNITION "+(sample.chargeRecognised?"YES":"NO"),
+    "Progress: "+(sample.progressConfirmed?"simulated +"+reading.gainSinceConnection+"%":"pending, no increase confirmed"),
+    "Reported interruptions: "+sample.interruptions+" (simulated)"];
+  }),
+  "The charging method was selected by the user, not identified electronically.",
+  "iOS provides charge state and battery level; it does not distinguish wired from wireless power using these public battery APIs.",
+  "No actual current, watts, battery health, port integrity or charger technology measured.",
+  "Wireless SKIPPED is never a Pass or a Fail.",
+  "No user observations uploaded by this browser demonstration."
+ ].join("\\n");
  show("report");
 }
 async function copy(str){
@@ -178,14 +266,21 @@ async function copy(str){
 }
 $("begin").addEventListener("click",()=>show("setup"));
 $("setupBack").addEventListener("click",()=>show("home"));
-$("start").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});resetEnergy();show("instrument");update()});
-$("instrumentBack").addEventListener("click",()=>show("setup"));
+$("start").addEventListener("click",()=>{resetWorkflow();show("chooseCharge")});
+$("chooseBack").addEventListener("click",()=>show("setup"));
+$("beginWired").addEventListener("click",()=>chooseMode("wired"));
+$("chooseWired").addEventListener("click",()=>chooseMode("wired"));
+$("chooseWireless").addEventListener("click",()=>chooseMode("wireless"));
+$("skipWireless").addEventListener("click",skipWirelessMethod);
+$("choiceReport").addEventListener("click",renderReport);
+$("completeMethod").addEventListener("click",completeMethod);
+$("instrumentBack").addEventListener("click",()=>{methodSessions[activeMode]=current;updateChoice();show("chooseCharge")});
 $("simConnect").addEventListener("click",()=>transition("power",{powerState:"charging"}));
 $("simIncrease").addEventListener("click",()=>{if(current.powerState==="charging"&&current.currentPercent<100)transition("level",{percent:current.currentPercent+1})});
 $("simInterrupt").addEventListener("click",()=>transition("power",{powerState:"unplugged"}));
 $("simReset").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});resetEnergy();update()});
 $("viewReport").addEventListener("click",renderReport);
-$("backToMeters").addEventListener("click",()=>show("instrument"));
+$("backToMeters").addEventListener("click",()=>{resetEnergy();show("instrument");update()});
 $("restartMeter").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});resetEnergy();update();show("instrument")});
 $("copyMeterReport").addEventListener("click",async()=>{if(await copy(reportString))set("copyMeterReport","Preview Copied ✓")});
 $("shareMeterReport").addEventListener("click",async()=>{
@@ -193,6 +288,6 @@ $("shareMeterReport").addEventListener("click",async()=>{
  if(await copy(reportString))set("shareMeterReport","Preview Copied ✓");
 });
 $("printMeterReport").addEventListener("click",()=>window.print());
-$("phoneModel").addEventListener("change",update);
-fillModels();cob();update();
+$("phoneModel").addEventListener("change",()=>{updateChoice();update()});
+fillModels();cob();updateChoice();update();
 })();
