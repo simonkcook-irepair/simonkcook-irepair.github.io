@@ -6,6 +6,7 @@ const dir=path.resolve(__dirname,".."),scope={};
 vm.runInNewContext(fs.readFileSync(path.join(dir,"meter-core.js"),"utf8"),{window:scope,Date});
 const m=scope.IRepairChargingMeters,html=fs.readFileSync(path.join(dir,"index.html"),"utf8"),
  css=fs.readFileSync(path.join(dir,"meter.css"),"utf8"),
+ energy=fs.readFileSync(path.join(dir,"energy.css"),"utf8"),
  app=fs.readFileSync(path.join(dir,"meter-app.js"),"utf8"),
  swift=fs.readFileSync(path.join(dir,"ios/ChargingDeviceMonitor.swift"),"utf8");
 let pass=0;function ok(text,predicate){assert.ok(predicate,text);pass++}
@@ -108,5 +109,25 @@ ok("Battery ring becomes noticeably brighter after visual transfer",css.includes
 ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
 ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
 ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
-ok("Handover build version appears",html.includes("charging-glass-review-5-handover")&&html.includes("charge-review-5-handover"));
+ok("Living energy review version appears",html.includes("charging-glass-review-6-living")&&html.includes("charge-review-6-living"));
+
+ok("New energy stylesheet loaded after approved prior meter visuals",html.indexOf('meter.css?v=charge-review-5-handover')<html.indexOf('energy.css?v=charge-review-6-living'));
+ok("Power connects to ongoing lighting state",app.includes('stage.dataset.energy="connected"'));
+ok("Power disconnect starts reverse energy withdrawal",app.includes('stage.dataset.energy="reversing"'));
+ok("Energy shutdown returns to idle once animation ends",app.includes('stage.dataset.energy="idle"')&&app.includes('},4200)'));
+ok("Reconnection cancels outstanding reverse timer",app.includes("stopEnergyShutdown();")&&app.includes("clearTimeout(energyOffTimer)"));
+ok("Voltage/wattage remains unavailable",energy.includes("not live amps, watts or charge rate"));
+ok("Initial approved spectrum remains on initial connection",energy.includes("miEnergyWhoosh 1.13s")&&energy.includes("5.83s both"));
+ok("Living COB strip pulse loops indefinitely",energy.includes("miLivingStrip 5.6s linear 8.85s infinite"));
+ok("Circular energy handover pulse loops in synchrony",energy.includes("miLivingCircle 5.6s ease-in-out 8.85s infinite"));
+ok("Between-meter energy flare loops in synchrony",energy.includes("miLivingBridge 5.6s ease-in-out 8.85s infinite"));
+ok("Ring pulses after strip begins sweeping",energy.includes("@keyframes miLivingCircle")&&energy.includes("0%,39%{opacity:0")&&energy.includes("43%,100%{left:100%;opacity:0"));
+ok("Unplug uses reverse ring animation",energy.includes("@keyframes miUnplugRing")&&energy.includes("transform:rotate(270deg)"));
+ok("Unplug makes ring-to-strip reverse bridge",energy.includes("@keyframes miUnplugBridge"));
+ok("Power bar drains right-to-left on unplug",energy.includes("@keyframes miUnplugFlash")&&energy.includes("100%{left:-44%;opacity:0}"));
+ok("Individual COB lamps switch off right-to-left",app.includes('0.82+(23-i)*0.11')&&energy.includes("miUnplugLamp .37s ease-in-out var(--reverse-delay,1s)"));
+ok("Early unplug samples actual illuminated LEDs",app.includes('getStyle(lamp,"::before").opacity')&&energy.includes("var(--reverse-opacity,1)"));
+ok("UI does not mutate battery percentage during lighting",!energy.includes("batteryPercent.innerHTML")&&!energy.includes("percent="));
+ok("Reduced-motion fallback disables endless and reverse effects",energy.includes("@media(prefers-reduced-motion:reduce)")&&energy.includes("animation:none!important"));
+ok("Original battery meter CSS is independently retained",css.includes(".meterBatteryPanel .meterDialProgress{")&&css.includes("#48ff8d"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
