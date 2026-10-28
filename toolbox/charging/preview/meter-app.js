@@ -29,7 +29,7 @@ function set(id,value){$(id).textContent=String(value)}
 function cob(){
  const target=$("meterCobTrack");target.replaceChildren();
  for(let i=0;i<24;i++){
-  const bar=document.createElement("span");bar.className="meterCobSegment";bar.style.setProperty("--index",String(i));
+  const bar=document.createElement("span");bar.className="meterCobSegment";bar.style.setProperty("--index",String(i));bar.style.setProperty("--lamp-hue",String(Math.round(i*126/23)));
   target.append(bar);
  }
 }
@@ -72,7 +72,7 @@ function update(){
  indicator.classList.toggle("on",connected);
  set("recognitionValue",current.chargeRecognised?"Recognised":"Not confirmed");
  set("interruptionValue",current.interruptions);
- $("meterCobTrack").setAttribute("aria-label",connected?"Simulated charging recognised; this is not a current meter":"Simulated charger not connected");
+ $("meterCobTrack").setAttribute("aria-label",connected?"Decorative red-to-green charging connection sweep; power is recognised in this simulation, not measured as amps or watts":"Simulated charger not connected; connection meter inactive");
  $("simConnect").disabled=connected;
  $("simIncrease").disabled=!connected||percent>=100;
  $("simInterrupt").disabled=!connected;
