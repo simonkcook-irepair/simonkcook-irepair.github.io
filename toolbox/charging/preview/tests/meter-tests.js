@@ -219,7 +219,7 @@ ok("Pad has no trailing lead visual",full.includes(".photoPad")&&full.includes("
 ok("Cable is long and centred onto physical port",full.includes("@keyframes fullCableInsert")&&full.includes("top:149px!important")&&full.includes("translateX(-50%)"));
 ok("Wireless animation descends once and keeps its final position",full.includes("@keyframes fullPhoneSingleDescent")&&full.includes("7.6s")&&full.includes("1 both!important"));
 ok("No repeated up-and-down movement in v11 landing",!full.includes("infinite")&&!full.includes("alternate")&&!full.includes("reverse"));
-ok("Matching centred geometry is retained on narrow screens",full.includes("@media(max-width:365px)")&&full.includes("--landing-distance:83px"));
+ok("Matching centred geometry is retained on narrow screens",full.includes("@media(max-width:365px)")&&full.includes("--landing-distance:90px"));
 ok("Both methods retain reduced-motion support",full.includes("@media(prefers-reduced-motion:reduce)"));
 ok("Full-body art styles do not touch approved meters",!full.includes(".meterBatteryPanel")&&!full.includes(".meterCobTrack"));
 const sharedImage=fs.readFileSync(path.join(dir,"assets/iphone-identical.webp"));
