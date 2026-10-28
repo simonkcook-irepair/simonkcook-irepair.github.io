@@ -15,3 +15,7 @@ button.mini-link{font-size:12px!important;font-weight:800!important;min-height:4
 button.btn.back{min-height:42px!important;width:42px!important;padding:0!important}
 #clean-target button.btn,#clean-mode button.btn{min-height:53px!important}
 @media(prefers-reduced-motion:reduce){button.btn,button.mini-link{transition:none!important}}
+
+/* Stabilisation: prevent decorative off-canvas glass glows from widening
+   the mobile layout viewport, while preserving vertical page scrolling. */
+html,body{overflow-x:clip}
