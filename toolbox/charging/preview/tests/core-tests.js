@@ -85,5 +85,5 @@ check("Wireless stage has charging pad and premium handset",art.render("wireless
 check("Alternative lead stage avoids cross-and-tick diagram",art.render("swap","Lightning").includes('class="svBin"')&&art.render("swap","Lightning").includes("svCableNew")&&!art.render("swap","Lightning").includes('>✕<'));
 check("Lightning and USB-C different physical connector shapes",art.render("port","USB-C").includes('svEdgePort usb')&&art.render("port","Lightning").includes('svEdgePort lightning'));
 check("Shine is confined to duplicated handset screen",art.render("wired","USB-C").includes('class="phoneScreen"')&&css.includes(".chargeTest .svPhone .screenGlow"));
-check("Landing approved hero kept unchanged",html.includes('class="chargingHeroSvg chargingHeroV3"')&&html.includes('charging-glass-review-3'));
+check("Landing approved hero kept unchanged",html.includes('class="chargingHeroSvg chargingHeroV3"')&&html.includes('charging-glass-review-4'));
 console.log("ALL",passed,"CHARGING V4 CHECKS PASSED");
