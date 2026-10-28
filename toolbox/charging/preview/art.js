@@ -5,7 +5,31 @@ const arrow='<svg class="svArrow" viewBox="0 0 100 70" aria-hidden="true"><path 
 function phone(which){
  const contents=which==="settings"?
  '<div class="svSettings"><div class="svSettingsTitle">Battery</div><div class="svSettingsBar"><span></span></div><div class="svSettingsLine"></div><div class="svSettingsLine short"></div><div class="svSettingsLimit">Charge limit</div></div>':
- '<div class="svChargeBattery"><div class="svBatteryFill"></div><div class="svBolt">ϟ</div></div>';
+ `<svg class="svScreenArtwork chargingHeroV3" viewBox="0 0 240 476" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+    <defs>
+     <linearGradient id="testchargeOuter" x1="53" y1="133" x2="187" y2="339" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f7ffff"/><stop offset=".27" stop-color="#c4ffff"/><stop offset=".58" stop-color="#7ad5ed"/><stop offset="1" stop-color="#e4ffff"/>
+     </linearGradient>
+     <linearGradient id="testchargeFill" x1="120" y1="336" x2="120" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17b6b2"/><stop offset=".42" stop-color="#45ddce"/><stop offset="1" stop-color="#afffe8"/>
+     </linearGradient>
+     <radialGradient id="testchargeBloom">
+      <stop stop-color="#6cfff0" stop-opacity=".52"/><stop offset=".65" stop-color="#8dfbff" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#7aeaff" stop-opacity="0"/>
+     </radialGradient>
+     <filter id="testchargeDiffuse" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs>
+    <ellipse cx="120" cy="236" rx="119" ry="185" fill="url(#testchargeBloom)"/>
+    <rect x="47" y="144" width="146" height="212" rx="32" fill="#7efff3" opacity=".27" filter="url(#testchargeDiffuse)"/>
+    <rect x="91" y="124" width="58" height="18" rx="8" fill="#d6ffff" opacity=".93"/>
+    <rect x="58" y="141" width="124" height="196" rx="27" fill="#06385c" fill-opacity=".35" stroke="url(#testchargeOuter)" stroke-width="5"/>
+    <rect x="66" y="150" width="108" height="179" rx="20" fill="#06284c" fill-opacity=".35" stroke="#d6ffff" stroke-opacity=".3"/>
+    <path class="chargeLevelV3" d="M69 224h102v83q0 18-18 18H87q-18 0-18-18V224Z" fill="url(#testchargeFill)" opacity=".96"/>
+    <path d="M71 169q11-17 30-17h38" stroke="#f6ffff" stroke-opacity=".65" stroke-width="3.2" stroke-linecap="round"/>
+    <path class="chargeBoltV3" d="M125 175 90 241h26l-8 58 46-83h-27l11-41Z" fill="#eaffff" stroke="#f9ffff" stroke-width="2" stroke-linejoin="round"/>
+    <text x="120" y="378" text-anchor="middle" font-size="14" letter-spacing="3.8" font-weight="750" fill="#e4ffff" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif">CHARGING</text>
+    <path d="M106 399h28" stroke="#d6ffff" stroke-width="2" opacity=".58" stroke-linecap="round"/>
+   </svg>`;
  return '<div class="svPhone" aria-hidden="true"><div class="phoneArt"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><span class="dynamicIsland"></span>'+contents+'<div class="screenGlow"></div><div class="screenGlow2"></div></div></div></div>';
 }
 function cable(kind,extra=""){
