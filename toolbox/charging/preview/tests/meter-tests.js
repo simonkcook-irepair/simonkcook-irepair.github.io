@@ -110,7 +110,7 @@ ok("Battery ring becomes noticeably brighter after visual transfer",css.includes
 ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
 ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
 ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
-ok("Animated charging methods review version appears",html.includes("charging-glass-review-9-shared-handset")&&html.includes("charge-review-7-animated"));
+ok("Animated charging methods review version appears",html.includes("charging-glass-review-10-physical-docking")&&html.includes("charge-review-7-animated"));
 
 ok("New energy stylesheet loaded after approved prior meter visuals",html.indexOf('meter.css?v=charge-review-5-handover')<html.indexOf('energy.css?v=charge-review-6-living'));
 ok("Power connects to ongoing lighting state",app.includes('stage.dataset.energy="connected"'));
@@ -196,4 +196,13 @@ ok("Shared image file exists",fs.existsSync(path.join(dir,"assets/iphone-identic
 ok("Apple-style lead image file exists",fs.existsSync(path.join(dir,"assets/apple-style-usbc.webp")));
 ok("Charging pad image file exists",fs.existsSync(path.join(dir,"assets/wireless-pad.webp")));
 
+
+const precision=fs.readFileSync(path.join(dir,"precision.css"),"utf8");
+ok("Precision docking follows shared photoreal layer",html.indexOf("photoreal.css?v=")<html.indexOf("precision.css?v="));
+ok("Correct v10 build marker",html.includes('charging-glass-review-10-physical-docking'));
+ok("Plug physically inserts behind phone rather than stopping underneath",precision.includes("translateY(-62px)")&&precision.includes(".photoDeviceWired {z-index:6}"));
+ok("Wireless lands with viewport-specific contact travel",precision.includes("--dock-travel:100px")&&precision.includes("--dock-travel:88px")&&precision.includes("--dock-travel:84px"));
+ok("Same phone preserved for both tests", (html.match(/src="\\.\\/assets\\/iphone-identical\\.webp"/g)||[]).length===2);
+ok("Contact animations remain illustrative, no invented readings",!precision.includes("batteryCurrent")&&!precision.includes("chargingWatts"));
+ok("v10 respects reduced motion",precision.includes("@media(prefers-reduced-motion:reduce)"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
