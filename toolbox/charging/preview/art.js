@@ -26,7 +26,7 @@ function tip(x,y,kind,flip,large){
  var pins=a?'<rect x="-18" y="-12" width="36" height="21" rx="8" fill="url(#caMetal)" stroke="#f1ffff" stroke-width="1.8"/><rect x="-13" y="-9" width="26" height="6" rx="3" fill="#153a5b" stroke="#8cbad0" stroke-width=".8"/>':
  '<rect x="-17" y="-15" width="34" height="23" rx="3" fill="url(#caPlug)" stroke="#edfaff" stroke-width="1.6"/>'+
  [-12,-8,-4,0,4,8,12].map(function(v){return '<rect x="'+(v-1.3)+'" y="-11" width="2.6" height="11" rx="1" fill="#d3b07a"/>';}).join("");
- return '<g class="caConnector" transform="translate('+x+' '+y+') scale('+s+') rotate('+(flip?180:0)+')" filter="url(#caShadow)">'+
+ return '<g class="caConnector" transform="translate('+x+' '+y+') scale('+(flip?-s:s)+' '+s+')" filter="url(#caShadow)">'+
  '<path d="M0 27v54" stroke="#bbd7e9" stroke-width="7" stroke-linecap="round"/>'+
  '<path d="M0 27v54" stroke="#6692b1" stroke-width="2" stroke-linecap="round"/>'+
  '<rect x="-22" y="5" width="44" height="32" rx="8" fill="url(#caPlug)" stroke="#eefaff" stroke-width="1.4"/>'+pins+
