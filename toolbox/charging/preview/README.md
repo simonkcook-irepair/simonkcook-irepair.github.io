@@ -1,4 +1,4 @@
-# iRepair Toolbox — Charging Diagnostics (Browser Review v2)
+# iRepair Toolbox — Charging Diagnostics (Browser Review v3)
 
 **Status:** Unapproved browser review prototype. **Not signed off or locked.**
 **Branch:** `toolbox/charging-glass-preview-2026-10-27`
@@ -12,17 +12,28 @@ are locked. The separately reviewed Connectivity application has an
 Core without express permission. Charging v1 is preserved in git history
 (commit `48692653af7852171643bda2e9aa7777ae12675e`).
 
-## Design standard
-Professional icy-blue glass design with signature **fully centred, shiny iPhone**.
-The landing handset includes a battery, power bolt, and illuminated approaching
-connector inside the phone display. Each diagnostic check has its own deliberately
-composed scalable SVG illustration, not repeating emoji/clipart, implemented in
-`art.js`: real-looking handset and connector, **two plug sides with a 180°
-arrow**, close-up of cable-tip/port contacts, alternative accessories, wireless
-pad and charging-settings scene. Lightning/USB-C connector rendering depends
-on the customer-selected model. The art is an **instruction**, never real
-electrical feedback. Maintain separate **DO THIS** and **WHAT TO LOOK FOR**
-sections throughout.
+## Design standard — v3 visual reset
+The technician rejected the v2 illustration language as cluttered, generic and
+hard to understand. This version replaces **every illustration** with a single,
+large, realistic-looking subject and one obvious action. No diagrammatic rings,
+lens magnifiers, small floating tech objects, or dense connector schematics.
+
+- Landing: approved-quality premium iPhone shell, centred at full visible
+  geometry. A single glowing charging battery and lightning symbol fill the
+  display; only the glass display receives the signature diagonal shine.
+- Stage artwork: eight clear, distinct visual compositions in `art.js`,
+  all within the same icy-blue glass instructional panel. Large portrait
+  handset, recognisable cable connector and charging pad, clean 180° reversal
+  arrow, or direct visual comparison. The subject and instruction are
+  deliberately prominent.
+- Separate **DO THIS** and **WHAT TO LOOK FOR** panes, with large Pass,
+  Fail, Unable options. Drawings are instructional only, never live sensors.
+- User approval is **not yet granted**. Do not treat the visual reset as locked
+  merely because tests pass. Preserve v1 and v2 in Git history.
+
+### Historical reference
+- v1: `48692653af7852171643bda2e9aa7777ae12675e`
+- v2 approved logic before design rejection: `b0a492af60417e181ef9f51c71f4f4638cdc4c3f`
 
 ### Eight guided checks, in order
 1. **Safety:** inspect phone, cable, plug for swelling, damage, moisture or
