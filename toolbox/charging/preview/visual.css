@@ -1548,3 +1548,85 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  .chargeTest .chargeSceneSvg .artWirelessRing,
  #home .chargingHero .heroPowerPlug{animation:none!important}
 }
+
+/* Charging v3 — visual reset. One large, polished object per step.
+   Readable, quiet, obvious: no complex schematics or tiny floating labels. */
+#home .chargingHero .chargingHeroV3 {
+ position:absolute;inset:0;display:block;width:100%;height:100%;
+ overflow:hidden;pointer-events:none;z-index:3;
+ filter:drop-shadow(0 0 9px #79fff38c);
+}
+#home .chargingHero .chargeLevelV3 {
+ transform-box:fill-box;transform-origin:50% 100%;
+ animation:chargingV3Breathe 4.3s ease-in-out infinite;
+}
+#home .chargingHero .chargeBoltV3 {
+ filter:drop-shadow(0 0 5px #dfffffcc);
+ animation:chargingV3Bolt 4.3s ease-in-out infinite;
+}
+#home .chargingHero .phoneScreen {
+ isolation:isolate;overflow:hidden!important;
+}
+#home .chargingHero .screenGlow,
+#home .chargingHero .screenGlow2 {
+ z-index:6;pointer-events:none;mix-blend-mode:screen;
+}
+#home .chargingHero .dynamicIsland {z-index:8}
+.chargeTest .chargeGuideArtV2 {
+ height:202px;min-height:202px;max-height:none;
+ display:flex;justify-content:center;align-items:center;
+ background:linear-gradient(153deg,#f9fdff 0%,#e5f6ff 53%,#d4edff 100%);
+ border:1px solid #fffffffa;border-radius:22px;
+ box-shadow:inset 0 1px 3px #fff,0 6px 15px #287aaf18;
+ padding:0;margin:4px 0 6px;overflow:hidden;
+}
+.chargeTest .chargeSceneSvg.v3 {
+ width:100%;height:100%;max-width:400px;max-height:204px;
+ display:block;filter:none;overflow:visible;
+}
+.chargeTest .chargeSceneSvg.v3 .caPhone,
+.chargeTest .chargeSceneSvg.v3 .caConnector {
+ transform-box:fill-box;
+}
+.chargeTest .chargeSceneSvg.v3 .caWirelessGlow {
+ transform-box:fill-box;transform-origin:center;
+ animation:chargingV3Wireless 3.5s ease-out infinite;
+}
+.chargeTest .chargePane {padding:12px;border-radius:23px;}
+.chargeTest .chargePaneLabel {font-size:10px;letter-spacing:1.15px;}
+.chargeTest .chargeAction {font-size:15px;margin:8px 2px 1px;}
+.chargeTest .expectedDisplay {min-height:78px;}
+.chargeTest .expectedIcon {
+ width:53px;height:53px;border-radius:17px;font-size:25px;
+ color:#167ca7;box-shadow:0 3px 10px #2b8dad21;
+}
+.chargeTest .chargeCaution {
+ background:linear-gradient(148deg,#fbfdff,#edf8ff);
+ border:1px solid #dbeefa;color:#486e87;
+}
+@keyframes chargingV3Breathe {
+ 0%,100%{opacity:.9}
+ 50%{opacity:1}
+}
+@keyframes chargingV3Bolt {
+ 0%,100%{opacity:.88}
+ 50%{opacity:1}
+}
+@keyframes chargingV3Wireless {
+ 0%{opacity:.1;transform:scale(.85)}
+ 45%{opacity:.34}
+ 100%{opacity:0;transform:scale(1.2)}
+}
+@media(max-width:360px){
+ .chargeTest .chargeGuideArtV2 {height:184px;min-height:184px;}
+ .chargeTest .chargeSceneSvg.v3 {max-height:184px;}
+}
+@media(min-width:620px){
+ .chargeTest .chargeGuideArtV2 {height:226px;min-height:226px;}
+ .chargeTest .chargeSceneSvg.v3 {max-height:226px;}
+}
+@media(prefers-reduced-motion:reduce){
+ #home .chargingHero .chargeLevelV3,
+ #home .chargingHero .chargeBoltV3,
+ .chargeTest .chargeSceneSvg.v3 .caWirelessGlow {animation:none!important}
+}
