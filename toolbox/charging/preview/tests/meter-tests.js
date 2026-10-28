@@ -167,7 +167,7 @@ ok("Newest choice assets are cache busted",html.includes("charge-review-7-animat
  * scope of this visual refinement. Real movement is validated in a browser. */
 const docking=fs.readFileSync(path.join(dir,"docking.css"),"utf8");
 ok("Hardware docking stylesheet added after approved v7 choices",html.indexOf("choice.css?v=")<html.indexOf("docking.css?v="));
-ok("New illustration-only build marker is used",html.includes('charging-glass-review-9-shared-handset'));
+ok("New illustration-only build marker is used",html.includes('charging-glass-review-10-physical-docking'));
 ok("Physical port has speaker grilles and machined bottom edge",html.includes('class="choicePhoneBase"')&&html.includes('class="choiceAcousticGrille left"')&&html.includes('class="choiceAcousticGrille right"'));
 ok("Metal charging connector retains distinct USB-C and Lightning tips",docking.includes(".choicePlugTip{")&&docking.includes('[data-port="lightning"] .choicePlugTip'));
 ok("Cable tip visibly docks below the hardware port",docking.includes("@keyframes choiceCableDock")&&docking.includes("translateY(-7px)"));
