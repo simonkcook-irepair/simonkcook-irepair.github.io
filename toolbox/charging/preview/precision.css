@@ -1,0 +1,107 @@
+/*
+ * Charging v10: physical contact geometry refinement.
+ * Same approved handset photo is used in both charging cards. No art swaps.
+ * Only animated hardware positions, occlusion, and contact shadows are changed.
+ * Core meters, electric effects, workflow and reports remain untouched.
+ */
+.chargingChoiceScreen .cableArt,
+.chargingChoiceScreen .wirelessArt {
+  --dock-travel:84px;
+  transform-style:flat;
+}
+/* Charging plug approaches precisely along the iPhone port centreline.
+   The handset layer masks the connector tip once physically inserted. */
+.chargingChoiceScreen .photoLead {
+  left:50%;
+  top:145px;
+  width:46px;
+  z-index:4;
+  animation:precisionCableInsert 6.6s cubic-bezier(.36,.02,.19,1) infinite !important;
+  will-change:transform;
+}
+@keyframes precisionCableInsert {
+  0%,12% {transform:translateX(-50%) translateY(25px)}
+  28% {transform:translateX(-50%) translateY(-30px)}
+  44%,70% {transform:translateX(-50%) translateY(-62px)}
+  89%,100% {transform:translateX(-50%) translateY(25px)}
+}
+.chargingChoiceScreen .photoDeviceWired {z-index:6}
+.chargingChoiceScreen .photoPortHalo {
+  top:88px;z-index:3;
+  animation:precisionPortLight 6.6s ease-in-out infinite !important;
+}
+@keyframes precisionPortLight {
+  0%,33%,78%,100%{opacity:0;transform:translateX(-50%) scale(.7)}
+  48%,68%{opacity:.65;transform:translateX(-50%) scale(1)}
+}
+.chargingChoiceScreen .photoLightningCap {
+  top:145px;z-index:4;
+  animation:precisionCableInsert 6.6s cubic-bezier(.36,.02,.19,1) infinite !important;
+}
+.chargingChoiceScreen[data-port="lightning"] .photoLead {
+  clip-path:inset(15px 0 0 0);
+}
+/* The exact same non-rotated handset is lowered vertically onto the
+   pad's upper surface. The narrow screen has a longer descent because
+   its card compresses vertically and the pad sits lower. */
+.chargingChoiceScreen .photoDeviceWireless {
+  z-index:6;
+  animation:precisionWirelessLanding 8.8s cubic-bezier(.32,.02,.18,1) infinite !important;
+  will-change:transform,filter;
+}
+@keyframes precisionWirelessLanding {
+  0%,12% {
+    transform:translateX(-50%) translateY(-6px);
+    filter:drop-shadow(0 14px 14px #1c608e68);
+  }
+  36% {
+    transform:translateX(-50%) translateY(calc(var(--dock-travel) * .53));
+    filter:drop-shadow(0 9px 9px #145a897c);
+  }
+  55%,76% {
+    transform:translateX(-50%) translateY(var(--dock-travel));
+    filter:drop-shadow(0 2px 3px #165782b5);
+  }
+  94%,100% {
+    transform:translateX(-50%) translateY(-6px);
+    filter:drop-shadow(0 14px 14px #1c608e68);
+  }
+}
+.chargingChoiceScreen .photoWirelessHalo,
+.chargingChoiceScreen .photoDockShadow {
+  animation-duration:8.8s !important;
+}
+.chargingChoiceScreen .photoPad {
+  animation:precisionPadContact 8.8s ease-in-out infinite;
+}
+@keyframes precisionPadContact {
+  0%,25%,88%,100% {
+    filter:drop-shadow(0 6px 5px #326b8c50) brightness(1);
+  }
+  54%,76% {
+    filter:drop-shadow(0 3px 9px #5adbed80) brightness(1.08);
+  }
+}
+@media(max-width:365px) {
+  .chargingChoiceScreen .wirelessArt {--dock-travel:100px}
+  .chargingChoiceScreen .photoLead {top:137px;width:40px}
+  .chargingChoiceScreen .photoLightningCap {top:137px}
+  .chargingChoiceScreen .photoPortHalo {top:81px}
+}
+@media(min-width:480px) {
+  .chargingChoiceScreen .wirelessArt {--dock-travel:88px}
+  .chargingChoiceScreen .photoLead {top:164px;width:49px}
+  .chargingChoiceScreen .photoLightningCap {top:164px}
+  .chargingChoiceScreen .photoPortHalo {top:101px}
+}
+@media(prefers-reduced-motion:reduce) {
+  .chargingChoiceScreen .photoLead,
+  .chargingChoiceScreen .photoLightningCap,
+  .chargingChoiceScreen .photoDeviceWireless,
+  .chargingChoiceScreen .photoPad,
+  .chargingChoiceScreen .photoPortHalo {animation:none!important}
+  .chargingChoiceScreen .photoLead,
+  .chargingChoiceScreen .photoLightningCap {transform:translateX(-50%) translateY(-62px)!important}
+  .chargingChoiceScreen .photoDeviceWireless {transform:translateX(-50%) translateY(var(--dock-travel))!important}
+  .chargingChoiceScreen .photoPortHalo {opacity:.55!important}
+}
