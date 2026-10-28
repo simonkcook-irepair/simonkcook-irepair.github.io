@@ -6,9 +6,13 @@
  */
 .chargingChoiceScreen .cableArt,
 .chargingChoiceScreen .wirelessArt {
-  --dock-travel:84px;
+  --dock-travel:108px;
+  --plug-depth:-84px;
   transform-style:flat;
 }
+/* Keep the phone seamlessly cropped by the top of its art panel, exactly as
+   in the approved mock-up, rather than showing an abruptly cut-out image. */
+.chargingChoiceScreen .photoDevice{top:-6px}
 /* Charging plug approaches precisely along the iPhone port centreline.
    The handset layer masks the connector tip once physically inserted. */
 .chargingChoiceScreen .photoLead {
@@ -22,12 +26,12 @@
 @keyframes precisionCableInsert {
   0%,12% {transform:translateX(-50%) translateY(25px)}
   28% {transform:translateX(-50%) translateY(-30px)}
-  44%,70% {transform:translateX(-50%) translateY(-62px)}
+  44%,70% {transform:translateX(-50%) translateY(var(--plug-depth))}
   89%,100% {transform:translateX(-50%) translateY(25px)}
 }
 .chargingChoiceScreen .photoDeviceWired {z-index:6}
 .chargingChoiceScreen .photoPortHalo {
-  top:88px;z-index:3;
+  top:62px;z-index:3;
   animation:precisionPortLight 6.6s ease-in-out infinite !important;
 }
 @keyframes precisionPortLight {
@@ -83,16 +87,16 @@
   }
 }
 @media(max-width:365px) {
-  .chargingChoiceScreen .wirelessArt {--dock-travel:100px}
+  .chargingChoiceScreen .wirelessArt {--dock-travel:123px;--plug-depth:-83px}
   .chargingChoiceScreen .photoLead {top:137px;width:40px}
   .chargingChoiceScreen .photoLightningCap {top:137px}
-  .chargingChoiceScreen .photoPortHalo {top:81px}
+  .chargingChoiceScreen .photoPortHalo {top:59px}
 }
 @media(min-width:480px) {
-  .chargingChoiceScreen .wirelessArt {--dock-travel:88px}
+  .chargingChoiceScreen .wirelessArt {--dock-travel:108px;--plug-depth:-92px}
   .chargingChoiceScreen .photoLead {top:164px;width:49px}
   .chargingChoiceScreen .photoLightningCap {top:164px}
-  .chargingChoiceScreen .photoPortHalo {top:101px}
+  .chargingChoiceScreen .photoPortHalo {top:74px}
 }
 @media(prefers-reduced-motion:reduce) {
   .chargingChoiceScreen .photoLead,
@@ -101,7 +105,7 @@
   .chargingChoiceScreen .photoPad,
   .chargingChoiceScreen .photoPortHalo {animation:none!important}
   .chargingChoiceScreen .photoLead,
-  .chargingChoiceScreen .photoLightningCap {transform:translateX(-50%) translateY(-62px)!important}
+  .chargingChoiceScreen .photoLightningCap {transform:translateX(-50%) translateY(var(--plug-depth))!important}
   .chargingChoiceScreen .photoDeviceWireless {transform:translateX(-50%) translateY(var(--dock-travel))!important}
   .chargingChoiceScreen .photoPortHalo {opacity:.55!important}
 }
