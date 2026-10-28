@@ -70,3 +70,17 @@ User approved the existing vivid red-to-green COB spectrum, initial full-bar who
 - The entire visual remains a decorative representation of charging recognition. Browser preview values are SIMULATED and remain clearly labelled. Native iOS monitor/reports, original approved home handset and report evidence logic remain untouched.
 
 Implementation isolated to new `energy.css`, minor controller phase hooks in `meter-app.js`, and `index.html` versioned stylesheet import. Existing approved `meter.css` and iRepair Core main branch are not altered.
+
+
+## v7 — actual moving charging-method illustrations, not static concept images
+
+Review direction: after the approved landing and model selector, offer two animated charging paths side-by-side on iPhone. Keep the original Toolbox icy-blue glass, physically modelled premium iPhone and all previously approved green charge meters / continuous energy handover / reverse power-off.
+
+- **Charging lead**: CSS-animated realistic metallic iPhone front and bottom charging socket; a layered silver connector and white cable rise into the socket, briefly glow on contact, and withdraw before repeating. The selected model adjusts the connector representation to Lightning for pre-2023 models and USB-C for later models. These visuals are instructions, not a claim to test actual charging contacts.
+- **Wireless charger**: corresponding metallic premium iPhone floats slowly down onto a pearlescent Qi-style pad with an illuminated green rim, then gently rises, demonstrating correct placement.
+- Both are real animated HTML/CSS, not a JPG or image storyboard. They use the previously approved CSS phone frame, glass, screen glint and blue shine.
+- Selecting either animated card opens **the existing live-looking power & battery meters**; current session is tracked separately for each selected method. Cable is the primary default route, wireless is optional. After completing cable, user can choose wireless, skip it or review their provisional report.
+- If **wireless skipped**, report says "SKIPPED — NOT ASSESSED" (neither Pass nor Fail). If not attempted, method is "NOT TESTED." Recognition, progress and interruptions for each attempted method remain separate.
+- Browser modes are explicit **Safari simulations** and the selected power input is user-declared: public iOS battery APIs do not automatically distinguish Lightning/USB-C from Qi/MagSafe charging. Native app should instruct the customer to use only the selected charger while reading actual battery state; no false route identification or electrical measurements.
+- New separate `choice.css` preserves `visual.css`, `meter.css` and `energy.css` byte-for-byte. Existing praise/locked landing hero and all other Toolbox tools are untouched.
+- Touch-friendly side-by-side choice cards, interactive skip action and reduced-motion still views. Review pending iPhone visual approval.
