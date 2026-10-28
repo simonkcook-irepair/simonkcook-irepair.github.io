@@ -86,8 +86,7 @@
  animation:miUnplugBarDim 3.8s ease-out both;
 }
 #instrument[data-energy="reversing"] .meterConnectionPanel .meterCobSegment::before{
- animation:miUnplugLamp .37s ease-in-out
-   calc(.82s + (23 - var(--index)) * .11s) both;
+ animation:miUnplugLamp .37s ease-in-out var(--reverse-delay,1s) both;
  opacity:var(--reverse-opacity,1);
 }
 /* The disconnected indicator stays accurate even during the gentle decay:
