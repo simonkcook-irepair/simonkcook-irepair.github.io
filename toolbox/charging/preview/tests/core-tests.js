@@ -74,14 +74,16 @@ check("Safety revoked clears already-filled later answers",app.includes('delete 
 check("No false live sensor readouts or browser charger APIs",!app.includes("getBattery(")&&!app.includes("batteryStateDidChangeNotification"));
 check("Three customer outcome choices remain",["PASS","FAIL","UNABLE"].every(x=>html.includes('data-answer="'+x+'"')));
 check("Printing and one-tap copy still available",html.includes('id="copyReport"')&&html.includes('id="printReport"'));
-check("Stage artist reuses exact approved landing handset in real browser",art.render.toString().length>0&&fs.readFileSync(path.join(dir,"art.js"),"utf8").includes('document.querySelector("#home .chargingHero .phoneArt")'));
-check("Every visual stage has a consistent branded glass composition",stages.every(id=>art.render(id,plan.connector).includes('class="chargeStagePhoto photo-'+id+'"')));
-check("Battery hero frame and animated shine available to every test",stages.filter(id=>!["flip","swap","port"].includes(id)).every(id=>art.render(id,plan.connector).includes("chargeApprovedDevice")));
-check("Flip shows a single rotating cable end and 180 degree prompt",art.render("flip","USB-C").includes("flipCable")&&art.render("flip","USB-C").includes("TURN 180°")&&!art.render("flip","USB-C").includes("chargeApprovedDevice"));
-check("Plug is rotated around Y axis, not turned upside down in the socket",css.includes("chargingTurnOver")&&css.includes("rotateY(180deg)")&&!app.includes('rotate(180deg)'));
-check("Port inspection has independent magnifier and cable contacts",art.render("port","Lightning").includes("portMagnifier")&&art.render("port","Lightning").includes("realLeadContacts"));
-check("Wireless pad and approved handset appear together",art.render("wireless","USB-C").includes("chargeWirelessPad")&&art.render("wireless","USB-C").includes("chargeApprovedDevice"));
-check("Alternative lead goes aside rather than X/tick diagram",art.render("swap","Lightning").includes("realWasteBin")&&art.render("swap","Lightning").includes("newCableGroup"));
-check("Lightning and USB-C are distinguished for cable and port",art.render("port","USB-C").includes("macroPhoneEdge usb")&&art.render("port","Lightning").includes("macroPhoneEdge lightning"));
-check("Screen-shine styles are scoped to the phone display",css.includes(".chargeStagePhoto .screenGlow")&&css.includes(".chargeStagePhoto .phoneScreen"));
+
+check("The stage art reuses exact premium phoneArt shell",["safety","wired","stability","wireless","behaviour"].every(id=>art.render(id,"USB-C").includes('class="phoneArt"')));
+check("Every illustrated phone uses approved battery SVG",["safety","wired","stability","wireless"].every(id=>art.render(id,"USB-C").includes('class="svScreenArtwork chargingHeroV3"')));
+check("Eight scenes are consistently branded",stages.every(id=>art.render(id,"USB-C").includes('class="svVisual sv-'+id+'"')));
+check("Flip displays one reversible cable and 180 degree direction",art.render("flip","USB-C").includes("svCableFlip")&&art.render("flip","USB-C").includes("180°")&&!art.render("flip","USB-C").includes('class="phoneArt"'));
+check("Flip is animated by turning rather than in-socket twisting",css.includes("svTurnOver")&&css.includes("rotateY(180deg)"));
+check("Port stage has independent magnifying lens and connector",art.render("port","Lightning").includes('class="svLens"')&&art.render("port","Lightning").includes("svCableInspect"));
+check("Wireless stage has charging pad and premium handset",art.render("wireless","USB-C").includes('class="svPad"')&&art.render("wireless","USB-C").includes('class="phoneArt"'));
+check("Alternative lead stage avoids cross-and-tick diagram",art.render("swap","Lightning").includes('class="svBin"')&&art.render("swap","Lightning").includes("svCableNew")&&!art.render("swap","Lightning").includes('>✕<'));
+check("Lightning and USB-C different physical connector shapes",art.render("port","USB-C").includes('svEdgePort usb')&&art.render("port","Lightning").includes('svEdgePort lightning'));
+check("Shine is confined to duplicated handset screen",art.render("wired","USB-C").includes('class="phoneScreen"')&&css.includes(".chargeTest .svPhone .screenGlow"));
+check("Landing approved hero kept unchanged",html.includes('class="chargingHeroSvg chargingHeroV3"')&&html.includes('charging-glass-review-3'));
 console.log("ALL",passed,"CHARGING V4 CHECKS PASSED");
