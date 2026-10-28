@@ -94,4 +94,19 @@ ok("Reduced-motion shows immediately completed spectrum",css.includes("animation
 ok("Accessibility clarifies gradient is visual not electrical measurement",app.includes("Decorative red-to-green charging connection sweep")&&app.includes("not measured as amps or watts"));
 ok("Battery percentage dial remains vivid green",css.includes(".meterBatteryPanel .meterDialNumber{")&&html.includes('stop-color="#12e56b"'));
 ok("Revised assets have cache busting",html.includes("charge-review-5-spectrum"));
+
+ok("Synchronized battery dial contains an energy-sweep arc",html.includes('class="meterEnergySweep"')&&html.includes('class="meterEnergyHalo"'));
+ok("Inter-panel energy bridge has zero layout height",html.includes('class="meterEnergyBridge"')&&css.includes(".meterEnergyBridge{position:relative;z-index:10;height:0;"));
+ok("Connected status is propagated to both meters",app.includes('$("meterBatteryPanel").dataset.power=power')&&app.includes('$("instrument").dataset.power=power'));
+ok("Full-bar energy whoosh waits until spectrum finishes",css.includes("miEnergyWhoosh 1.13s")&&css.includes("5.83s both"));
+ok("Power meter bloom visually pulses as a whole",css.includes("@keyframes miWholeLineSurge")&&css.includes("brightness(1.35)"));
+ok("Bright travel wave overlays full illuminated bar",css.includes(".meterCobTrack::before{")&&css.includes("@keyframes miEnergyWhoosh"));
+ok("Rising spark bridges charging and battery instruments",css.includes("@keyframes miEnergyHandUp")&&css.includes("6.64s both"));
+ok("Battery ring stays in waiting mode until after power finale",css.includes("miBatteryCircleWhoosh 1.66s")&&css.includes("6.93s both"));
+ok("Battery ring sweep rotates clockwise through full circuit",css.includes("transform:rotate(-90deg);opacity:0")&&css.includes("transform:rotate(270deg);opacity:0"));
+ok("Battery ring becomes noticeably brighter after visual transfer",css.includes("@keyframes miBatteryRingPowerUp")&&css.includes("drop-shadow(0 0 23px #24ff79)"));
+ok("No simulated amp readings introduced",!app.includes("getBattery(")&&app.includes("not measured as amps or watts"));
+ok("Unplugged state clears handover animation immediately",css.includes('#instrument[data-power="unplugged"] .meterEnergyBridge::before'));
+ok("Reduced-motion turns off energy whooshes and keeps clear steady meter",css.includes(".meterBatteryPanel .meterEnergySweep,")&&css.includes(".meterBatteryPanel .meterDialProgress,")&&css.includes("animation:none!important"));
+ok("Handover build version appears",html.includes("charging-glass-review-5-handover")&&html.includes("charge-review-5-handover"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
