@@ -154,4 +154,12 @@ ok("Power meter animation CSS preserved unchanged as separate file",energy.inclu
 ok("Phone user preferences for reduced motion applied to new instructions",choice.includes("@media(prefers-reduced-motion:reduce)"));
 ok("Approved colour palette remains icy-blue glass",choice.includes("linear-gradient(145deg,#ffffffed 0%,#e8f8ffef 37%,#cae9fff0 100%)"));
 ok("Neither animation injects fictitious battery data",!choice.includes("batteryCurrent")&&!choice.includes("chargingWatts"));
+
+ok("Wireless-only meter skip control exists",html.includes('id="skipWirelessInTest"')&&app.includes('$("skipWirelessInTest").hidden=mode!=="wireless"'));
+ok("Wireless-only skip control is wired to its action",app.includes('$("skipWirelessInTest").addEventListener("click",skipWirelessMethod)'));
+ok("Wireless skip excludes any false retained session",app.includes('methodSessions.wireless=null')&&app.includes('&&!(activeMode==="wireless"&&wirelessSkipped)'));
+ok("Wireless-only skip is visually hidden during wired testing",choice.includes('.meterFootActions [hidden]{display:none!important}'));
+ok("Selected iPhone front silhouette updates animated illustration",app.includes('$("chooseCharge").dataset.front=selected?.front||"island"'));
+ok("Notch and home-button variants appear for matching iPhone families",choice.includes('[data-front="notch"]')&&choice.includes('[data-front="home"]'));
+ok("Newest choice assets are cache busted",html.includes("charge-review-7-animated-r2"));
 console.log("ALL "+pass+" CHARGING INSTRUMENT CHECKS PASSED");
