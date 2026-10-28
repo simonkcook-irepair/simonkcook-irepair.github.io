@@ -90,3 +90,19 @@ Review direction: after the approved landing and model selector, offer two anima
 The guide now also adapts the handset silhouette for selected notch/home-button iPhone families, as well as using Lightning versus USB-C for the bottom plug guide. Wireless can be skipped from either the method-choice screen **or from within the wireless meter itself**. An in-test skip explicitly discards that wireless session so it cannot produce a spurious result or be unintentionally reused. Re-entering wireless test after a skip creates a fresh optional session.
 
 The charging method is user-selected even in the future native app; iOS can observe battery state but the standard public UIDevice battery API does not prove whether the input was Qi/MagSafe or USB/Lightning. All browser results remain simulated. Verified code-level interactive navigation and regression tests; visual iPhone approval remains outstanding.
+
+
+## v7 — Animated method selection, wired & optional wireless tests (review candidate)
+
+Customer request: after the preserved landing and model selection, present **two real looping browser animations side by side** using the already-approved premium icy-blue glass phone style, not a generated static illustration:
+- **Charging lead:** scaled shared premium `phoneArt` handset with visible lower port and an animated USB-C/Lightning connector repeatedly approaching and entering it. Selected model guides the connector illustration only.
+- **Wireless charging:** matching premium handset lowers towards a glossy glowing Qi/MagSafe-style pad, with an animated light bloom.
+- Each selection opens the **same preserved, continuously looping / reversing green neon charging instruments**, with the active method plainly labelled.
+- Each method maintains its own simulated power recognition, progress/percentage increase, and interruption observations.
+- Wireless is **optional**: customer can skip it, recorded distinctly as **SKIPPED — NOT ASSESSED**, never as Pass or Fail.
+- The existing report now separates lead/wireless method rows and exports a full plain-text report with correct newlines. All results in Safari are simulation-only, with the charging method **customer-selected**. Native public battery APIs alone cannot reliably distinguish wired vs wireless source.
+- Smaller-screen two-column layout and `prefers-reduced-motion` fallback supported.
+- The home iPhone hero, `visual.css`, approved `meter.css`, `energy.css`, measurement engine and native scaffold have **not** been replaced or edited.
+- New animation styles live in `choice.css`. Pending subjective review of animation realism by the user; do not call locked before approval.
+
+Browser flow: **home → setup/model → animated method selection → reusable meter for cable → return to selection → optional wireless reusable meter or skip → two-method report**. Wireless-first is possible but prompts cable afterwards. No physical iPhone charge input is measured by Safari.
