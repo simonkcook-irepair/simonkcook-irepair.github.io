@@ -2,8 +2,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eaf6ff"><meta name="color-scheme" content="light">
 <title>iRepair Toolbox | Charging Diagnostics</title>
-<link rel="stylesheet" href="./visual.css?v=charge-review-4">
-</head><body data-build="charging-glass-review-4"><main class="shell">
+<link rel="stylesheet" href="./visual.css?v=charge-review-4"><link rel="stylesheet" href="./meter.css?v=charge-review-5">
+</head><body data-build="charging-glass-review-5"><main class="shell">
 <header class="header glass"><div class="brand"><div class="logo" aria-hidden="true"></div>
 <div><b>iRepair Toolbox</b><span>CHARGING DIAGNOSTICS</span></div></div>
 <span class="badge">GUIDED TEST</span></header>
@@ -45,74 +45,98 @@
  </div>
 </div>
 <div class="infoBox"><b>What we'll check</b>
-<div>⚡ Charger, cable and contact stability</div>
-<div>◉ Reversible plug and port inspection</div>
-<div>◎ Wireless charging and battery behaviour</div></div>
+<div>⚡ Charging recognition and continuity</div>
+<div>◉ Battery percentage and genuine charge progress</div>
+<div>◎ Automatic status reporting in native iOS</div></div>
 <div class="actions"><button id="begin" class="btn main" type="button">Start Charging Check →</button></div>
-<p class="smallNote">Safe, customer-guided checks. Safari can't directly measure charging current, battery charge state or the electrical condition of a port.</p>
+<p class="smallNote">Safari preview uses clearly labelled simulated readings. Real automatic charging data requires the native iPhone app.</p>
 </section>
-<section id="setup" class="card glass view" aria-label="Prepare the charging checks">
-<div class="eyebrow">Let's prepare</div><h1>First, the<br>simple things.</h1>
-<p class="lead">You may need a working charger, an alternative cable and a wireless charging pad. You can skip anything you don't have.</p>
-<div class="glassy setupMotion"><label for="phoneModel">Which iPhone? (optional)</label>
-<select id="phoneModel"><option value="">Choose your iPhone…</option></select>
-<p class="smallExplanation" id="modelHelp">Choosing a model helps us show its charging connector. Safari can't identify it reliably.</p></div>
-<div class="planPreview"><strong id="connectorSummary">Charging connector</strong><p>Eight simple, guided checks. Nothing will start charging automatically.</p></div>
-<div class="privacyNotice"><strong>Safety comes first</strong><p>If your iPhone is swollen, wet, unusually hot, or a cable or plug looks damaged, don't connect it to power. The first step checks this before anything else.</p></div>
-<div class="setupBottom"><button id="start" class="btn main" type="button">Begin Guided Tests →</button><button id="setupBack" class="btn unable" type="button">← Back</button></div>
+<section id="setup" class="card glass view meterView" aria-label="Prepare the charging instruments">
+ <div class="meterEyebrow">THE NEXT GENERATION OF TOOLBOX</div>
+ <h1 class="meterHeading">One connection.<br><span>Two real signals.</span></h1>
+ <p class="meterLead">Charging recognition and battery progress, together in one simple assessment.</p>
+ <div class="meterSetupVisual" aria-hidden="true">
+  <div class="meterSetupCharge"><svg viewBox="0 0 100 130" fill="none"><rect x="23" y="18" width="54" height="102" rx="14" stroke="#defdff" stroke-width="5" fill="#0e5599"/><rect x="31" y="54" width="38" height="58" rx="8" fill="#77fce3"/><rect x="43" y="9" width="14" height="8" rx="3" fill="#eaffff"/><path d="m56 29-20 40h17l-8 28 25-45H52l4-23Z" fill="#e7ffff"/></svg></div>
+  <div class="meterSetupConnection"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+ </div>
+ <div class="meterField">
+  <label for="phoneModel">Your iPhone model <span>(optional)</span></label>
+  <select id="phoneModel" aria-describedby="modelDescription"><option value="">Choose your iPhone…</option></select>
+  <p id="modelDescription">Safari cannot reliably identify an exact iPhone model. This selection only labels the preview report.</p>
+ </div>
+ <div class="meterDisclosure"><icon name="info"></icon><strong>Browser demonstration</strong><p>All meters in this Safari preview use simulated values. Native iOS will read charging state and battery percentage from the phone itself. No voltage, watts or current are measured.</p></div>
+ <div class="meterButtonGroup">
+ <button id="start" class="btn main" type="button">View the Charging Meters <span aria-hidden="true">→</span></button>
+ <button id="setupBack" class="btn unable" type="button">Back to landing screen</button>
+ </div>
 </section>
-<section id="test" class="card glass view chargeTest" aria-label="Guided charging test">
-<div class="stepHead"><span id="stepCounter">Check 1 of 8</span><button id="exitTest" class="btn unable mini" type="button">Exit</button></div>
-<div id="progress" class="track" aria-label="Test progress"></div>
-<div class="eyebrow">A SIMPLE GUIDED CHECK</div><h1 id="stepTitle">Safe to charge?</h1>
-<p id="stepInstruction" class="lead chargeInstruction">Check the equipment before connecting power.</p>
-<div id="chargingStage" class="chargeStage stage-safety">
- <section class="chargePane instructionPane">
-  <div class="chargePaneLabel"><span>1</span> DO THIS</div>
-  <div class="chargeGuideArt chargeGuideArtV2" id="guideArtwork" aria-hidden="true"></div>
-  <strong class="chargeAction" id="actionLabel">Check the cable and plug</strong>
- </section>
- <section class="chargePane expectedPane">
-  <div class="chargePaneLabel"><span>2</span> WHAT TO LOOK FOR</div>
-  <div class="expectedDisplay">
-   <div class="expectedIcon" aria-hidden="true" id="expectedIcon">✓</div>
-   <div class="expectedCopy"><strong id="expectedTitle">Looks safe</strong><span id="expectedDetail">Check for any damage or moisture.</span></div>
+<section id="instrument" class="card glass view meterView meterInstrument" aria-label="Charging diagnostic meters">
+ <div class="meterTopline"><div><div class="meterEyebrow">CHARGING DIAGNOSTICS</div><h1 class="meterHeading">Power, <span>beautifully clear.</span></h1></div>
+ <button id="instrumentBack" class="meterExit" type="button" aria-label="Back to setup">×</button></div>
+ <div class="meterDemoBanner"><span class="meterDemoDot"></span><strong>INTERACTIVE PREVIEW</strong><span>Simulated readings · not from your iPhone</span></div>
+ <div class="meterBatteryPanel meterFrost">
+  <div class="meterPanelTop"><div class="meterPanelLabel"><span class="meterPanelIcon">◉</span><div><strong>Battery charge level</strong><small>iPhone battery percentage</small></div></div><span class="meterPanelTag">SIMULATED</span></div>
+  <div class="meterBatteryContent">
+   <div class="meterDial" id="meterDial" role="img" aria-label="Simulated battery level 61 percent">
+    <svg class="meterDialSvg" viewBox="0 0 260 260" aria-hidden="true">
+     <defs>
+      <linearGradient id="meterRingGradient" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#137cce"/><stop offset=".43" stop-color="#2ab9e9"/><stop offset=".77" stop-color="#97ffff"/><stop offset="1" stop-color="#dbffff"/></linearGradient>
+      <filter id="meterRingGlow"><feGaussianBlur stdDeviation="6"/></filter>
+     </defs>
+     <circle cx="130" cy="130" r="104" fill="#ffffff" opacity=".11"/>
+     <circle cx="130" cy="130" r="100" class="meterOuterFine"/>
+     <circle cx="130" cy="130" r="92" class="meterDialTrack"/>
+     <circle cx="130" cy="130" r="92" class="meterDialGlow" id="meterDialGlow"/>
+     <circle cx="130" cy="130" r="92" class="meterDialProgress" id="meterDialProgress"/>
+     <circle cx="130" cy="130" r="77" class="meterInnerCircle"/>
+     <path d="M77 83q54-53 111 0" class="meterInnerGlint"/>
+    </svg>
+    <div class="meterDialLabel"><span class="meterDialTiny">CHARGE</span><span class="meterDialNumber" id="batteryPercent">61<em>%</em></span><span class="meterDialDescription" id="batteryCaption">Current level</span></div>
+   </div>
+   <div class="meterBatteryStats">
+    <div class="meterStatTile"><span>Starting level</span><strong id="startingPercent">61%</strong></div>
+    <div class="meterStatTile"><span>Change</span><strong id="batteryGain">—</strong></div>
+    <div class="meterStatTile"><span>Charging progress</span><strong id="progressStatus">Not confirmed</strong></div>
+   </div>
   </div>
- </section>
-</div>
-<div class="chargeCaution" id="chargeCaution">Do not use damaged or wet charging equipment.</div>
-<details class="technicalPanel" id="technicalPanel">
-<summary>Why this matters <span aria-hidden="true">⌄</span></summary>
-<p id="technicalMethod" class="chargeTech">These are customer observations, not automated electrical readings.</p>
-</details>
-<div class="testQuestion" id="testQuestion">Is everything safe to use?</div>
-<div class="testActions">
-<button data-answer="PASS" class="btn pass" type="button">✓ Pass</button>
-<button data-answer="FAIL" class="btn fail" type="button">✕ Fail</button>
-<button data-answer="UNABLE" class="btn unable" type="button">Unable to Test</button>
-</div>
-<section id="symptomPanel" class="symptomPanel" aria-label="Optional symptoms" hidden>
-<strong>What did you notice?</strong><p>Select any that apply. These details help a technician.</p>
-<div id="symptomOptions" class="symptomOptions"></div>
-<button id="symptomContinue" class="btn main" type="button">Continue →</button>
+  <div class="meterLevelRail" aria-hidden="true"><div class="meterLevelGlow" id="meterLevelGlow"></div><div class="meterLevelFill" id="meterLevelFill" style="width:61%"></div></div>
+ </div>
+ <div class="meterConnectionPanel meterFrost" id="connectionPanel">
+   <div class="meterPanelTop"><div class="meterPanelLabel"><span class="meterPanelIcon meterZap">ϟ</span><div><strong>Charging connection</strong><small>Reported power-state continuity</small></div></div><span class="meterPanelTag">SIMULATED</span></div>
+   <div class="meterConnectionCore"><div class="meterConnectionGlow" aria-hidden="true"></div>
+    <div class="meterConnectionStatus"><span class="meterConnectionIndicator" id="connectionIndicator"></span><strong id="connectionTitle">Waiting for charger</strong></div>
+    <p id="connectionSubtitle">Connect power to begin the charging recognition check.</p>
+    <div class="meterCobTrack" id="meterCobTrack" role="img" aria-label="Simulated charging connection meter"></div>
+    <div class="meterConnectionMetrics"><div><span>Recognition</span><strong id="recognitionValue">Not confirmed</strong></div><div><span>Interruptions</span><strong id="interruptionValue">0</strong></div></div>
+   </div>
+ </div>
+ <div class="meterAssessment" id="meterAssessment" aria-live="polite">
+   <span class="meterAssessmentIcon" id="assessmentIcon">◌</span>
+   <div><strong id="assessmentTitle">Ready to observe</strong><p id="assessmentDescription">The native app will confirm progress automatically when charging is reported and the battery level genuinely rises.</p></div>
+ </div>
+ <div class="meterSimulator">
+  <div class="meterSimulatorHeading"><strong>Try the meter animation</strong><span>DEMO CONTROLS</span></div>
+  <p>These controls simulate the events a native iPhone would report. They do not test your phone.</p>
+  <div class="meterSimulatorButtons">
+   <button id="simConnect" class="meterSimulatorPrimary" type="button"><span>ϟ</span> Simulate power connection</button>
+   <button id="simIncrease" type="button">+1% charge</button>
+   <button id="simInterrupt" type="button">Disconnect</button>
+   <button id="simReset" type="button">Reset</button>
+  </div>
+ </div>
+ <div class="meterFootActions"><button id="viewReport" class="btn main" type="button">View Preview Report →</button><button id="restartMeter" class="btn unable" type="button">Start Again</button></div>
+ <p class="meterLegal">The connection animation represents charging-state reports, not measured amps, volts or watts. No timed waiting or forced failure is used.</p>
 </section>
-<div class="testBottomControls"><button id="previous" class="btn unable" type="button">← Previous</button><button id="leave" class="btn unable" type="button">Exit test</button></div>
-<p class="smallNote">Safari cannot independently verify charging state, voltage, cable negotiation or port condition. Results are based on your observations.</p>
-</section>
-<section id="results" class="card glass view chargeResults" aria-label="Charging diagnostics results">
-<div class="eyebrow">Your charging review</div><h1>Charging check<br>complete.</h1>
-<p id="resultIntro" class="lead">Your observations and next steps.</p>
-<div class="stats"><div><strong id="passCount">0</strong><span>Pass</span></div><div><strong id="failCount">0</strong><span>Fail</span></div><div><strong id="unableCount">0</strong><span>Unable</span></div></div>
-<div id="safetySummary" class="safetySummary" hidden><strong>Stop using the charger for now</strong><span>A potential safety issue was reported. Don't continue testing or charging until it has been checked.</span></div>
-<div id="resultRows" class="resultRows"></div>
-<section id="triageHints" class="triageHints" hidden><strong class="triageHeading">Useful technician clues · not a diagnosis</strong><div id="triageRows"></div></section>
-<div class="resultActions"><button id="copyReport" class="btn main" type="button">Copy technician report</button>
-<div class="pair"><button id="shareReport" class="btn unable" type="button">Share report</button><button id="printReport" class="btn unable" type="button">Save / Print PDF</button></div>
-<button id="startOver" class="btn unable" type="button">Run charging checks again</button></div>
-<p class="smallNote">The browser does not measure electrical hardware. A repair technician can follow up with suitable instruments where needed.</p>
+<section id="report" class="card glass view meterView meterReport" aria-label="Charging report preview">
+ <div class="meterEyebrow">iREPAIR TOOLBOX REPORT</div>
+ <h1 class="meterHeading">Charging <span>assessment.</span></h1>
+ <div class="meterDemoBanner"><span class="meterDemoDot"></span><strong>SIMULATION ONLY</strong><span>No real diagnostic result</span></div>
+ <div class="meterReportHero"><div class="meterReportIcon">ϟ</div><div><strong id="reportHeading">Preview only — not assessed</strong><p id="reportSubheading">No hardware evidence was collected from Safari.</p></div></div>
+ <div class="meterReportRows" id="reportRows"></div>
+ <div class="meterReportNote">A real automatic Pass will require a native iOS charging-state reading and a subsequent increase in battery percentage while charging. A full battery, charging limit or delayed level update should never trigger an automatic Fail.</div>
+ <div class="meterButtonGroup"><button id="copyMeterReport" class="btn main" type="button">Copy Preview Report</button><button id="shareMeterReport" class="btn unable" type="button">Share Preview</button><button id="printMeterReport" class="btn unable" type="button">Save / Print PDF</button><button id="backToMeters" class="btn unable" type="button">← Back to meters</button></div>
 </section></main>
 <script src="./models.js?v=charge-review-4"></script>
-<script src="./core.js?v=charge-review-4"></script>
-<script src="./art.js?v=charge-review-4"></script>
-<script src="./app.js?v=charge-review-4"></script>
+<script src="./meter-core.js?v=charge-review-5"></script>
+<script src="./meter-app.js?v=charge-review-5"></script>
 </body></html>
