@@ -20,7 +20,15 @@ function approvedPhone(){
  // exact approved battery artwork and screen shine.
  if(typeof document!=="undefined"&&typeof document.querySelector==="function"){
   const home=document.querySelector("#home .chargingHero .phoneArt");
-  if(home&&home.outerHTML)markup=home.outerHTML;
+  if(home&&home.outerHTML){
+   markup=home.outerHTML;
+   // The home and test panels coexist: namespace cloned SVG gradient IDs
+   // so Safari always resolves the stage artwork's own gradients.
+   for(const id of ["chargeOuter","chargeFill","chargeBloom","chargeDiffuse"]){
+    markup=markup.replaceAll('id="'+id+'"','id="'+id+'Stage"')
+                 .replaceAll('url(#'+id+')','url(#'+id+'Stage)');
+   }
+  }
  }
  // Offline test-only fallback; real Safari always clones the approved hero.
  if(!markup)markup='<div class="phoneArt" aria-hidden="true"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><span class="dynamicIsland"></span><div class="chargingHeroSvg chargingHeroV3"></div><div class="screenGlow"></div><div class="screenGlow2"></div></div></div>';
