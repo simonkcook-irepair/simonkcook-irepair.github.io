@@ -8,6 +8,44 @@ const engine=window.IRepairChargingMeters;
 const catalogue=window.IRepairDeviceCatalogue;
 if(!engine||!catalogue)throw new Error("Charging instruments were not loaded");
 let current=engine.initial({percent:61,source:"simulated"}),reportString="";
+let energyWasConnected=false;
+let energyOffTimer=null;
+function stopEnergyShutdown(){
+ if(energyOffTimer!==null){clearTimeout(energyOffTimer);energyOffTimer=null;}
+}
+function resetEnergy(){
+ stopEnergyShutdown();energyWasConnected=false;
+ $("instrument").dataset.energy="idle";
+}
+function setEnergyForPower(connected){
+ const stage=$("instrument");
+ if(connected&&!energyWasConnected){
+  stopEnergyShutdown();
+  stage.dataset.energy="connected";
+ }else if(!connected&&energyWasConnected){
+  // Sample precisely which LEDs were lit BEFORE their normal powered CSS
+  // gets disconnected. Early unplug must not suddenly light the entire bar.
+  const getStyle=typeof window.getComputedStyle==="function"?window.getComputedStyle.bind(window):null;
+  if(getStyle){
+   for(const lamp of $("meterCobTrack").children){
+    const sample=getStyle(lamp,"::before").opacity;
+    lamp.style.setProperty("--reverse-opacity",Number.isFinite(Number(sample))?String(Math.min(1,Math.max(0,Number(sample)))):"1");
+   }
+  }
+  stage.dataset.energy="reversing";
+  stopEnergyShutdown();
+  energyOffTimer=setTimeout(()=>{
+   energyOffTimer=null;
+   if(!energyWasConnected&&stage.dataset.energy==="reversing"){
+    stage.dataset.energy="idle";
+   }
+  },4200);
+ }else if(!connected&&!stage.dataset.energy){
+  stage.dataset.energy="idle";
+ }
+ energyWasConnected=connected;
+}
+
 const labels={notconfirmed:"Not confirmed",awaiting:"Waiting",charging:"Charging",full:"Full"};
 function show(id){
  document.querySelectorAll(".view").forEach(node=>node.classList.toggle("active",node.id===id));
@@ -29,7 +67,7 @@ function set(id,value){$(id).textContent=String(value)}
 function cob(){
  const target=$("meterCobTrack");target.replaceChildren();
  for(let i=0;i<24;i++){
-  const bar=document.createElement("span");bar.className="meterCobSegment";bar.style.setProperty("--index",String(i));bar.style.setProperty("--lamp-hue",String(Math.round(i*126/23)));
+  const bar=document.createElement("span");bar.className="meterCobSegment";bar.style.setProperty("--index",String(i));bar.style.setProperty("--lamp-hue",String(Math.round(i*126/23)));bar.style.setProperty("--reverse-delay",(0.82+(23-i)*0.11).toFixed(3)+"s");
   target.append(bar);
  }
 }
@@ -58,6 +96,7 @@ function update(){
  $("instrument").dataset.power=power;
  $("meterBatteryPanel").dataset.progress=current.progressConfirmed?"confirmed":power==="charging"?"charging":"idle";
  const connected=summary.isConnected;
+ setEnergyForPower(connected);
  const panel=$("connectionPanel");
  panel.dataset.power=power;panel.dataset.progress=current.progressConfirmed?"confirmed":"pending";panel.dataset.interruptions=String(current.interruptions);
  if(power==="charging"){
@@ -139,15 +178,15 @@ async function copy(str){
 }
 $("begin").addEventListener("click",()=>show("setup"));
 $("setupBack").addEventListener("click",()=>show("home"));
-$("start").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});show("instrument");update()});
+$("start").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});resetEnergy();show("instrument");update()});
 $("instrumentBack").addEventListener("click",()=>show("setup"));
 $("simConnect").addEventListener("click",()=>transition("power",{powerState:"charging"}));
 $("simIncrease").addEventListener("click",()=>{if(current.powerState==="charging"&&current.currentPercent<100)transition("level",{percent:current.currentPercent+1})});
 $("simInterrupt").addEventListener("click",()=>transition("power",{powerState:"unplugged"}));
-$("simReset").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});update()});
+$("simReset").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});resetEnergy();update()});
 $("viewReport").addEventListener("click",renderReport);
 $("backToMeters").addEventListener("click",()=>show("instrument"));
-$("restartMeter").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});update();show("instrument")});
+$("restartMeter").addEventListener("click",()=>{current=engine.initial({percent:61,source:"simulated"});resetEnergy();update();show("instrument")});
 $("copyMeterReport").addEventListener("click",async()=>{if(await copy(reportString))set("copyMeterReport","Preview Copied ✓")});
 $("shareMeterReport").addEventListener("click",async()=>{
  if(navigator.share){try{await navigator.share({title:"Charging Diagnostics — simulation",text:reportString});return}catch(err){if(err.name==="AbortError")return}}
