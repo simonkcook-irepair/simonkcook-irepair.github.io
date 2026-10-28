@@ -234,7 +234,8 @@
  background:linear-gradient(145deg,#f7fffa,#c8ffe2);
  box-shadow:0 0 12px #aaffca6b,inset 0 1px 2px #fff;
 }
-.meterConnectionPanel[data-progress="confirmed"] .meterCobSegment{
+.meterConnectionPanel[data-progress="confirmed"][data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-progress="confirmed"][data-power="full"] .meterCobSegment{
  animation:none;
  background:linear-gradient(180deg,#f1fff4,#bdffd3 25%,#46f98b 60%,#0daa59);
  box-shadow:inset 0 1px 2px #fff,0 0 10px #27ff75b5,0 0 17px #57ff9b94;
