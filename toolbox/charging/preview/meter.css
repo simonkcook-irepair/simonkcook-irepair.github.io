@@ -1,0 +1,502 @@
+/* iRepair Toolbox — Charging v5 instrument-specific styles
+ * All visuals deliberately inherit the approved icy-blue glass design.
+ * The original full iPhone landing hero is unchanged.
+ * Browser preview meters are SIMULATED, not electrical measurements.
+ */
+:root{--mi-ink:#113a63;--mi-blue:#137fc9;--mi-cyan:#5de8fc;--mi-pale:#eaf9ff}
+.meterView{padding:22px 16px 23px!important;overflow:hidden;position:relative}
+.meterView::before{content:"";position:absolute;left:-35%;top:-13%;width:120%;height:330px;pointer-events:none;background:radial-gradient(ellipse,#a2e8ff44,transparent 65%);filter:blur(20px)}
+.meterView > *{position:relative}
+.meterEyebrow{color:#247cb1;font:850 10px/1.25 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:2.2px}
+.meterHeading{font:850 clamp(29px,7.9vw,42px)/1.06 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:-1.5px!important;margin:11px 0 10px!important;color:#113b63!important;text-align:left!important}
+.meterHeading span{color:#1d83c4}
+.meterLead{font:460 14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#5c7e97;margin:0 0 15px}
+.meterSetupVisual{position:relative;height:178px;margin:9px 0 17px;overflow:hidden;display:grid;place-items:center;
+ background:radial-gradient(ellipse at 50% 60%,#78dffa50,transparent 67%),linear-gradient(145deg,#f8feff,#daf2ff);
+ border:1px solid #fff;border-radius:25px;box-shadow:inset 0 2px #fff,0 7px 23px #478eb01d}
+.meterSetupCharge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:100px;height:130px;filter:drop-shadow(0 0 12px #54e5ffb3)}
+.meterSetupCharge svg{width:100%;height:100%}
+.meterSetupConnection{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;align-items:center}
+.meterSetupConnection span{width:7px;height:4px;background:#73d9fa;border-radius:3px;box-shadow:0 0 7px #60dfff;animation:miLamp 2.6s infinite}
+.meterSetupConnection span:nth-child(2n){animation-delay:-.3s}
+.meterSetupConnection span:nth-child(3n){animation-delay:-.7s}
+.meterField{padding:16px;border:1px solid white;border-radius:20px;background:linear-gradient(150deg,#ffffffed,#e8f7fff0);box-shadow:0 5px 12px #2b83b020}
+.meterField label{display:block;font-size:13px;color:#245b7f;font-weight:800;margin:0 0 10px}
+.meterField label span{font-size:11px;font-weight:500;color:#6e93aa}
+.meterField select{width:100%;height:49px;font:650 14px/1.1 inherit;color:#2a618a;border:1px solid #b9def5;border-radius:13px;background:#fff;padding:0 13px}
+.meterField p{font-size:11px;line-height:1.45;color:#6b899e;margin:9px 1px 0}
+.meterDisclosure{margin:13px 0;padding:14px 15px;border:1px solid #b8ddf4;border-radius:20px;background:linear-gradient(135deg,#e3f4ff,#f6fcff)}
+.meterDisclosure icon{display:none}
+.meterDisclosure strong{display:block;font-size:13px;color:#176a9b}
+.meterDisclosure p{margin:6px 0 0;font-size:12px;line-height:1.53;color:#517c96}
+.meterButtonGroup{display:grid;gap:9px;margin-top:14px}
+.meterButtonGroup .btn{width:100%;min-height:51px}
+.meterInstrument{padding-top:18px!important}
+.meterTopline{display:flex;justify-content:space-between;align-items:flex-start;gap:5px}
+.meterTopline .meterHeading{font-size:clamp(27px,7.5vw,36px)!important;margin:8px 0 14px!important}
+.meterExit{flex:none;width:38px;height:38px;border:1px solid #fff;border-radius:12px;color:#397ea8;font-size:25px;line-height:1;background:linear-gradient(#fff,#e3f3ff);box-shadow:0 3px 10px #4583a528}
+.meterDemoBanner{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:10px 11px;margin:2px 0 13px;border-radius:14px;background:linear-gradient(135deg,#e8f4ff,#d5eafa);border:1px solid #c1e1f5}
+.meterDemoDot{width:7px;height:7px;flex:none;border-radius:50%;background:#289bdb;box-shadow:0 0 10px #3dc9fa}
+.meterDemoBanner strong{color:#156c9a;font-size:10px;letter-spacing:.7px}
+.meterDemoBanner span:last-child{font-size:10px;color:#56809c}
+.meterFrost{position:relative;isolation:isolate;overflow:hidden;
+ border-radius:27px;border:1px solid #fff;
+ background:linear-gradient(150deg,#fffffff0 0%,#ecf9ffed 39%,#d9f0ffea 100%);
+ box-shadow:inset 0 2px 2px #fff,0 9px 25px #3d81b82a,0 0 0 1px #b4e5ff58;
+ margin:0 0 13px;padding:17px 14px 15px}
+.meterFrost::before{content:"";position:absolute;inset:-20% -80% 50%;pointer-events:none;
+ transform:rotate(-17deg);background:linear-gradient(90deg,transparent 34%,#ffffffab 50%,transparent 65%);opacity:.55}
+.meterPanelTop{position:relative;display:flex;align-items:center;justify-content:space-between;gap:7px}
+.meterPanelLabel{display:flex;align-items:center;gap:9px;min-width:0}
+.meterPanelLabel>div{min-width:0;display:grid;gap:3px}
+.meterPanelLabel strong{font-size:14px;color:#1f5579;line-height:1.2}
+.meterPanelLabel small{font-size:10px;color:#7294a8}
+.meterPanelIcon{flex:none;display:grid;place-items:center;width:36px;height:36px;
+ color:#1484bb;font-size:23px;border:1px solid #fff;border-radius:13px;
+ background:linear-gradient(145deg,#ffffff,#c8eaff);box-shadow:0 3px 11px #409ac62d}
+.meterPanelIcon.meterZap{font-weight:800;font-size:28px}
+.meterPanelTag{font-size:9px;color:#5889a6;letter-spacing:.6px;font-weight:800;border:1px solid #ffffff;border-radius:999px;background:#ffffffbd;padding:5px 7px;white-space:nowrap}
+.meterBatteryContent{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 4px}
+.meterDial{position:relative;aspect-ratio:1;width:min(70vw,258px);max-width:258px;
+ display:grid;place-items:center;margin:2px 0 -8px;
+ filter:drop-shadow(0 8px 16px #277eac23)}
+.meterDial::after{content:"";position:absolute;inset:8%;border-radius:50%;pointer-events:none;
+ box-shadow:inset 0 5px 14px #ffffff7d,0 0 35px #62d8ff45}
+.meterDialSvg{width:100%;height:100%}
+.meterOuterFine{stroke:#fff;stroke-width:1.5;fill:none;opacity:.9}
+.meterDialTrack{stroke:#b3d9ee;stroke-width:18;fill:none;opacity:.7}
+.meterDialGlow{stroke:#57dcff;stroke-width:22;fill:none;opacity:.43;filter:url(#meterRingGlow);
+ stroke-linecap:round;transform:rotate(-90deg);transform-origin:130px 130px;transition:stroke-dashoffset 1s ease}
+.meterDialProgress{stroke:url(#meterRingGradient);stroke-width:15;fill:none;stroke-linecap:round;
+ transform:rotate(-90deg);transform-origin:130px 130px;
+ filter:drop-shadow(0 0 3px #86edff);transition:stroke-dashoffset .8s ease}
+.meterInnerCircle{fill:#d9f3ff;fill-opacity:.31;stroke:#fff;stroke-opacity:.86;stroke-width:1.5}
+.meterInnerGlint{fill:none;stroke:#fff;stroke-width:3;opacity:.6;stroke-linecap:round}
+.meterDialLabel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.meterDialTiny{font-size:10px;letter-spacing:3px;color:#5795b6;font-weight:900;margin-bottom:4px}
+.meterDialNumber{font:780 clamp(51px,17vw,72px)/1 -apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-3px;color:#176eaa;text-shadow:0 2px #ffffffcc,0 0 17px #6ac7f277}
+.meterDialNumber em{font-style:normal;font-size:.39em;vertical-align:middle;letter-spacing:-1px;margin-left:3px;color:#3799c6}
+.meterDialDescription{margin-top:7px;font-size:11px;color:#648aa3;font-weight:650}
+.meterBatteryStats{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0}
+.meterStatTile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:73px;padding:10px 3px;
+ background:linear-gradient(150deg,#fff,#e6f6ffcf);border:1px solid #fff;border-radius:16px;box-shadow:0 3px 9px #377cb917}
+.meterStatTile span{color:#6488a2;text-align:center;font-size:10px;line-height:1.2}
+.meterStatTile strong{font-size:clamp(12px,3.4vw,16px);line-height:1.1;color:#286fa3;text-align:center}
+.meterStatTile strong.positive{color:#168e83}
+.meterLevelRail{height:12px;position:relative;overflow:visible;margin:2px 2px 1px;border-radius:999px;background:linear-gradient(#b9d8ed,#d3eeff);border:1px solid #fff;box-shadow:inset 0 2px 4px #5f9dc344}
+.meterLevelFill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;
+ background:linear-gradient(90deg,#187bd0,#27ade2,#67eeec);box-shadow:0 0 11px #50e6ffbf,inset 0 1px #dbffff;transition:width .7s ease}
+.meterLevelGlow{position:absolute;top:50%;height:19px;width:19px;z-index:2;border-radius:50%;
+ transform:translate(-50%,-50%);background:#dbffff;border:4px solid #78dfff;
+ box-shadow:0 0 13px #60eaff,0 0 25px #38b8f88f;transition:left .7s ease}
+.meterConnectionPanel{padding-bottom:17px}
+.meterConnectionCore{position:relative;isolation:isolate;margin-top:14px;padding:22px 11px 15px;border:1px solid #fff;border-radius:22px;
+ background:linear-gradient(144deg,#e5f7ff,#cdeaff 60%,#bde2fc);box-shadow:inset 0 2px 3px white,0 3px 13px #4d95b02d;overflow:hidden}
+.meterConnectionGlow{position:absolute;left:50%;top:22%;transform:translate(-50%,-50%);width:83%;height:155px;border-radius:50%;
+ background:radial-gradient(circle,#50d7ff6b,transparent 67%);filter:blur(16px);opacity:.18;transition:opacity .35s}
+.meterConnectionPanel[data-power="charging"] .meterConnectionGlow,.meterConnectionPanel[data-power="full"] .meterConnectionGlow{opacity:1}
+.meterConnectionStatus{position:relative;display:flex;align-items:center;justify-content:center;gap:9px}
+.meterConnectionStatus strong{font-size:clamp(18px,5.5vw,23px);color:#205f86;letter-spacing:-.55px}
+.meterConnectionIndicator{width:17px;height:17px;border-radius:50%;background:#a3bed0;
+ border:3px solid #e7faff;box-shadow:inset 0 1px 2px #5a8ca3,0 0 0 1px #fff;transition:background .3s}
+.meterConnectionIndicator.on{background:#16caa5;border-color:#c9fff6;box-shadow:0 0 11px #38ebd0,0 0 25px #57caff,inset 0 2px 3px #78ffe4;
+ animation:miGlowBreathe 2.4s ease-in-out infinite}
+.meterConnectionCore p{position:relative;text-align:center;font-size:12px;line-height:1.46;color:#537d99;margin:9px auto 13px;max-width:280px}
+.meterCobTrack{position:relative;display:flex;gap:3px;align-items:center;padding:10px 7px;width:100%;height:48px;overflow:hidden;
+ border:1px solid #e9ffff;border-radius:15px;
+ background:linear-gradient(180deg,#bad5e9 0%,#e8f7ff 43%,#a6cde6 100%);
+ box-shadow:inset 0 3px 6px #6388ad56,0 4px 11px #2d82ac24}
+.meterCobSegment{display:block;flex:1;min-width:0;height:22px;border-radius:5px;
+ background:linear-gradient(180deg,#d8e5f0,#9ebed0);box-shadow:inset 0 2px 3px #8ca7bf;transition:background .3s,box-shadow .3s,transform .3s}
+.meterConnectionPanel[data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-power="full"] .meterCobSegment{
+ background:linear-gradient(180deg,#eaffff,#85f4fa 22%,#2cc4e6 68%,#1289c5 100%);
+ box-shadow:inset 0 1px #fff,0 0 6px #54dfff9e,0 0 12px #83f7ff73;
+ animation:miCobMove 2.8s ease-in-out infinite;
+ animation-delay:calc(var(--index) * -95ms)}
+.meterConnectionMetrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
+.meterConnectionMetrics>div{border:1px solid #fff;background:linear-gradient(145deg,#ffffffcc,#e8f6ffb3);padding:10px 9px;border-radius:12px;display:grid;gap:4px;text-align:center}
+.meterConnectionMetrics span{font-size:10px;color:#7494ab}
+.meterConnectionMetrics strong{font-size:13px;color:#286c9b}
+.meterAssessment{display:flex;gap:12px;align-items:center;border:1px solid #c5e4f6;border-radius:20px;
+ background:linear-gradient(140deg,#f4fbff,#dfedff);padding:15px 12px;margin:12px 0 13px}
+.meterAssessmentIcon{display:grid;place-items:center;flex:none;width:46px;height:46px;border:1px solid white;border-radius:15px;
+ font-size:25px;color:#247fa9;background:linear-gradient(#fff,#d1edff);box-shadow:0 3px 10px #3285b321}
+.meterAssessment.passed .meterAssessmentIcon{color:#138c84;background:linear-gradient(#eefff9,#baf6e7)}
+.meterAssessment.observed .meterAssessmentIcon{color:#bd7d36;background:linear-gradient(#fff7ed,#f9e7cc)}
+.meterAssessment strong{font-size:14px;color:#265d83}
+.meterAssessment p{font-size:11px;line-height:1.5;color:#68889e;margin:4px 0 0}
+.meterSimulator{padding:14px;border-radius:21px;border:1px solid #fff;background:linear-gradient(145deg,#ffffffdb,#eaf6ffdf);box-shadow:0 4px 18px #328abc1a}
+.meterSimulatorHeading{display:flex;justify-content:space-between;align-items:center;gap:5px}
+.meterSimulatorHeading strong{font-size:13px;color:#2e6d96}
+.meterSimulatorHeading span{font-size:9px;color:#6096b4;letter-spacing:.65px;font-weight:800}
+.meterSimulator p{font-size:11px;color:#6d8da6;line-height:1.45;margin:5px 0 12px}
+.meterSimulatorButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.meterSimulatorButtons button{min-height:46px;border:1px solid #fff;border-radius:14px;background:linear-gradient(155deg,#fff,#dcefff);color:#286b98;
+ font:760 11px/1.25 -apple-system,BlinkMacSystemFont,Arial,sans-serif;box-shadow:0 3px 10px #4988b01c;padding:7px 5px}
+.meterSimulatorButtons .meterSimulatorPrimary{grid-column:span 3;min-height:51px;background:linear-gradient(115deg,#318ce4,#0f66c9);color:#fff;border-color:#94dfff;font-size:13px;box-shadow:0 5px 16px #2578c944}
+.meterSimulatorButtons .meterSimulatorPrimary span{display:inline;font-size:21px;vertical-align:middle;margin-right:5px}
+.meterSimulatorButtons button:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
+.meterFootActions{display:grid;gap:8px;margin-top:13px}
+.meterFootActions button{min-height:49px}
+.meterLegal{text-align:center;font-size:10px;line-height:1.55;color:#6b91ab;margin:13px 5px 2px}
+.meterReportHero{display:flex;align-items:center;gap:13px;margin:18px 0 13px;border-radius:20px;background:linear-gradient(145deg,#e6f6ff,#d0eaff);border:1px solid #fff;padding:14px 12px}
+.meterReportIcon{width:55px;height:55px;flex:none;display:grid;place-items:center;border-radius:18px;background:linear-gradient(140deg,#71eaff,#0b89c8);color:#fff;font-size:42px;box-shadow:0 4px 15px #5ad8ff80}
+.meterReportHero strong{color:#22638f;font-size:16px}.meterReportHero p{font-size:11px;line-height:1.5;color:#6188a1;margin:5px 0 0}
+.meterReportRows{border-radius:20px;overflow:hidden;background:#fff8;border:1px solid white;margin-bottom:15px}
+.meterReportRow{display:flex;align-items:flex-start;justify-content:space-between;gap:13px;padding:12px 13px;border-bottom:1px solid #c7e4f46f}
+.meterReportRow:last-child{border-bottom:0}.meterReportRow span{font-size:12px;color:#608199}
+.meterReportRow strong{font-size:12px;text-align:right;color:#255a82;max-width:60%;line-height:1.4;overflow-wrap:anywhere}
+.meterReportNote{font-size:12px;color:#527c96;line-height:1.55;background:linear-gradient(145deg,#f4fbff,#e3f3ff);border:1px solid #fff;padding:12px;border-radius:15px}
+@keyframes miGlowBreathe{0%,100%{box-shadow:0 0 10px #3de7d0,0 0 18px #4ecbff}50%{box-shadow:0 0 19px #1fe6d9,0 0 35px #61e3ff}}
+@keyframes miCobMove{0%,100%{opacity:.74;transform:scaleY(.81)}50%{opacity:1;transform:scaleY(1.05)}}
+@keyframes miLamp{0%,100%{opacity:.32}50%{opacity:1}}
+@media(min-width:600px){.meterView{max-width:720px;margin-left:auto;margin-right:auto}.meterBatteryContent{flex-direction:row;gap:12px}.meterBatteryStats{grid-template-columns:1fr;width:170px}.meterStatTile{min-height:55px}.meterDial{width:248px}}
+@media(max-width:350px){.meterView{padding:15px 10px 17px!important}.meterDial{width:min(67vw,224px)}.meterPanelLabel strong{font-size:12px}.meterFrost{padding:13px 10px}.meterStatTile span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.meterView *, .meterView *::before,.meterView *::after{animation:none!important;transition:none!important}}
+@media print{.header,#home,#setup,#instrument,.meterReport .meterButtonGroup{display:none!important}
+ #report{display:block!important;box-shadow:none!important;border:0!important;background:white!important;color:#111!important}
+ .meterDemoBanner,.meterReportHero,.meterReportRows{print-color-adjust:exact}}
+
+/* Neon-green charging instruments — charging-review-5-neon.
+   Green is reserved for the TWO active instruments and confirmed progress.
+   Icy-blue glass, surfaces, titles and general controls are preserved. */
+.meterBatteryPanel{
+ --neon-core:#13ec72;
+ --neon-peak:#a9ffbc;
+ --neon-glow:#3dff85;
+ --neon-shadow:#08be5e;
+}
+.meterBatteryPanel .meterDialProgress{
+ filter:drop-shadow(0 0 3px #d4ffe7) drop-shadow(0 0 7px #3dff85) drop-shadow(0 0 10px #0ee96a);
+}
+.meterBatteryPanel .meterDialGlow{
+ stroke:#32ff86;
+ opacity:.84;
+ stroke-width:27;
+ filter:url(#meterRingGlow);
+}
+.meterBatteryPanel .meterDialNumber{
+ color:#079f57;
+ text-shadow:0 1px #ffffff,0 0 8px #c9ffe0,0 0 21px #5dff9f85;
+}
+.meterBatteryPanel .meterDialNumber em{color:#079f57}
+.meterBatteryPanel .meterDialTiny{color:#248968}
+.meterBatteryPanel .meterLevelFill{
+ background:linear-gradient(90deg,#087e4c,#0bce62 44%,#48ff8d 77%,#d6ffe5 100%);
+ box-shadow:0 0 9px #2bff85bd,0 0 17px #4aff9899,inset 0 2px 2px #ecfff3;
+}
+.meterBatteryPanel .meterLevelGlow{
+ background:#ecfff1;
+ border-color:#42ff8e;
+ box-shadow:0 0 9px #17f66b,0 0 20px #39ff88,0 0 31px #4cffa588;
+}
+.meterBatteryPanel[data-progress="charging"] .meterDialProgress{
+ animation:neonBatteryCharge 2.7s ease-in-out infinite;
+}
+.meterBatteryPanel[data-progress="charging"] .meterLevelGlow{
+ animation:neonRailPulse 2.7s ease-in-out infinite;
+}
+.meterBatteryPanel[data-progress="confirmed"] .meterDialProgress{
+ filter:drop-shadow(0 0 5px #e6fff0) drop-shadow(0 0 10px #28ff7b) drop-shadow(0 0 17px #1df673);
+}
+.meterBatteryPanel[data-progress="confirmed"] .meterDialGlow{
+ stroke:#29ff79;opacity:1;
+}
+.meterBatteryPanel[data-progress="confirmed"] .meterLevelGlow{
+ box-shadow:0 0 9px #f0fff4,0 0 23px #17f475,0 0 39px #34ff878f;
+}
+/* Inactive indicators remain muted; no false suggestion of power present. */
+.meterConnectionPanel .meterCobSegment{
+ background:linear-gradient(180deg,#f1f5f8,#b4c7d1);
+ box-shadow:inset 0 2px 3px #94a9b3;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-power="full"] .meterCobSegment{
+ background:linear-gradient(180deg,#e9fff0 0%,#acffd1 18%,#47ff8c 45%,#0acb67 76%,#078443 100%);
+ box-shadow:inset 0 1px 1px #ffffff,0 0 5px #59ff9c,0 0 13px #2aff7aa3,0 0 20px #0fdd6780;
+ animation:neonPowerChase 2.8s ease-in-out infinite;
+ animation-delay:calc(var(--index) * -95ms);
+}
+.meterConnectionPanel[data-power="charging"] .meterConnectionGlow,
+.meterConnectionPanel[data-power="full"] .meterConnectionGlow{
+ background:radial-gradient(circle,#54ff9380 0%,#92ffc240 43%,transparent 74%);
+ filter:blur(13px);
+}
+.meterConnectionPanel .meterConnectionIndicator.on{
+ background:#23ee78;border-color:#e4fff0;
+ box-shadow:0 0 10px #d9ffeb,0 0 17px #1eff74,0 0 29px #37fd83,inset 0 2px 3px #bdffe0;
+ animation:neonConnectionPulse 2.6s ease-in-out infinite;
+}
+.meterConnectionPanel[data-power="charging"] .meterZap,
+.meterConnectionPanel[data-power="full"] .meterZap{
+ color:#0caf5a;
+ background:linear-gradient(145deg,#f7fffa,#c8ffe2);
+ box-shadow:0 0 12px #aaffca6b,inset 0 1px 2px #fff;
+}
+.meterConnectionPanel[data-progress="confirmed"][data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-progress="confirmed"][data-power="full"] .meterCobSegment{
+ animation:none;
+ background:linear-gradient(180deg,#f1fff4,#bdffd3 25%,#46f98b 60%,#0daa59);
+ box-shadow:inset 0 1px 2px #fff,0 0 10px #27ff75b5,0 0 17px #57ff9b94;
+}
+.meterConnectionPanel[data-progress="confirmed"] .meterConnectionIndicator.on{
+ animation:none;
+ background:#12d966;
+}
+.meterAssessment.passed{
+ border-color:#aaf6ca;
+ background:linear-gradient(145deg,#f5fffa,#d8ffec);
+}
+.meterAssessment.passed .meterAssessmentIcon{
+ color:#078c4c;
+ background:linear-gradient(#f3fff8,#a5ffd0);
+ box-shadow:0 0 12px #74ffab88,inset 0 1px #fff;
+}
+.meterBatteryPanel .meterStatTile strong.positive,
+.meterAssessment.passed strong{color:#078c4e}
+@keyframes neonBatteryCharge{
+ 0%,100%{filter:drop-shadow(0 0 3px #8fffb9) drop-shadow(0 0 8px #27e96d)}
+ 50%{filter:drop-shadow(0 0 7px #e9fff0) drop-shadow(0 0 13px #2cff81) drop-shadow(0 0 19px #3dff8f)}
+}
+@keyframes neonRailPulse{
+ 0%,100%{box-shadow:0 0 9px #17ef65,0 0 19px #39f87e}
+ 50%{box-shadow:0 0 13px #aaffd1,0 0 28px #24ff86,0 0 37px #1aff7588}
+}
+@keyframes neonPowerChase{
+ 0%,100%{opacity:.78;transform:scaleY(.82);filter:brightness(.85)}
+ 50%{opacity:1;transform:scaleY(1.07);filter:brightness(1.2)}
+}
+@keyframes neonConnectionPulse{
+ 0%,100%{box-shadow:0 0 8px #5aff9c,0 0 17px #24ee78}
+ 50%{box-shadow:0 0 16px #d4ffe5,0 0 27px #23ff7d,0 0 37px #2eff7da1}
+}
+@media(prefers-reduced-motion:reduce){
+ .meterBatteryPanel .meterDialProgress,
+ .meterBatteryPanel .meterLevelGlow,
+ .meterConnectionPanel .meterCobSegment,
+ .meterConnectionPanel .meterConnectionIndicator.on{animation:none!important}
+}
+
+/* Charging instrument refinement — SPECTRUM COB SWEEP.
+   Connected = one slow left-to-right reveal, RED → AMBER → YELLOW → LIME → GREEN.
+   The sweep is a purely visual sign of RECOGNISED POWER, NEVER current/wattage.
+   Leave the Battery Charge Level instrument and all blue glass surfaces untouched. */
+.meterCobTrack{
+ gap:2px;
+ isolation:isolate;
+}
+.meterCobTrack .meterCobSegment{
+ position:relative;
+ border-radius:4px;
+ overflow:visible;
+}
+/* Override legacy full-green pulsing segments — first show the unlit COB rail. */
+.meterConnectionPanel[data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-power="full"] .meterCobSegment,
+.meterConnectionPanel[data-progress="confirmed"][data-power="charging"] .meterCobSegment,
+.meterConnectionPanel[data-progress="confirmed"][data-power="full"] .meterCobSegment{
+ animation:none;
+ background:linear-gradient(180deg,#e1edf3 0%,#b1c9d6 44%,#a0bccb 100%);
+ box-shadow:inset 0 2px 3px #87a8b953,0 1px 1px #ffffffb7;
+ filter:none;
+}
+/* Each diode is individually gradient-blended into its neighbour's hue. */
+.meterCobSegment::before{
+ content:"";
+ position:absolute;inset:0;
+ border-radius:inherit;
+ pointer-events:none;
+ opacity:0;
+ background:
+  linear-gradient(180deg,#ffffffbc 0%,#ffffff54 17%,transparent 40%,#0a37523a 100%),
+  linear-gradient(90deg,
+   hsl(var(--lamp-hue) 100% 56%) 0%,
+   hsl(calc(var(--lamp-hue) + 5.5) 100% 53%) 100%);
+ box-shadow:inset 0 1px 1px #ffffff,
+   0 0 7px hsl(var(--lamp-hue) 100% 59% / .98),
+   0 0 14px hsl(var(--lamp-hue) 100% 55% / .7);
+}
+.meterConnectionPanel[data-power="charging"] .meterCobSegment::before,
+.meterConnectionPanel[data-power="full"] .meterCobSegment::before{
+ animation:miSpectrumIgnite .33s cubic-bezier(.12,.68,.17,1) both;
+ animation-delay:calc(var(--index) * .235s);
+}
+/* A softly focused bright leading edge travels across the 24 COB LEDs once. */
+.meterCobTrack::after{
+ content:"";position:absolute;top:7px;left:0;
+ width:32px;height:33px;z-index:4;
+ pointer-events:none;
+ border-radius:50%;
+ background:radial-gradient(ellipse at center,#ffffffd1 0%,#fffbd2ac 22%,#fefff66c 38%,transparent 72%);
+ filter:blur(6px);
+ opacity:0;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobTrack::after,
+.meterConnectionPanel[data-power="full"] .meterCobTrack::after{
+ animation:miSpectrumTravel 5.75s linear both;
+}
+/* The spectrum reaches green at the far right, remains gently lit and steady.
+   There is no fabricated current strength or charging-speed position. */
+@keyframes miSpectrumIgnite{
+ 0%{opacity:0;transform:scaleY(.92);filter:brightness(.55)}
+ 45%{opacity:.95;transform:scaleY(1.08);filter:brightness(1.28)}
+ 100%{opacity:1;transform:scaleY(1);filter:brightness(1)}
+}
+@keyframes miSpectrumTravel{
+ 0%{left:0;opacity:0}
+ 8%{opacity:.72}
+ 90%{opacity:.72}
+ 100%{left:calc(100% - 32px);opacity:.22}
+}
+/* When the cable disconnects the animated spectrum vanishes immediately.
+   Previously confirmed progress is preserved separately, not shown as power. */
+.meterConnectionPanel:not([data-power="charging"]):not([data-power="full"]) .meterCobSegment::before,
+.meterConnectionPanel:not([data-power="charging"]):not([data-power="full"]) .meterCobTrack::after{
+ opacity:0;animation:none;
+}
+@media(prefers-reduced-motion:reduce){
+ .meterConnectionPanel[data-power="charging"] .meterCobSegment::before,
+ .meterConnectionPanel[data-power="full"] .meterCobSegment::before{
+  animation:none!important;opacity:1!important;transform:none!important;
+ }
+ .meterCobTrack::after{animation:none!important;opacity:0!important}
+}
+
+/* CHARGING ENERGY HANDOVER — preserve approved spectrum and blue glass.
+ * 5.7s colour rise → 1.15s full-strip whoosh → clockwise battery-ring surge.
+ * These visual cues are NOT amps, voltage, or wattage measurements. */
+
+/* One bright, soft-edged band traverses the ALREADY COMPLETED colour strip. */
+.meterCobTrack::before{
+ content:"";position:absolute;z-index:6;pointer-events:none;
+ top:1px;bottom:1px;left:-44%;width:44%;border-radius:18px;
+ background:linear-gradient(90deg,transparent 0%,#fff0ad17 18%,#ffffd7ad 38%,#f5fff7fa 56%,#baffcfbf 72%,transparent 100%);
+ box-shadow:0 0 19px #f1fff48c;filter:blur(4px);
+ mix-blend-mode:screen;opacity:0;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobTrack::before,
+.meterConnectionPanel[data-power="full"] .meterCobTrack::before{
+ animation:miEnergyWhoosh 1.13s cubic-bezier(.17,.04,.22,1) 5.83s both;
+}
+.meterConnectionPanel[data-power="charging"] .meterCobTrack,
+.meterConnectionPanel[data-power="full"] .meterCobTrack{
+ animation:miWholeLineSurge 1.35s ease-out 5.81s both;
+}
+@keyframes miEnergyWhoosh{
+ 0%{left:-44%;opacity:0;filter:blur(9px)}
+ 15%{opacity:.8;filter:blur(5px)}
+ 44%{opacity:1;filter:blur(3px)}
+ 84%{opacity:1;filter:blur(4px)}
+ 100%{left:100%;opacity:0;filter:blur(10px)}
+}
+@keyframes miWholeLineSurge{
+ 0%,12%{filter:brightness(1);box-shadow:inset 0 3px 6px #6388ad56,0 4px 11px #2d82ac24}
+ 49%{filter:brightness(1.35);box-shadow:inset 0 2px 3px #ffffffa3,0 0 15px #caffc5,0 0 29px #4aff99aa}
+ 100%{filter:brightness(1);box-shadow:inset 0 3px 6px #6388ad56,0 4px 11px #2d82ac24}
+}
+
+/* Bridge is zero-height; it cannot shift the approved card layout. */
+.meterEnergyBridge{position:relative;z-index:10;height:0;pointer-events:none}
+.meterEnergyBridge::before{
+ content:"";position:absolute;z-index:10;left:50%;top:-17px;
+ width:9px;height:29px;border-radius:999px;
+ transform:translate(-50%,19px) scaleY(.2);
+ background:linear-gradient(0deg,#77ffb900,#faffed 48%,#47ff99 82%,#ffffff);
+ box-shadow:0 0 15px #9affbe,0 0 26px #50ffad8c;
+ filter:blur(2px);opacity:0;
+}
+#instrument[data-power="charging"] .meterEnergyBridge::before,
+#instrument[data-power="full"] .meterEnergyBridge::before{
+ animation:miEnergyHandUp .66s ease-in-out 6.64s both;
+}
+@keyframes miEnergyHandUp{
+ 0%{opacity:0;transform:translate(-50%,19px) scaleY(.25)}
+ 25%{opacity:.95;transform:translate(-50%,9px) scaleY(1.1)}
+ 68%{opacity:1;transform:translate(-50%,-5px) scaleY(1.15)}
+ 100%{opacity:0;transform:translate(-50%,-22px) scaleY(.35)}
+}
+
+/* The actual numeric percentage always remains visible. Only the luminous
+   ring animation waits for the power meter finale to send its energy. */
+.meterEnergySweep{
+ fill:none;stroke:url(#meterEnergyGradient);stroke-width:12;
+ stroke-linecap:round;stroke-dasharray:80 498.053;
+ transform:rotate(-90deg);transform-origin:130px 130px;opacity:0;
+ filter:drop-shadow(0 0 5px #f6fff5) drop-shadow(0 0 11px #42ff9c) drop-shadow(0 0 16px #1aff83);
+ pointer-events:none;
+}
+.meterEnergyHalo{
+ fill:none;stroke:#87ffb0;stroke-width:10;opacity:0;
+ filter:drop-shadow(0 0 10px #76ffa3) drop-shadow(0 0 21px #2fff85);
+ pointer-events:none;
+}
+.meterBatteryPanel[data-power="charging"] .meterEnergySweep,
+.meterBatteryPanel[data-power="full"] .meterEnergySweep{
+ animation:miBatteryCircleWhoosh 1.66s cubic-bezier(.18,.4,.2,.98) 6.93s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterEnergyHalo,
+.meterBatteryPanel[data-power="full"] .meterEnergyHalo{
+ animation:miRingHaloFinish 1.4s ease-out 7.35s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterDialProgress,
+.meterBatteryPanel[data-power="full"] .meterDialProgress{
+ animation:miBatteryRingPowerUp 1.8s ease-out 6.93s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterDialNumber,
+.meterBatteryPanel[data-power="full"] .meterDialNumber{
+ animation:miBatteryNumberPowerUp 1.65s ease-out 7.05s both;
+}
+.meterBatteryPanel[data-power="charging"] .meterDialGlow,
+.meterBatteryPanel[data-power="full"] .meterDialGlow{
+ animation:miBatteryOuterPowerUp 1.75s ease-out 6.93s both;
+}
+@keyframes miBatteryCircleWhoosh{
+ 0%{transform:rotate(-90deg);opacity:0;stroke-width:9}
+ 9%{opacity:.96}
+ 43%{opacity:1;stroke-width:15}
+ 84%{opacity:1;stroke-width:13}
+ 100%{transform:rotate(270deg);opacity:0;stroke-width:10}
+}
+@keyframes miRingHaloFinish{
+ 0%{opacity:0;stroke-width:5}
+ 40%{opacity:.7;stroke-width:13}
+ 76%{opacity:.9;stroke-width:13}
+ 100%{opacity:.23;stroke-width:8}
+}
+@keyframes miBatteryRingPowerUp{
+ 0%{opacity:.82;filter:drop-shadow(0 0 2px #c9ffdc) drop-shadow(0 0 6px #32ec81)}
+ 42%{opacity:1;filter:drop-shadow(0 0 7px #f1fff4) drop-shadow(0 0 16px #4cff93) drop-shadow(0 0 23px #24ff79)}
+ 100%{opacity:1;filter:drop-shadow(0 0 6px #effff1) drop-shadow(0 0 12px #2cff81) drop-shadow(0 0 18px #20ee78)}
+}
+@keyframes miBatteryNumberPowerUp{
+ 0%{text-shadow:0 2px #ffffff,0 0 8px #85ffaa6b}
+ 55%{text-shadow:0 2px #ffffff,0 0 20px #b6ffd7,0 0 34px #1cff82}
+ 100%{text-shadow:0 2px #ffffff,0 0 12px #c3ffdb,0 0 25px #43ff93a8}
+}
+@keyframes miBatteryOuterPowerUp{
+ 0%{opacity:.53;stroke:#56e99b}
+ 56%{opacity:1;stroke:#97ffc0}
+ 100%{opacity:.9;stroke:#41ff8a}
+}
+#instrument[data-power="unplugged"] .meterEnergyBridge::before,
+#instrument[data-power="unknown"] .meterEnergyBridge::before{
+ animation:none;opacity:0;
+}
+@media(prefers-reduced-motion:reduce){
+ .meterConnectionPanel[data-power="charging"] .meterCobTrack,
+ .meterConnectionPanel[data-power="full"] .meterCobTrack,
+ .meterConnectionPanel[data-power="charging"] .meterCobTrack::before,
+ .meterConnectionPanel[data-power="full"] .meterCobTrack::before,
+ #instrument .meterEnergyBridge::before,
+ .meterBatteryPanel .meterEnergySweep,
+ .meterBatteryPanel .meterEnergyHalo,
+ .meterBatteryPanel .meterDialProgress,
+ .meterBatteryPanel .meterDialGlow,
+ .meterBatteryPanel .meterDialNumber{animation:none!important}
+ .meterCobTrack::before,.meterEnergyBridge::before,.meterEnergySweep{opacity:0!important}
+ .meterBatteryPanel[data-power="charging"] .meterDialGlow,
+ .meterBatteryPanel[data-power="full"] .meterDialGlow{opacity:.9;stroke:#41ff8a}
+ .meterBatteryPanel[data-power="charging"] .meterEnergyHalo,
+ .meterBatteryPanel[data-power="full"] .meterEnergyHalo{opacity:.2}
+}

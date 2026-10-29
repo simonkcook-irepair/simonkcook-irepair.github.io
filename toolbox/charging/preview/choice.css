@@ -1,0 +1,196 @@
+/*
+ * iRepair Toolbox v7 — real browser animated charging-method guides.
+ * Keeps the approved icy-blue glass design and inherits .phoneArt,
+ * .phoneScreen, .screenGlow, .dynamicIsland from existing approved CSS.
+ * Pure HTML/CSS/SVG, no static mockup and no external photo dependencies.
+ * This art shows physical positioning only, not a sensor measurement.
+ */
+.chargingChoiceScreen{padding:23px 12px 21px!important}
+.chargingChoiceScreen .chargeChoiceHeading{text-align:center!important;font-size:clamp(27px,8vw,37px)!important;margin:10px 0 10px!important}
+.chargeChoiceLead{max-width:340px;text-align:center!important;font-size:13px!important;margin:0 auto 18px!important;line-height:1.48!important}
+.chargeChoiceGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.chargeChoiceCard{
+ appearance:none;-webkit-appearance:none;display:flex;align-items:center;flex-direction:column;gap:0;
+ width:100%;margin:0;min-width:0;padding:8px 8px 12px;position:relative;isolation:isolate;
+ text-align:center;cursor:pointer;border:1px solid #fff;border-radius:25px;
+ background:linear-gradient(145deg,#ffffffed 0%,#e8f8ffef 37%,#cae9fff0 100%);
+ box-shadow:inset 0 2px 2px #fff,0 0 0 1px #a0dbfa65,0 9px 23px #3681b52a;
+ color:#214f77;
+ transition:transform .16s ease,box-shadow .2s ease;
+}
+.chargeChoiceCard:focus-visible{outline:3px solid #027bd5;outline-offset:3px}
+.chargeChoiceCard:active{transform:scale(.98)}
+.chargeChoiceCard[data-done="true"]{border-color:#84f2c0;box-shadow:inset 0 2px 2px #fff,0 0 0 1px #71efaf,0 0 17px #57ef9e4a}
+.chargeChoiceCard[data-skipped="true"]{opacity:.7}
+.chargeChoiceArt{
+ position:relative;width:100%;height:252px;border-radius:19px;overflow:hidden;isolation:isolate;
+ background:radial-gradient(ellipse at 48% 27%,#faffff 0%,#d3efff 43%,#a8d8fa 88%,#9dd4f5);
+ border:1px solid #ffffffea;box-shadow:inset 0 2px 5px #fff,inset 0 -7px 21px #87c9f469;
+}
+.chargeChoiceArt::before{
+ content:"";position:absolute;inset:-20% -72%;z-index:8;pointer-events:none;
+ transform:translateX(-80%) rotate(18deg);
+ background:linear-gradient(90deg,transparent 34%,#ffffff1a 43%,#ffffffa2 49%,#ffffff20 56%,transparent 66%);
+ animation:choiceGlossSweep 5.4s linear infinite;
+}
+@keyframes choiceGlossSweep{
+ 0%,8%{transform:translateX(-80%) rotate(18deg);opacity:0}
+ 38%{opacity:.62}
+ 64%,100%{transform:translateX(80%) rotate(18deg);opacity:0}
+}
+.choiceStageAura{position:absolute;inset:16% -15%;border-radius:50%;filter:blur(14px);background:radial-gradient(ellipse,#4aeaff64,transparent 66%);animation:choiceAuraBreath 4s ease-in-out infinite}
+@keyframes choiceAuraBreath{0%,100%{opacity:.45}50%{opacity:1}}
+/* This IS the approved premium handset frame, scaled for two-column iPhone layout. */
+.choicePhone{position:absolute;z-index:3;left:50%;transform:translateX(-50%)}
+.choicePhone .choicePhoneArt{
+ width:89px!important;aspect-ratio:.49!important;height:auto!important;
+ padding:4px!important;border-radius:19px!important;
+ box-shadow:0 12px 19px #17558072,0 0 0 1px #fff9,inset 0 2px 2px #fff!important;
+ background:linear-gradient(143deg,#f9ffff,#93b8d0 6%,#456d88 11%,#1a354e 30%,#0a2238 76%,#0c1e32 100%);
+}
+.choicePhone .phoneScreen{inset:4px!important;border-radius:16px!important;
+ background:radial-gradient(circle at 23% 12%,#ecfcff 0%,transparent 33%),linear-gradient(156deg,#81d5fa 1%,#419de4 38%,#2257ad 78%,#13386b);
+}
+.choicePhone .dynamicIsland{top:6px!important;height:9px!important;width:34px!important}
+.choicePhone .dynamicIsland:after{top:3px!important;right:4px!important;width:2px!important;height:2px!important}
+.choicePhone .side.s1{top:21%;height:17px;width:2px;left:-2px}
+.choicePhone .side.s2{top:33%;height:27px;width:2px;left:-2px}
+.choicePhone .side.s3{top:28%;height:35px;width:2px;right:-2px}
+.choiceScreenOrb{position:absolute;width:76%;aspect-ratio:1;top:31%;left:12%;
+ border-radius:50%;background:radial-gradient(circle,#8dffdb8e 0%,#30d9e54f 35%,transparent 70%);
+ box-shadow:0 0 14px #43dfff7d;animation:choiceBatteryHalo 4s ease-in-out infinite}
+@keyframes choiceBatteryHalo{0%,100%{opacity:.43;transform:scale(.88)}50%{opacity:1;transform:scale(1.09)}}
+.choiceBolt{position:absolute;z-index:4;top:32%;left:50%;transform:translateX(-50%);
+ font-size:38px;line-height:1;color:#e5fff2;text-shadow:0 0 11px #80ffce,0 0 22px #16e6809a}
+/* A carefully lit, physically positioned charging socket at the very bottom edge. */
+.choicePhonePort{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);
+ width:28px;height:9px;border-radius:0 0 8px 8px;background:linear-gradient(#a9c5d5,#34536f 66%,#cfeaff 100%);
+ border:1px solid #e0f5ff;box-shadow:0 1px 3px #15364a88;display:grid;place-items:center;z-index:7}
+.choicePortHole{display:block;width:17px;height:4.5px;border-radius:8px;background:#072339;box-shadow:inset 0 0 1px #84c6e8,0 0 1px #f8ffff}
+.chargingChoiceScreen[data-port="lightning"] .choicePortHole{width:14px;height:3.5px}
+.choicePhoneWired{top:6px;animation:choicePhoneFloat 3.85s ease-in-out infinite}
+@keyframes choicePhoneFloat{0%,100%{transform:translateX(-50%) translateY(0)}42%,57%{transform:translateX(-50%) translateY(-2px)}}
+/* The connector is real multi-piece animated HTML/CSS, not a static illustration. */
+.choicePlugGroup{position:absolute;z-index:4;left:50%;top:170px;width:34px;height:111px;transform:translateX(-50%) translateY(23px);
+ display:flex;flex-direction:column;align-items:center;animation:choiceCableInsert 4.1s cubic-bezier(.35,0,.23,1) infinite}
+@keyframes choiceCableInsert{
+ 0%,12%{transform:translateX(-50%) translateY(24px)}
+ 35%,60%{transform:translateX(-50%) translateY(-4px)}
+ 82%,100%{transform:translateX(-50%) translateY(24px)}
+}
+.choicePlugTip{z-index:3;position:relative;width:16px;height:15px;border:1px solid #fff;border-radius:4px 4px 2px 2px;
+ background:linear-gradient(90deg,#718da4,#ecf7fd 25%,#c7dae6 52%,#7b9aaa 90%,#d5f0fc);
+ box-shadow:0 0 5px #e7ffff,0 1px 3px #124e7b77}
+.choicePlugTip span{position:absolute;top:3px;left:2px;right:2px;bottom:3px;border:1px solid #83abb5;border-radius:3px;background:#376b83}
+.chargingChoiceScreen[data-port="lightning"] .choicePlugTip{width:13px;height:12px;border-radius:1px;background:linear-gradient(90deg,#a7bbcf,#fff,#98b3c8)}
+.chargingChoiceScreen[data-port="lightning"] .choicePlugTip span{left:2px;right:2px;top:3px;bottom:2px;border:0;border-radius:0;background:linear-gradient(90deg,#b78e5e,#f5e2b6,#987443)}
+.choicePlugCollar{position:relative;width:23px;height:5px;background:linear-gradient(90deg,#b5d3e5,#fcffff,#9dc4d8);border-radius:3px;box-shadow:0 1px 4px #13374c4d;z-index:2}
+.choicePlugGrip{width:28px;height:33px;border:1px solid #d4eeff;border-radius:6px 6px 10px 10px;
+ background:linear-gradient(90deg,#bacddc,#fff 30%,#e7f5fa 64%,#a1bed0);
+ box-shadow:inset 0 2px 3px #fff,0 2px 7px #24577463;z-index:1}
+.choiceCableLine{width:10px;height:86px;background:linear-gradient(90deg,#b8cfe0,#f3fcff 38%,#d1e5f2 69%,#93bbd2);
+ box-shadow:inset -1px 0 2px #6f9bb9,2px 0 4px #1c557a44;border-radius:0 0 7px 7px}
+.choiceConnectBloom{position:absolute;z-index:5;left:50%;top:181px;transform:translateX(-50%);width:58px;height:20px;
+ border-radius:50%;background:radial-gradient(ellipse,#ccffed,#42ffb29c 30%,transparent 70%);
+ opacity:0;filter:blur(6px);animation:choiceCableSpark 4.1s ease-in-out infinite;pointer-events:none}
+@keyframes choiceCableSpark{0%,25%,76%,100%{opacity:0}40%,61%{opacity:1}}
+.choiceEnergyRay{position:absolute;left:50%;z-index:4;top:148px;width:4px;height:54px;transform:translateX(-50%);
+ background:linear-gradient(0deg,transparent,#62ffe1,#efffff,#6affaa,transparent);
+ filter:blur(3px);opacity:0;animation:choiceCableSpark 4.1s ease-in-out infinite}
+/* Wireless charger: dimensional floating handset over polished, lit Qi pad. */
+.choicePhoneWireless{top:8px;z-index:4;transform-origin:50% 94%;
+ animation:choiceWirelessLower 4.8s cubic-bezier(.32,0,.26,1) infinite}
+.choicePhoneWireless .choicePhoneArt{transform:perspective(200px) rotateX(19deg) rotateZ(-5deg);width:92px!important;
+ box-shadow:0 12px 15px #1b588275,0 0 0 1px #e0faffdd,inset 0 2px 2px #fff!important}
+@keyframes choiceWirelessLower{
+ 0%,12%,100%{transform:translateX(-50%) translateY(-5px)}
+ 40%,66%{transform:translateX(-50%) translateY(23px)}
+ 85%{transform:translateX(-50%) translateY(-5px)}
+}
+.choiceChargingPad{position:absolute;z-index:3;left:50%;bottom:9px;width:132px;height:56px;
+ transform:translateX(-50%) perspective(210px) rotateX(52deg);
+ border-radius:50%;border:4px solid #d0f5ff;
+ background:radial-gradient(ellipse,#d9ffff 0%,#a0d9e6 35%,#467eaf 63%,#1c4068 84%,#b6e6fb 93%);
+ box-shadow:0 14px 13px #144f7a4d,0 3px 13px #46eefe63,inset 0 2px 4px #f7ffff}
+.choicePadInner{position:absolute;inset:8px;border-radius:50%;border:2px solid #d7fff8;
+ background:radial-gradient(ellipse,#edfaff,#b6fbeb 43%,#4a99b5 80%,#376b8c);
+ box-shadow:inset 0 2px 5px #fff,0 0 13px #8ffffa8b}
+.choicePadRing{position:absolute;inset:2px;border-radius:50%;border:4px solid #67fff1;box-shadow:0 0 13px #40faff,0 0 23px #3dffbba8;
+ animation:choicePadPulse 4.8s ease-in-out infinite}
+@keyframes choicePadPulse{
+ 0%,19%,81%,100%{opacity:.25;box-shadow:0 0 6px #72fff5}
+ 45%,65%{opacity:1;box-shadow:0 0 13px #c9fff9,0 0 25px #32ffad,0 0 37px #39ffe38c}
+}
+.choicePadGlimmer{position:absolute;inset:4px;border-radius:50%;border-top:4px solid #fff;filter:blur(2px)}
+.choicePadCable{position:absolute;left:100%;top:41%;width:65px;height:8px;border-radius:9px;
+ background:linear-gradient(#c2e2ec,#fff,#87b3cf);box-shadow:0 3px 6px #25638455}
+.choiceWirelessBloom{position:absolute;z-index:2;bottom:17px;left:50%;transform:translateX(-50%);
+ width:138px;height:70px;background:radial-gradient(ellipse,#8effe4a8,#3ef6d744 34%,transparent 74%);filter:blur(10px);
+ animation:choiceWirelessGlow 4.8s ease-in-out infinite}
+@keyframes choiceWirelessGlow{0%,20%,81%,100%{opacity:.15}40%,65%{opacity:1}}
+.choiceStepLabel{display:block;align-self:stretch;font-size:9px;letter-spacing:1.1px;font-weight:850;color:#3185af;margin:13px 0 6px}
+.chargeChoiceTitle{font-size:clamp(12px,3.5vw,16px);letter-spacing:-.4px;color:#164e7b;line-height:1.16;min-height:33px}
+.chargeChoiceSub{display:block;color:#6489a2;font-size:11px;line-height:1.37;min-height:43px;margin:6px 1px 8px}
+.choiceSelectIcon{width:38px;height:38px;flex:none;display:grid;place-items:center;margin:3px auto 8px;border-radius:14px;
+ font-size:23px;font-weight:650;color:#fff;background:linear-gradient(145deg,#3eabed,#0b70cc);
+ border:1px solid #c9edff;box-shadow:inset 0 2px #ffffff4d,0 3px 12px #2c8ccc66}
+.choiceStatus{display:block;align-self:stretch;border-top:1px solid #cce8f6;padding-top:8px;font-size:10px;font-weight:800;color:#5486a3}
+.chargeChoiceCard[data-done="true"] .choiceStatus{color:#078b51}
+.choiceActions{display:grid;gap:8px;margin-top:14px}
+.choiceActions .btn{min-height:49px!important;font-size:14px!important}
+.choiceActions [hidden]{display:none!important}
+.choiceBack{appearance:none;border:0;background:none;color:#37799e;font-weight:700;font-size:13px;min-height:35px}
+.choiceHonesty{font-size:10.5px;line-height:1.5;color:#7393a9;text-align:center;margin:9px 4px 0}
+.activeTestDescription{color:#4d7995;font-size:12px;line-height:1.45;text-align:center;margin:0 4px 11px}
+@media(max-width:365px){
+ .chargingChoiceScreen{padding:19px 9px!important}
+ .chargeChoiceGrid{gap:7px}
+ .chargeChoiceCard{padding:6px 5px 10px;border-radius:21px}
+ .chargeChoiceArt{height:232px;border-radius:16px}
+ .choicePhone .choicePhoneArt{width:81px!important}
+ .choicePhoneWireless .choicePhoneArt{width:84px!important}
+ .choicePlugGroup{top:160px}
+ .choiceConnectBloom{top:169px}
+ .chargeChoiceTitle{font-size:12px}
+ .chargeChoiceSub{font-size:10px}
+}
+@media(min-width:480px){
+ .chargeChoiceArt{height:280px}
+ .choicePhone .choicePhoneArt{width:107px!important}
+ .choicePhoneWireless .choicePhoneArt{width:110px!important}
+ .choicePlugGroup{top:206px}
+ .choiceConnectBloom{top:213px}
+ .choiceChargingPad{width:155px;bottom:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ .chargingChoiceScreen .chargeChoiceArt *,
+ .chargingChoiceScreen .chargeChoiceArt::before,
+ .chargingChoiceScreen .chargeChoiceCard *{animation:none!important;transition:none!important}
+ .choicePlugGroup{transform:translateX(-50%) translateY(-4px)!important}
+ .choicePhoneWireless{transform:translateX(-50%) translateY(23px)!important}
+ .choiceConnectBloom{opacity:.5}
+ .choiceWirelessBloom{opacity:.5}
+}
+
+
+/* Respect the selected iPhone family's front silhouette; this is appearance
+   guidance only, not a claim of engineering-grade component positioning. */
+.chargingChoiceScreen[data-front="notch"] .choicePhone .dynamicIsland{
+ top:0!important;width:48px!important;height:12px!important;border-radius:0 0 8px 8px!important;
+}
+.chargingChoiceScreen[data-front="home"] .choicePhone .dynamicIsland{
+ display:none!important;
+}
+.chargingChoiceScreen[data-front="home"] .choicePhone .phoneScreen{
+ bottom:19px!important;border-radius:14px 14px 3px 3px!important;
+}
+.chargingChoiceScreen[data-front="home"] .choicePhone .choicePhoneArt::after{
+ content:"";position:absolute;z-index:9;
+ width:12px;height:12px;left:50%;bottom:3px;transform:translateX(-50%);
+ border-radius:50%;border:1px solid #f1ffff;
+ background:radial-gradient(circle at 48% 35%,#7b9eb3,#193a58 70%);
+ box-shadow:0 0 4px #c8e5ef,inset 0 1px #ffffffa1;
+}
+
+/* Native and Safari: skip exists only within the optional wireless session. */
+.meterFootActions [hidden]{display:none!important}
