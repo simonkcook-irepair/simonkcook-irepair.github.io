@@ -125,3 +125,19 @@
 @media(prefers-reduced-motion:reduce){
  .irCamPhoto,.irCamFrontSensor,.ir-v11.cameraV11 #test .cameraLensGuide svg{animation:none!important}
 }
+
+/* Purpose-built camera app surface conceals the original charging-logo
+   display on the approved handset PHOTO without modifying its pixels. */
+.irCamDeviceCameraSurface{
+ position:absolute;z-index:4;left:50%;top:69px;transform:translateX(-50%);
+ width:124px;height:112px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:0;background:linear-gradient(157deg,#183b68f2,#0b2e5ded 70%,#1769a9eb);color:#d9ffff;
+ border:1px solid #7fc5ffd8;
+ box-shadow:inset 0 1px #ffffff90,0 0 0 1px #ffffff44,0 7px 20px #091d4677,0 0 20px #72dbff57;
+ pointer-events:none;animation:irCameraAppSurface 1.2s ease-out 1 both;
+}
+.irCamDeviceCameraSurface svg{width:58px;height:61px;filter:drop-shadow(0 0 7px #4ee4ff99)}
+.irCamDeviceCameraSurface span{font-size:10px;font-weight:900;letter-spacing:1.5px;margin-top:4px;color:#e3ffff}
+@keyframes irCameraAppSurface{from{opacity:0;transform:translate(-50%,8px) scale(.93)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@media(max-width:350px){.irCamDeviceCameraSurface{top:69px;width:116px;height:104px}.irCamDeviceCameraSurface svg{width:53px;height:54px}}
+@media(prefers-reduced-motion:reduce){.irCamDeviceCameraSurface{animation:none}}
