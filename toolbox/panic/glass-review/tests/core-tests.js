@@ -1,0 +1,34 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const context={};vm.runInNewContext(fs.readFileSync('core.js','utf8'),context);const Core=context.iRepairPanicCore;let count=0;
+function check(name,ok){assert(ok,name);console.log('PASS '+name);count++}
+let r=Core.parse('');
+check('empty file guidance',!!r.error);
+r=Core.parse('panicString: userspace watchdog timeout: no successful checkins from thermalmonitord; Missing sensor(s): mic1 prs0 TG0B');
+check('sensor class from plain log',r.kind==='sensor');
+check('lower/pressure/thermal tokens',r.tokens.some(t=>t.id==='mic1')&&r.tokens.some(t=>t.id==='prs0')&&r.tokens.some(t=>t.id==='tg0b'));
+check('explicit missing sensor(s) token',r.tokens.some(t=>t.id==='missing_sensor'));
+r=Core.parse('{"bug_type":"210"}\n{"panicString":"SMC PANIC - gas gauge communication error","productType":"iPhone18,2"}');
+check('NDJSON panicString',r.kind==='smc'&&r.tokens.some(t=>t.id==='gas_gauge'));
+check('iPhone model from header/body metadata',r.model.slug==='iphone-17-pro-max');
+r=Core.parse(JSON.stringify({metadata:{panicString:'AOP PANIC, watchdog timeout'}}));
+check('nested JSON panicString',r.kind==='aop'&&r.extractedSignature);
+r=Core.parse('panicString: userspace watchdog timeout: no successful checkins from backboardd');
+check('watchdog not hardware proof',r.kind==='watchdog'&&!r.hardwareConfirmed);
+r=Core.parse('panic-full\npanic(cpu 3 caller 0xfffffff): old undefined kernel issue');
+check('unclassified panic not guessed',r.kind==='unclassified'&&!r.tokens.length);
+r=Core.parse('{"bug_type":"211","event":"battery telemetry","last_value_CycleCount":29}');
+check('unrelated analytics not false panic',r.kind==='insufficient');
+r=Core.parse('{"panicString":"SMC PANIC 0xABCDEF0012345678 serial: A1BC2468F00DABCD account: alice@example.com"}');
+check('privacy redaction',!r.excerpt.includes('ABCDEF0012345678')&&!r.excerpt.includes('alice@example.com'));
+r=Core.parse('{"panicString":"SMC PANIC","productType":"iPhone18,2","deviceModel":"iPhone18,1"}');
+check('conflicting identifiers never guessed',r.model.ambiguous&&r.model.slug===null);
+const c={getModel:slug=>slug==='iphone-15'?{name:'iPhone 15'}:slug==='iphone-17-pro-max'?{name:'iPhone 17 Pro Max'}:null};
+check('customer selector takes priority',Core.modelLabel(r,'iphone-15',c).source==='Customer selection');
+check('model unknown if no explicit metadata',Core.modelLabel(Core.parse('panicString: SMC PANIC'),' ',c).name==='Not identified');
+r=Core.parse('{"panicString":"thermalmonitord missing sensor(s)","serial":"SENSITIVE1234567890","productType":"iPhone18,2"}');
+const report=Core.report(r,Core.modelLabel(r,'',c));
+check('report omits raw panic and serial',!report.includes('SENSITIVE1234567890')&&!report.includes('thermalmonitord missing sensor(s)'));
+check('report states limitations',report.includes('not proof')&&report.includes('model'));
+check('no false repeated-event claims',!report.toLowerCase().includes('repeated restart detected'));
+console.log('ALL '+count+' PANIC_CORE_CHECKS_PASS');
+
