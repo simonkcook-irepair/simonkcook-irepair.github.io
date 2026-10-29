@@ -1,0 +1,79 @@
+/*
+ * iRepair Toolbox v11 — opt-in premium glass design primitives.
+ * This shared CSS is safe only on body.ir-v11, and never changes test logic.
+ */
+.ir-v11{
+ --ir-navy:#153c62;--ir-deep:#123856;--ir-text:#315f83;
+ --ir-blue:#078cf1;--ir-ice:#8ce6ff;--ir-line:#ffffffeb;
+ --ir-glass:linear-gradient(155deg,#fffffff6 0%,#e9f8fff2 50%,#d0edffea 100%);
+ --ir-shadow:inset 0 2px 2px #fff,inset 0 -8px 18px #8bcaf327,0 14px 36px #327db32e;
+ background:radial-gradient(ellipse at 2% 8%,#fff 0%,transparent 45%),
+ radial-gradient(ellipse at 103% 25%,#8bcfff9a 0%,transparent 39%),
+ radial-gradient(ellipse at 18% 100%,#c6eeffad 0%,transparent 50%),
+ linear-gradient(160deg,#f7fcff,#d7edff 58%,#f5fbff);
+ color:var(--ir-navy);
+}
+.ir-v11 .shell{width:min(100%,510px);padding:calc(env(safe-area-inset-top) + 11px) 13px calc(env(safe-area-inset-bottom) + 24px)}
+.ir-v11 .glass{
+ border:1px solid #fff!important;
+ background:var(--ir-glass)!important;
+ box-shadow:var(--ir-shadow)!important;
+ -webkit-backdrop-filter:blur(26px) saturate(175%);backdrop-filter:blur(26px) saturate(175%);
+}
+.ir-v11 .header{padding:11px 13px;border-radius:25px;box-shadow:0 6px 20px #4794cf2a!important}
+.ir-v11 .header .logo{box-shadow:0 0 0 2px #fff,0 0 15px #33aafe7b,0 5px 18px #3b8ac74d}
+.ir-v11 .card{margin-top:13px;border-radius:34px;padding:24px 18px 23px}
+.ir-v11 h1{color:var(--ir-navy);letter-spacing:-1.8px}
+.ir-v11 .lead{color:#5b7e9b}
+.ir-v11 .eyebrow{font-size:11px;letter-spacing:2px;color:#187eb8}
+.ir-v11 .btn{
+ border:1px solid #d3efff!important;border-radius:19px;min-height:53px;
+ box-shadow:inset 0 2px 2px #fff, inset 0 -5px 12px #9dcffa45,0 6px 15px #397cb431;
+ transition:transform .15s ease,filter .18s ease,box-shadow .18s ease;
+}
+.ir-v11 .btn:focus-visible,
+.ir-v11 select:focus-visible,
+.ir-v11 summary:focus-visible{
+ outline:3px solid #007dcc;outline-offset:3px;
+}
+.ir-v11 .btn:active:not(:disabled){transform:translateY(1px) scale(.992)}
+.ir-v11 .btn:disabled{opacity:.5;cursor:not-allowed}
+.ir-v11 .btn.main{
+ color:#fff;border-color:#81d1ff!important;
+ background:linear-gradient(180deg,#43bbff 0%,#128df3 42%,#0065ce 100%)!important;
+ text-shadow:0 1px 1px #0055b9;
+ box-shadow:inset 0 2px #b5eaff,inset 0 -5px #0158be72,0 0 0 1px #5acaff75,0 0 21px #36b9fe52,0 9px 23px #2778c85b!important;
+}
+.ir-v11 .btn.main:before{background:linear-gradient(180deg,#ffffff59,transparent)!important}
+.ir-v11 .btn.unable{background:linear-gradient(150deg,#fff,#e1f2ff)!important;color:#255f8b}
+.ir-v11 .btn.pass{background:linear-gradient(165deg,#edfff9,#a6f0d9)!important;color:#126d60;border-color:#99e2d3!important}
+.ir-v11 .btn.fail{background:linear-gradient(160deg,#fff8f9,#ffdce5)!important;color:#a23859;border-color:#ffc2d1!important}
+.ir-v11 .badge{background:linear-gradient(135deg,#fff,#e4f5ff);border:1px solid white;color:#35769b}
+.ir-v11 .ir-panel{
+ border:1px solid #fff;border-radius:25px;
+ background:linear-gradient(145deg,#fffffff1 0%,#e1f4fff2 75%,#d5eefff2 100%);
+ box-shadow:inset 0 2px 2px #fff,inset 0 -6px 20px #9ed9f33d,0 8px 24px #5387b533;
+}
+.ir-v11 .ir-stage{
+ position:relative;overflow:hidden;isolation:isolate;
+ border:1px solid #ffffffed;border-radius:28px;
+ background:radial-gradient(ellipse 84% 58% at 50% 38%,#fff 0%,#e6f7ff 53%,#bce4f9 100%);
+ box-shadow:inset 0 3px 8px #fff,inset 0 -12px 28px #9dceee4f,0 13px 30px #5499c23b;
+}
+.ir-v11 .ir-stage:after{
+ content:"";position:absolute;inset:-55% -100%;pointer-events:none;z-index:8;opacity:.24;
+ transform:translateX(-80%) rotate(14deg);
+ background:linear-gradient(90deg,transparent 37%,#ffffff16 44%,#fff9 49%,#ffffff20 54%,transparent 61%);
+ animation:irV11GlassGlint 9s ease-in-out 1 both;
+}
+@keyframes irV11GlassGlint{0%,18%{transform:translateX(-86%) rotate(14deg)}65%,100%{transform:translateX(85%) rotate(14deg)}}
+.ir-v11 .smallNote,.ir-v11 .testFoot{color:#64809b}
+@media(max-width:350px){
+ .ir-v11 .shell{padding-left:10px;padding-right:10px}
+ .ir-v11 .card{padding-left:13px;padding-right:13px}
+ .ir-v11 .header{padding:9px 10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .ir-v11 .ir-stage:after{animation:none;opacity:0}
+ .ir-v11 .btn{transition:none}
+}
