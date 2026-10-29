@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#e9f6ff">
+<title>iRepair Toolbox | Screen Diagnostics</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--ink:#16395f;--muted:#5d7893;--blue:#0b78e7;--cyan:#52e5ff;--mint:#24c8a1;--green:#20b37d;--red:#d84d6d}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--ink)}
+body{background:radial-gradient(circle at 10% 4%,#fff 0,transparent 36%),radial-gradient(circle at 92% 18%,#89caff8d 0,transparent 42%),radial-gradient(circle at 12% 86%,#d7f7ff 0,transparent 48%),linear-gradient(160deg,#f5fbff 0%,#d8edff 52%,#f6fbff 100%);min-height:100svh;overflow-x:hidden}
+.shell{width:min(100%,500px);min-height:100svh;margin:auto;padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column}
+.glass{border:1px solid #fff;background:linear-gradient(160deg,#ffffffef,#e6f5ffcc 68%,#d6edffce);box-shadow:inset 0 2px 1px #fff,inset 0 -4px 12px #6da7db1a,0 10px 30px #4381b42b;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
+.header{border-radius:24px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}.logo{width:46px;height:46px;border-radius:16px;background:#f5fbff url("https://simonkcook-irepair.github.io/icon-192.png") center/cover no-repeat;border:1px solid #fff;box-shadow:inset 0 1px 1px #fff,0 0 0 1px #fff,0 0 16px #66baff5e,0 8px 18px #3c84b738}
+.brand b{display:block;font-size:17px;letter-spacing:-.5px;color:#16395f}.brand span{display:block;font-size:10px;font-weight:850;letter-spacing:2.1px;color:#3574a8;margin-top:2px}.badge{font-size:10px;font-weight:850;letter-spacing:1px;color:#2a6594;border:1px solid #fff;border-radius:999px;padding:10px 13px;background:linear-gradient(145deg,#fff,#e7f5ffd8);box-shadow:inset 0 1px #fff,0 4px 12px #498ac426;white-space:nowrap}
+.card{margin-top:16px;border-radius:34px;padding:31px 30px 22px;display:flex;flex-direction:column;min-height:calc(100svh - 118px)}
+.eyebrow{text-align:center;color:#0d79c8;font-size:11px;font-weight:900;letter-spacing:2.2px;text-transform:uppercase}
+h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-align:center;margin:18px 0;color:#17395f;text-shadow:0 1px #fff9}.lead{text-align:center;color:#5d7892;font-size:17px;line-height:1.55;margin:0 auto;max-width:390px}
+.phoneStage{margin:26px 0 20px;border:1px solid #fff;border-radius:31px;min-height:520px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#ffffffee,transparent 64%),linear-gradient(145deg,#ffffffb7,#dff2ffd0 58%,#fbfdffbf);box-shadow:inset 0 2px 2px #fff,inset 0 -8px 26px #9cc8e527,0 15px 38px #3c81b231}
+.phoneGlow{position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#75c8ff70 0,transparent 68%);filter:blur(26px)}
+.phoneArt{position:relative;width:min(66vw,258px);aspect-ratio:.475;border-radius:46px;padding:8px;background:linear-gradient(145deg,#f2fbff 0%,#a3bfd2 5%,#53728c 10%,#203b55 24%,#0e2338 72%,#071725 100%);box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff;overflow:visible}
+.phoneArt:before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;background:linear-gradient(126deg,#ffffffba 0,transparent 13%,transparent 78%,#4bc3ff30 100%);mix-blend-mode:screen}
+.phoneArt:after{content:"";position:absolute;left:7%;right:7%;bottom:-10px;height:18px;border-radius:50%;background:#19375355;filter:blur(8px)}
+.side{position:absolute;background:linear-gradient(#9fb6c8,#294763);border-radius:4px;box-shadow:inset 0 1px #fff8}.side.s1{left:-5px;top:22%;width:5px;height:46px}.side.s2{left:-5px;top:34%;width:5px;height:76px}.side.s3{right:-5px;top:31%;width:5px;height:96px}
+.phoneScreen{position:absolute;inset:8px;border-radius:39px;overflow:hidden;background:radial-gradient(circle at 31% 16%,#e6fbff 0,transparent 31%),radial-gradient(circle at 62% 28%,#a7e5ff4a 0,transparent 27%),linear-gradient(158deg,#91ddff 0%,#58afe9 33%,#347fca 68%,#2550a2 100%);box-shadow:inset 0 0 28px #1e5d9c35}
+.dynamicIsland{position:absolute;top:17px;left:50%;transform:translateX(-50%);width:76px;height:24px;border-radius:999px;background:#081726;z-index:8;box-shadow:inset 0 -1px #ffffff14}.dynamicIsland:after{content:"";position:absolute;right:9px;top:9px;width:5px;height:5px;border-radius:50%;background:#123959}
+.screenGlow{position:absolute;inset:-30% -65%;transform:translateX(-72%) rotate(13deg);background:linear-gradient(90deg,transparent 35%,#ffffff06 41%,#ffffffdd 48%,#e6f9ffc2 52%,#ffffff18 57%,transparent 62%);filter:blur(1.4px);animation:sweep 4.5s cubic-bezier(.45,0,.55,1) infinite}.screenGlow2{position:absolute;inset:-20% -50%;transform:translateX(-90%) rotate(13deg);background:linear-gradient(90deg,transparent 41%,#95ecff15 45%,#ffffff7c 50%,transparent 58%);animation:sweep2 4.5s .45s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes sweep{0%,15%{transform:translateX(-72%) rotate(13deg);opacity:.24}48%{opacity:1}79%,100%{transform:translateX(72%) rotate(13deg);opacity:.24}}@keyframes sweep2{0%,20%{transform:translateX(-90%) rotate(13deg);opacity:.14}55%{opacity:.72}83%,100%{transform:translateX(90%) rotate(13deg);opacity:.08}}
+.infoBox{border:1px solid #fff;border-radius:26px;padding:22px 23px;background:linear-gradient(145deg,#fffffff0,#e9f6ffe0);box-shadow:inset 0 2px 2px #fff,0 8px 24px #4182b425;color:#456783;font-size:15px;line-height:1.7}.infoBox b{color:#2e5477}.actions{margin-top:22px}
+.btn{position:relative;overflow:hidden;isolation:isolate;width:100%;min-height:61px;border-radius:21px;border:1px solid #d0eaff;background:linear-gradient(180deg,#fff 0%,#eaf6ff 42%,#bddfff 100%);color:#185b94;font-weight:850;font-size:17px;box-shadow:inset 0 2px 1px #ffffffed,inset 0 -6px 12px #6399c53b,0 0 0 1px #c5e7ff73,0 0 10px #75caff50,0 6px 16px #4484b64d;transition:transform .15s ease}.btn:before{content:"";position:absolute;z-index:-1;left:1px;right:1px;top:1px;height:45%;border-radius:19px 19px 46% 46%;background:linear-gradient(145deg,#ffffffc4,#ffffff54 52%,#ffffff0c 82%)}.btn.main{border-color:#5ee7ff;background:radial-gradient(circle at 50% 0,#7be5ff,transparent 50%),linear-gradient(180deg,#2eaaff 0%,#0874e9 56%,#064eb2 100%);color:#fff;text-shadow:0 1px 3px #073a80a8;box-shadow:inset 0 2px 1px #fff,inset 0 -7px 13px #003b9863,0 0 0 1px #6de9ff,0 0 14px #3bdcffbe,0 0 27px #198cff75,0 8px 20px #1675d16e}.btn.pass{border-color:#92f1c7;background:radial-gradient(circle at 50% 0,#e9fff3,transparent 65%),linear-gradient(180deg,#c8f8df 0%,#4dca93 55%,#159465 100%);color:#064d34}.btn.fail{border-color:#ffacc1;background:radial-gradient(circle at 50% 0,#fff0f4,transparent 65%),linear-gradient(180deg,#ffe1e9 0%,#f27c9b 55%,#ca355b 100%);color:#76213a}.btn.unable{background:linear-gradient(180deg,#fff,#edf2fa 45%,#cbdbea);color:#496782;border-color:#fff}.btn:active{transform:scale(.97)}
+.smallNote{text-align:center;color:#67829a;font-size:11px;line-height:1.5;margin:12px 0 0}.view{display:none}.view.active{display:flex;flex-direction:column;flex:1}
+.testLayer{position:fixed;inset:0;z-index:100;display:none;background:radial-gradient(circle at 50% 42%,#fff,#e6f4ff 76%);touch-action:none;overflow:hidden}.testLayer.active{display:block}.testTop{position:absolute;z-index:130;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 12px) 15px 11px;display:flex;align-items:center;justify-content:space-between;background:#f6fbffed;border-bottom:1px solid #fff;backdrop-filter:blur(20px);color:#17466e}.testTop .btn{width:auto;min-height:42px;padding:8px 15px;font-size:13px}.testSurface{position:absolute;inset:0;touch-action:none}.centerInstruction{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(84vw,370px);padding:27px 24px;border-radius:28px;text-align:center;border:1px solid #fff;background:linear-gradient(145deg,#fffffff6,#e5f4ffe8);box-shadow:inset 0 2px 2px #fff,0 18px 44px #397daf34;backdrop-filter:blur(22px);color:#244f73}.centerInstruction h2{margin:0 0 10px;font-size:28px;letter-spacing:-.6px;color:#173b60}.centerInstruction p{margin:0;color:#5b7690;line-height:1.55}.centerInstruction .btn{margin-top:18px}.testBottom{position:absolute;z-index:130;bottom:0;left:0;right:0;padding:10px 16px calc(env(safe-area-inset-bottom) + 11px);background:#f6fbffed;border-top:1px solid #fff;backdrop-filter:blur(20px)}.testBottom p{margin:0 0 7px;text-align:center;color:#56728c;font-size:12px}
+.touchCluster{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;grid-template-columns:repeat(3,58px);gap:14px;padding:16px;border:1px solid #fff;border-radius:28px;background:linear-gradient(145deg,#fffffff2,#e2f3ffda);box-shadow:inset 0 2px 2px #fff,0 16px 38px #397eb233;backdrop-filter:blur(20px)}.touchDot{width:58px;height:58px;border-radius:50%;border:1px solid #8ee8ff;color:#fff;font-size:19px;font-weight:900;background:radial-gradient(circle at 50% 0,#8cecff,transparent 58%),linear-gradient(#2ca9ff,#0874e9 60%,#0750b4);box-shadow:inset 0 2px #fff,0 0 0 5px #42cfff1c,0 0 14px #40d9ff88,0 7px 14px #347db747}.touchDot.hit{background:radial-gradient(circle at 50% 0,#ecfff7,transparent 60%),linear-gradient(#80e1ba,#20ad7f);box-shadow:inset 0 2px #fff,0 0 0 5px #4bddaa24,0 0 15px #39ddaa7e}.touchCounter{position:absolute;top:18%;left:0;right:0;text-align:center;color:#2c6c99;font-size:13px;font-weight:850}.touchSafe{position:absolute;z-index:30;transform:translate(-50%,-50%);width:76px;height:76px;min-height:76px;border-radius:50%;padding:0;font-size:10px;line-height:1.05;display:none}.touchSafe.show{display:block}
+.edgeStage{position:absolute;inset:calc(env(safe-area-inset-top) + 67px) 0 calc(env(safe-area-inset-bottom) + 5px);display:grid;place-items:center;touch-action:none}.edgePhone{position:relative;height:min(79svh,720px);aspect-ratio:100/214;max-width:90vw;border-radius:10.5%/5%;padding:7px;background:linear-gradient(145deg,#f1f9ff 0,#829bb3 7%,#29435c 20%,#11283c 58%,#071928 100%);box-shadow:0 34px 70px #1f578653,0 0 0 1px #fff9,inset 0 2px 2px #fff;filter:drop-shadow(0 0 20px #55c6ff24);isolation:isolate;touch-action:none}.edgePhone:before{content:"";position:absolute;inset:2px;border-radius:inherit;background:linear-gradient(122deg,#ffffffa3 0,transparent 14%,transparent 80%,#4bc4ff29);z-index:10;pointer-events:none}.edgeScreen{position:absolute;inset:8px;border-radius:9.3%/4.5%;overflow:hidden;background:radial-gradient(circle at 50% 43%,#fff 0,#f4fbff 42%,#e0f0ff 75%,#c7e4fb 100%);box-shadow:inset 0 0 28px #4c8dbb2e;touch-action:none}.edgeIsland{position:absolute;z-index:12;top:2.2%;left:50%;transform:translateX(-50%);width:31%;height:3.4%;border-radius:999px;background:#091827;pointer-events:none}.edgeSvg{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}.rail{fill:none;stroke:#67a7d04c;stroke-width:5.2;stroke-linecap:round}.railHi{fill:none;stroke:#ffffffb5;stroke-width:1.05;stroke-linecap:round}.cobHalo{fill:none;stroke:url(#cob);stroke-width:8.2;stroke-linecap:round;opacity:.64;filter:url(#glow)}.cobStrip{fill:none;stroke:url(#cob);stroke-width:3.45;stroke-linecap:round;pathLength:100;stroke-dasharray:.7 .32;filter:url(#glow)}.runner{fill:#fff;stroke:#43e5ff;stroke-width:1.2;filter:url(#runnerGlow)}.runnerRing{fill:none;stroke:#8ef5ff;stroke-width:.85;filter:url(#runnerGlow);transform-box:fill-box;transform-origin:center;animation:ring 1.25s ease-in-out infinite}@keyframes ring{50%{transform:scale(1.8);opacity:.18}}.edgeMsg{position:absolute;top:5.1%;left:50%;transform:translateX(-50%);z-index:30;width:min(84vw,345px);padding:9px 13px;border:1px solid #fff;border-radius:999px;background:linear-gradient(145deg,#fffffff4,#e4f4ffe4);color:#236391;font-size:11px;font-weight:850;text-align:center;box-shadow:inset 0 1px #fff,0 7px 19px #3c7eae2b;backdrop-filter:blur(15px);pointer-events:none}.edgePct{position:absolute;bottom:4.7%;left:50%;transform:translateX(-50%);z-index:30;color:#32698f;font-size:11px;font-weight:850;pointer-events:none}.edgeFailSafe{position:absolute;z-index:35;left:50%;top:4.85%;transform:translate(-50%,-50%);width:66px;height:66px;min-height:66px;border-radius:50%;padding:0;font-size:19px;display:none;box-shadow:inset 0 2px 1px #fff,inset 0 -7px 13px #003b9863,0 0 0 1px #6de9ff,0 0 16px #3bdcffd4,0 0 30px #198cff85,0 8px 20px #1675d16e}.edgeFailSafe.show{display:block}.core{position:absolute;left:50%;top:50.5%;width:88px;height:88px;transform:translate(-50%,-50%) scale(.72);opacity:.1;z-index:15;pointer-events:none;transition:.5s cubic-bezier(.22,1,.36,1)}.core.ready{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}.coreHalo{position:absolute;inset:-16px;border-radius:50%;border:2px solid #6defff58;box-shadow:0 0 20px #32cfff7c;animation:pulse 1.8s ease-out infinite}.coreCog{position:absolute;inset:-8px;border-radius:50%;background:repeating-conic-gradient(#32d8ff 0 6deg,transparent 6deg 14deg);-webkit-mask:radial-gradient(circle,transparent 0 58%,#000 60% 70%,transparent 72%);mask:radial-gradient(circle,transparent 0 58%,#000 60% 70%,transparent 72%);filter:drop-shadow(0 0 7px #32cfff)}.core.ready .coreCog{animation:spin 9s linear infinite}.coreLogo{position:absolute;inset:13px;border-radius:16px;background:#fff url("https://simonkcook-irepair.github.io/icon-192.png") center/cover no-repeat;box-shadow:0 0 0 1px #fff,0 6px 18px #337fb14b}@keyframes pulse{from{transform:scale(.76);opacity:.82}to{transform:scale(1.2);opacity:0}}@keyframes spin{to{transform:rotate(360deg)}}.results .eyebrow{margin-top:6px}.reportRow{display:flex;justify-content:space-between;gap:12px;padding:14px 15px;margin:8px 0;border:1px solid #fff;border-radius:16px;background:linear-gradient(145deg,#fffffff0,#e8f5ffe0);box-shadow:inset 0 1px 2px #fff,0 5px 15px #5389b522}.good{color:#16835f}.bad{color:#b83a57}.neutral{color:#936d28}@media(max-width:430px){.card{padding:28px 26px 21px}.phoneStage{min-height:500px}.infoBox{font-size:14px}.phoneArt{width:min(66vw,245px)}}@media(max-height:750px){.card{padding-top:22px}.phoneStage{min-height:410px}.phoneArt{width:min(54vw,220px)}.edgePhone{height:72svh}}@media(prefers-reduced-motion:reduce){.screenGlow,.screenGlow2,.runnerRing,.coreHalo,.core.ready .coreCog{animation:none}}
+
+/* APPROVED CHANGES 2026-10-24 — scoped overrides; original styling retained */
+
+/* 01: Fit the complete approved opening design within portrait height. */
+#home .phoneStage{margin:9px 0 10px;min-height:clamp(220px,25svh,270px)}
+#home .phoneArt{width:min(35vw,12svh,125px)}
+@media(max-height:750px){
+  #home .phoneStage{min-height:190px;margin:7px 0}
+  #home .phoneArt{width:min(32vw,12svh,100px)}
+}
+
+/* Compact spacing only where necessary to prevent portrait scrolling. */
+#home.card{padding-top:20px;padding-bottom:15px}
+#home h1{font-size:clamp(36px,9vw,48px);margin:12px 0}
+#home .lead{font-size:16px;line-height:1.4}
+#home .infoBox{padding:14px 17px;font-size:13px;line-height:1.48}
+#home .actions{margin-top:13px}
+#home .smallNote{margin-top:7px}
+/* Portrait compactness for shorter iPhones; no change to approved styling on larger screens. */
+@media(max-height:720px){
+  .header{padding:9px 12px}
+  .header .logo{width:40px;height:40px}
+  .header .brand{gap:8px}
+  .header .brand b{font-size:15px}
+  .header .brand span{font-size:8px;letter-spacing:1.55px}
+  #home.card{margin-top:9px;padding:12px 16px 10px;border-radius:27px}
+  #home h1{font-size:clamp(30px,8.4vw,36px);line-height:1.02;margin:7px 0}
+  #home .lead{font-size:13px;line-height:1.3}
+  #home .phoneStage{min-height:162px;margin:7px 0}
+  #home .phoneArt{width:min(31vw,10.5svh,78px)}
+  #home .infoBox{padding:10px 12px;font-size:12px;line-height:1.28;border-radius:19px}
+  #home .actions{margin-top:8px}
+  #home .actions .btn{min-height:52px}
+  #home .smallNote{font-size:10px;line-height:1.25;margin-top:5px}
+}
+/* 03–04: Centre display-test instructions without altering test backgrounds. */
+.displayInstruction{
+  position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);
+  z-index:8;width:min(82vw,335px);padding:20px 18px;
+  text-align:center;color:#244f73;font-size:16px;font-weight:750;line-height:1.55;
+  border:1px solid #fff;border-radius:24px;
+  background:linear-gradient(145deg,#fffffff6,#e5f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 16px 40px #397daf34;
+  backdrop-filter:blur(18px)
+}
+/* 05: Only the display assessment card becomes slightly more compact. */
+.centerInstruction.displayAssessBox{width:min(78vw,325px);padding:20px 19px}
+.displayAssessBox h2{font-size:24px}
+.displayAssessBox .btn{min-height:51px}
+
+/* 07–09: Keep all nine touch targets independently accessible. */
+.touchCluster{grid-template-columns:repeat(3,66px);gap:15px}
+.touchDot{width:66px;height:66px}
+.touchGuidance{
+  position:absolute;top:calc(50% - 205px);left:50%;transform:translateX(-50%);
+  width:min(86vw,330px);padding:12px 16px;border:1px solid #fff;
+  border-radius:20px;text-align:center;color:#386e97;
+  background:linear-gradient(145deg,#fffffff6,#e5f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 10px 26px #397daf27;
+  z-index:12;line-height:1.35
+}
+.touchGuidance strong{display:block;font-size:15px;color:#235c84}
+.touchGuidance span{display:block;font-size:12px;margin-top:4px}
+.touchSafe{
+  display:block;left:50%;top:calc(50% + 196px);
+  transform:translateX(-50%);width:min(80vw,300px);height:auto;
+  min-height:52px;padding:10px 15px;border-radius:18px;
+  font-size:13px;line-height:1.35;white-space:normal
+}
+@media(max-height:720px){
+  .touchCluster{grid-template-columns:repeat(3,60px);gap:12px;padding:12px}
+  .touchDot{width:60px;height:60px}
+  .touchGuidance{top:calc(50% - 172px)}
+  .touchSafe{top:calc(50% + 162px)}
+}
+
+/* 11–12: Use the approved landing handset design, without shine animation. */
+.edgeStage{inset:calc(env(safe-area-inset-top) + 69px) 0 calc(env(safe-area-inset-bottom) + 5px)}
+.edgePhone.phoneArt{
+  width:auto;height:min(83svh,760px);aspect-ratio:.475;
+  max-width:calc(100vw - 30px);border-radius:46px;padding:8px;
+  background:linear-gradient(145deg,#f2fbff 0%,#a3bfd2 5%,#53728c 10%,#203b55 24%,#0e2338 72%,#071725 100%);
+  box-shadow:0 28px 45px #2b5c874a,0 0 0 1px #fff9,inset 0 2px 2px #fff
+}
+.edgePhone.phoneArt:before{
+  inset:-1px;background:linear-gradient(126deg,#ffffffba 0,transparent 13%,transparent 78%,#4bc3ff30 100%);
+  mix-blend-mode:screen;z-index:10
+}
+.edgeScreen.phoneScreen{
+  inset:8px;border-radius:39px;
+  background:radial-gradient(circle at 31% 16%,#e6fbff 0,transparent 31%),
+    radial-gradient(circle at 62% 28%,#a7e5ff4a 0,transparent 27%),
+    linear-gradient(158deg,#91ddff 0%,#58afe9 33%,#347fca 68%,#2550a2 100%);
+  box-shadow:inset 0 0 28px #1e5d9c35
+}
+.edgeIsland.dynamicIsland{
+  top:2.7%;height:3.5%;width:28%;z-index:12
+}
+/* The illuminated runner is always in FRONT of the Dynamic Island. */
+.edgeSvg{z-index:24}
+.edgeMsg{
+  top:31%;width:78%;max-width:310px;padding:13px 15px;
+  border-radius:22px;font-size:13px;line-height:1.38;font-weight:800;
+  background:linear-gradient(145deg,#fffffff7,#e4f4fff0);
+  box-shadow:inset 0 2px 2px #fff,0 12px 30px #397daf30
+}
+.core{width:102px;height:102px;opacity:.6;z-index:25}
+.core.ready{opacity:1}
+.edgeFailSafe{top:76%;z-index:35}
+.edgePct{bottom:4%;font-size:12px;color:#fff;text-shadow:0 1px 4px #124875}
+@media(max-height:750px){.edgePhone.phoneArt{height:min(79svh,665px)}}
+
+
+/* CR-13: Retain the EXACT approved iPhone artwork at its native geometry.
+   Scale the ENTIRE rendered handset, not just its width, so its radius,
+   Dynamic Island, side buttons and screen all keep their original proportions. */
+#home .phoneStage{min-height:286px;margin:6px 0 8px}
+#home .phoneArt{
+  position:absolute;
+  left:50%;top:50%;
+  width:258px;
+  transform:translate(-50%,-50%) scale(.51);
+  transform-origin:center center;
+}
+/* Constrained iPhone in-app browsers: preserve handset identity and fit. */
+@media(max-height:750px){
+  #home .phoneStage{min-height:208px;margin:3px 0}
+  #home .phoneArt{width:258px;transform:translate(-50%,-50%) scale(.38)}
+  #home.card{margin-top:6px;padding-top:8px;padding-bottom:7px}
+  #home h1{margin:5px 0}
+  #home .infoBox{padding:7px 11px}
+  #home .actions{margin-top:5px}
+  #home .smallNote{margin-top:3px}
+}
+@media(max-height:630px){
+  #home .phoneStage{min-height:188px}
+  #home .phoneArt{transform:translate(-50%,-50%) scale(.344)}
+}
+
+
+/* Keep the full premium handset visible on taller phones without introducing scrolling. */
+@media(min-height:751px){
+  #home .phoneStage{min-height:282px;margin:4px 0 6px}
+  #home.card{padding-top:17px}
+  #home h1{margin:9px 0}
+  #home .infoBox{padding-top:11px;padding-bottom:11px}
+  #home .actions{margin-top:9px}
+  #home .smallNote{margin-top:4px}
+}
+
+
+/* CR-14 (touch only): return fallback to the last verified working numbered spot. */
+.touchSafe{
+  display:none;position:absolute;left:0;top:0;z-index:30;
+  transform:translate(-50%,-50%);width:66px;height:66px;min-height:66px;
+  border-radius:50%;padding:2px;font-size:10px;line-height:1.05;
+  touch-action:manipulation;
+}
+.touchSafe.show{display:flex;align-items:center;justify-content:center}
+@media(max-height:720px){
+  .touchSafe{width:60px;height:60px;min-height:60px}
+}
+
+
+/* EXPERIMENTAL TEST SURFACES ONLY — FINAL APP REMAINS UNCHANGED */
+
+/* During inspection, colour fills the full available browser viewport,
+   rather than staying covered by instructional panels. */
+.testLayer.displayUnobstructed .testTop,
+.testLayer.displayUnobstructed .testBottom,
+.testLayer.displayUnobstructed .displayInstruction {display:none!important}
+.displayInstruction .unobstructBtn{display:block;width:100%;margin:12px 0 5px;min-height:44px;font-size:13px;border-radius:14px}
+.displayInstruction .displayTip{display:block;color:#557a95;font-size:11px;font-weight:600;line-height:1.35}
+.displayInstruction .displayText{display:block}
+
+/* A real viewport-sized contact map, no decorative handset or border. */
+.testLayer.coverageMode .testTop,
+.testLayer.coverageMode .testBottom {display:none!important}
+.testLayer.coverageMode .testSurface{background:linear-gradient(153deg,#ecf9ff,#d8efff 65%,#e8f7ff)!important;touch-action:none}
+.coverageGrid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(22,minmax(0,1fr));pointer-events:none}
+.coverageCell{min-width:0;min-height:0;box-shadow:inset 0 0 0 .6px #6aaee64a;background:linear-gradient(145deg,#ffffff42,#b4dafd20);transition:background .18s,box-shadow .18s}
+.coverageCell.touched{background:linear-gradient(155deg,#93f4f2d8,#15a6ffdb 56%,#086edee0);box-shadow:inset 0 0 3px #fff,0 0 9px #38b5ffe3}
+.coverageHud{position:absolute;pointer-events:none;z-index:10;top:calc(env(safe-area-inset-top) + 10px);left:50%;transform:translateX(-50%);width:max-content;max-width:76%;border:1px solid #fff;border-radius:20px;padding:8px 16px;text-align:center;background:linear-gradient(140deg,#fffffff4,#def1ffed);box-shadow:0 5px 22px #3a89c650,inset 0 1px #fff;transition:opacity .22s}
+.coverageHud strong{display:block;color:#1265a4;font-size:16px;letter-spacing:-.2px}
+.coverageHud span{display:block;color:#4e7593;font-size:10px;line-height:1.3;margin-top:3px}
+.coverageHint{position:absolute;pointer-events:none;z-index:9;left:50%;top:49%;transform:translate(-50%,-50%);width:min(78vw,285px);border:1px solid #fff;border-radius:23px;text-align:center;padding:16px;background:linear-gradient(145deg,#fffffff0,#e9f7ffed);box-shadow:0 12px 32px #3b80ab3f;transition:opacity .25s}
+.coverageHint b{font-size:17px;color:#225a86}.coverageHint p{font-size:12px;line-height:1.5;margin:8px 0 0;color:#567793}
+.coverageMode.painting .coverageHud,.coverageMode.painting .coverageHint{opacity:0}
+.coverageHint.dismissed{opacity:0}
+.coverageSafe{position:absolute;display:none!important;z-index:30;transform:translate(-50%,-50%);width:84px;height:64px;min-height:64px;border-radius:23px;padding:7px;font-size:12px;line-height:1.15;touch-action:manipulation}
+.coverageSafe.show{display:block!important}
+.coverageSafe small{display:block;font-weight:700;font-size:9px}
+/* Full rectangular hit area preserves every last-known-good corner pixel;
+   the pseudo-element retains the premium rounded illuminated appearance. */
+.btn.main.coverageSafe{
+  border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;
+  isolation:isolate;
+}
+.btn.main.coverageSafe::before{
+  content:"";position:absolute;inset:0;z-index:-1;width:auto;height:auto;
+  border:1px solid #83eaff;border-radius:21px;
+  background:radial-gradient(circle at 50% 0,#7be5ff,transparent 54%),
+    linear-gradient(180deg,#2eaaff,#0874e9 56%,#064eb2);
+  box-shadow:inset 0 2px 1px #fff,inset 0 -6px 12px #003b9875,
+    0 0 15px #3bdcffc0,0 7px 18px #1675d173;
+}
+.btn.main.coverageSafe:active{transform:translate(-50%,-50%) scale(.98)}
+@media(prefers-reduced-motion:reduce){.coverageCell,.coverageHud,.coverageHint{transition:none}}
+
+</style>
+</head>
+<body data-build="coverage-lab-evidence-v2-2026-10-24">
+<main class="shell">
+<header class="header glass"><div class="brand"><div class="logo"></div><div><b>iRepair Toolbox</b><span>SCREEN DIAGNOSTICS</span></div></div><div class="badge">GUIDED TEST</div></header>
+<section id="home" class="card glass view active">
+<div class="eyebrow">Guided screen diagnostics</div><h1>Let’s check your<br>iPhone screen.</h1><p class="lead">We’ll check the complete screen assembly: picture quality and touchscreen response.</p>
+<div class="phoneStage"><div class="phoneGlow"></div><div class="phoneArt" aria-label="Illustrated iPhone"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><div class="dynamicIsland"></div><div class="screenGlow"></div><div class="screenGlow2"></div></div></div></div>
+<div class="infoBox"><b>What we’ll test</b><br>🎨 Picture quality and colour<br>☝️ Touch response across the display<br>✨ Edge and corner response with an illuminated gesture</div><div class="actions"><button id="begin" class="btn main">Begin Screen Test →</button></div><p class="smallNote">Browser-guided screen assessment. Physical display defects still require visual confirmation.</p>
+</section>
+<section id="results" class="card glass view results"><div class="eyebrow">Check completed</div><h1 id="resultTitle">Screen results.</h1><p class="lead">Your screen assessment is ready to copy.</p><div id="reportRows" style="margin-top:24px"></div><div class="actions" style="margin-top:auto"><button id="copyReport" class="btn main">Copy diagnostic report</button><button id="again" class="btn unable" style="margin-top:10px">Run again</button></div></section>
+</main>
+<section id="testLayer" class="testLayer"><div id="testSurface" class="testSurface"></div><div class="testTop"><strong id="testTitle">Screen test</strong><button id="exit" class="btn unable">Exit</button></div><div id="testBottom" class="testBottom"><p id="testInstruction"></p><button id="testNext" class="btn main">Continue</button></div></section>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+let results={},touchHits=new Set(),displayIndex=0,edgeProgress=0,edgeStarted=false,edgeComplete=false;
+let coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0};
+const testLayer=$('testLayer'),surface=$('testSurface'),bottom=$('testBottom'),title=$('testTitle'),inst=$('testInstruction'),next=$('testNext');
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));window.scrollTo(0,0)}
+function openTest(){testLayer.classList.add('active');testLayer.classList.remove('displayUnobstructed','coverageMode','painting');surface.onclick=null;surface.onpointerdown=null;surface.onpointermove=null;surface.onpointerup=null;surface.onpointercancel=null;surface.innerHTML='';bottom.style.display='block'}
+function closeTest(){testLayer.classList.remove('active');surface.innerHTML=''}
+$('exit').onclick=()=>{closeTest();showView('home')};
+function infoScreen(kind,heading,copy,buttonText,fn){openTest();bottom.style.display='none';title.textContent=kind;const box=document.createElement('div');box.className='centerInstruction';box.innerHTML='<h2>'+heading+'</h2><p>'+copy+'</p><button class="btn main">'+buttonText+'</button>';box.querySelector('button').onclick=fn;surface.append(box)}
+$('begin').onclick=()=>{results={};touchHits.clear();edgeProgress=0;edgeStarted=false;edgeComplete=false;coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0};infoScreen('Display quality','First, check the picture.','Inspect white, black, solid red, green and blue, RGB bands, and fine vertical and horizontal lines. You can hide the controls to check the complete available browser view.','Start display check',startDisplay)};
+function startDisplay(){openTest();displayIndex=0;paintDisplay()}
+
+const DISPLAY_PATTERNS=[
+ {name:'White',background:'#fff',help:'Look for dark spots, tint, lines or uneven brightness'},
+ {name:'Black',background:'#000',help:'Look for bright patches, unwanted glow or stuck pixels'},
+ {name:'Red',background:'#ff263e',help:'Look for areas that are darker, discoloured or uneven'},
+ {name:'Green',background:'#11d055',help:'Look for weak, missing or discoloured green areas'},
+ {name:'Blue',background:'#1678ff',help:'Look for inconsistent colour, shadows or lines'},
+ {name:'RGB bands',background:'linear-gradient(90deg,#f33 0 33.33%,#2ec766 33.33% 66.66%,#347cff 66.66%)',help:'Compare the three full-height colour bands for faults'},
+ {name:'Vertical colour lines',background:'repeating-linear-gradient(90deg,#ff333d 0px,#ff333d 4px,#24cc66 4px,#24cc66 8px,#347cff 8px,#347cff 12px)',help:'Look for interrupted, distorted or missing vertical lines'},
+ {name:'Horizontal colour lines',background:'repeating-linear-gradient(180deg,#ff333d 0px,#ff333d 4px,#24cc66 4px,#24cc66 8px,#347cff 8px,#347cff 12px)',help:'Look for interrupted, distorted or missing horizontal lines'}
+];
+function paintDisplay(){
+  testLayer.classList.remove('displayUnobstructed');
+  const pattern=DISPLAY_PATTERNS[displayIndex];
+  surface.style.background=pattern.background;
+  title.textContent='Display '+(displayIndex+1)+' / '+DISPLAY_PATTERNS.length;
+  inst.style.display='none';
+  const instruction=document.createElement('div');instruction.className='displayInstruction';
+  const copy=document.createElement('div');copy.className='displayText';copy.textContent=pattern.name+' — '+pattern.help;
+  const reveal=document.createElement('button');reveal.type='button';reveal.className='btn unobstructBtn';
+  reveal.textContent='View in full screen mode';
+  reveal.onclick=e=>{e.preventDefault();e.stopPropagation();testLayer.classList.add('displayUnobstructed')};
+  const tip=document.createElement('small');tip.className='displayTip';tip.textContent='Tap the blank screen once to restore Next / Exit';
+  instruction.append(copy,reveal,tip);surface.replaceChildren(instruction);
+  surface.onpointerdown=()=>{if(testLayer.classList.contains('displayUnobstructed'))testLayer.classList.remove('displayUnobstructed')};
+  next.textContent=displayIndex===DISPLAY_PATTERNS.length-1?'Assess display':'Next pattern →';
+  next.onclick=()=>{if(displayIndex<DISPLAY_PATTERNS.length-1){displayIndex++;paintDisplay()}else displayAssess()};
+}
+
+function displayAssess(){surface.style.background='radial-gradient(circle at 50% 42%,#fff,#e6f4ff 76%)';bottom.style.display='none';title.textContent='Display assessment';surface.innerHTML='';const box=document.createElement('div');box.className='centerInstruction displayAssessBox';box.innerHTML='<h2>Did the picture look correct?</h2><p>Were all eight full-viewport patterns free from unusual spots, lines, flicker or discolouration?</p><div style="display:grid;gap:9px;margin-top:18px"><button class="btn pass" data-v="PASS">✓ Pass</button><button class="btn fail" data-v="FAIL">✕ Fail</button><button class="btn unable" data-v="UNABLE TO TEST">Unable to test</button></div>';box.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{results.display=b.dataset.v;touchIntro()});surface.append(box)}
+function touchIntro(){infoScreen('Touch response','Now check touch response.','Tap the nine numbered points. They are grouped together in the centre so the task is clear and repeatable.','Show touch targets',startTouch)}
+function startTouch(){
+  openTest();bottom.style.display='none';
+  surface.style.background='radial-gradient(circle at 50% 45%,#fff,#e5f3ff)';
+  title.textContent='Touch 0 / 9';touchHits.clear();
+  const guidance=document.createElement('div');
+  guidance.className='touchGuidance';
+  guidance.innerHTML='<strong>Tap every number</strong><span>Green means registered. If a number will not respond, tap FINISH HERE on a working number.</span>';
+  surface.append(guidance);
+  const cluster=document.createElement('div');cluster.className='touchCluster';surface.append(cluster);
+  // The fallback follows a proven, working touch position; it is never fixed
+  // somewhere that may be damaged. It appears AFTER the target click completes.
+  const safe=document.createElement('button');
+  safe.type='button';safe.className='btn main touchSafe';
+  safe.innerHTML='FINISH<br>HERE';
+  safe.setAttribute('aria-label','Finish incomplete touch test from this working target');
+  safe.onclick=()=>{
+    if(touchHits.size===9)return;
+    results.touch=touchHits.size?'FAIL':'UNABLE TO TEST';
+    coverageIntro();
+  };
+  surface.append(safe);
+  for(let i=0;i<9;i++){
+    const d=document.createElement('button');d.type='button';
+    d.className='touchDot';d.textContent=i+1;
+    d.setAttribute('aria-label','Touch target '+(i+1));
+    d.onclick=()=>{
+      // Use completed click (not pointerdown): do not put the finish control
+      // under the finger before its original tap has finished.
+      if(touchHits.has(i))return;
+      touchHits.add(i);d.classList.add('hit');
+      d.setAttribute('aria-pressed','true');
+      title.textContent='Touch '+touchHits.size+' / 9';
+      if(touchHits.size===9){
+        safe.classList.remove('show');safe.disabled=true;
+        setTimeout(()=>{results.touch='PASS';coverageIntro()},480);
+        return;
+      }
+      // Match the exact position of the last verified working numbered button.
+      const r=d.getBoundingClientRect(),sr=surface.getBoundingClientRect();
+      safe.style.left=(r.left+r.width/2-sr.left)+'px';
+      safe.style.top=(r.top+r.height/2-sr.top)+'px';
+      safe.classList.add('show');
+    };
+    cluster.append(d);
+  }
+}
+
+/* Only new experimental stage: full available web-viewport touch sampling. */
+function coverageIntro(){
+  infoScreen('Full-area touch scan','Now cover the entire screen.','Swipe slowly across every reachable area. Blue squares light up ONLY where the browser reports touch positions; gaps are never filled by guessing between touch events. Finish from a position that registered.','Start full-area scan',startCoverage);
+}
+function startCoverage(){
+  openTest();testLayer.classList.add('coverageMode');bottom.style.display='none';
+  title.textContent='Touch coverage';
+  const COLS=12,ROWS=22,TOTAL=COLS*ROWS;
+  const grid=document.createElement('div');grid.className='coverageGrid';
+  const nodes=[];
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<TOTAL;i++){
+    const cell=document.createElement('div');cell.className='coverageCell';
+    cell.setAttribute('aria-hidden','true');frag.append(cell);nodes.push(cell);
+  }
+  grid.append(frag);surface.append(grid);
+  const hud=document.createElement('div');hud.className='coverageHud';
+  hud.innerHTML='<strong>0% covered</strong><span>Swipe across all corners and edges</span>';surface.append(hud);
+  const hint=document.createElement('div');hint.className='coverageHint';
+  hint.innerHTML='<b>Paint the entire display</b><p>Move slowly across all rows, edges and corners. Only registered touch positions turn blue. Lift your finger for FINISH HERE on the last working position.</p>';
+  surface.append(hint);
+  const safe=document.createElement('button');safe.type='button';
+  safe.className='btn main coverageSafe';safe.innerHTML='FINISH<small>HERE</small>';
+  safe.setAttribute('aria-label','Finish touch coverage scan at last working location');
+  surface.append(safe);
+  const visited=new Set();
+  let active=false,activeId=null,lastX=0,lastY=0,restoreTimer=null,sampleCount=0;
+  function update(){
+    const percent=Math.round(visited.size/TOTAL*1000)/10;
+    hud.querySelector('strong').textContent=percent+'% covered';
+    hud.querySelector('span').textContent=visited.size===TOTAL?'All viewport cells sampled · Lift to finish':(TOTAL-visited.size)+' unsampled cells · Move slowly';
+  }
+  function mark(x,y){
+    const rect=surface.getBoundingClientRect();
+    if(x<rect.left||x>rect.right||y<rect.top||y>rect.bottom)return;
+    const col=Math.max(0,Math.min(COLS-1,Math.floor((x-rect.left)/rect.width*COLS)));
+    const row=Math.max(0,Math.min(ROWS-1,Math.floor((y-rect.top)/rect.height*ROWS)));
+    const i=row*COLS+col;
+    if(!visited.has(i)){
+      visited.add(i);nodes[i].classList.add('touched');update();
+    }
+    lastX=x-rect.left;lastY=y-rect.top;
+    sampleCount++;
+  }
+  // Never interpolate or invent touch positions between browser events.
+  // A dead strip could otherwise look tested even if no samples arrived.
+  function markEvent(e){
+    // Historical coalesced pointer events are actual browser input samples.
+    const coalesced=typeof e.getCoalescedEvents==='function'?e.getCoalescedEvents():null;
+    if(coalesced&&coalesced.length){
+      for(const sample of coalesced)mark(sample.clientX,sample.clientY);
+    }
+    mark(e.clientX,e.clientY);
+  }
+  function finish(){
+    if(!visited.size)return;
+    const corners=[0,COLS-1,(ROWS-1)*COLS,TOTAL-1];
+    const cornerCount=corners.filter(i=>visited.has(i)).length;
+    const percent=Math.round(visited.size/TOTAL*1000)/10;
+    coverageSnapshot={visited:visited.size,total:TOTAL,percent,corners:cornerCount,samples:sampleCount};
+    // Incomplete coverage is not automatically a hardware failure:
+    // the user may simply have skipped those locations.
+    results.coverage=percent>=92&&cornerCount===4?'PASS':'INCOMPLETE';
+    edgeIntro();
+  }
+  safe.onclick=e=>{e.preventDefault();e.stopPropagation();finish()};
+  function stop(){
+    if(!active)return;
+    active=false;activeId=null;
+    testLayer.classList.remove('painting');
+    if(visited.size){
+      clearTimeout(restoreTimer);
+      restoreTimer=setTimeout(()=>{
+        if(!testLayer.classList.contains('coverageMode'))return;
+        // Keep the entire button visible at corners. Its hit area still
+        // CONTAINS the exact last successfully registered touch point.
+        const bounds=surface.getBoundingClientRect(),halfW=42,halfH=32;
+        safe.style.left=Math.max(halfW,Math.min(bounds.width-halfW,lastX))+'px';
+        safe.style.top=Math.max(halfH,Math.min(bounds.height-halfH,lastY))+'px';
+        safe.classList.add('show');
+      },90);
+    }
+  }
+  surface.onpointerdown=e=>{
+    if(e.target.closest('button')||active)return;
+    active=true;activeId=e.pointerId;
+    clearTimeout(restoreTimer);safe.classList.remove('show');
+    testLayer.classList.add('painting');hint.classList.add('dismissed');
+    markEvent(e);
+    try{surface.setPointerCapture(e.pointerId)}catch(_){}
+    e.preventDefault();
+  };
+  surface.onpointermove=e=>{
+    if(!active||e.pointerId!==activeId)return;
+    markEvent(e);e.preventDefault();
+  };
+  surface.onpointerup=e=>{
+    if(e.pointerId!==activeId)return;
+    markEvent(e);stop();e.preventDefault();
+  };
+  surface.onpointercancel=e=>{if(e.pointerId===activeId)stop()};
+}
+function edgeIntro(){infoScreen('Edge response','Finally, follow the light.','Place your finger on the glowing ball and guide it around the phone perimeter. The COB strip will illuminate behind your finger.','Start perimeter test',startEdge)}
+function startEdge(){
+  openTest();bottom.style.display='none';surface.style.background='radial-gradient(circle at 50% 42%,#fff,#e4f2ff)';title.textContent='Edge response';edgeProgress=0;edgeStarted=false;edgeComplete=false;
+  const wrap=document.createElement('div');wrap.className='edgeStage';
+  wrap.innerHTML='<div id="edgePhone" class="edgePhone phoneArt"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div id="edgeScreen" class="edgeScreen phoneScreen"><div class="edgeIsland dynamicIsland"></div><svg class="edgeSvg" viewBox="0 0 100 214"><defs><linearGradient id="cob" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9af5ff"/><stop offset=".28" stop-color="#39ddff"/><stop offset=".68" stop-color="#0d84ee"/><stop offset="1" stop-color="#20d0b2"/></linearGradient><filter id="glow" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="runnerGlow" x="-180%" y="-180%" width="460%" height="460%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><mask id="mask"><path id="maskPath" d="M50 8 H84 Q93 8 93 17 V197 Q93 206 84 206 H16 Q7 206 7 197 V17 Q7 8 16 8 H50" fill="none" stroke="white" stroke-width="12" pathLength="100" stroke-dasharray="0 100" stroke-linecap="round"/></mask></defs><path id="edgePath" class="rail" d="M50 8 H84 Q93 8 93 17 V197 Q93 206 84 206 H16 Q7 206 7 197 V17 Q7 8 16 8 H50"/><path class="railHi" d="M50 8 H84 Q93 8 93 17 V197 Q93 206 84 206 H16 Q7 206 7 197 V17 Q7 8 16 8 H50"/><g mask="url(#mask)"><path class="cobHalo" d="M50 8 H84 Q93 8 93 17 V197 Q93 206 84 206 H16 Q7 206 7 197 V17 Q7 8 16 8 H50"/><path class="cobStrip" d="M50 8 H84 Q93 8 93 17 V197 Q93 206 84 206 H16 Q7 206 7 197 V17 Q7 8 16 8 H50" pathLength="100"/></g><circle id="runnerRing" class="runnerRing" cx="50" cy="8" r="7"/><circle id="runner" class="runner" cx="50" cy="8" r="4.2"/></svg><div id="edgeMsg" class="edgeMsg">Place your finger on the glowing light and follow the edge</div><button id="edgeFailSafe" class="btn main edgeFailSafe" aria-label="Finish incomplete perimeter test">✓</button><div id="core" class="core"><div class="coreHalo"></div><div class="coreCog"></div><div class="coreLogo"></div></div><div id="edgePct" class="edgePct">0% illuminated</div></div></div>';
+  surface.append(wrap);
+
+  const phone=$('edgePhone'),screen=$('edgeScreen'),path=$('edgePath'),mask=$('maskPath'),runner=$('runner'),ring=$('runnerRing'),fail=$('edgeFailSafe'),core=$('core'),msg=$('edgeMsg'),pct=$('edgePct');
+  const N=900,len=path.getTotalLength(),samples=[];
+  for(let i=0;i<=N;i++){const p=path.getPointAtLength(len*i/N);samples.push([p.x,p.y])}
+  let active=false,direction=0,travel=0,lastRaw=0,touchMode=false;
+
+  function px(i){
+    const r=screen.getBoundingClientRect(),p=samples[i];
+    return [r.left+(p[0]/100)*r.width,r.top+(p[1]/214)*r.height];
+  }
+  function nearestRaw(cx,cy){
+    let best=0,dist=Infinity;
+    for(let i=0;i<=N;i+=2){const p=px(i),d=(cx-p[0])**2+(cy-p[1])**2;if(d<dist){dist=d;best=i}}
+    for(let i=Math.max(0,best-3);i<=Math.min(N,best+3);i++){const p=px(i),d=(cx-p[0])**2+(cy-p[1])**2;if(d<dist){dist=d;best=i}}
+    return {i:best,d:Math.sqrt(dist)};
+  }
+  function mapped(raw,dir){return dir===1?raw:(N-raw)%N}
+  function showProgress(t){
+    travel=Math.max(travel,Math.min(N,t));edgeProgress=travel/N;edgeStarted=edgeProgress>0;
+    const raw=direction===-1?(N-travel)%N:travel,p=samples[Math.round(raw)];
+    runner.setAttribute('cx',p[0]);runner.setAttribute('cy',p[1]);ring.setAttribute('cx',p[0]);ring.setAttribute('cy',p[1]);
+    mask.setAttribute('stroke-dasharray',(edgeProgress*100)+' 100');pct.textContent=Math.round(edgeProgress*100)+'% illuminated';
+    if(edgeProgress>=.997&&!edgeComplete)complete();
+  }
+  function accept(cx,cy,isStart){
+    const hit=nearestRaw(cx,cy);
+    if(hit.d>(isStart?78:64))return false;
+    if(direction===0){
+      if(isStart){
+        const startPx=px(0);
+        if(Math.hypot(cx-startPx[0],cy-startPx[1])>88)return false;
+        lastRaw=hit.i;
+        return true;
+      }
+      const cw=hit.i;
+      const ccw=(N-hit.i)%N;
+      if(cw<10&&ccw<10)return true;
+      direction=cw<=ccw?1:-1;
+    }
+    let m=mapped(hit.i,direction);
+    // The path finishes at the same coordinates where it starts: treat that point
+    // as completion only after the finger has traversed at least 95% of the rail.
+    if(travel>N*.95 && m<N*.05)m=N;
+    if(m+26<travel)return false;
+    if(m-travel>190)return false;
+    lastRaw=hit.i;
+    if(m>travel)showProgress(m);
+    return true;
+  }
+  function complete(){
+    edgeComplete=true;active=false;fail.classList.remove('show');
+    mask.setAttribute('stroke-dasharray','100 100');pct.textContent='Perimeter complete ✓';
+    msg.textContent='Perfect — watch the light return to the iRepair core';
+    const raw=direction===-1?0:N,from=samples[raw],t0=performance.now();
+    // Safeguard against browsers throttling requestAnimationFrame during completion.
+    function showReadyCore(){
+      if(core.classList.contains('ready'))return;
+      runner.style.opacity='0';ring.style.opacity='0';
+      core.classList.add('ready');msg.textContent='Tap the glowing iRepair core to finish';
+    }
+    function glide(now){
+      const t=Math.min(1,(now-t0)/820),q=1-Math.pow(1-t,3),bend=Math.sin(Math.PI*q)*22;
+      const x=from[0]+(50-from[0])*q+bend,y=from[1]+(107-from[1])*q;
+      runner.setAttribute('cx',x);runner.setAttribute('cy',y);ring.setAttribute('cx',x);ring.setAttribute('cy',y);
+      if(t<1)requestAnimationFrame(glide);else showReadyCore()
+    }
+    requestAnimationFrame(glide);
+    setTimeout(showReadyCore,1150);
+  }
+  function startAt(cx,cy){
+    if(edgeComplete)return false;
+    if(!accept(cx,cy,travel===0))return false;
+    active=true;fail.classList.remove('show');
+    return true;
+  }
+  function moveAt(cx,cy){if(!active||edgeComplete)return;accept(cx,cy,false)}
+  function endGesture(){
+    if(!active)return;
+    active=false;
+    if(edgeStarted&&!edgeComplete){fail.classList.add('show');msg.textContent='Continue from the glowing point — or tap ✓ there if the next area will not respond'}
+  }
+
+  if(!('PointerEvent' in window)){
+  phone.addEventListener('touchstart',e=>{
+    if(edgeComplete||e.target.closest('button'))return;
+    const t=e.changedTouches[0];touchMode=true;
+    if(startAt(t.clientX,t.clientY))e.preventDefault();
+  },{passive:false});
+  phone.addEventListener('touchmove',e=>{
+    if(!active)return;
+    const t=e.changedTouches[0];moveAt(t.clientX,t.clientY);e.preventDefault();
+  },{passive:false});
+  phone.addEventListener('touchend',e=>{if(active){endGesture();e.preventDefault()}},{passive:false});
+  phone.addEventListener('touchcancel',e=>{if(active){endGesture();e.preventDefault()}},{passive:false});
+
+  }
+  phone.addEventListener('pointerdown',e=>{
+    if(touchMode||edgeComplete||e.target.closest('button'))return;
+    if(startAt(e.clientX,e.clientY)){e.preventDefault();try{phone.setPointerCapture(e.pointerId)}catch(_){}}
+    else msg.textContent='Start with your finger on the glowing ball at the top of the phone';
+  },{passive:false});
+  phone.addEventListener('pointermove',e=>{if(touchMode||!active)return;e.preventDefault();moveAt(e.clientX,e.clientY)},{passive:false});
+  phone.addEventListener('pointerup',e=>{if(touchMode||!active)return;e.preventDefault();endGesture()},{passive:false});
+  phone.addEventListener('pointercancel',e=>{if(touchMode||!active)return;e.preventDefault();endGesture()},{passive:false});
+
+  fail.onclick=e=>{e.stopPropagation();results.edge=edgeStarted?'FAIL':'UNABLE TO TEST';finishAll()};
+  core.onclick=e=>{e.stopPropagation();if(edgeComplete){results.edge='PASS';finishAll()}};
+}
+function finishAll(){
+  closeTest();showView('results');
+  const resultStates=[results.display,results.touch,results.coverage,results.edge];
+  const overall=resultStates.includes('FAIL')?'Potential screen issue':resultStates.some(x=>x==='UNABLE TO TEST'||x==='INCOMPLETE'||!x)?'Incomplete assessment':'All checks passed';
+  $('resultTitle').textContent=overall;
+  const rows=[
+    ['Display quality',results.display||'UNABLE TO TEST'],
+    ['Nine-point touch',results.touch||'UNABLE TO TEST'],
+    ['Full-area touch',results.coverage||'UNABLE TO TEST'],
+    ['Edge response',results.edge||'UNABLE TO TEST']
+  ];
+  $('reportRows').innerHTML=rows.map(([n,v])=>'<div class="reportRow"><span>'+n+'</span><b class="'+(v==='PASS'?'good':v==='FAIL'?'bad':'neutral')+'">'+v+'</b></div>').join('')+
+    '<div class="reportRow"><span>Browser viewport sampled</span><b>'+coverageSnapshot.percent+'% · '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' cells</b></div>'+
+    '<p class="smallNote">Four corners sampled: '+coverageSnapshot.corners+'/4. Positions are coloured only when touch coordinates were received; unsampled cells are not confirmed faults.</p>';
+}
+function reportText(){
+ return ['iREPAIR SCREEN DIAGNOSTICS — FULL COVERAGE EXPERIMENT',
+   'Date: '+new Date().toLocaleString('en-GB'),
+   'Display patterns: 8 guided visual observations',
+   'Display quality: '+(results.display||'UNABLE TO TEST'),
+   'Nine-point touch: '+(results.touch||'UNABLE TO TEST')+' ('+touchHits.size+'/9 targets)',
+   'Full-area touch: '+(results.coverage||'UNABLE TO TEST')+' ('+coverageSnapshot.percent+'% visited, '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' viewport cells; corners '+coverageSnapshot.corners+'/4; browser samples '+coverageSnapshot.samples+')',
+   'Edge response: '+(results.edge||'UNABLE TO TEST')+' ('+Math.round(edgeProgress*100)+'%)',
+   '',
+   'Scope: browser viewport only. Safari or iOS may reserve screen areas. Only received pointer-event positions were counted; no movement-gap interpolation. Cells not reached are untested, not independently verified hardware failures. Display assessments are visual and user-observed.'
+ ].join('\n')
+}
+$('copyReport').onclick=async()=>{try{await navigator.clipboard.writeText(reportText());$('copyReport').textContent='Report copied ✓'}catch(e){prompt('Copy this report:',reportText())}};
+$('again').onclick=()=>{showView('home');results={};touchHits.clear();edgeProgress=0;coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0}};
+})();
+</script>
+</body>
+</html>
