@@ -25,7 +25,19 @@ const MODEL_MAP=Object.freeze({
  "iPhone18,1":"iPhone 17 Pro","iPhone18,2":"iPhone 17 Pro Max",
  "iPhone18,3":"iPhone 17","iPhone18,4":"iPhone Air"
 });
-function lookupModel(code){return typeof code==="string"&&/^iPhone\d{1,2},\d{1,2}$/.test(code)?MODEL_MAP[code]||null:null;}
+function lookupModel(code){
+ if(typeof code!=="string"||!/^iPhone\d{1,2},\d{1,2}$/.test(code))return null;
+ const legacyName=MODEL_MAP[code]||null;
+ if(!legacyName)return null;
+ // Names are projected from the authoritative Toolbox catalogue when present.
+ const catalogue=root.IRepairDeviceCatalogue;
+ if(catalogue?.models?.length){
+   const matching=catalogue.models.find(m=>m.name===legacyName);
+   return matching?matching.name:null;
+ }
+ // Keep the independently tested core usable outside the browser bundle.
+ return legacyName;
+}
 function findMetric(text,names,min,max){
  // Keys are an internal whitelist; never interpolate user-provided key names.
  const keys=new Set(names.map(k=>k.toLowerCase()));
@@ -73,7 +85,7 @@ function parseAnalytics(text){
 function modelLabel(model){
  if(!model||!model.found)return "Not identified";
  if(model.ambiguous)return "Conflicting model identifiers";
- return model.name?model.name+" ("+model.code+")":model.code+" (model name unverified)";
+ return model.name?(model.code?model.name+" ("+model.code+")":model.name):model.code+" (model name unverified)";
 }
 function nativeSnapshot(input){
  if(!input||typeof input!=="object"||input.source!=="ios-native")return null;
@@ -93,7 +105,21 @@ function assess(input){
  const source=entered?(input?.capacitySource==="analytic-prefill"?"Unverified analytics file (prefilled; check Settings)":"Customer-entered iOS Battery Health"):
   capacity!==null?"Unverified analytics file":null;
  const status=["normal","service","unknown"].includes(input?.serviceStatus)?input.serviceStatus:"unknown";
- const model=n?.model||a?.model||null;
+ const selectedInput=input?.selectedModel;
+ const selected=selectedInput&&typeof selectedInput.name==="string"&&
+  typeof selectedInput.slug==="string"&&/^iphone-[a-z0-9-]{1,28}$/.test(selectedInput.slug)
+   ?{slug:selectedInput.slug,name:selectedInput.name,code:null,found:true,ambiguous:false}:null;
+ // A genuinely available native device identifier wins. Customer choice beats
+ // an uploaded log, which may be old or from a different iPhone.
+ const model=n?.model?.name?n.model:selected||n?.model||a?.model||null;
+ const modelMismatch=!!(selected&&(
+   (n?.model?.name&&n.model.name!==selected.name)||
+   (a?.model?.name&&a.model.name!==selected.name)
+ ));
+ const modelSource=n?.model?.name?"Native iOS device identifier":
+  selected?"Customer selection (not independently verified)":
+  n?.model?"Native iOS identifier (model unverified)":
+  a?.model?.found?"Imported analytics (not independently verified)":null;
  const cycles=a?.cycles&&!a.cycles.conflict?a.cycles.value:null;
  const mismatch=entered&&Number.isInteger(fromLog)&&fromLog!==manual;
  let level="incomplete",title="Battery review incomplete",summary="We couldn't establish a complete Battery Health result.";
@@ -129,9 +155,10 @@ function assess(input){
  }
  if(mismatch)explanation+=" The iOS Settings entry differs from the analytics value; the Settings entry takes priority.";
  if(a?.conflicting)explanation+=" Conflicting analytics readings were excluded from the assessment.";
+ if(modelMismatch)explanation+=" The selected iPhone model differs from an identifier found in the device or analytics information. Check the model in Settings before relying on model-specific interpretation.";
  if(model?.name==="iPhone Duo")explanation+=" This device uses two batteries; one reading may not describe the entire system.";
  return {schema:1,level,title,summary,explanation,capacity,capacitySource:source,status,cycles,
-  model,modelSource:n?.model?"Native iOS device":model?.found?"Unverified analytics file":null,
+  model,modelSource,modelMismatch,selectedModel:selected,
   native:n,analytics:a,rawCount:a?.raw?.length||0,conflicting:!!a?.conflicting,mismatch,entered,
   needsSettings:!entered&&status==="unknown"};
 }
@@ -163,6 +190,8 @@ function report(result){
  arr.push("Service status: "+({normal:"No warning reported",service:"Service recommended",unknown:"Unable to check"}[r.status]));
  arr.push("Charge cycles: "+(r.cycles===null?"Not available":r.cycles+" (unverified analytics file)"));
  arr.push("Additional analytics fields: "+r.rawCount);
+ if(r.modelMismatch)arr.push("Model identifier disagreement: YES — confirm the model in iOS Settings.");
+ if(r.selectedModel)arr.push("Customer model selection: "+r.selectedModel.name+" (not independently verified).");
  arr.push("Conflicting analytics: "+(r.conflicting?"Yes":"No"));
  arr.push("Different analytics vs Settings capacity: "+(r.mismatch?"Yes (Settings prioritised)":"No"));
  arr.push("","Interpretation: "+r.explanation);
