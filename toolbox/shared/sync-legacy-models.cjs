@@ -6,7 +6,7 @@
 "use strict";
 const fs=require("node:fs"),path=require("node:path"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,"../.."),catalogue=require("./iphone-models.json");
-const targetFiles=["toolbox/audio/models.js","toolbox/camera/glass-review/models.js","toolbox/panic/glass-review/models.js","toolbox/motion/preview/models.js"];
+const targetFiles=["toolbox/audio/models.js","toolbox/camera/glass-review/models.js","toolbox/panic/glass-review/models.js","toolbox/motion/preview/models.js","toolbox/connectivity/preview/models.js"];
 const columns=catalogue.models.map(m=>[m.slug,m.name,m.year,m.illustration.front,m.illustration.rear,m.illustration.heightMm,m.illustration.widthMm]);
 const re=/const columns\s*=\s*\[[\s\S]*?\];\s*const models\s*=/;
 const formatted="const columns = "+JSON.stringify(columns,null,1)+";\nconst models =";
