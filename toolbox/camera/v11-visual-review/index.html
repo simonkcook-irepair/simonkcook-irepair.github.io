@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e9f6ff">
+<meta name="color-scheme" content="light">
+<title>iRepair Toolbox | Camera Diagnostics</title>
+<link rel="stylesheet" href="./visual.css?v=camera-lidar-6">
+</head>
+<body data-build="camera-glass-review-5">
+<main class="shell">
+<header class="header glass">
+  <div class="brand"><div class="logo" aria-hidden="true"></div><div><b>iRepair Toolbox</b><span>CAMERA DIAGNOSTICS</span></div></div>
+  <div class="badge">GUIDED TEST</div>
+</header>
+
+<section id="home" class="card glass view active" aria-label="Camera Diagnostics welcome screen">
+  <div class="eyebrow">Guided camera diagnostics</div>
+  <h1>Let’s check your<br>iPhone cameras.</h1>
+  <p class="lead">We’ll inspect image quality, focus and camera features with a simple guided test.</p>
+  <div class="phoneStage" aria-label="Premium iPhone illustration with an illuminated camera icon">
+    <div class="phoneGlow"></div>
+    <div class="phoneArt" aria-hidden="true">
+      <span class="side s1"></span><span class="side s2"></span><span class="side s3"></span>
+      <div class="phoneScreen">
+        <div class="dynamicIsland"></div>
+        <div class="phoneCameraAura"></div>
+        <svg class="phoneCameraIcon" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+         <path d="M30 39h14l8-10h18l8 10h12c5 0 8 3 8 8v36c0 5-3 8-8 8H30c-5 0-8-3-8-8V47c0-5 3-8 8-8Z" fill="#b8faff35" stroke="#dfffff" stroke-width="4"/>
+         <circle cx="60" cy="65" r="21" stroke="#d6ffff" stroke-width="5"/>
+         <circle cx="60" cy="65" r="11" fill="#6cf8ff42" stroke="#dfffff" stroke-width="2"/>
+         <circle cx="86" cy="49" r="4" fill="#ffffff" />
+         <path d="M33 20H20v14M87 20h13v14M33 102H20V88M87 102h13V88" stroke="#b6ffff" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div class="screenGlow"></div><div class="screenGlow2"></div>
+      </div>
+    </div>
+  </div>
+  <div class="infoBox">
+    <b>What we’ll test</b>
+    <div>📷 Camera picture quality and colour</div>
+    <div>🎯 Focus, picture shake and unusual noise</div>
+    <div>✨ Flash, front camera, Face ID and LiDAR where fitted</div>
+  </div>
+  <div class="actions"><button class="btn main" id="begin" type="button">Begin Camera Check →</button></div>
+  <p class="smallNote">Customer-guided visual checks. Safari cannot guarantee independent access to every physical lens.</p>
+</section>
+
+<section id="setup" class="card glass view cameraCard" aria-label="Set up camera test">
+  <div class="eyebrow">Getting started</div>
+  <h1>Let’s prepare<br>your iPhone.</h1>
+  <p class="lead">Safari will ask permission to use the camera. No pictures will be uploaded or stored.</p>
+  <div class="glassy">
+    <label for="phoneModel">Your iPhone model (optional)</label>
+    <select id="phoneModel"><option value="">Choose your iPhone model…</option></select>
+    <p id="modelHelp" class="smallExplanation">Newer models first. Select a model to include its additional lenses. You can continue without selecting.</p>
+  </div>
+  <div class="planPreview"><strong id="planTitle">Your guided checks</strong><p id="planText">Rear picture, focus, image stability, flash and front camera; Face ID where supported.</p></div>
+  <details><summary>What will Safari actually test?</summary>
+    <div class="detailBody">Safari can request a rear-facing or front-facing camera stream. It cannot guarantee that a specific physical ultra-wide or telephoto lens has been selected. For those, we'll guide you through a visual check in Apple's Camera app and record your observation.</div>
+  </details>
+  <div class="setupBottom">
+    <button class="btn main" id="start" type="button">Start Guided Camera Tests →</button>
+    <button class="btn unable" id="setupBack" type="button">← Back</button>
+  </div>
+  <p class="smallNote">This preview cannot identify the exact iPhone model automatically. Native iOS will use verified device information where supported.</p>
+</section>
+
+<section id="test" class="card glass view cameraCard" aria-label="Guided camera test">
+  <div class="stepHead"><span id="stepCounter">Camera 1 / 4</span><button class="btn unable" id="exitTest" type="button">Exit</button></div>
+  <div id="progress" class="track" aria-label="Camera test progress"></div>
+  <div class="eyebrow" id="stepEyebrow">Camera image check</div>
+  <h1 id="stepTitle">Rear camera</h1>
+  <p id="stepInstruction" class="lead">Point at a well-lit scene and inspect the picture.</p>
+  <div class="cameraStage" id="cameraStage">
+    <video id="cameraVideo" autoplay playsinline muted aria-label="Live iPhone camera preview"></video>
+    <div class="cameraFallback" id="cameraFallback">
+      <svg viewBox="0 0 90 90" fill="none" aria-hidden="true">
+        <rect x="11" y="25" width="68" height="50" rx="13" stroke="#2d83c4" stroke-width="3"/>
+        <path d="M28 25l8-12h18l8 12" stroke="#2d83c4" stroke-width="3"/>
+        <circle cx="45" cy="50" r="17" fill="#89eaff34" stroke="#228ac9" stroke-width="4"/>
+        <circle cx="45" cy="50" r="8" stroke="#64d5ff" stroke-width="2"/>
+      </svg>
+      <strong id="fallbackHeading">Camera access required</strong>
+      <span id="fallbackNote">Allow camera access to see a live preview.</span>
+    </div>
+    <svg id="modelDiagram" class="modelDevice" viewBox="0 0 280 470" aria-label="Selected iPhone camera area" hidden></svg>
+    <span class="previewOverlay" id="previewLabel" hidden>LIVE PREVIEW</span>
+    <div class="focusReticle" id="focusReticle" hidden></div>
+  </div>
+  <aside id="cameraLensGuide" class="cameraLensGuide" aria-label="Camera location guide">
+    <svg id="lensGuideDevice" viewBox="0 0 280 470" aria-label="Illustrated camera location" role="img"></svg>
+    <div class="cameraLensDescription">
+      <strong id="lensGuideTitle">Camera location guide</strong>
+      <span id="lensGuideDetail">The illuminated area changes with each check.</span>
+      <small id="lensGuideSource">Diagram is illustrative, not a hardware measurement.</small>
+    </div>
+  </aside>
+  <p id="streamStatus" class="previewStatus" role="status" aria-live="polite">Camera access is requested only when you begin a preview.</p>
+  <div class="previewControls">
+    <button id="retryCamera" class="btn unable" type="button" hidden>Try camera again</button>
+    <button id="torchButton" class="btn unable" type="button" hidden>Switch torch on briefly</button>
+  </div>
+  <details id="photoPanel" hidden>
+    <summary>Capture and inspect a local sample (optional)</summary>
+    <div class="detailBody">
+      <p>Take a still frame from the current preview. It stays in memory and is discarded when you leave the step; the app never uploads it.</p>
+      <button class="btn unable" id="captureFrame" type="button">Capture sample frame</button>
+      <img id="photoPreview" alt="Locally captured camera sample" hidden>
+      <button class="btn unable" id="discardFrame" type="button" hidden>Discard sample</button>
+      <canvas id="captureCanvas" width="1" height="1" hidden></canvas>
+    </div>
+  </details>
+  <div id="testQuestion" class="testQuestion">Is the camera image clear and normally coloured?</div>
+  <div class="testActions" role="group" aria-label="Your observed result">
+    <button data-answer="PASS" class="btn pass" type="button">✓ Pass</button>
+    <button data-answer="FAIL" class="btn fail" type="button">✕ Fail</button>
+    <button data-answer="UNABLE" class="btn unable" type="button">Unable to Test</button>
+  </div>
+  <section id="symptomPanel" class="symptomPanel" aria-label="Optional observed fault symptoms" hidden>
+    <strong>What did you notice?</strong>
+    <p>Select anything you observed. This helps a repair technician investigate; it does not prove a faulty part.</p>
+    <div id="symptomOptions" class="symptomOptions"></div>
+    <button class="btn main" id="symptomContinue" type="button">Continue →</button>
+  </section>
+  <div class="nativeFace" id="nativeFace" hidden>
+    <button class="btn main" id="nativeFaceButton" type="button">Check Face ID with iOS</button>
+    <p id="nativeFaceStatus" role="status" aria-live="polite">Native iOS only. Safari cannot run this authentication check.</p>
+  </div>
+  <div class="testBottomControls">
+    <button id="previous" class="btn unable" type="button">← Previous</button>
+    <button id="leave" class="btn unable" type="button">Exit test</button>
+  </div>
+  <p id="testFoot" class="testFoot">Mark what you actually see. A visual pass is not an independent electronic measurement.</p>
+</section>
+
+<section id="results" class="card glass view cameraCard" aria-label="Camera test results">
+  <div class="eyebrow">Your camera review</div>
+  <h1>Camera diagnostics<br>complete.</h1>
+  <p class="lead" id="resultIntro">Here's a summary of the checks you completed.</p>
+  <div class="stats">
+    <div><strong id="passCount">0</strong><span>Pass</span></div>
+    <div><strong id="failCount">0</strong><span>Fail</span></div>
+    <div><strong id="unableCount">0</strong><span>Unable</span></div>
+  </div>
+  <div class="resultRows" id="resultRows"></div>
+  <section id="triageHints" class="triageHints" aria-label="Technician investigation clues" hidden>
+   <strong class="triageHeading">Technician clues · not a diagnosis</strong>
+   <div id="triageRows"></div>
+  </section>
+  <div class="resultActions">
+    <button class="btn main" id="copyReport" type="button">Copy technician report</button>
+    <div class="pair">
+      <button class="btn unable" id="shareReport" type="button">Share report</button>
+      <button class="btn unable" id="printReport" type="button">Save / Print PDF</button>
+    </div>
+    <button class="btn unable" id="startOver" type="button">Run camera tests again</button>
+  </div>
+  <p class="smallNote">Guided Face ID recognition is separate from the visible selfie camera. No biometric data is captured. A visual test cannot guarantee optical focus calibration, physical lens isolation or the condition of individual TrueDepth components.</p>
+</section>
+</main>
+<script src="./models.js?v=camera-lidar-6"></script>
+<script src="./core.js?v=camera-lidar-6"></script>
+<script src="./app.js?v=camera-lidar-6"></script>
+</body></html>
