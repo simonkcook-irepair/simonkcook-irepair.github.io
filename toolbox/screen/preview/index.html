@@ -243,6 +243,15 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 .btn.main.coverageSafe:active{transform:translate(-50%,-50%) scale(.98)}
 @media(prefers-reduced-motion:reduce){.coverageCell,.coverageHud,.coverageHint{transition:none}}
 
+
+/* Device context only; approved colour/touch/coverage/perimeter test CSS unchanged. */
+.modelContext{margin:14px 0 0;padding:13px 14px;border-radius:20px;background:linear-gradient(155deg,#ffffffde,#e6f5ffcb);border:1px solid #fff;box-shadow:inset 0 1px 0 #fff,0 4px 14px #3986c418}
+.modelContext label{display:block;color:#2d5e83;font-size:12px;font-weight:780;line-height:1.35}
+.modelContext select{width:100%;min-height:43px;margin-top:7px;border:1px solid #9ecff0;border-radius:12px;background:#fff;color:#174d77;font:700 15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:0 11px}
+.modelContext .modelHint{margin:7px 0 0;font-size:11px;line-height:1.45;color:#527b9d}
+.modelContext .dualDisplay{margin-top:12px;padding-top:11px;border-top:1px solid #b5d7e9}
+.modelContext .dualDisplay[hidden]{display:none!important}
+@media(max-width:365px){.modelContext{padding:11px 12px}.modelContext select{min-height:44px}}
 </style>
 </head>
 <body data-build="coverage-lab-evidence-v2-2026-10-24">
@@ -251,14 +260,28 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
 <section id="home" class="card glass view active">
 <div class="eyebrow">Guided screen diagnostics</div><h1>Let’s check your<br>iPhone screen.</h1><p class="lead">We’ll check the complete screen assembly: picture quality and touchscreen response.</p>
 <div class="phoneStage"><div class="phoneGlow"></div><div class="phoneArt" aria-label="Illustrated iPhone"><span class="side s1"></span><span class="side s2"></span><span class="side s3"></span><div class="phoneScreen"><div class="dynamicIsland"></div><div class="screenGlow"></div><div class="screenGlow2"></div></div></div></div>
-<div class="infoBox"><b>What we’ll test</b><br>🎨 Picture quality and colour<br>☝️ Touch response across the display<br>✨ Edge and corner response with an illuminated gesture</div><div class="actions"><button id="begin" class="btn main">Begin Screen Test →</button></div><p class="smallNote">Browser-guided screen assessment. Physical display defects still require visual confirmation.</p>
+<div class="infoBox"><b>What we’ll test</b><br>🎨 Picture quality and colour<br>☝️ Touch response across the display<br>✨ Edge and corner response with an illuminated gesture</div><div class="modelContext" aria-label="iPhone and display selection"><label for="screenModel">Your iPhone model <span style="font-weight:500">(optional)</span></label><select id="screenModel"><option value="">Choose your iPhone — not yet identified</option></select><p id="screenModelHint" class="modelHint">Safari cannot automatically confirm your exact iPhone model.</p><div id="dualDisplay" class="dualDisplay" hidden><label for="displaySurface">Which iPhone Duo display are you checking?</label><select id="displaySurface"><option value="outer">Outer display</option><option value="inner">Inner display</option></select><p class="modelHint">Only the display showing this test is assessed. Test the other display separately; it will not receive an automatic Pass.</p></div></div><div class="actions"><button id="begin" class="btn main">Begin Screen Test →</button></div><p class="smallNote">Browser-guided screen assessment. Physical display defects still require visual confirmation.</p>
 </section>
 <section id="results" class="card glass view results"><div class="eyebrow">Check completed</div><h1 id="resultTitle">Screen results.</h1><p class="lead">Your screen assessment is ready to copy.</p><div id="reportRows" style="margin-top:24px"></div><div class="actions" style="margin-top:auto"><button id="copyReport" class="btn main">Copy diagnostic report</button><button id="again" class="btn unable" style="margin-top:10px">Run again</button></div></section>
 </main>
 <section id="testLayer" class="testLayer"><div id="testSurface" class="testSurface"></div><div class="testTop"><strong id="testTitle">Screen test</strong><button id="exit" class="btn unable">Exit</button></div><div id="testBottom" class="testBottom"><p id="testInstruction"></p><button id="testNext" class="btn main">Continue</button></div></section>
+<script src="./models.js?v=screen-shared-models-1"></script>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
+const catalogue=window.IRepairDeviceCatalogue;
+if(!catalogue?.models?.length)throw Error('Screen model catalogue unavailable');
+function selectedDevice(){return catalogue.getModel($('screenModel').value)}
+function displayScope(){const model=selectedDevice(),duo=model?.slug==='iphone-duo';return{model,duo,display:duo?($('displaySurface').value==='inner'?'Inner display':'Outer display'):'Visible browser display'}}
+function setupScreenModel(){
+ const select=$('screenModel'),years=[...new Set(catalogue.models.map(m=>m.year))].sort((a,b)=>b-a);
+ for(const year of years){const group=document.createElement('optgroup');group.label=String(year);for(const m of catalogue.models.filter(x=>x.year===year)){const o=document.createElement('option');o.value=m.slug;o.textContent=m.name;group.append(o)}select.append(group)}
+ const requested=new URLSearchParams(location.search).get('model');if(requested&&catalogue.getModel(requested))select.value=requested;
+ function update(){const m=selectedDevice();$('dualDisplay').hidden=m?.slug!=='iphone-duo';$('screenModelHint').textContent=m?m.name+' — selected by you, not independently verified by Safari.':'Safari cannot automatically confirm your exact iPhone model.'}
+ select.addEventListener('change',update);update();
+}
+setupScreenModel();
+
 let results={},touchHits=new Set(),displayIndex=0,edgeProgress=0,edgeStarted=false,edgeComplete=false;
 let coverageSnapshot={visited:0,total:264,percent:0,corners:0,samples:0};
 const testLayer=$('testLayer'),surface=$('testSurface'),bottom=$('testBottom'),title=$('testTitle'),inst=$('testInstruction'),next=$('testNext');
@@ -566,7 +589,7 @@ function startEdge(){
 function finishAll(){
   closeTest();showView('results');
   const resultStates=[results.display,results.touch,results.coverage,results.edge];
-  const overall=resultStates.includes('FAIL')?'Potential screen issue':resultStates.some(x=>x==='UNABLE TO TEST'||x==='INCOMPLETE'||!x)?'Incomplete assessment':'All checks passed';
+  const overall=resultStates.includes('FAIL')?'Potential screen issue':resultStates.some(x=>x==='UNABLE TO TEST'||x==='INCOMPLETE'||!x)?'Incomplete assessment':displayScope().duo?'Selected display checks passed':'All checks passed';
   $('resultTitle').textContent=overall;
   const rows=[
     ['Display quality',results.display||'UNABLE TO TEST'],
@@ -574,20 +597,27 @@ function finishAll(){
     ['Full-area touch',results.coverage||'UNABLE TO TEST'],
     ['Edge response',results.edge||'UNABLE TO TEST']
   ];
+  const scope=displayScope(),deviceLabel=scope.model?scope.model.name+' (customer selected)':'Not selected';
+  rows.unshift(['iPhone model',deviceLabel],['Display assessed',scope.display]);
+  if(scope.duo)rows.push(['Other display','NOT TESTED — separate assessment required']);
   $('reportRows').innerHTML=rows.map(([n,v])=>'<div class="reportRow"><span>'+n+'</span><b class="'+(v==='PASS'?'good':v==='FAIL'?'bad':'neutral')+'">'+v+'</b></div>').join('')+
     '<div class="reportRow"><span>Browser viewport sampled</span><b>'+coverageSnapshot.percent+'% · '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' cells</b></div>'+
     '<p class="smallNote">Four corners sampled: '+coverageSnapshot.corners+'/4. Positions are coloured only when touch coordinates were received; unsampled cells are not confirmed faults.</p>';
 }
 function reportText(){
+ const scope=displayScope();
  return ['iREPAIR SCREEN DIAGNOSTICS — FULL COVERAGE EXPERIMENT',
    'Date: '+new Date().toLocaleString('en-GB'),
+   'Model: '+(scope.model?scope.model.name+' (customer selected, not verified by Safari)':'Not identified'),
+   'Display assessed: '+scope.display,
+   ...(scope.duo?['Other iPhone Duo display: NOT TESTED — separate assessment required. This report cannot certify both displays.']:[]),
    'Display patterns: 8 guided visual observations',
    'Display quality: '+(results.display||'UNABLE TO TEST'),
    'Nine-point touch: '+(results.touch||'UNABLE TO TEST')+' ('+touchHits.size+'/9 targets)',
    'Full-area touch: '+(results.coverage||'UNABLE TO TEST')+' ('+coverageSnapshot.percent+'% visited, '+coverageSnapshot.visited+'/'+coverageSnapshot.total+' viewport cells; corners '+coverageSnapshot.corners+'/4; browser samples '+coverageSnapshot.samples+')',
    'Edge response: '+(results.edge||'UNABLE TO TEST')+' ('+Math.round(edgeProgress*100)+'%)',
    '',
-   'Scope: browser viewport only. Safari or iOS may reserve screen areas. Only received pointer-event positions were counted; no movement-gap interpolation. Cells not reached are untested, not independently verified hardware failures. Display assessments are visual and user-observed.'
+   'Scope: browser viewport only. Safari or iOS may reserve screen areas. Only received pointer-event positions were counted; no movement-gap interpolation. Cells not reached are untested, not independently verified hardware failures. Display assessments are visual and user-observed.'+(scope.duo?' The selected iPhone Duo display is customer-declared; only one visible display was assessed.':'')
  ].join('\n')
 }
 $('copyReport').onclick=async()=>{try{await navigator.clipboard.writeText(reportText());$('copyReport').textContent='Report copied ✓'}catch(e){prompt('Copy this report:',reportText())}};
