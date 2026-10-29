@@ -1,0 +1,127 @@
+/*
+ * Camera v11 VISUAL REVIEW. Overlays only — core.js, models.js and app.js stay
+ * byte-for-byte identical to the currently verified Camera diagnostic.
+ */
+.ir-v11.cameraV11 #home{padding-top:25px}
+.ir-v11.cameraV11 #home h1{font-size:clamp(32px,8.5vw,45px);line-height:1.06;margin:12px 0 8px}
+.ir-v11.cameraV11 #home .lead{font-size:14px;max-width:370px;line-height:1.5}
+.ir-v11.cameraV11 #home .phoneStage.irCamPhotoStage{
+ width:100%;min-height:318px!important;height:clamp(300px,39svh,366px)!important;
+ margin:14px 0 11px!important;border-radius:27px!important;overflow:hidden;display:block;
+ background:radial-gradient(ellipse 80% 70% at 50% 37%,#fff 2%,#ebf9ff 46%,#c3e7f9 100%)!important;
+ box-shadow:inset 0 3px 5px #fff,inset 0 -16px 26px #8ac6ed2c,0 15px 31px #4893bc30!important;
+}
+.ir-v11.cameraV11 #home .phoneStage .phoneArt{display:none!important}
+.ir-v11.cameraV11 #home .phoneStage .phoneGlow{
+ width:85%;top:15%;left:7%;height:75%;aspect-ratio:auto;opacity:.9;
+ background:radial-gradient(ellipse,#70caff81 0,transparent 70%);
+}
+.irCamPhoto{position:absolute;z-index:2;top:8px;left:50%;width:min(96%,345px);max-height:96%;transform:translateX(-50%);object-fit:contain;
+ filter:drop-shadow(0 14px 13px #194e8266);mix-blend-mode:multiply;pointer-events:none;user-select:none;
+ -webkit-mask-image:radial-gradient(ellipse 59% 61% at 50% 50%,#000 76%,transparent 99%);
+ mask-image:radial-gradient(ellipse 59% 61% at 50% 50%,#000 76%,transparent 99%);
+ animation:irCamPhoneAppear 1.3s cubic-bezier(.2,.8,.25,1) 1 both;
+}
+@keyframes irCamPhoneAppear{0%{opacity:0;transform:translate(-50%,15px) scale(.96)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
+.irCamFrontSensor{position:absolute;z-index:3;left:49.8%;top:17px;width:33px;height:17px;transform:translateX(-50%);
+ border:1px solid #8bfcffad;border-radius:999px;box-shadow:0 0 0 9px #6ce5ff15,0 0 28px #30c8ffbf;pointer-events:none;
+ animation:irCamSensorPing 3.8s ease-in-out infinite;
+}
+@keyframes irCamSensorPing{0%,100%{opacity:.5;box-shadow:0 0 0 5px #6ce5ff17,0 0 16px #30c8ff9c}50%{opacity:.9;box-shadow:0 0 0 15px #6ce5ff14,0 0 28px #30c8ffad}}
+.irCamStageKicker{position:absolute;z-index:4;top:11px;left:12px;display:inline-flex;align-items:center;gap:7px;
+ padding:7px 10px;background:#ffffffd6;border:1px solid #fff;border-radius:999px;
+ font-size:9px;font-weight:900;letter-spacing:1.1px;color:#377dab;box-shadow:0 4px 10px #3a7db12e}
+.irCamStageKicker:before{content:"";width:7px;height:7px;background:#2bd4ef;border-radius:50%;box-shadow:0 0 9px #19d8fa}
+.irCamStageFooter{position:absolute;z-index:5;bottom:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:6px;
+ font-size:10px;font-weight:800;letter-spacing:.5px;color:#22678e}
+.irCamStageFooter span{background:#ffffffe8;border:1px solid #fff;border-radius:999px;padding:7px 9px;box-shadow:0 5px 14px #39779e2a}
+.irCamStageFooter em{font-size:9px;font-style:normal;font-weight:700;color:#4a87ad}
+.irCamPhysicalLenses{position:absolute;z-index:5;right:15px;top:54px;width:66px;height:77px;
+ border:1px solid #ffffffc9;border-radius:18px;background:linear-gradient(140deg,#cde8f5d9,#6fa4c9c9);
+ box-shadow:inset 0 2px 3px #fff9,0 11px 28px #24597b68,0 0 0 2px #a9d8fa52;transform:rotate(7deg);pointer-events:none;
+}
+.irCamPhysicalLenses i{position:absolute;width:26px;height:26px;border-radius:50%;border:3px solid #9dd9ef;
+ background:radial-gradient(circle at 34% 31%,#bafaff 0,#34799c 15%,#0a2847 31%,#091c32 47%,#366786 58%,#0b2441 72%,#051527 100%);
+ box-shadow:inset 0 0 0 2px #15314c,0 0 0 1px #fff8,0 0 10px #46dcff83}
+.irCamPhysicalLenses i:nth-child(1){left:5px;top:5px}.irCamPhysicalLenses i:nth-child(2){left:32px;top:22px}.irCamPhysicalLenses i:nth-child(3){left:5px;top:42px}
+.irCamPhysicalLenses:after{content:"ILLUSTRATION";position:absolute;top:84px;right:-7px;font:750 7px -apple-system,sans-serif;letter-spacing:.6px;color:#6289a4}
+.ir-v11.cameraV11 #home .infoBox{margin:3px 0 0;padding:13px 15px;border-radius:22px;border-color:#fff;
+ background:linear-gradient(150deg,#ffffffe0,#e4f5fff2);box-shadow:inset 0 2px #fff,0 8px 20px #4489b42c;
+ font-size:12px;line-height:1.5}
+.ir-v11.cameraV11 #home .infoBox b{font-size:12px;color:#27658c}
+.ir-v11.cameraV11 #home .actions{margin-top:10px}
+.ir-v11.cameraV11 #home .actions .btn{min-height:58px}
+.ir-v11.cameraV11 #home .smallNote{margin-top:9px}
+.ir-v11.cameraV11 #setup .glassy,
+.ir-v11.cameraV11 #setup .planPreview,
+.ir-v11.cameraV11 #results .stats{border:1px solid #fff;box-shadow:inset 0 2px 2px #fff,0 8px 20px #6c9ac02b;background:linear-gradient(154deg,#fff,#e2f2ff)}
+.irCamSetupArt{display:flex;align-items:center;gap:13px;padding:9px 14px;margin:14px 0 7px;min-height:92px}
+.irCamSetupArt img{width:95px;height:90px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 8px 5px #356a8e53)}
+.irCamSetupArt strong{display:block;color:#245c86;font-size:13px}
+.irCamSetupArt span{display:block;color:#6a8ba4;font-size:11px;line-height:1.35;margin-top:6px}
+.irCamSetupArt b{color:#117cc1}
+.ir-v11.cameraV11 .cameraCard{padding:22px 16px 24px}
+.ir-v11.cameraV11 #setup h1,
+.ir-v11.cameraV11 #results h1{font-size:clamp(32px,8.6vw,43px);margin:12px 0}
+.ir-v11.cameraV11 #test h1{font-size:clamp(29px,8vw,43px);line-height:1.09;letter-spacing:-1.4px;margin:8px 0 6px}
+.ir-v11.cameraV11 #test .lead{font-size:13px;line-height:1.5}
+.ir-v11.cameraV11 #test .stepHead{margin-bottom:8px}
+.ir-v11.cameraV11 #test #progress{margin-bottom:8px}
+.ir-v11.cameraV11 #test .track i.on{background:linear-gradient(90deg,#15d5ec,#0b7de0);box-shadow:0 0 9px #16d3f870}
+.ir-v11.cameraV11 #test .cameraStage{
+ height:min(39svh,337px);min-height:248px;margin:14px 0 11px;
+ border-radius:25px;background:radial-gradient(ellipse at 50% 39%,#f7fdff 1%,#d8f1ff 62%,#b5dff5 100%)!important;
+ box-shadow:inset 0 2px 3px #fff,inset 0 -11px 25px #a4d7f04d,0 11px 24px #337bb533;
+ border:1px solid #fff;
+}
+.ir-v11.cameraV11 #test .cameraStage:has(video.visible){background:#09253a!important}
+.irCamVideoCorners{position:absolute;inset:12px;z-index:4;border:1px solid #ffffff58;border-radius:18px;pointer-events:none}
+.irCamVideoCorners:before{content:"";position:absolute;left:3px;top:3px;width:26px;height:26px;border-left:3px solid #78f5ff;border-top:3px solid #78f5ff;border-radius:6px 0 0 0;filter:drop-shadow(0 0 6px #33dbff)}
+.irCamVideoCorners:after{content:"";position:absolute;right:3px;bottom:3px;width:26px;height:26px;border-right:3px solid #78f5ff;border-bottom:3px solid #78f5ff;border-radius:0 0 6px 0;filter:drop-shadow(0 0 6px #33dbff)}
+.irCamVideoCorners span{position:absolute;right:9px;top:9px;padding:5px 8px;background:#fffdf8e8;border:1px solid #fff;border-radius:20px;color:#306b98;font-size:9px;font-weight:900;letter-spacing:.9px}
+.ir-v11.cameraV11 #test .cameraStage svg.modelDevice{width:178px;height:auto;max-height:295px;filter:drop-shadow(0 15px 18px #0b497050)}
+.ir-v11.cameraV11 #test .cameraLensGuide{
+ min-height:136px;padding:12px!important;display:flex!important;align-items:center;gap:14px;
+ border:1px solid #fff!important;border-radius:25px;background:radial-gradient(ellipse at 20% 44%,#fff 0%,#e1f4ff 51%,#cceafd 100%)!important;
+ box-shadow:inset 0 2px 4px #fff,inset 0 -8px 18px #96cef349,0 10px 23px #5586ae34!important;
+ margin:8px 0 11px;overflow:hidden;isolation:isolate;position:relative
+}
+.ir-v11.cameraV11 #test .cameraLensGuide:before{
+ content:"";position:absolute;z-index:-1;width:165px;height:165px;left:-18px;top:-10px;border-radius:50%;
+ background:radial-gradient(circle,#32d7ff5e 0,#9fe9ff23 54%,transparent 71%);
+}
+.ir-v11.cameraV11 #test .cameraLensGuide svg{
+ display:block;width:105px;height:153px;min-width:105px;flex:0 0 105px;overflow:visible;
+ filter:drop-shadow(0 11px 14px #285f8d73);
+ transform-origin:50% 30%;
+ animation:irCamLensArrive .78s cubic-bezier(.15,.83,.17,1) both;
+}
+@keyframes irCamLensArrive{0%{opacity:.5;transform:scale(.83) translateY(9px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.ir-v11.cameraV11 #test .cameraLensGuide.compact{padding:10px 13px!important;min-height:66px}
+.ir-v11.cameraV11 #test .cameraLensGuide.compact svg[hidden]{display:none!important}
+.ir-v11.cameraV11 #test .cameraLensDescription{gap:7px}
+.ir-v11.cameraV11 #test .cameraLensDescription strong{font-size:15px;line-height:1.2;color:#174d72}
+.ir-v11.cameraV11 #test .cameraLensDescription span{font-size:11px;line-height:1.5;color:#426b8d}
+.ir-v11.cameraV11 #test .cameraLensDescription small{font-size:10px;line-height:1.4;color:#64859b}
+.irCamLensPill{display:inline-flex;align-items:center;gap:6px;width:max-content;max-width:100%;font-size:9px;font-weight:900;
+ letter-spacing:1px;color:#137bac;border:1px solid #fff;border-radius:999px;background:#ffffffe6;padding:5px 7px}
+.irCamLensPill:before{content:"";height:6px;width:6px;border-radius:50%;background:#13dbff;box-shadow:0 0 9px #2be8ff}
+.ir-v11.cameraV11 .testQuestion{border-radius:21px;border:1px solid #fff;background:linear-gradient(148deg,#fff,#e0f1ff);
+ box-shadow:inset 0 2px #fff,0 6px 15px #6fa0c02e;font-size:15px}
+.ir-v11.cameraV11 #test .testActions{gap:7px;margin-top:7px}
+.ir-v11.cameraV11 #test .testActions .btn{min-height:61px;line-height:1.25;font-weight:850;font-size:14px}
+.ir-v11.cameraV11 #test .testActions .btn.unable{font-size:12px}
+.ir-v11.cameraV11 #test .previewStatus{line-height:1.45}
+.ir-v11.cameraV11 #results .resultRow{background:linear-gradient(150deg,#fff,#e9f5ff)}
+.ir-v11.cameraV11 #results .stats strong{font-size:30px}
+@media(max-width:350px){
+ .irCamPhysicalLenses{width:55px;height:67px;right:12px;top:50px;transform:scale(.84) rotate(7deg);transform-origin:top right}
+ .ir-v11.cameraV11 #home .phoneStage.irCamPhotoStage{min-height:290px!important;height:298px!important}
+ .irCamPhoto{width:min(97%,305px)}
+ .ir-v11.cameraV11 #test .cameraLensGuide svg{width:88px;min-width:88px;height:130px;flex-basis:88px}
+ .ir-v11.cameraV11 #test .cameraLensDescription strong{font-size:13px}
+ .ir-v11.cameraV11 #test .testActions .btn{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ .irCamPhoto,.irCamFrontSensor,.ir-v11.cameraV11 #test .cameraLensGuide svg{animation:none!important}
+}
