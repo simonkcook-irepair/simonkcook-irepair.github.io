@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "library": "iRepair curated iPhone panic references",
+  "version": "2026.10.26.1",
+  "reviewedDate": "2026-10-26",
+  "scope": "Human-reviewed reference guidance, not a live scrape of the Internet.",
+  "sources": [
+    {
+      "id": "ifixit-kernel-panics",
+      "title": "iFixit — iPhone Kernel Panics",
+      "url": "https://www.ifixit.com/Wiki/iPhone_Kernel_Panics",
+      "checkedDate": "2026-10-26"
+    }
+  ],
+  "rules": [
+    {
+      "id": "i2c-communication",
+      "match": "i2c",
+      "title": "I²C communication reference",
+      "summary": "An I²C reference may indicate communication problems involving one of several devices on a shared bus. The affected circuit and likely causes depend on the exact iPhone model and panic context.",
+      "action": "Compare the complete log, model and bus information with known-good hardware and service documentation before considering replacement.",
+      "sourceId": "ifixit-kernel-panics",
+      "grade": "reference-reviewed"
+    },
+    {
+      "id": "ans2-storage",
+      "match": "ANS2",
+      "title": "Storage controller reference",
+      "summary": "ANS2 references may concern NAND/storage communication, but the panic alone cannot distinguish a storage device, connection, system or logic-board cause.",
+      "action": "Protect customer data first; compare recurring logs and conduct appropriate storage/board diagnostics with a qualified technician.",
+      "sourceId": "ifixit-kernel-panics",
+      "grade": "reference-reviewed"
+    },
+    {
+      "id": "apple-soc-hot",
+      "match": "AppleSocHot",
+      "title": "System-on-chip temperature/power reference",
+      "summary": "AppleSocHot is associated with a thermal or power-management concern. It does not independently prove overheating or identify a particular failed component.",
+      "action": "Check temperature, charging/thermal symptoms and board-level evidence using safe verified procedures.",
+      "sourceId": "ifixit-kernel-panics",
+      "grade": "reference-reviewed"
+    }
+  ],
+  "notes": "A matching reference is a lead for investigation, never a confirmed faulty part. Diagnostic rules are manually reviewed. New sources require verification and reuse permission."
+}
