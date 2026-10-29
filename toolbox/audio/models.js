@@ -5,46 +5,366 @@
 (function (root) {
 "use strict";
 const columns = [
-["iphone-8","iPhone 8",2017,"home","single",138.4,67.3],
-["iphone-8-plus","iPhone 8 Plus",2017,"home","horizontal",158.4,78.1],
-["iphone-x","iPhone X",2017,"notch","vertical",143.6,70.9],
-["iphone-xr","iPhone XR",2018,"notch","single",150.9,75.7],
-["iphone-xs","iPhone XS",2018,"notch","vertical",143.6,70.9],
-["iphone-xs-max","iPhone XS Max",2018,"notch","vertical",157.5,77.4],
-["iphone-11","iPhone 11",2019,"notch","dual-square",150.9,75.7],
-["iphone-11-pro","iPhone 11 Pro",2019,"notch","triple",144.0,71.4],
-["iphone-11-pro-max","iPhone 11 Pro Max",2019,"notch","triple",158.0,77.8],
-["iphone-se-2020","iPhone SE (2nd generation · 2020)",2020,"home","single",138.4,67.3],
-["iphone-12-mini","iPhone 12 mini",2020,"notch","dual-vertical",131.5,64.2],
-["iphone-12","iPhone 12",2020,"notch","dual-vertical",146.7,71.5],
-["iphone-12-pro","iPhone 12 Pro",2020,"notch","triple",146.7,71.5],
-["iphone-12-pro-max","iPhone 12 Pro Max",2020,"notch","triple",160.8,78.1],
-["iphone-13-mini","iPhone 13 mini",2021,"notch","dual-diagonal",131.5,64.2],
-["iphone-13","iPhone 13",2021,"notch","dual-diagonal",146.7,71.5],
-["iphone-13-pro","iPhone 13 Pro",2021,"notch","triple",146.7,71.5],
-["iphone-13-pro-max","iPhone 13 Pro Max",2021,"notch","triple",160.8,78.1],
-["iphone-se-2022","iPhone SE (3rd generation · 2022)",2022,"home","single",138.4,67.3],
-["iphone-14","iPhone 14",2022,"notch","dual-diagonal",146.7,71.5],
-["iphone-14-plus","iPhone 14 Plus",2022,"notch","dual-diagonal",160.8,78.1],
-["iphone-14-pro","iPhone 14 Pro",2022,"island","triple",147.5,71.5],
-["iphone-14-pro-max","iPhone 14 Pro Max",2022,"island","triple",160.7,77.6],
-["iphone-15","iPhone 15",2023,"island","dual-diagonal",147.6,71.6],
-["iphone-15-plus","iPhone 15 Plus",2023,"island","dual-diagonal",160.9,77.8],
-["iphone-15-pro","iPhone 15 Pro",2023,"island","triple",146.6,70.6],
-["iphone-15-pro-max","iPhone 15 Pro Max",2023,"island","triple",159.9,76.7],
-["iphone-16","iPhone 16",2024,"island","dual-vertical",147.6,71.6],
-["iphone-16-plus","iPhone 16 Plus",2024,"island","dual-vertical",160.9,77.8],
-["iphone-16-pro","iPhone 16 Pro",2024,"island","triple",149.6,71.5],
-["iphone-16-pro-max","iPhone 16 Pro Max",2024,"island","triple",163.0,77.6],
-["iphone-16e","iPhone 16e",2025,"notch","single",146.7,71.5],
-["iphone-17","iPhone 17",2025,"island","dual-vertical",149.6,71.5],
-["iphone-17-pro","iPhone 17 Pro",2025,"island","plateau-triple",150.0,71.9],
-["iphone-17-pro-max","iPhone 17 Pro Max",2025,"island","plateau-triple",163.4,78.0],
-["iphone-air","iPhone Air",2025,"island","plateau-single",156.2,74.7],
-["iphone-17e","iPhone 17e",2026,"notch","single",146.7,71.5],
-["iphone-18-pro","iPhone 18 Pro",2026,"small-island","plateau-triple",150.0,71.9],
-["iphone-18-pro-max","iPhone 18 Pro Max",2026,"small-island","plateau-triple",163.4,78.0],
-["iphone-duo","iPhone Duo (foldable · coming soon)",2026,"duo","duo",117.8,84.1]
+ [
+  "iphone-8",
+  "iPhone 8",
+  2017,
+  "home",
+  "single",
+  138.4,
+  67.3
+ ],
+ [
+  "iphone-8-plus",
+  "iPhone 8 Plus",
+  2017,
+  "home",
+  "horizontal",
+  158.4,
+  78.1
+ ],
+ [
+  "iphone-x",
+  "iPhone X",
+  2017,
+  "notch",
+  "vertical",
+  143.6,
+  70.9
+ ],
+ [
+  "iphone-xr",
+  "iPhone XR",
+  2018,
+  "notch",
+  "single",
+  150.9,
+  75.7
+ ],
+ [
+  "iphone-xs",
+  "iPhone XS",
+  2018,
+  "notch",
+  "vertical",
+  143.6,
+  70.9
+ ],
+ [
+  "iphone-xs-max",
+  "iPhone XS Max",
+  2018,
+  "notch",
+  "vertical",
+  157.5,
+  77.4
+ ],
+ [
+  "iphone-11",
+  "iPhone 11",
+  2019,
+  "notch",
+  "dual-square",
+  150.9,
+  75.7
+ ],
+ [
+  "iphone-11-pro",
+  "iPhone 11 Pro",
+  2019,
+  "notch",
+  "triple",
+  144,
+  71.4
+ ],
+ [
+  "iphone-11-pro-max",
+  "iPhone 11 Pro Max",
+  2019,
+  "notch",
+  "triple",
+  158,
+  77.8
+ ],
+ [
+  "iphone-se-2020",
+  "iPhone SE (2nd generation · 2020)",
+  2020,
+  "home",
+  "single",
+  138.4,
+  67.3
+ ],
+ [
+  "iphone-12-mini",
+  "iPhone 12 mini",
+  2020,
+  "notch",
+  "dual-vertical",
+  131.5,
+  64.2
+ ],
+ [
+  "iphone-12",
+  "iPhone 12",
+  2020,
+  "notch",
+  "dual-vertical",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-12-pro",
+  "iPhone 12 Pro",
+  2020,
+  "notch",
+  "triple",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-12-pro-max",
+  "iPhone 12 Pro Max",
+  2020,
+  "notch",
+  "triple",
+  160.8,
+  78.1
+ ],
+ [
+  "iphone-13-mini",
+  "iPhone 13 mini",
+  2021,
+  "notch",
+  "dual-diagonal",
+  131.5,
+  64.2
+ ],
+ [
+  "iphone-13",
+  "iPhone 13",
+  2021,
+  "notch",
+  "dual-diagonal",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-13-pro",
+  "iPhone 13 Pro",
+  2021,
+  "notch",
+  "triple",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-13-pro-max",
+  "iPhone 13 Pro Max",
+  2021,
+  "notch",
+  "triple",
+  160.8,
+  78.1
+ ],
+ [
+  "iphone-se-2022",
+  "iPhone SE (3rd generation · 2022)",
+  2022,
+  "home",
+  "single",
+  138.4,
+  67.3
+ ],
+ [
+  "iphone-14",
+  "iPhone 14",
+  2022,
+  "notch",
+  "dual-diagonal",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-14-plus",
+  "iPhone 14 Plus",
+  2022,
+  "notch",
+  "dual-diagonal",
+  160.8,
+  78.1
+ ],
+ [
+  "iphone-14-pro",
+  "iPhone 14 Pro",
+  2022,
+  "island",
+  "triple",
+  147.5,
+  71.5
+ ],
+ [
+  "iphone-14-pro-max",
+  "iPhone 14 Pro Max",
+  2022,
+  "island",
+  "triple",
+  160.7,
+  77.6
+ ],
+ [
+  "iphone-15",
+  "iPhone 15",
+  2023,
+  "island",
+  "dual-diagonal",
+  147.6,
+  71.6
+ ],
+ [
+  "iphone-15-plus",
+  "iPhone 15 Plus",
+  2023,
+  "island",
+  "dual-diagonal",
+  160.9,
+  77.8
+ ],
+ [
+  "iphone-15-pro",
+  "iPhone 15 Pro",
+  2023,
+  "island",
+  "triple",
+  146.6,
+  70.6
+ ],
+ [
+  "iphone-15-pro-max",
+  "iPhone 15 Pro Max",
+  2023,
+  "island",
+  "triple",
+  159.9,
+  76.7
+ ],
+ [
+  "iphone-16",
+  "iPhone 16",
+  2024,
+  "island",
+  "dual-vertical",
+  147.6,
+  71.6
+ ],
+ [
+  "iphone-16-plus",
+  "iPhone 16 Plus",
+  2024,
+  "island",
+  "dual-vertical",
+  160.9,
+  77.8
+ ],
+ [
+  "iphone-16-pro",
+  "iPhone 16 Pro",
+  2024,
+  "island",
+  "triple",
+  149.6,
+  71.5
+ ],
+ [
+  "iphone-16-pro-max",
+  "iPhone 16 Pro Max",
+  2024,
+  "island",
+  "triple",
+  163,
+  77.6
+ ],
+ [
+  "iphone-16e",
+  "iPhone 16e",
+  2025,
+  "notch",
+  "single",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-17",
+  "iPhone 17",
+  2025,
+  "island",
+  "dual-vertical",
+  149.6,
+  71.5
+ ],
+ [
+  "iphone-17-pro",
+  "iPhone 17 Pro",
+  2025,
+  "island",
+  "plateau-triple",
+  150,
+  71.9
+ ],
+ [
+  "iphone-17-pro-max",
+  "iPhone 17 Pro Max",
+  2025,
+  "island",
+  "plateau-triple",
+  163.4,
+  78
+ ],
+ [
+  "iphone-air",
+  "iPhone Air",
+  2025,
+  "island",
+  "plateau-single",
+  156.2,
+  74.7
+ ],
+ [
+  "iphone-17e",
+  "iPhone 17e",
+  2026,
+  "notch",
+  "single",
+  146.7,
+  71.5
+ ],
+ [
+  "iphone-18-pro",
+  "iPhone 18 Pro",
+  2026,
+  "small-island",
+  "plateau-triple",
+  150,
+  71.9
+ ],
+ [
+  "iphone-18-pro-max",
+  "iPhone 18 Pro Max",
+  2026,
+  "small-island",
+  "plateau-triple",
+  163.4,
+  78
+ ],
+ [
+  "iphone-duo",
+  "iPhone Duo",
+  2026,
+  "duo",
+  "duo",
+  117.8,
+  84.1
+ ]
 ];
 const models = columns.map(function (m) { return Object.freeze({slug:m[0],name:m[1],year:m[2],front:m[3],rear:m[4],heightMm:m[5],widthMm:m[6]}); });
 const bySlug = Object.fromEntries(models.map(m=>[m.slug,m]));
