@@ -4,7 +4,34 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const Core=window.iRepairBatteryCore;
+const catalogue=window.IRepairDeviceCatalogue;
 if(!Core)throw new Error("Battery inference core failed to load");
+if(!catalogue?.models?.length)throw new Error("Shared model catalogue failed to load");
+function selectedModel(){
+ const slug=$("batteryModel").value;
+ const known=catalogue.getModel(slug);
+ return known?{slug:known.slug,name:known.name}:null;
+}
+function loadModelChoices(){
+ const select=$("batteryModel"),years=[...new Set(catalogue.models.map(m=>m.year))].sort((a,b)=>b-a);
+ for(const year of years){
+  const group=document.createElement("optgroup");group.label=String(year);
+  for(const m of catalogue.models.filter(x=>x.year===year)){
+   const option=document.createElement("option");option.value=m.slug;option.textContent=m.name;group.append(option);
+  }
+  select.append(group);
+ }
+ const requested=new URLSearchParams(location.search).get("model");
+ if(requested&&catalogue.getModel(requested))select.value=requested;
+ state.selected=select.value||null;
+ updateModelHint();
+}
+function updateModelHint(){
+ const m=selectedModel();
+ $("batteryModelHint").textContent=m
+  ?m.name+" — selected by you, not verified by Safari. Analytics identification is checked separately."
+  :"Optional — Safari cannot identify the exact iPhone model on its own.";
+}
 const MAX_FILE_SIZE=40*1024*1024;
 const state={analytics:null,native:null,capacity:null,capacitySource:null,status:"unknown",lastReport:"",lastResult:null,summary:"",selected:null};
 function show(name){
@@ -126,7 +153,7 @@ function renderTech(data){
 }
 function updateResults(){
  const info=Core.assess({analytics:state.analytics,native:state.native,capacity:state.capacity,
-  capacitySource:state.capacitySource,serviceStatus:state.status});
+  capacitySource:state.capacitySource,serviceStatus:state.status,selectedModel:selectedModel()});
  state.lastResult=info;
  state.lastReport=Core.report(info);
  const label={incomplete:"INCOMPLETE",partial:"PARTIAL INFORMATION",review:"REVIEW ADVISED",service:"SERVICE RECOMMENDED",reported:"GUIDED REVIEW"}[info.level]||"BATTERY REVIEW";
@@ -141,6 +168,8 @@ function updateResults(){
  setPills($("resultTags"),tags);
  const listing=$("reportRows");listing.replaceChildren();
  listing.append(rows("iPhone model",Core.modelLabel(info.model)));
+ listing.append(rows("Model source",info.modelSource||"Not identified"));
+ if(info.modelMismatch)listing.append(rows("Model identity conflict","Confirm model in iOS Settings"));
  if(info.native?.iosVersion)listing.append(rows("iOS version",info.native.iosVersion));
  if(info.native?.chargePercent!==null&&info.native?.chargePercent!==undefined)listing.append(rows("Current charge",info.native.chargePercent+"% · native reading"));
  if(info.native?.chargingState&&info.native.chargingState!=="unknown")listing.append(rows("Charging state",info.native.chargingState));
@@ -207,11 +236,15 @@ function reset(){
  state.lastReport="";state.lastResult=null;state.summary="";
  $("analyticsFile").value="";$("pasteInput").value="";$("uploadStatus").textContent="";
  $("pasteStatus").textContent="";$("healthPercent").value="";
+ $("batteryModel").value="";state.selected=null;updateModelHint();
  $("percentHint").textContent="Enter the percentage in iOS Settings, if shown.";
  renderStatusButtons();nativeDisplay();
  show("home");
 }
 $("begin").addEventListener("click",()=>{nativeDisplay();show("upload");});
+$("batteryModel").addEventListener("change",()=>{
+ state.selected=$("batteryModel").value||null;updateModelHint();
+});
 $("noFile").addEventListener("click",()=>{state.analytics=null;state.capacity=null;state.capacitySource=null;state.status="unknown";openHealth();});
 $("homeFromUpload").addEventListener("click",()=>show("home"));
 $("healthBack").addEventListener("click",()=>show("upload"));
@@ -250,5 +283,6 @@ $("shareReport").addEventListener("click",async()=>{
 });
 $("printReport").addEventListener("click",()=>window.print());
 $("restart").addEventListener("click",reset);
+loadModelChoices();
 void requestNativeSnapshot();
 })();
