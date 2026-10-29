@@ -176,3 +176,17 @@
 @media(prefers-reduced-motion:reduce){
  .ir-v11.cameraV11 #home .irCamApprovedHeroImage{animation:none}
 }
+
+/* Geometry-protection override: older #home .phoneStage height !important
+   has a more specific selector. Override it explicitly so the raster artwork
+   can never be elongated into a portrait block on a narrow iPhone. */
+.ir-v11.cameraV11 #home .phoneStage.irCamPhotoStage.irCamApprovedHero{
+ height:auto!important;min-height:0!important;max-height:none!important;
+ aspect-ratio:360 / 310!important;
+ display:block!important;
+}
+.ir-v11.cameraV11 #home .phoneStage.irCamPhotoStage.irCamApprovedHero img.irCamApprovedHeroImage{
+ display:block!important;width:100%!important;height:auto!important;max-height:none!important;
+ aspect-ratio:360 / 310!important;object-fit:contain!important;
+ transform:none!important;filter:none!important;
+}
