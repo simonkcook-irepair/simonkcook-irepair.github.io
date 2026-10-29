@@ -1,0 +1,1957 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-10-29-a",
+  "name": "iRepair Toolbox — iPhone capability catalogue",
+  "scope": "iPhone 8 onwards, including current 2026 devices",
+  "lastVerified": "2026-10-29",
+  "sources": {
+    "appleIdentification": "https://support.apple.com/en-gb/108044",
+    "duoTechSpecs": "https://www.apple.com/uk/iphone-duo/specs/",
+    "pro18TechSpecs": "https://www.apple.com/uk/iphone-18-pro/specs/",
+    "iphone17eTechSpecs": "https://www.apple.com/uk/iphone-17e/specs/",
+    "iphone16eTechSpecs": "https://support.apple.com/en-gb/122208",
+    "buttonIdentification": "https://support.apple.com/en-gb/105103"
+  },
+  "evidencePolicy": {
+    "hardwareLocation": "approximate unless independently cross-checked for exact model and part",
+    "physicalMicSelection": "model metadata never proves physical microphone selection",
+    "cameraLenses": "model-supported optical lens families; native capture device discovery determines camera availability",
+    "authentication": "capability only; do not store biometric data",
+    "wirelessCharging": "supported standard does not prove active wireless charging; method must be customer-declared",
+    "battery": "battery packs may not be exposed as separate capacities by public APIs",
+    "display": "for foldables, assess each display in separately tracked test step"
+  },
+  "models": [
+    {
+      "slug": "iphone-8",
+      "name": "iPhone 8",
+      "year": 2017,
+      "illustration": {
+        "front": "home",
+        "rear": "single",
+        "heightMm": 138.4,
+        "widthMm": 67.3,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "touch-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-8-plus",
+      "name": "iPhone 8 Plus",
+      "year": 2017,
+      "illustration": {
+        "front": "home",
+        "rear": "horizontal",
+        "heightMm": 158.4,
+        "widthMm": 78.1,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "touch-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-x",
+      "name": "iPhone X",
+      "year": 2017,
+      "illustration": {
+        "front": "notch",
+        "rear": "vertical",
+        "heightMm": 143.6,
+        "widthMm": 70.9,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-xr",
+      "name": "iPhone XR",
+      "year": 2018,
+      "illustration": {
+        "front": "notch",
+        "rear": "single",
+        "heightMm": 150.9,
+        "widthMm": 75.7,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-xs",
+      "name": "iPhone XS",
+      "year": 2018,
+      "illustration": {
+        "front": "notch",
+        "rear": "vertical",
+        "heightMm": 143.6,
+        "widthMm": 70.9,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-xs-max",
+      "name": "iPhone XS Max",
+      "year": 2018,
+      "illustration": {
+        "front": "notch",
+        "rear": "vertical",
+        "heightMm": 157.5,
+        "widthMm": 77.4,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-11",
+      "name": "iPhone 11",
+      "year": 2019,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-square",
+        "heightMm": 150.9,
+        "widthMm": 75.7,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-11-pro",
+      "name": "iPhone 11 Pro",
+      "year": 2019,
+      "illustration": {
+        "front": "notch",
+        "rear": "triple",
+        "heightMm": 144,
+        "widthMm": 71.4,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-11-pro-max",
+      "name": "iPhone 11 Pro Max",
+      "year": 2019,
+      "illustration": {
+        "front": "notch",
+        "rear": "triple",
+        "heightMm": 158,
+        "widthMm": 77.8,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-se-2020",
+      "name": "iPhone SE (2nd generation · 2020)",
+      "year": 2020,
+      "illustration": {
+        "front": "home",
+        "rear": "single",
+        "heightMm": 138.4,
+        "widthMm": 67.3,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "touch-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-12-mini",
+      "name": "iPhone 12 mini",
+      "year": 2020,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-vertical",
+        "heightMm": 131.5,
+        "widthMm": 64.2,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-12",
+      "name": "iPhone 12",
+      "year": 2020,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-vertical",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-12-pro",
+      "name": "iPhone 12 Pro",
+      "year": 2020,
+      "illustration": {
+        "front": "notch",
+        "rear": "triple",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-12-pro-max",
+      "name": "iPhone 12 Pro Max",
+      "year": 2020,
+      "illustration": {
+        "front": "notch",
+        "rear": "triple",
+        "heightMm": 160.8,
+        "widthMm": 78.1,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-13-mini",
+      "name": "iPhone 13 mini",
+      "year": 2021,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-diagonal",
+        "heightMm": 131.5,
+        "widthMm": 64.2,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-13",
+      "name": "iPhone 13",
+      "year": 2021,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-diagonal",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-13-pro",
+      "name": "iPhone 13 Pro",
+      "year": 2021,
+      "illustration": {
+        "front": "notch",
+        "rear": "triple",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-13-pro-max",
+      "name": "iPhone 13 Pro Max",
+      "year": 2021,
+      "illustration": {
+        "front": "notch",
+        "rear": "triple",
+        "heightMm": 160.8,
+        "widthMm": 78.1,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-se-2022",
+      "name": "iPhone SE (3rd generation · 2022)",
+      "year": 2022,
+      "illustration": {
+        "front": "home",
+        "rear": "single",
+        "heightMm": 138.4,
+        "widthMm": 67.3,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "touch-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-14",
+      "name": "iPhone 14",
+      "year": 2022,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-diagonal",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-14-plus",
+      "name": "iPhone 14 Plus",
+      "year": 2022,
+      "illustration": {
+        "front": "notch",
+        "rear": "dual-diagonal",
+        "heightMm": 160.8,
+        "widthMm": 78.1,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-14-pro",
+      "name": "iPhone 14 Pro",
+      "year": 2022,
+      "illustration": {
+        "front": "island",
+        "rear": "triple",
+        "heightMm": 147.5,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-14-pro-max",
+      "name": "iPhone 14 Pro Max",
+      "year": 2022,
+      "illustration": {
+        "front": "island",
+        "rear": "triple",
+        "heightMm": 160.7,
+        "widthMm": 77.6,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "lightning",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-15",
+      "name": "iPhone 15",
+      "year": 2023,
+      "illustration": {
+        "front": "island",
+        "rear": "dual-diagonal",
+        "heightMm": 147.6,
+        "widthMm": 71.6,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-15-plus",
+      "name": "iPhone 15 Plus",
+      "year": 2023,
+      "illustration": {
+        "front": "island",
+        "rear": "dual-diagonal",
+        "heightMm": 160.9,
+        "widthMm": 77.8,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-15-pro",
+      "name": "iPhone 15 Pro",
+      "year": 2023,
+      "illustration": {
+        "front": "island",
+        "rear": "triple",
+        "heightMm": 146.6,
+        "widthMm": 70.6,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-15-pro-max",
+      "name": "iPhone 15 Pro Max",
+      "year": 2023,
+      "illustration": {
+        "front": "island",
+        "rear": "triple",
+        "heightMm": 159.9,
+        "widthMm": 76.7,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-16",
+      "name": "iPhone 16",
+      "year": 2024,
+      "illustration": {
+        "front": "island",
+        "rear": "dual-vertical",
+        "heightMm": 147.6,
+        "widthMm": 71.6,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-16-plus",
+      "name": "iPhone 16 Plus",
+      "year": 2024,
+      "illustration": {
+        "front": "island",
+        "rear": "dual-vertical",
+        "heightMm": 160.9,
+        "widthMm": 77.8,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-16-pro",
+      "name": "iPhone 16 Pro",
+      "year": 2024,
+      "illustration": {
+        "front": "island",
+        "rear": "triple",
+        "heightMm": 149.6,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-16-pro-max",
+      "name": "iPhone 16 Pro Max",
+      "year": 2024,
+      "illustration": {
+        "front": "island",
+        "rear": "triple",
+        "heightMm": 163,
+        "widthMm": 77.6,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-16e",
+      "name": "iPhone 16e",
+      "year": 2025,
+      "illustration": {
+        "front": "notch",
+        "rear": "single",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": false
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-17",
+      "name": "iPhone 17",
+      "year": 2025,
+      "illustration": {
+        "front": "island",
+        "rear": "dual-vertical",
+        "heightMm": 149.6,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-17-pro",
+      "name": "iPhone 17 Pro",
+      "year": 2025,
+      "illustration": {
+        "front": "island",
+        "rear": "plateau-triple",
+        "heightMm": 150,
+        "widthMm": 71.9,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-17-pro-max",
+      "name": "iPhone 17 Pro Max",
+      "year": 2025,
+      "illustration": {
+        "front": "island",
+        "rear": "plateau-triple",
+        "heightMm": 163.4,
+        "widthMm": 78,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-air",
+      "name": "iPhone Air",
+      "year": 2025,
+      "illustration": {
+        "front": "island",
+        "rear": "plateau-single",
+        "heightMm": 156.2,
+        "widthMm": 74.7,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-17e",
+      "name": "iPhone 17e",
+      "year": 2026,
+      "illustration": {
+        "front": "notch",
+        "rear": "single",
+        "heightMm": 146.7,
+        "widthMm": 71.5,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": false
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-18-pro",
+      "name": "iPhone 18 Pro",
+      "year": 2026,
+      "illustration": {
+        "front": "small-island",
+        "rear": "plateau-triple",
+        "heightMm": 150,
+        "widthMm": 71.9,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-18-pro-max",
+      "name": "iPhone 18 Pro Max",
+      "year": 2026,
+      "illustration": {
+        "front": "small-island",
+        "rear": "plateau-triple",
+        "heightMm": 163.4,
+        "widthMm": 78,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "face-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "main"
+        ],
+        "batteryPackCount": 1
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide",
+          "telephoto"
+        ],
+        "frontCameras": [
+          "front"
+        ],
+        "lidar": true,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": true,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    },
+    {
+      "slug": "iphone-duo",
+      "name": "iPhone Duo",
+      "year": 2026,
+      "illustration": {
+        "front": "duo",
+        "rear": "duo",
+        "heightMm": 117.8,
+        "widthMm": 84.1,
+        "dimensionsRole": "display illustration only; not engineering fixture coordinates"
+      },
+      "identity": {
+        "authentication": "touch-id",
+        "connector": "usb-c",
+        "displaySurfaces": [
+          "outer",
+          "inner"
+        ],
+        "batteryPackCount": 2
+      },
+      "cameras": {
+        "rearPhysicalLensTypes": [
+          "wide",
+          "ultra-wide"
+        ],
+        "frontCameras": [
+          "outer-centre-stage",
+          "inner-under-display"
+        ],
+        "lidar": false,
+        "lensCoordinatesVerified": false,
+        "opticalQualityCropIsIndependentLens": false
+      },
+      "controls": {
+        "actionButton": false,
+        "cameraControl": true
+      },
+      "charging": {
+        "qiWireless": true,
+        "magsafe": true
+      },
+      "audio": {
+        "physicalMicRoutingVerified": false,
+        "sourceSelection": "query AVAudioSession availableInput/dataSources on device; cannot infer from position"
+      },
+      "testing": {
+        "identitySource": "Apple published product model",
+        "requirePhysicalConfirmation": true
+      }
+    }
+  ]
+}
