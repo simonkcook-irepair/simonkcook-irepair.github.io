@@ -5,7 +5,7 @@
 
 This is **the single editable source** for the common model names, illustration metadata, connectors, biometric types, cameras, controls and battery/display configurations. Never update a stand-alone app's model rows directly. Use `sync-legacy-models.cjs --write` to create copies of the drawing rows for independent preview bundles and `--check` in CI.
 
-The generator currently covers Audio, Camera, Panic, Motion & Haptics and Connectivity model-illustration source folders. These five independent preview bundles were deployed only after regression checks. The signed-off Charging v11 remains protected and requires a narrowly scoped staged migration; Battery and Screen need separate model-identification reconciliation. Existing deployed sites are **not automatically synchronised** merely because this JSON file was written. Do not present this as automatic remote updates.
+The generator currently covers Audio, Camera, Panic, Motion & Haptics, Connectivity and **Charging v11** model-illustration source folders. These six independent preview bundles were deployed only after regression checks. Charging v11 was compared directly with its immutable approved deployment on 320px, 390px and 430px screens, preserving its complete illustrated hardware and animation files byte-for-byte. **Battery and Screen** still require separate model-identification and evidence-source reconciliation. Existing deployed sites are **not automatically synchronised** merely because this JSON file was written. Do not present this as automatic remote updates.
 
 ### Verification sources
 
