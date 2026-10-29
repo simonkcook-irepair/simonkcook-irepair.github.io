@@ -441,6 +441,12 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  #results:after{content:"Guided assessment; no independent battery-health/current/temperature measurement.  •  iRepair Toolbox";
  display:block;text-align:center;margin-top:14mm;font-size:9pt;color:#72879d}
 }
+
+/* Optional model identification only. Original battery steps, controls and art unchanged. */
+.batteryModelField{border:1px solid #fff;border-radius:17px;padding:10px 12px;background:linear-gradient(150deg,#ffffffed,#e6f5ffdc);box-shadow:inset 0 1px #fff}
+.batteryModelField label{display:block;font-size:12px;font-weight:800;color:#316d9a;margin-bottom:5px}
+.batteryModelField select{min-height:42px;width:100%;max-width:100%;border:1px solid #a5d3f0;border-radius:11px;padding:0 11px;background:#fff;color:#194e77;font:700 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.batteryModelField small{display:block;color:#5c7f9a;font-size:10px;line-height:1.4;margin-top:6px}
 </style>
 </head>
 <body data-build="battery-native-ready-v1">
@@ -460,6 +466,10 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <h1>Let’s understand<br>your battery.</h1>
  <p class="lead">We’ll find what we can automatically, then ask for just the details Apple keeps in Settings.</p>
  <div class="inlineMeta" id="deviceMeta" aria-live="polite"><span>Browser preview · Native readings unavailable</span></div>
+ <div class="batteryModelField"><label for="batteryModel">Your iPhone model <span style="font-weight:500">(optional)</span></label>
+  <select id="batteryModel"><option value="">Choose iPhone — not identified</option></select>
+  <small id="batteryModelHint">Optional — Safari cannot identify the exact iPhone model on its own.</small>
+ </div>
  <div class="uploadSurface">
   <div class="uploadIcon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 31V8"/><path d="m14 18 10-10 10 10"/><path d="M10 29v9c0 2 2 3 4 3h20c2 0 4-1 4-3v-9"/></svg></div>
   <h2>Have an analytics file?</h2>
@@ -525,6 +535,7 @@ h1{font-size:clamp(38px,10vw,52px);line-height:1.02;letter-spacing:-2.2px;text-a
  <p class="smallNote">Guided assessment only. Battery hardware health, charge current and temperature are not independently tested by Safari.</p>
 </section>
 </main>
+<script src="./models.js?v=battery-shared-models-1"></script>
 <script src="./core.js?v=native-ready-1"></script>
 <script src="./engine.js?v=native-ready-1"></script>
 </body>
