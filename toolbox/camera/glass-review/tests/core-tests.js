@@ -17,6 +17,9 @@ check("iPhone SE 2022 Touch ID not Face ID",!engine.faceIdSupported(models.getMo
 check("iPhone 17 Pro Max nine-step plan with LiDAR",engine.createPlan("iphone-17-pro-max",models).steps.map(s=>s.id).join(",")==="rear,focus,stability,flash,ultra,tele,lidar,front,faceid");
 check("iPhone Air has six stages incl Face ID",engine.createPlan("iphone-air",models).steps.length===6);
 check("iPhone 8 has five stages without Face ID",engine.createPlan("iphone-8",models).steps.length===5);
+check("Duo uses Touch ID, so Face ID must never be offered",!engine.faceIdSupported(models.getModel("iphone-duo")) && !engine.createPlan("iphone-duo",models).steps.some(s=>s.id==="faceid"));
+check("Duo still has its two actual rear optics",engine.createPlan("iphone-duo",models).lenses.ultra && !engine.createPlan("iphone-duo",models).lenses.tele);
+check("iPhone Duo display name is current, not a future placeholder",models.getModel("iphone-duo").name==="iPhone Duo");
 check("iPhone 8 Plus has telephoto no ultrawide",engine.createPlan("iphone-8-plus",models).lenses.tele&&!engine.createPlan("iphone-8-plus",models).lenses.ultra);
 check("iPhone X has telephoto",engine.createPlan("iphone-x",models).lenses.tele);
 check("iPhone 11 has ultra-wide",engine.createPlan("iphone-11",models).lenses.ultra);
