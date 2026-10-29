@@ -170,10 +170,11 @@ function report(plan,answers,evidence){
   lines.push("","TECHNICIAN TRIAGE CLUES — NOT CONFIRMED HARDWARE FAULTS");
   for(const clue of clues)lines.push(clue.title+": "+clue.detail);
  }
- if(src.faceIdNative?.outcome){
+ if(plan.faceIdCapable&&src.faceIdNative?.outcome){
   lines.push("","Native Face ID evidence: "+String(src.faceIdNative.outcome)+
    " (LocalAuthentication system outcome only; not an infrared camera or dot-projector component test).");
  }
+ if(plan.modelSlug==="iphone-duo")lines.push("","iPhone Duo coverage: This browser session does not independently distinguish the outer Center Stage and inner under-display front cameras. These are TWO separate physical cameras; do not treat one front image as a complete dual-camera pass. Touch ID is integrated into the side button and is not tested by this Camera flow.");
  lines.push("","Camera access: Permission requested only during live preview; no photos uploaded or stored.");
  lines.push("Face ID: A guided system authentication observation is distinct from the RGB selfie camera. The app never accesses infrared or biometric templates.");
  if(plan.lidarCapable)lines.push("LiDAR: The Measure app can use camera/motion AR tracking; its behaviour alone cannot independently confirm scanner hardware. Native ARKit sceneDepth capture requires a physical iPhone.");
