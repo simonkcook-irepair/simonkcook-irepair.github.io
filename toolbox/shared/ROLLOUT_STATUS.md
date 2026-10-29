@@ -14,9 +14,11 @@
 
 - **Connectivity Diagnostics:** production `irepair-connectivity-review-simon-cook.vercel.app`; deployment `dpl_FH1ufAVpAZ5VJknwLUVHwLBWHKsv`. Its 40 iPhone identity and illustration rows now project from `toolbox/shared/iphone-models.json` through `sync-legacy-models.cjs`. All other live files match the approved v2 baseline, including the protected same-origin `probe.txt`; no network engine, design or reporting changes. 40 existing core checks and 9 new model/evidence checks passed; shared catalogue validation and projection checks passed. Complete live browser journeys at 320px and 390px passed against both staged and production URLs, including actual test-resource reachability, user route acknowledgement/reset, a mocked geolocation success, Bluetooth failure flow, AirDrop Unable, reports and restart. Browser location was simulated for QA, **not a physical iPhone GPS test**. No JS errors, sideways scroll or failed assets.
 
+- **Charging Diagnostics v11 (protected):** production `irepair-charging-review-simon-cook.vercel.app`, deployment `dpl_2k1y5K98dSozdUGLkBb3Ex51qXVL`. The 40-model selector data is now generated from `toolbox/shared/iphone-models.json` by `sync-legacy-models.cjs`; only the model projection file changed in the deployed preview. Existing v11 DOM, all eight CSS stylesheets, three photoreal hardware illustrations, charging meters, scripts, tests and reports are byte-for-byte identical to the approved original. The 179 current charging instrument tests and six new signed-off model/artwork checks passed; master catalogue and six projections passed. Browser comparison against the immutable original deployment passed at 320px, 390px and 430px both on preview and production: geometry, full handset, centred pad/cable, one-way landing, wired and wireless flows, skip option and reports. Lightning and USB-C port choice confirmed separately; browser animations and battery values remain demonstrations, not hardware measurements. **Legacy `tests/core-tests.js` contains historic v4 UI assertions and was already inconsistent with v11; it is not the signed-off v11 regression suite.**
+
 ## Still not migrated
 
-- **Charging v11** still deploys its own model catalogue. Its currently deployed model identity rows matched the reference during the earlier audit, but the signed-off app has not yet been migrated to the shared build-time model source.
+- **Charging v11** has been migrated to the shared source; its original signed-off source and all artwork remain byte-for-byte unchanged.
 - Battery Diagnostics and Screen Diagnostics have their own model-identification and eligibility logic to reconcile.
 - Future native iOS apps require a shared identifier-to-model mapping and on-device capability discovery; this browser metadata is not itself a physical hardware test.
 
@@ -26,4 +28,4 @@ Charging v11 is **signed off** and must not be redesigned as a side effect of sh
 
 ## Next controlled task
 
-Migrate the remaining standalone apps one at a time to the master catalogue using exact stable deployment snapshots and separate smoke tests, starting with a narrowly scoped, protected Charging v11 model-data migration. Reconcile Battery and Screen after source inspection. Never claim "all tools unified" before the migration tests actually complete.
+Reconcile Screen and Battery model-identification, component eligibility and evidence sources one application at a time. Keep Charging v11 unchanged during that work. Never claim all tools are unified before native/runtime consumers and final suite reports are integrated and tested.
