@@ -5,7 +5,7 @@
 
 This is **the single editable source** for the common model names, illustration metadata, connectors, biometric types, cameras, controls and battery/display configurations. Never update a stand-alone app's model rows directly. Use `sync-legacy-models.cjs --write` to create copies of the drawing rows for independent preview bundles and `--check` in CI.
 
-The first generator targets Audio and Camera source folders; other tools have separately deployed copies and must be migrated with their own regression checks in later staged releases. Existing deployed sites are **not automatically synchronised** merely because this JSON file was written. Do not present this as automatic remote updates.
+The generator currently covers Audio, Camera and Panic model-illustration source folders. These three independent preview bundles were deployed only after regression checks. Motion, Connectivity and Charging still contain separately deployed copies and require staged migration; Battery and Screen need separate model-identification reconciliation. Existing deployed sites are **not automatically synchronised** merely because this JSON file was written. Do not present this as automatic remote updates.
 
 ### Verification sources
 
