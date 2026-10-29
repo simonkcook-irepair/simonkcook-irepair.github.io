@@ -16,10 +16,11 @@
 
 - **Charging Diagnostics v11 (protected):** production `irepair-charging-review-simon-cook.vercel.app`, deployment `dpl_2k1y5K98dSozdUGLkBb3Ex51qXVL`. The 40-model selector data is now generated from `toolbox/shared/iphone-models.json` by `sync-legacy-models.cjs`; only the model projection file changed in the deployed preview. Existing v11 DOM, all eight CSS stylesheets, three photoreal hardware illustrations, charging meters, scripts, tests and reports are byte-for-byte identical to the approved original. The 179 current charging instrument tests and six new signed-off model/artwork checks passed; master catalogue and six projections passed. Browser comparison against the immutable original deployment passed at 320px, 390px and 430px both on preview and production: geometry, full handset, centred pad/cable, one-way landing, wired and wireless flows, skip option and reports. Lightning and USB-C port choice confirmed separately; browser animations and battery values remain demonstrations, not hardware measurements. **Legacy `tests/core-tests.js` contains historic v4 UI assertions and was already inconsistent with v11; it is not the signed-off v11 regression suite.**
 
+- **Screen & Touch Diagnostics:** production `irepair-screen-diagnostics-review-simon-cook.vercel.app`; deployment `dpl_9t4bZqWf8KNTfvTDE9SoGKLZTzc2`. The model list is generated from `toolbox/shared/iphone-models.json` and is explicitly customer-selected because Safari cannot identify the exact iPhone model. For iPhone Duo, the user declares **outer or inner display**, the report identifies only that selected visible browser display and marks the other **NOT TESTED**. Non-Duo handsets use the visible browser display. The eight original display patterns, nine touch targets, 264-cell sampled touch-coverage map and animated perimeter tracing remain unchanged; verified **18,972 bytes of original test-stage logic** identical to the preserved baseline at `ee6c599331e3fce5e9f362cd796c4b0b790cb1e5`. Ten new catalogue and evidence checks, master catalogue and seven projection checks passed. Complete staged and live browser journeys passed at 320px and 390px for Duo inner and iPhone 18 Pro Max, including pattern inspection, full-screen toggle, nine touches, coverage, perimeter, honest reporting, copying and restart. No JS errors, asset failures or sideways scrolling. These are browser-viewport tests; they do not independently certify an inaccessible display or physical display defects.
+
 ## Still not migrated
 
-- **Charging v11** has been migrated to the shared source; its original signed-off source and all artwork remain byte-for-byte unchanged.
-- Battery Diagnostics and Screen Diagnostics have their own model-identification and eligibility logic to reconcile.
+- **Battery Diagnostics** has separate model-identification and battery-health evidence logic to reconcile.
 - Future native iOS apps require a shared identifier-to-model mapping and on-device capability discovery; this browser metadata is not itself a physical hardware test.
 
 ## Protection rules
@@ -28,4 +29,4 @@ Charging v11 is **signed off** and must not be redesigned as a side effect of sh
 
 ## Next controlled task
 
-Reconcile Screen and Battery model-identification, component eligibility and evidence sources one application at a time. Keep Charging v11 unchanged during that work. Never claim all tools are unified before native/runtime consumers and final suite reports are integrated and tested.
+Reconcile Battery Diagnostics model-identification, battery-health evidence and eligibility against the shared catalogue. Keep all seven verified prototypes — especially Charging v11 and Screen — visually unchanged during that work. Never claim all tools are unified before native/runtime consumers and final suite reports are integrated and tested.
