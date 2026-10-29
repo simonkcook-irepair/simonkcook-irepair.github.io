@@ -386,7 +386,16 @@ function halo(x,y) {
    independently cross-checked. For other models illuminate the whole cluster,
    rather than guess a wide/ultra-wide/telephoto housing position.
    iPhone 13 Pro / Max: labelled camera-module imagery (DPReview).
-   iPhone 17 Pro / Max: labelled product camera diagram (PetaPixel, Sep 2025).
+   iPhone 17 Pro / Max: labelled Apple lens locations, reproduced by
+   PetaPixel (9 Sep 2025): upper-left Ultra Wide, centre-right Telephoto,
+   lower-left Main. For iPhone 18 Pro / Max, this unchanged camera
+   triangle is corroborated by Apple's 2026 product photographs and
+   iFixit's 18 Pro teardown. Apple confirms the three 48MP camera roles.
+   https://petapixel.com/2025/09/09/redesigned-iphone-17-pro-has-three-48mp-rear-cameras-and-is-aimed-at-content-creators/
+   https://www.apple.com/uk/iphone-18-pro/specs/
+   https://www.ifixit.com/News/119329/inside-the-tiny-unfixable-eye-iphone-18-pro-and-pro-max-teardown
+   This map is a model-specific physical lens ILLUSTRATION, not proof
+   that Safari is capturing from the highlighted sensor.
    Single-camera housings need no optical-position inference.
    This is a housing GUIDE, not verification of the active iOS capture device.
  */
@@ -394,7 +403,9 @@ const checkedOpticalPositions=Object.freeze({
  "iphone-13-pro":Object.freeze({wide:2,ultra:1,tele:0}),
  "iphone-13-pro-max":Object.freeze({wide:2,ultra:1,tele:0}),
  "iphone-17-pro":Object.freeze({wide:2,ultra:0,tele:1}),
- "iphone-17-pro-max":Object.freeze({wide:2,ultra:0,tele:1})
+ "iphone-17-pro-max":Object.freeze({wide:2,ultra:0,tele:1}),
+ "iphone-18-pro":Object.freeze({wide:2,ultra:0,tele:1}),
+ "iphone-18-pro-max":Object.freeze({wide:2,ultra:0,tele:1})
 });
 function draw(svg, modelLike, side, focus) {
  if (!svg) return;
