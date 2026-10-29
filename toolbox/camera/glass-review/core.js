@@ -61,7 +61,8 @@ function lidarSupported(model){
 function faceIdSupported(model){
  // The home-button iPhones in this catalogue use Touch ID, not Face ID.
  // An unselected/unknown model must not be guessed as capable.
- return !!model && ["notch","island","small-island","duo"].includes(model.front);
+ // iPhone Duo has Touch ID in the side button, despite two Dynamic Island displays.
+ return !!model && model.slug!=="iphone-duo" && ["notch","island","small-island"].includes(model.front);
 }
 function lensAvailability(model){
  if(!model)return {ultra:false,tele:false,source:"Model not identified"};
