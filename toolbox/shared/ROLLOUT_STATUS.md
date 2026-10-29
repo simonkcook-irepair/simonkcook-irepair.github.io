@@ -10,9 +10,9 @@
 - **Audio Diagnostics:** production `irepair-audio-glass-review-simon-cook.vercel.app`; iPhone Duo model label is current, without "coming soon". All Step 1 restored stylesheets and the no-horizontal-overflow correction retained from the verified seven-file snapshot. Report, restart and recovery smoke checks passed at 320px and 390px. Production deployment `dpl_CTNraciwqMgSamhJ9sqeYomZXodD`.
 - **Shared model validation:** `node toolbox/shared/validate-models.cjs` passes all feature requirement groups; `node toolbox/shared/sync-legacy-models.cjs --check` confirms source-renderer projections for Audio and Camera. Camera's independent deterministic regression suite passes.
 
-## Still not migrated
+- **Panic Diagnostics:** production `irepair-panic-glass-review-simon-cook.vercel.app`, deployment `dpl_Cnht3jvKvCgyXn8cTUxmNKCYBGTL`. Its 40-model selector and drawing rows are now generated from `toolbox/shared/iphone-models.json` via `sync-legacy-models.cjs`. Its existing panic parser, offline rules, reviewed-reference loader and report engine are unchanged. Node tests: 17 core, 15 reference checks, 8 new catalogue checks; master generation check passed. Full browser file-import, manual override, privacy and no-panic evidence tests passed at 320px and 390px on staged **and production** aliases.\n\n## Still not migrated
 
-- Panic, Motion & Haptics, Connectivity and Charging each still deploy their own model catalogue copy. Their current 40-model *identity rows* matched the Camera reference during the audit, but they do not yet consume this master source at build time.
+- Motion & Haptics, Connectivity and Charging still deploy their own model catalogue copies. Their current 40-model *identity rows* matched the Camera reference during the audit, but they do not yet consume this master source at build time.
 - Battery Diagnostics and Screen Diagnostics have their own model-identification and eligibility logic to reconcile.
 - Future native iOS apps require a shared identifier-to-model mapping and on-device capability discovery; this browser metadata is not itself a physical hardware test.
 
@@ -22,4 +22,4 @@ Charging v11 is **signed off** and must not be redesigned as a side effect of sh
 
 ## Next controlled task
 
-Migrate the remaining standalone apps one at a time to the master catalogue using exact stable deployment snapshots and separate smoke tests, starting with Panic, then Motion & Haptics, Connectivity and (last, protected) Charging v11. Reconcile Battery and Screen after source inspection. Never claim "all tools unified" before the migration tests actually complete.
+Migrate the remaining standalone apps one at a time to the master catalogue using exact stable deployment snapshots and separate smoke tests, starting with Motion & Haptics, then Connectivity and (last, protected) Charging v11. Reconcile Battery and Screen after source inspection. Never claim "all tools unified" before the migration tests actually complete.
