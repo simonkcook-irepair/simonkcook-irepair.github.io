@@ -18,6 +18,7 @@ check("iPhone 17 Pro Max nine-step plan with LiDAR",engine.createPlan("iphone-17
 check("iPhone Air has six stages incl Face ID",engine.createPlan("iphone-air",models).steps.length===6);
 check("iPhone 8 has five stages without Face ID",engine.createPlan("iphone-8",models).steps.length===5);
 check("Duo uses Touch ID, so Face ID must never be offered",!engine.faceIdSupported(models.getModel("iphone-duo")) && !engine.createPlan("iphone-duo",models).steps.some(s=>s.id==="faceid"));
+check("Duo report explicitly leaves inner/outer front cameras unverified",engine.report(engine.createPlan("iphone-duo",models),{},{}).includes("TWO separate physical cameras"));
 check("Duo still has its two actual rear optics",engine.createPlan("iphone-duo",models).lenses.ultra && !engine.createPlan("iphone-duo",models).lenses.tele);
 check("iPhone Duo display name is current, not a future placeholder",models.getModel("iphone-duo").name==="iPhone Duo");
 check("iPhone 8 Plus has telephoto no ultrawide",engine.createPlan("iphone-8-plus",models).lenses.tele&&!engine.createPlan("iphone-8-plus",models).lenses.ultra);
