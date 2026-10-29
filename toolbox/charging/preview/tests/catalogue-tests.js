@@ -53,7 +53,7 @@ check("Customer-facing v11 sign-off, animations, artwork unchanged",()=>{
  };
  for(const [file,expectedSha] of Object.entries(files)){
   const data=fs.readFileSync(path.join(dir,file));
-  const got=crypto.createHash("sha1").update("blob "+data.length+"\\0").update(data).digest("hex");
+  const got=crypto.createHash("sha1").update("blob "+data.length+"\0").update(data).digest("hex");
   assert.equal(got,expectedSha,"Approved prototype asset was unexpectedly modified: "+file);
  }
 });
